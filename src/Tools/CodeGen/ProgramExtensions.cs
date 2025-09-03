@@ -54,7 +54,6 @@ public static class ProgramExtensions
 			.AddRoleCaching()
 			.AddCategoryCaching()
 			.AddTagCaching()
-			.AddShipmentCaching()
 			.AddImageCaching()
 			.AddCadCaching()
 			.AddMaterialCaching();

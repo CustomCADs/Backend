@@ -6,17 +6,13 @@ namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetStatus;
 
 public sealed class GetShipmentTrackHandler(
 	IShipmentReads reads,
-	IDeliveryService delivery,
-	BaseCachingService<ShipmentId, Shipment> cache
+	IDeliveryService delivery
 ) : IQueryHandler<GetShipmentTrackQuery, Dictionary<DateTimeOffset, GetShipmentTrackDto>>
 {
 	public async Task<Dictionary<DateTimeOffset, GetShipmentTrackDto>> Handle(GetShipmentTrackQuery req, CancellationToken ct)
 	{
-		Shipment shipment = await cache.GetOrCreateAsync(
-			id: req.Id,
-			factory: async () => await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
-				?? throw CustomNotFoundException<Shipment>.ById(req.Id)
-		).ConfigureAwait(false);
+		Shipment shipment = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Shipment>.ById(req.Id);
 
 		ShipmentStatusDto[] statuses = await delivery.TrackAsync(
 			shipment.ReferenceId,

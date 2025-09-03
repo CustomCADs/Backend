@@ -5,17 +5,13 @@ namespace CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
 
 public sealed class CancelShipmentHandler(
 	IShipmentReads reads,
-	IDeliveryService delivery,
-	BaseCachingService<ShipmentId, Shipment> cache
+	IDeliveryService delivery
 ) : ICommandHandler<CancelShipmentCommand>
 {
 	public async Task Handle(CancelShipmentCommand req, CancellationToken ct)
 	{
-		Shipment shipment = await cache.GetOrCreateAsync(
-			id: req.Id,
-			factory: async () => await reads.SingleByIdAsync(req.Id, track: false, ct).ConfigureAwait(false)
-				?? throw CustomNotFoundException<Shipment>.ById(req.Id)
-		).ConfigureAwait(false);
+		Shipment shipment = await reads.SingleByIdAsync(req.Id, track: false, ct).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Shipment>.ById(req.Id);
 
 		await delivery.CancelAsync(
 			shipmentId: shipment.ReferenceId,
