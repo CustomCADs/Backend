@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Notifications.Domain.Notifications;
+using CustomCADs.Shared.Domain.Enums;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Notifications;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +51,7 @@ public static class Utilities
 				.HasColumnName("Description");
 
 			a.Property(x => x.Link)
-				.IsRequired()
+				.IsRequired(required: false)
 				.HasColumnName("Link");
 		});
 
@@ -65,6 +66,10 @@ public static class Utilities
 
 		builder.Property(x => x.Status)
 			.IsRequired()
+			.HasConversion(
+				x => x.ToString(),
+				x => Enum.Parse<NotificationStatus>(x)
+			)
 			.HasColumnName(nameof(Notification.Status));
 
 		builder.Property(x => x.CreatedAt)
