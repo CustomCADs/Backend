@@ -1,5 +1,5 @@
 using CustomCADs.Notifications.Domain.Notifications;
-using CustomCADs.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Shared.Domain.Enums;
 using CustomCADs.Shared.Domain.Querying;
 
 namespace CustomCADs.Notifications.Domain.Repositories.Reads;

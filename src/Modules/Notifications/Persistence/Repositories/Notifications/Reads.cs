@@ -4,7 +4,7 @@ using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Notifications;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
-using CustomCADs.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Shared.Domain.Enums;
 
 namespace CustomCADs.Notifications.Persistence.Repositories.Notifications;
 
