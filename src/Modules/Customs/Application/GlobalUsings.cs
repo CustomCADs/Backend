@@ -1,4 +1,5 @@
 ﻿global using CustomCADs.Customs.Domain.Customs;
+global using CustomCADs.Shared.Application;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 global using CustomCADs.Shared.Application.Exceptions;

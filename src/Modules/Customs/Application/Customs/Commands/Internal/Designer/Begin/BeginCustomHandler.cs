@@ -1,9 +1,14 @@
 ﻿using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Begin;
 
-public sealed class BeginCustomHandler(ICustomReads reads, IUnitOfWork uow)
+using static Shared.Application.Constants;
+
+public sealed class BeginCustomHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<BeginCustomCommand>
 {
 	public async Task Handle(BeginCustomCommand req, CancellationToken ct)
@@ -18,6 +23,16 @@ public sealed class BeginCustomHandler(ICustomReads reads, IUnitOfWork uow)
 
 		custom.Begin();
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			new NotificationRequestedEvent(
+				Type: NotificationType.CustomBegun,
+				Description: Notifications.Messages.CustomBegun,
+				Link: Notifications.Links.CustomBegun,
+				AuthorId: req.DesignerId,
+				ReceiverId: custom.BuyerId
+			)
+		).ConfigureAwait(false);
 	}
 }
 
