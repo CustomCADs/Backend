@@ -9,6 +9,7 @@ public static class EndpointsConstants
 		public const string Stripe = "stripe";
 		public const string ExchangeRates = "exchange-rates";
 		public const string Identity = "identity";
+		public const string Notifications = "notifications";
 		public const string ProductsGallery = "products/gallery";
 		public const string ActiveCarts = "carts/active";
 		public const string Customizations = "customizations";
@@ -39,6 +40,7 @@ public static class EndpointsConstants
 		[Paths.ProductsGallery] = "0.2. Product Gallery",
 		[Paths.ActiveCarts] = "0.3. Active Carts",
 		[Paths.Customizations] = "0.4. Customizations",
+		[Paths.Notifications] = "0.5 Notifications",
 
 		// Customers
 		[Paths.PurchasedCarts] = "1.1. Purchased Carts",
