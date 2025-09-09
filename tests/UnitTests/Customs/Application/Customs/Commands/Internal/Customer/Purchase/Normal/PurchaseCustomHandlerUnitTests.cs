@@ -1,8 +1,10 @@
 ﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Cads.Queries;
@@ -19,6 +21,7 @@ public class PurchaseCustomHandlerUnitTests : CustomsBaseUnitTests
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IPaymentService> payment = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
 	private const string PaymentMethodId = "payment-method-id";
 	private static readonly AccountId buyerId = AccountId.New();
@@ -28,7 +31,7 @@ public class PurchaseCustomHandlerUnitTests : CustomsBaseUnitTests
 
 	public PurchaseCustomHandlerUnitTests()
 	{
-		handler = new(reads.Object, uow.Object, sender.Object, payment.Object);
+		handler = new(reads.Object, uow.Object, sender.Object, payment.Object, raiser.Object);
 
 		custom.Accept(ValidDesignerId);
 		custom.Begin();
@@ -70,6 +73,21 @@ public class PurchaseCustomHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidBuyerId || x.Id == ValidDesignerId),
 			ct
 		), Times.Exactly(2));
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		PurchaseCustomCommand command = new(ValidId, PaymentMethodId, ValidBuyerId);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.AuthorId == ValidDesignerId)
+		), Times.Once());
 	}
 
 	[Fact]
