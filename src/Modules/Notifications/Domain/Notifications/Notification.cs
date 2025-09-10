@@ -87,7 +87,7 @@ public class Notification : BaseAggregateRoot
 	public Notification Hide()
 	{
 		NotificationStatus newStatus = NotificationStatus.Hidden;
-		if (Status is not NotificationStatus.Unread or NotificationStatus.Read or NotificationStatus.Opened)
+		if (Status is not (NotificationStatus.Unread or NotificationStatus.Read or NotificationStatus.Opened))
 		{
 			throw CustomValidationException<Notification>.Status(newStatus, Status);
 		}
