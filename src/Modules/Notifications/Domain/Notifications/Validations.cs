@@ -1,6 +1,6 @@
 namespace CustomCADs.Notifications.Domain.Notifications;
 
-using static NotificationConstants;
+using static NotificationsConstants;
 
 internal static class Validations
 {
@@ -9,6 +9,10 @@ internal static class Validations
 			.ThrowIfNull(
 				expression: (x) => x.Type,
 				predicate: string.IsNullOrWhiteSpace
+			)
+			.ThrowIfInvalidLength(
+				expression: (x) => x.Type,
+				length: (TypeMinLength, TypeMaxLength)
 			);
 
 	internal static Notification ValidateContent(this Notification notification)
