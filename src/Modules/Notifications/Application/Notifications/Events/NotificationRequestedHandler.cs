@@ -5,7 +5,7 @@ namespace CustomCADs.Notifications.Application.Notifications.Events;
 
 public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfWork uow)
 {
-	public async Task Handle(NotificationRequestedEvent req, CancellationToken ct = default)
+	public async Task Handle(NotificationRequestedEvent req)
 	{
 		await writes.AddAsync(
 			entity: Notification.Create(
@@ -13,9 +13,8 @@ public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfW
 				content: new(req.Description, req.Link),
 				authorId: req.AuthorId,
 				receiverId: req.ReceiverId
-			),
-			ct: ct
+			)
 		).ConfigureAwait(false);
-		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+		await uow.SaveChangesAsync().ConfigureAwait(false);
 	}
 }

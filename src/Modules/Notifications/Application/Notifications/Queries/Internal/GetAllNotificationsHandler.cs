@@ -11,11 +11,15 @@ public class GetAllNotificationsHandler(INotificationReads reads, IRequestSender
 {
 	public async Task<Result<GetAllNotificationsDto>> Handle(GetAllNotificationsQuery req, CancellationToken ct = default)
 	{
-		Result<Notification> result = await reads.AllAsync(new(
-			ReceiverId: req.ReceiverId,
-			Pagination: req.Pagination,
-			Sorting: req.Sorting
-		), ct: ct).ConfigureAwait(false);
+		Result<Notification> result = await reads.AllAsync(
+			query: new(
+				ReceiverId: req.ReceiverId,
+				Pagination: req.Pagination,
+				Sorting: req.Sorting
+			),
+			track: false,
+			ct: ct
+		).ConfigureAwait(false);
 
 		Dictionary<AccountId, string> usernames = await sender.SendQueryAsync(
 			new GetUsernamesByIdsQuery([.. result.Items.Select(x => x.AuthorId)]),
