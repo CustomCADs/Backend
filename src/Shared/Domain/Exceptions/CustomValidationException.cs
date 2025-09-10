@@ -33,7 +33,7 @@ public class CustomValidationException<TEntity> : BaseException
 		TStatus oldStatus,
 		Exception? inner = default
 	) where TStatus : Enum
-		=> new($"Cannot set status: {newStatus} to {typeof(TEntity).Name} and status: {oldStatus}.", inner);
+		=> new($"Cannot set status: {newStatus} to {typeof(TEntity).Name} of status: {oldStatus}.", inner);
 
 	public static CustomValidationException<TEntity> Custom(string message, Exception? inner = default)
 		=> new(message, inner);

@@ -44,11 +44,12 @@ public static class ProgramExtensions
 			.AddAccountsPersistence(config)
 			.AddCartsPersistence(config)
 			.AddCatalogPersistence(config)
-			.AddPrintingPersistence(config)
 			.AddCustomsPersistence(config)
 			.AddDeliveryPersistence(config)
 			.AddFilesPersistence(config)
-			.AddIdempotencyPersistence(config);
+			.AddIdempotencyPersistence(config)
+			.AddNotificationsPersistence(config)
+			.AddPrintingPersistence(config);
 
 	public static IServiceCollection AddDomainServices(this IServiceCollection services)
 	{
@@ -66,12 +67,13 @@ public static class ProgramExtensions
 			provider.UpdateAccountsContextAsync(),
 			provider.UpdateCartsContextAsync(),
 			provider.UpdateCatalogContextAsync(),
-			provider.UpdatePrintingContextAsync(),
 			provider.UpdateCustomsContextAsync(),
 			provider.UpdateDeliveryContextAsync(),
 			provider.UpdateFilesContextAsync(),
 			provider.UpdateIdempotencyContextAsync(),
 			provider.UpdateIdentityContextAsync(),
+			provider.UpdateNotificationsContextAsync(),
+			provider.UpdatePrintingContextAsync(),
 		]).ConfigureAwait(false);
 	}
 }

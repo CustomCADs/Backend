@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Designer.GetCadUrlPost;
 
-using static Constants.FluentMessages;
+using static CustomCADs.Shared.Domain.Constants.FluentMessages;
 
 public class GetCustomCadPresignedUrlPostValidator : QueryValidator<GetCustomCadPresignedUrlPostQuery, UploadFileResponse>
 {

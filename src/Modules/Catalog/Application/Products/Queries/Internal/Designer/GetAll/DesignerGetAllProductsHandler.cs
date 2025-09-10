@@ -14,7 +14,7 @@ public sealed class DesignerGetAllProductsHandler(IProductReads reads, IRequestS
 	{
 		ProductQuery productQuery = new(
 			CategoryId: req.CategoryId,
-			DesignerId: req.DesignerId,
+			DesignerId: null,
 			Status: req.Status,
 			TagIds: req.TagIds,
 			Name: req.Name,

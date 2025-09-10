@@ -4,8 +4,8 @@ using FluentValidation;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 
-using static Constants;
-using static Constants.FluentMessages;
+using static Shared.Domain.Constants;
+using static Shared.Domain.Constants.FluentMessages;
 
 public class PurchaseCustomWithDeliveryValidator : CommandValidator<PurchaseCustomWithDeliveryCommand, PaymentDto>
 {

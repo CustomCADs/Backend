@@ -12,12 +12,19 @@ public class CustomStatusException<TEntity> : BaseException where TEntity : clas
 	) where TId : struct
 		=> new($"The {typeof(TEntity).Name} with id: {id} must have the proper status to execute this operation.", inner);
 
-	public static CustomStatusException<TEntity> ById<TId>(
+	public static CustomStatusException<TEntity> Required<TId>(
 		TId id,
 		string status,
 		Exception? inner = default
 	) where TId : struct
 		=> new($"The {typeof(TEntity).Name} with id: {id} must have status: {status} to execute this operation.", inner);
+
+	public static CustomStatusException<TEntity> Forbidden<TId>(
+		TId id,
+		string status,
+		Exception? inner = default
+	) where TId : struct
+		=> new($"The {typeof(TEntity).Name} with id: {id} is forbidden from having status: {status} under these circumstances.", inner);
 
 	public static CustomStatusException<TEntity> Custom(string message, Exception? inner = default)
 		=> new(message, inner);

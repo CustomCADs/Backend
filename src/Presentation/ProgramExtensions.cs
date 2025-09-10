@@ -19,27 +19,6 @@ public static class ProgramExtensions
 {
 	private const string AuthScheme = JwtBearerDefaults.AuthenticationScheme;
 
-	public static IServiceCollection AddUseCases(this IServiceCollection services, IWebHostEnvironment env)
-	{
-		services.AddMessagingServices(
-			codeGen: !env.IsDevelopment(),
-			entry: CustomCADs.Tools.CodeGen.CodeGenReference.Assembly,
-			assemblies: [
-				CustomCADs.Accounts.Application.AccountApplicationReference.Assembly,
-				CustomCADs.Carts.Application.CartsApplicationReference.Assembly,
-				CustomCADs.Catalog.Application.CatalogApplicationReference.Assembly,
-				CustomCADs.Printing.Application.PrintingApplicationReference.Assembly,
-				CustomCADs.Customs.Application.CustomsApplicationReference.Assembly,
-				CustomCADs.Delivery.Application.DeliveryApplicationReference.Assembly,
-				CustomCADs.Files.Application.FilesApplicationReference.Assembly,
-				CustomCADs.Idempotency.Application.IdempotencyApplicationReference.Assembly,
-				CustomCADs.Identity.Application.IdentityApplicationReference.Assembly,
-			]
-		);
-
-		return services;
-	}
-
 	public static AuthenticationBuilder AddJwt(this AuthenticationBuilder builder, IConfiguration config)
 	{
 		JwtSettings settings = config.GetSection("Jwt").Get<JwtSettings>()

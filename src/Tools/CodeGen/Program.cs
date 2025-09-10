@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("codegensettings.json");
 
 // Use Cases
-builder.Services.GenerateUseCases(builder.Environment);
+builder.Services.AddUseCases(builder.Environment, overrideCodeGenTo: true);
 builder.Services.AddCache();
 builder.Services.AddBackgroundJobs();
 

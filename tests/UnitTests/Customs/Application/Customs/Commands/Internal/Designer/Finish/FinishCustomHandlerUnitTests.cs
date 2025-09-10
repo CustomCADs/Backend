@@ -2,7 +2,9 @@
 using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Cads.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
@@ -17,6 +19,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
 	private static readonly AccountId designerId = AccountId.New();
 	private readonly (string Key, string ContentType, decimal Volume) cad = ("generated-key", "model/gltf-binary", 15);
@@ -24,7 +27,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 
 	public FinishCustomHandlerUnitTests()
 	{
-		handler = new(reads.Object, uow.Object, sender.Object);
+		handler = new(reads.Object, uow.Object, sender.Object, raiser.Object);
 
 		custom.Accept(ValidDesignerId);
 		custom.Begin();
@@ -75,6 +78,26 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		// Assert
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		FinishCustomCommand command = new(
+			Id: ValidId,
+			Cad: cad,
+			Price: ValidPrice,
+			DesignerId: ValidDesignerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.AuthorId == ValidDesignerId)
+		), Times.Once());
 	}
 
 	[Fact]

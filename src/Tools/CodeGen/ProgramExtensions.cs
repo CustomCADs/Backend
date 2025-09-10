@@ -17,20 +17,21 @@ using static UserConstants;
 
 public static class ProgramExtensions
 {
-	public static IServiceCollection GenerateUseCases(this IServiceCollection services, IWebHostEnvironment env)
+	public static IServiceCollection AddUseCases(this IServiceCollection services, IWebHostEnvironment env, bool? overrideCodeGenTo = null)
 	{
 		services.AddMessagingServices(
-			codeGen: true,
+			codeGen: !env.IsDevelopment(),
 			entry: CustomCADs.Tools.CodeGen.CodeGenReference.Assembly,
 			assemblies: [
 				CustomCADs.Accounts.Application.AccountApplicationReference.Assembly,
 				CustomCADs.Carts.Application.CartsApplicationReference.Assembly,
 				CustomCADs.Catalog.Application.CatalogApplicationReference.Assembly,
-				CustomCADs.Printing.Application.PrintingApplicationReference.Assembly,
 				CustomCADs.Customs.Application.CustomsApplicationReference.Assembly,
 				CustomCADs.Delivery.Application.DeliveryApplicationReference.Assembly,
 				CustomCADs.Files.Application.FilesApplicationReference.Assembly,
 				CustomCADs.Idempotency.Application.IdempotencyApplicationReference.Assembly,
+				CustomCADs.Notifications.Application.NotificationsApplicationReference.Assembly,
+				CustomCADs.Printing.Application.PrintingApplicationReference.Assembly,
 				CustomCADs.Identity.Application.IdentityApplicationReference.Assembly,
 			]
 		);
@@ -144,11 +145,12 @@ public static class ProgramExtensions
 			.AddAccountsPersistence(config)
 			.AddCartsPersistence(config)
 			.AddCatalogPersistence(config)
-			.AddPrintingPersistence(config)
 			.AddCustomsPersistence(config)
 			.AddDeliveryPersistence(config)
 			.AddFilesPersistence(config)
-			.AddIdempotencyPersistence(config);
+			.AddIdempotencyPersistence(config)
+			.AddNotificationsPersistence(config)
+			.AddPrintingPersistence(config);
 
 
 	public static IServiceCollection AddDomainServices(this IServiceCollection services)

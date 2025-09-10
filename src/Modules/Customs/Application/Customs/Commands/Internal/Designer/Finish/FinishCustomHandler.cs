@@ -1,12 +1,17 @@
 ﻿using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Cads.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Finish;
 
-public sealed class FinishCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender)
+using static Shared.Application.Constants;
+
+public sealed class FinishCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 	: ICommandHandler<FinishCustomCommand>
 {
 	public async Task Handle(FinishCustomCommand req, CancellationToken ct)
@@ -30,5 +35,15 @@ public sealed class FinishCustomHandler(ICustomReads reads, IUnitOfWork uow, IRe
 
 		custom.Finish(cadId, req.Price);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			new NotificationRequestedEvent(
+				Type: NotificationType.CustomFinished,
+				Description: Notifications.Messages.CustomFinished,
+				Link: Notifications.Links.CustomFinished,
+				AuthorId: req.DesignerId,
+				ReceiverId: custom.BuyerId
+			)
+		).ConfigureAwait(false);
 	}
 }

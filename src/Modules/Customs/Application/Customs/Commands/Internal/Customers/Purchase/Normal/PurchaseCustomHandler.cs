@@ -1,12 +1,17 @@
 ﻿using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
 
-public sealed class PurchaseCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IPaymentService payment)
+using static Shared.Application.Constants;
+
+public sealed class PurchaseCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IPaymentService payment, IEventRaiser raiser)
 	: ICommandHandler<PurchaseCustomCommand, PaymentDto>
 {
 	public async Task<PaymentDto> Handle(PurchaseCustomCommand req, CancellationToken ct)
@@ -44,6 +49,16 @@ public sealed class PurchaseCustomHandler(ICustomReads reads, IUnitOfWork uow, I
 
 		custom.Complete(customizationId: null);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			new NotificationRequestedEvent(
+				Type: NotificationType.CustomCompleted,
+				Description: string.Format(Notifications.Messages.CustomCompleted, custom.Name, seller),
+				Link: Notifications.Links.CustomCompleted,
+				AuthorId: custom.AcceptedCustom.DesignerId,
+				ReceiverId: custom.BuyerId
+			)
+		).ConfigureAwait(false);
 
 		PaymentDto response = await payment.InitializeCustomPayment(
 			paymentMethodId: req.PaymentMethodId,
