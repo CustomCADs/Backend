@@ -1,4 +1,4 @@
-using CustomCADs.Notifications.Application.Notifications.Queries.Internal;
+using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 
 namespace CustomCADs.Notifications.Application.Notifications;
@@ -12,6 +12,7 @@ internal static class Mapper
 			Status: notification.Status,
 			CreatedAt: notification.CreatedAt,
 			Author: author,
+			Description: notification.Content.Description,
 			Link: notification.Content.Link
 		);
 

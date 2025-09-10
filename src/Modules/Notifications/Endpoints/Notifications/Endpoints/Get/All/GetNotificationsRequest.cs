@@ -1,10 +1,10 @@
 using CustomCADs.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Domain.Enums;
 
-namespace CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Get;
+namespace CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Get.All;
 
 public record GetNotificationsRequest(
-	Guid ReceiverId,
+	NotificationStatus? Status = null,
 	NotificationSortingType SortingType = NotificationSortingType.CreatedAt,
 	SortingDirection SortingDirection = SortingDirection.Descending,
 	int Page = 1,

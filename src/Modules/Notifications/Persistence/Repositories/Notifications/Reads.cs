@@ -14,7 +14,7 @@ public sealed class Reads(NotificationsContext context) : INotificationReads
 	{
 		IQueryable<Notification> queryable = context.Notifications
 			.WithTracking(track)
-			.WithFilter(query.ReceiverId);
+			.WithFilter(query.ReceiverId, query.Status);
 
 		int count = await queryable.CountAsync(ct).ConfigureAwait(false);
 		Notification[] notifications = await queryable
