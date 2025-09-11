@@ -56,7 +56,7 @@ public sealed class PurchaseCustomHandler(ICustomReads reads, IUnitOfWork uow, I
 				Description: string.Format(Notifications.Messages.CustomCompleted, custom.Name, seller),
 				Link: Notifications.Links.CustomCompleted,
 				AuthorId: custom.AcceptedCustom.DesignerId,
-				ReceiverId: custom.BuyerId
+				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);
 

@@ -26,7 +26,7 @@ public class AddProductTagHandler(IProductReads reads, IProductWrites writes, IU
 				Description: Notifications.Messages.ProductTagAdded,
 				Link: Notifications.Links.ProductTagAdded,
 				AuthorId: req.CallerId,
-				ReceiverId: product.CreatorId
+				ReceiverIds: [product.CreatorId]
 			)
 		).ConfigureAwait(false);
 	}

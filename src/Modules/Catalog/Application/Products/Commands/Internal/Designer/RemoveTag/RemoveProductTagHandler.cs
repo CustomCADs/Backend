@@ -26,7 +26,7 @@ public class RemoveProductTagHandler(IProductReads reads, IProductWrites writes,
 				Description: Notifications.Messages.ProductTagRemoved,
 				Link: Notifications.Links.ProductTagRemoved,
 				AuthorId: req.CallerId,
-				ReceiverId: product.CreatorId
+				ReceiverIds: [product.CreatorId]
 			)
 		).ConfigureAwait(false);
 	}

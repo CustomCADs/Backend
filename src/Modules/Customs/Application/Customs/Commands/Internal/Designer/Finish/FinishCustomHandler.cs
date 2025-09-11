@@ -42,7 +42,7 @@ public sealed class FinishCustomHandler(ICustomReads reads, IUnitOfWork uow, IRe
 				Description: Notifications.Messages.CustomFinished,
 				Link: Notifications.Links.CustomFinished,
 				AuthorId: req.DesignerId,
-				ReceiverId: custom.BuyerId
+				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);
 	}

@@ -30,7 +30,7 @@ public sealed class CancelCustomHandler(ICustomReads reads, IUnitOfWork uow, IEv
 				Description: Notifications.Messages.CustomCanceled,
 				Link: Notifications.Links.CustomCanceled,
 				AuthorId: req.DesignerId,
-				ReceiverId: custom.BuyerId
+				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);
 	}

@@ -40,6 +40,24 @@ public class Notification : BaseAggregateRoot
 		.ValidateContent()
 		.ValidateType();
 
+	public static Notification[] CreateBulk(
+		string type,
+		NotificationContent content,
+		AccountId authorId,
+		AccountId[] receiverIds
+	)
+	{
+		Notification[] notifications = [..receiverIds.Select(receiverId =>
+			new Notification(type, content, authorId, receiverId)
+			{
+				Id = NotificationId.New()
+			})
+		];
+
+		notifications.FirstOrDefault()?.ValidateContent().ValidateType();
+		return notifications;
+	}
+
 	public static Notification Create(
 		NotificationId id,
 		string type,

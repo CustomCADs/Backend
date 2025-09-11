@@ -14,8 +14,6 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 	private readonly Mock<IWrites<Notification>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
-	private static readonly NotificationId[] ids = [];
-
 	public NotificationRequestedHandlerUnitTests()
 	{
 		handler = new(writes.Object, uow.Object);
@@ -30,7 +28,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 			Description: MinValidDescription,
 			Link: ValidLink,
 			AuthorId: ValidAuthorId,
-			ReceiverId: ValidReceiverId
+			ReceiverIds: [ValidReceiverId]
 		);
 
 		// Act
@@ -42,10 +40,32 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 				x.Type == ae.Type.ToString()
 				&& x.Content == new NotificationContent(ae.Description, ae.Link)
 				&& x.AuthorId == ae.AuthorId
-				&& x.ReceiverId == ae.ReceiverId
+				&& x.ReceiverId == ae.ReceiverIds.First()
 			),
 			ct
 		), Times.Once());
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldBulkInsert_WhenMultipleReceivers()
+	{
+		// Arrange
+		NotificationRequestedEvent ae = new(
+			Type: NotificationType.Unkown,
+			Description: MinValidDescription,
+			Link: ValidLink,
+			AuthorId: ValidAuthorId,
+			ReceiverIds: [ValidReceiverId, ValidAuthorId]
+		);
+
+		// Act
+		await handler.Handle(ae);
+
+		// Assert
+		uow.Verify(x => x.InsertNotificationsAsync(
+			It.IsAny<Notification[]>(),
+			ct
+		), Times.Once());
 	}
 }
