@@ -95,4 +95,16 @@ public class Notification : BaseAggregateRoot
 		Status = newStatus;
 		return this;
 	}
+
+	public Notification Unhide()
+	{
+		NotificationStatus newStatus = NotificationStatus.Unread;
+		if (Status is not NotificationStatus.Hidden)
+		{
+			throw CustomValidationException<Notification>.Status(newStatus, Status);
+		}
+
+		Status = newStatus;
+		return this;
+	}
 }
