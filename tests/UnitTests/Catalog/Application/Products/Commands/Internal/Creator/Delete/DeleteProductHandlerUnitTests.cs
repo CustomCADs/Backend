@@ -3,8 +3,12 @@ using CustomCADs.Catalog.Domain.Repositories;
 using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Catalog.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Files;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
+using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Commands.Internal.Creator.Delete;
 
@@ -16,16 +20,23 @@ public class DeleteProductHandlerUnitTests : ProductsBaseUnitTests
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IProductWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
+	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private readonly Product product = CreateProduct();
+	private readonly Product product = CreateProductWithId();
+	private readonly AccountId[] receiverIds = [ValidDesignerId, ValidCreatorId];
 
 	public DeleteProductHandlerUnitTests()
 	{
-		handler = new(reads.Object, writes.Object, uow.Object, raiser.Object);
+		handler = new(reads.Object, writes.Object, uow.Object, sender.Object, raiser.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(product);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<GetAccountsWithProductInCartQuery>(x => x.ProductId == ValidId),
+			ct
+		)).ReturnsAsync(receiverIds);
 	}
 
 	[Fact]
@@ -65,8 +76,27 @@ public class DeleteProductHandlerUnitTests : ProductsBaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetAccountsWithProductInCartQuery>(x => x.ProductId == ValidId),
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		DeleteProductCommand command = new(ValidId, ValidCreatorId);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
 			It.IsAny<ProductDeletedApplicationEvent>()
+		), Times.Once());
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.ReceiverIds == receiverIds)
 		), Times.Once());
 	}
 

@@ -6,6 +6,8 @@ public static class Constants
 	{
 		public static class Messages
 		{
+			public const string ProductEdited = "Product '{0}', which you've added to your Cart, has been edited!";
+			public const string ProductDeleted = "Product '{0}', which you've added to your Cart, has been deleted!";
 			public const string ProductValidated = "Your Product has been validated by {0}!";
 			public const string ProductReported = "Your Product has been reported by {0}!";
 			public const string ProductTagAdded = "Your Product has been assigned a new Tag!";
@@ -20,6 +22,8 @@ public static class Constants
 
 		public static class Links
 		{
+			public const string? ProductEdited = null;
+			public const string? ProductDeleted = null;
 			public const string? ProductValidated = null;
 			public const string? ProductReported = null;
 			public const string? ProductTagAdded = null;
