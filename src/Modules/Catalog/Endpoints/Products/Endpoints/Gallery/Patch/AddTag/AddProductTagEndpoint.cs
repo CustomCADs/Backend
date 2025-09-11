@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.AddTag;
+using CustomCADs.Shared.Endpoints.Extensions;
 
 namespace CustomCADs.Catalog.Endpoints.Products.Endpoints.Gallery.Patch.AddTag;
 
@@ -23,7 +24,8 @@ public class AddProductTagEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			new AddProductTagCommand(
 				Id: ProductId.New(req.Id),
-				TagId: TagId.New(req.TagId)
+				TagId: TagId.New(req.TagId),
+				CallerId: User.GetAccountId()
 			),
 			ct
 		).ConfigureAwait(false);

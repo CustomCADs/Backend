@@ -11,6 +11,8 @@ public enum NotificationType
 	ProductValidated,
 	ProductReported,
 	ProductRemoved,
+	ProductTagAdded,
+	ProductTagRemoved,
 	PaymentCompleted,
 	PaymentFailed,
 	Unkown,
