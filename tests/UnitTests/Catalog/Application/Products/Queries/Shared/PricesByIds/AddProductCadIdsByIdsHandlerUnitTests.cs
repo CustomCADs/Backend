@@ -16,8 +16,8 @@ public class GetProductPricesByIdsHandlerUnitTests : ProductsBaseUnitTests
 	private readonly ProductQuery query;
 	private readonly Result<Product> result;
 	private readonly Product[] products = [
-		CreateProductWithId(MinValidName, MinValidDescription, MinValidPrice),
-		CreateProductWithId(MaxValidName, MaxValidDescription, MaxValidPrice)
+		CreateProductWithId(MinValidName, MinValidDescription, MinValidPrice, id: ProductId.New()),
+		CreateProductWithId(MaxValidName, MaxValidDescription, MaxValidPrice, id: ProductId.New()),
 	];
 
 	public GetProductPricesByIdsHandlerUnitTests()
