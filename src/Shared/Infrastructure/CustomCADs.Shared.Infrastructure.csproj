@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentEmail.Smtp" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
 		<PackageReference Include="Microsoft.Extensions.Http" />
 		<PackageReference Include="Polly" />

@@ -199,4 +199,16 @@ public static class ProgramExtensions
 
 		return app;
 	}
+
+	public static IEndpointRouteBuilder MapRealTimeHubs(this IEndpointRouteBuilder app)
+	{
+		return app;
+	}
+
+	private static IEndpointRouteBuilder MapRealTimeHub<THub>(this IEndpointRouteBuilder app, string pattern) where THub : AspNetCore.SignalR.Hub
+	{
+		app.MapHub<THub>($"{HttpExtensions.PrefixSignalR}/{pattern}");
+
+		return app;
+	}
 }

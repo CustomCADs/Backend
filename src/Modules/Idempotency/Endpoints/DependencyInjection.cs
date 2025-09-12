@@ -27,7 +27,7 @@ public static class DependencyInjection
 			if (context.GetAttribute<EnforceIdempotencyAttribute>() is null)
 			{
 				bool endpointOptedOut = context.GetAttribute<SkipIdempotencyAttribute>() is not null;
-				if (endpointOptedOut || context.Request.ShouldSkipByDefault())
+				if (endpointOptedOut || context.Request.ShouldSkipByDefault() || context.Request.IsSignalR())
 				{
 					await next().ConfigureAwait(false);
 					return;

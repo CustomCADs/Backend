@@ -112,6 +112,13 @@ public static class ProgramExtensions
 		return services;
 	}
 
+	public static IServiceCollection AddRealTimeNotifiers(this IServiceCollection services)
+	{
+		services.AddSignalR();
+
+		return services;
+	}
+
 	public static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration config)
 	{
 		services.AddIdentity<AppUser, AppRole>(options =>

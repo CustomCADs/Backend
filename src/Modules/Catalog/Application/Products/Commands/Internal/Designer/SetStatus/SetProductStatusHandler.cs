@@ -60,23 +60,19 @@ public sealed class SetProductStatusHandler(IProductReads reads, IUnitOfWork uow
 		AccountId designerId,
 		AccountId creatorId,
 		CustomStatusException<Product> statusException
-	)
-		=> new(
+	) => new(
 			Type: status switch
 			{
 				ProductStatus.Validated => NotificationType.ProductValidated,
 				ProductStatus.Reported => NotificationType.ProductReported,
 				_ => throw statusException,
 			},
-			Description: string.Format(
-				format: status switch
-				{
-					ProductStatus.Validated => Notifications.Messages.ProductValidated,
-					ProductStatus.Reported => Notifications.Messages.ProductReported,
-					_ => throw statusException,
-				},
-				arg0: designerName
-			),
+			Description: status switch
+			{
+				ProductStatus.Validated => string.Format(Notifications.Messages.ProductValidated, designerName),
+				ProductStatus.Reported => string.Format(Notifications.Messages.ProductReported, designerName),
+				_ => throw statusException,
+			},
 			Link: status switch
 			{
 				ProductStatus.Validated => Notifications.Links.ProductValidated,
