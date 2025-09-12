@@ -70,7 +70,7 @@ public sealed class PurchaseCustomWithDeliveryHandler(ICustomReads reads, IUnitO
 				Description: string.Format(Notifications.Messages.CustomCompleted, custom.Name, seller),
 				Link: Notifications.Links.CustomCompleted,
 				AuthorId: custom.AcceptedCustom.DesignerId,
-				ReceiverId: custom.BuyerId
+				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);
 

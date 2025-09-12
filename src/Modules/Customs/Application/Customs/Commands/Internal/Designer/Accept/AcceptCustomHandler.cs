@@ -33,7 +33,7 @@ public sealed class AcceptCustomHandler(ICustomReads reads, IUnitOfWork uow, IRe
 				Description: string.Format(Notifications.Messages.CustomAccepted, designerName),
 				Link: Notifications.Links.CustomAccepted,
 				AuthorId: req.DesignerId,
-				ReceiverId: custom.BuyerId
+				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);
 	}

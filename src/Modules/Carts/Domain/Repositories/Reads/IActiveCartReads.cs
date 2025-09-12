@@ -11,4 +11,5 @@ public interface IActiveCartReads
 	Task<ActiveCartItem?> SingleAsync(AccountId buyerId, ProductId productId, bool track = true, CancellationToken ct = default);
 	Task<bool> ExistsAsync(AccountId buyerId, CancellationToken ct = default);
 	Task<int> CountAsync(AccountId buyerId, CancellationToken ct = default);
+	Task<AccountId[]> AccountsWithAsync(ProductId productId, CancellationToken ct = default);
 }

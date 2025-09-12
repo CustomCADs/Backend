@@ -30,7 +30,7 @@ public sealed class BeginCustomHandler(ICustomReads reads, IUnitOfWork uow, IEve
 				Description: Notifications.Messages.CustomBegun,
 				Link: Notifications.Links.CustomBegun,
 				AuthorId: req.DesignerId,
-				ReceiverId: custom.BuyerId
+				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);
 	}

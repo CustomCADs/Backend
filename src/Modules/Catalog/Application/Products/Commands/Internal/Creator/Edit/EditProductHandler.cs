@@ -1,11 +1,16 @@
 ﻿using CustomCADs.Catalog.Domain.Repositories;
 using CustomCADs.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
+using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
+using static CustomCADs.Shared.Application.Constants;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Edit;
 
-public sealed class EditProductHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender)
+public sealed class EditProductHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 	: ICommandHandler<EditProductCommand>
 {
 	public async Task Handle(EditProductCommand req, CancellationToken ct)
@@ -30,5 +35,18 @@ public sealed class EditProductHandler(IProductReads reads, IUnitOfWork uow, IRe
 			.SetCategoryId(req.CategoryId);
 
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			new NotificationRequestedEvent(
+				Type: NotificationType.ProductEdited,
+				Description: Notifications.Messages.ProductEdited,
+				Link: Notifications.Links.ProductEdited,
+				AuthorId: req.CreatorId,
+				ReceiverIds: await sender.SendQueryAsync(
+					new GetAccountsWithProductInCartQuery(product.Id),
+					ct
+				).ConfigureAwait(false)
+			)
+		).ConfigureAwait(false);
 	}
 }

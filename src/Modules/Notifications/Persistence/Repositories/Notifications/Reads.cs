@@ -5,6 +5,7 @@ using CustomCADs.Shared.Domain.TypedIds.Notifications;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Notifications.Persistence.Repositories.Notifications;
 
@@ -14,7 +15,7 @@ public sealed class Reads(NotificationsContext context) : INotificationReads
 	{
 		IQueryable<Notification> queryable = context.Notifications
 			.WithTracking(track)
-			.WithFilter(query.ReceiverId);
+			.WithFilter(query.ReceiverId, query.Status);
 
 		int count = await queryable.CountAsync(ct).ConfigureAwait(false);
 		Notification[] notifications = await queryable
@@ -32,9 +33,11 @@ public sealed class Reads(NotificationsContext context) : INotificationReads
 			.FirstOrDefaultAsync(s => s.Id == id, ct)
 			.ConfigureAwait(false);
 
-	public async Task<int> CountAsync(NotificationStatus? status, CancellationToken ct = default)
+	public async Task<Dictionary<NotificationStatus, int>> CountByStatusAsync(AccountId receiverId, CancellationToken ct = default)
 		=> await context.Notifications
 			.WithTracking(false)
-			.CountAsync(ct)
+			.Where(x => x.ReceiverId == receiverId)
+			.GroupBy(x => x.Status)
+			.ToDictionaryAsync(x => x.Key, x => x.Count(), ct)
 			.ConfigureAwait(false);
 }

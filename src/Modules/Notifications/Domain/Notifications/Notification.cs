@@ -40,6 +40,24 @@ public class Notification : BaseAggregateRoot
 		.ValidateContent()
 		.ValidateType();
 
+	public static Notification[] CreateBulk(
+		string type,
+		NotificationContent content,
+		AccountId authorId,
+		AccountId[] receiverIds
+	)
+	{
+		Notification[] notifications = [..receiverIds.Select(receiverId =>
+			new Notification(type, content, authorId, receiverId)
+			{
+				Id = NotificationId.New()
+			})
+		];
+
+		notifications.FirstOrDefault()?.ValidateContent().ValidateType();
+		return notifications;
+	}
+
 	public static Notification Create(
 		NotificationId id,
 		string type,
@@ -88,6 +106,18 @@ public class Notification : BaseAggregateRoot
 	{
 		NotificationStatus newStatus = NotificationStatus.Hidden;
 		if (Status is not (NotificationStatus.Unread or NotificationStatus.Read or NotificationStatus.Opened))
+		{
+			throw CustomValidationException<Notification>.Status(newStatus, Status);
+		}
+
+		Status = newStatus;
+		return this;
+	}
+
+	public Notification Unhide()
+	{
+		NotificationStatus newStatus = NotificationStatus.Unread;
+		if (Status is not NotificationStatus.Hidden)
 		{
 			throw CustomValidationException<Notification>.Status(newStatus, Status);
 		}

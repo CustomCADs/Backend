@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
+using CustomCADs.Shared.Endpoints.Extensions;
 
 namespace CustomCADs.Catalog.Endpoints.Products.Endpoints.Gallery.Patch.RemoveTag;
 
@@ -23,7 +24,8 @@ public class RemoveProductTagEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			new RemoveProductTagCommand(
 				Id: ProductId.New(req.Id),
-				TagId: TagId.New(req.TagId)
+				TagId: TagId.New(req.TagId),
+				CallerId: User.GetAccountId()
 			),
 			ct
 		).ConfigureAwait(false);

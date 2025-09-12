@@ -7,5 +7,5 @@ public record NotificationRequestedEvent(
 	string Description,
 	string? Link,
 	AccountId AuthorId,
-	AccountId ReceiverId
+	AccountId[] ReceiverIds
 ) : BaseApplicationEvent;

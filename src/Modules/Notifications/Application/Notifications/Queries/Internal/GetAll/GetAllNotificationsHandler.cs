@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Notifications.Application.Notifications.Queries.Internal;
+namespace CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
 
 public class GetAllNotificationsHandler(INotificationReads reads, IRequestSender sender)
 	: IQueryHandler<GetAllNotificationsQuery, Result<GetAllNotificationsDto>>
@@ -13,8 +13,9 @@ public class GetAllNotificationsHandler(INotificationReads reads, IRequestSender
 	{
 		Result<Notification> result = await reads.AllAsync(
 			query: new(
-				ReceiverId: req.ReceiverId,
 				Pagination: req.Pagination,
+				ReceiverId: req.ReceiverId,
+				Status: req.Status,
 				Sorting: req.Sorting
 			),
 			track: false,

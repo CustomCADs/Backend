@@ -1,9 +1,9 @@
-
 using CustomCADs.Notifications.Application.Notifications.Queries.Internal;
+using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Endpoints.Extensions;
 
-namespace CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Get;
+namespace CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Get.All;
 
 public class GetNotificationsEndpoint(IRequestSender sender)
 	: Endpoint<GetNotificationsRequest, Result<GetNotificationsResponse>>
@@ -24,6 +24,7 @@ public class GetNotificationsEndpoint(IRequestSender sender)
 			new GetAllNotificationsQuery(
 				Pagination: new(req.Page, req.Limit),
 				ReceiverId: User.GetAccountId(),
+				Status: req.Status,
 				Sorting: new(req.SortingType, req.SortingDirection)
 			),
 			ct

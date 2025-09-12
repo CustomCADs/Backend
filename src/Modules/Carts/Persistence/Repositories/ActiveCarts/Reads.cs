@@ -42,4 +42,13 @@ public sealed class Reads(CartsContext context) : IActiveCartReads
 			.Where(c => c.BuyerId == buyerId)
 			.CountAsync(ct)
 			.ConfigureAwait(false);
+
+	public async Task<AccountId[]> AccountsWithAsync(ProductId productId, CancellationToken ct = default)
+		=> await context.ActiveCartItems
+			.WithTracking(false)
+			.Where(x => x.ProductId == productId)
+			.Select(x => x.BuyerId)
+			.Distinct()
+			.ToArrayAsync(ct)
+			.ConfigureAwait(false);
 }

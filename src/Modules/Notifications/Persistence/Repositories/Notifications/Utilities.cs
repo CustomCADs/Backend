@@ -8,11 +8,15 @@ namespace CustomCADs.Notifications.Persistence.Repositories.Notifications;
 
 public static class Utilities
 {
-	public static IQueryable<Notification> WithFilter(this IQueryable<Notification> query, AccountId? receiverId = null)
+	public static IQueryable<Notification> WithFilter(this IQueryable<Notification> query, AccountId? receiverId = null, NotificationStatus? status = null)
 	{
 		if (receiverId is not null)
 		{
 			query = query.Where(x => x.ReceiverId == receiverId);
+		}
+		if (status is not null)
+		{
+			query = query.Where(x => x.Status == status);
 		}
 
 		return query;

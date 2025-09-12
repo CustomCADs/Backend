@@ -1,5 +1,5 @@
-using CustomCADs.Notifications.Application.Notifications.Queries.Internal;
-using CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Get;
+using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
+using CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Get.All;
 
 namespace CustomCADs.Notifications.Endpoints.Notifications;
 
@@ -12,6 +12,7 @@ internal static class Mapper
 			Status: notification.Status,
 			CreatedAt: notification.CreatedAt,
 			Author: notification.Author,
+			Description: notification.Description,
 			Link: notification.Link
 		);
 }

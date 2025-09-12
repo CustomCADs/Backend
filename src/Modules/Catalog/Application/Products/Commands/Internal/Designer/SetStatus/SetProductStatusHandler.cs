@@ -84,6 +84,6 @@ public sealed class SetProductStatusHandler(IProductReads reads, IUnitOfWork uow
 				_ => throw statusException,
 			},
 			AuthorId: designerId,
-			ReceiverId: creatorId
+			ReceiverIds: [creatorId]
 		);
 }

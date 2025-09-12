@@ -1,0 +1,31 @@
+using CustomCADs.Notifications.Application.Notifications.Commands.Internal.Read;
+using CustomCADs.Shared.Endpoints.Extensions;
+
+namespace CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Patch.Read;
+
+public class ReadNotificationEndpoint(IRequestSender sender)
+	: Endpoint<ReadNotificationRequest>
+{
+	public override void Configure()
+	{
+		Patch("read");
+		Group<NotificationsGroup>();
+		Description(d => d
+			.WithSummary("Read")
+			.WithDescription("Read your Notification")
+		);
+	}
+
+	public override async Task HandleAsync(ReadNotificationRequest req, CancellationToken ct)
+	{
+		await sender.SendCommandAsync(
+			new ReadNotificationCommand(
+				Id: NotificationId.New(req.Id),
+				CallerId: User.GetAccountId()
+			),
+			ct
+		).ConfigureAwait(false);
+
+		await Send.NoContentAsync().ConfigureAwait(false);
+	}
+}

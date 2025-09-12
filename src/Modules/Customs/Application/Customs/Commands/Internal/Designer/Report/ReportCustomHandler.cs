@@ -33,7 +33,7 @@ public sealed class ReportCustomHandler(ICustomReads reads, IUnitOfWork uow, IRe
 				Description: string.Format(Notifications.Messages.CustomReported, designerName),
 				Link: Notifications.Links.CustomReported,
 				AuthorId: req.DesignerId,
-				ReceiverId: custom.BuyerId
+				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);
 	}
