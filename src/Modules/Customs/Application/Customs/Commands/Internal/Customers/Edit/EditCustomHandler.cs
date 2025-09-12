@@ -1,9 +1,14 @@
-﻿using CustomCADs.Customs.Domain.Repositories;
+﻿using CustomCADs.Customs.Domain.Customs.Enums;
+using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
+using static CustomCADs.Shared.Application.Constants;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Edit;
 
-public sealed class EditCustomHandler(ICustomReads reads, IUnitOfWork uow)
+public sealed class EditCustomHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<EditCustomCommand>
 {
 	public async Task Handle(EditCustomCommand req, CancellationToken ct)
@@ -21,5 +26,18 @@ public sealed class EditCustomHandler(ICustomReads reads, IUnitOfWork uow)
 			.SetDescription(req.Description);
 
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+
+		if (custom is { CustomStatus: not CustomStatus.Pending, AcceptedCustom: not null })
+		{
+			await raiser.RaiseApplicationEventAsync(
+				new NotificationRequestedEvent(
+					Type: NotificationType.CustomEdited,
+					Description: Notifications.Messages.CustomEdited,
+					Link: Notifications.Links.CustomEdited,
+					AuthorId: custom.BuyerId,
+					ReceiverIds: [custom.AcceptedCustom.DesignerId]
+				)
+			).ConfigureAwait(false);
+		}
 	}
 }
