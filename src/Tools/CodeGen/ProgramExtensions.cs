@@ -116,6 +116,9 @@ public static class ProgramExtensions
 	{
 		services.AddSignalR();
 
+		services
+			.AddNotificationsRealTimeNotifier();
+
 		return services;
 	}
 

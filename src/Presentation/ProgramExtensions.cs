@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Identity.Application.Users.Dtos;
 using CustomCADs.Identity.Infrastructure.Tokens;
+using CustomCADs.Notifications.Infrastructure.Hubs;
 using CustomCADs.Presentation;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Endpoints;
@@ -202,6 +203,9 @@ public static class ProgramExtensions
 
 	public static IEndpointRouteBuilder MapRealTimeHubs(this IEndpointRouteBuilder app)
 	{
+		app
+			.MapRealTimeHub<SignalRNotificationsHub>("Notifications");
+
 		return app;
 	}
 
