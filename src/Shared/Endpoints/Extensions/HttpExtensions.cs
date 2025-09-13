@@ -4,8 +4,9 @@ namespace CustomCADs.Shared.Endpoints.Extensions;
 
 public static class HttpExtensions
 {
-	public static TAttribute? GetAttribute<TAttribute>(this HttpContext context) where TAttribute : Attribute
-		=> context.GetEndpoint()?.Metadata.GetMetadata<TAttribute>();
+	public const string PrefixSignalR = "SignalR";
+	public static bool IsSignalR(this HttpRequest request) =>
+		request.Path.StartsWithSegments($"/{PrefixSignalR}");
 
 	public static bool IsIdempotentBySpec(this HttpRequest request)
 		=> HttpMethods.IsGet(request.Method)
@@ -42,4 +43,7 @@ public static class HttpExtensions
 		}
 		return true;
 	}
+
+	public static TAttribute? GetAttribute<TAttribute>(this HttpContext context) where TAttribute : Attribute
+		=> context.GetEndpoint()?.Metadata.GetMetadata<TAttribute>();
 }

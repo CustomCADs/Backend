@@ -113,7 +113,8 @@ public static class DependencyInjection
 		app.Use(async (context, next) =>
 		{
 			if (
-				context.Request.IsMutationBySpec() // might mutate state
+				!context.Request.IsSignalR()
+				&& context.Request.IsMutationBySpec() // might mutate state
 				&& context.User.GetAuthentication() == true // has access to sensitive info
 				&& context.Request.IsCsrfVulnerable() // no csrf protection
 			)
@@ -133,10 +134,10 @@ public static class DependencyInjection
 		return app;
 	}
 
-	private static bool IsCsrfVulnerable(this HttpRequest Request)
+	private static bool IsCsrfVulnerable(this HttpRequest request)
 	{
-		string? cookie = Request.Cookies["csrf"];
-		string? header = Request.Headers["Csrf-Token"];
+		string? cookie = request.Cookies["csrf"];
+		string? header = request.Headers["Csrf-Token"];
 		return string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(header) || cookie != header;
 	}
 }

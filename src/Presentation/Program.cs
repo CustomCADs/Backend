@@ -20,6 +20,7 @@ builder.Services.AddPaymentService(builder.Configuration);
 builder.Services.AddDeliveryService(builder.Configuration);
 builder.Services.AddStorageService(builder.Configuration);
 builder.Services.AddCurrenciesService();
+builder.Services.AddRealTimeNotifiers();
 
 // Modules
 builder.Services.AddPersistence(builder.Configuration);
@@ -59,6 +60,7 @@ app.MapApiDocumentationUi(
 	apiPattern: "/swagger/{documentName}.json",
 	uiPattern: "/swagger"
 );
+app.MapRealTimeHubs();
 app.MapStripeWebhook();
 app.MapExchangeRatesEndpoint();
 app.MapHealthChecks("/health");

@@ -45,6 +45,7 @@
 
 		<!-- Notifications -->
 		<ProjectReference Include="..\..\Modules\Notifications\Application\CustomCADs.Notifications.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Notifications\Infrastructure\CustomCADs.Notifications.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\Modules\Notifications\Persistence\CustomCADs.Notifications.Persistence.csproj" />
 
 		<!-- Printing -->

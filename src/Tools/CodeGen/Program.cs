@@ -15,6 +15,7 @@ builder.Services.AddPaymentService(builder.Configuration);
 builder.Services.AddDeliveryService(builder.Configuration);
 builder.Services.AddStorageService(builder.Configuration);
 builder.Services.AddCurrenciesService();
+builder.Services.AddRealTimeNotifiers();
 
 // Modules
 builder.Services.AddPersistence(builder.Configuration);

@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Identity.Application.Users.Dtos;
 using CustomCADs.Identity.Infrastructure.Tokens;
+using CustomCADs.Notifications.Infrastructure.Hubs;
 using CustomCADs.Presentation;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Endpoints;
@@ -196,6 +197,21 @@ public static class ProgramExtensions
 				.WithFavicon("/favicon.ico")
 				.WithDarkModeToggle(false);
 		});
+
+		return app;
+	}
+
+	public static IEndpointRouteBuilder MapRealTimeHubs(this IEndpointRouteBuilder app)
+	{
+		app
+			.MapRealTimeHub<SignalRNotificationsHub>("Notifications");
+
+		return app;
+	}
+
+	private static IEndpointRouteBuilder MapRealTimeHub<THub>(this IEndpointRouteBuilder app, string pattern) where THub : AspNetCore.SignalR.Hub
+	{
+		app.MapHub<THub>($"{HttpExtensions.PrefixSignalR}/{pattern}");
 
 		return app;
 	}
