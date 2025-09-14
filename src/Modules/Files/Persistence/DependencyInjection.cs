@@ -2,12 +2,14 @@
 using CustomCADs.Files.Domain.Repositories.Reads;
 using CustomCADs.Files.Persistence;
 using CustomCADs.Files.Persistence.Repositories;
+using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
+using static PersistenceConstants;
 using CadReads = CustomCADs.Files.Persistence.Repositories.Cads.Reads;
 using ImageReads = CustomCADs.Files.Persistence.Repositories.Images.Reads;
 
@@ -21,26 +23,19 @@ public static class DependencyInjection
 		return provider;
 	}
 
-	public static IServiceCollection AddFilesPersistence(this IServiceCollection services, IConfiguration config)
+	public static IServiceCollection AddFilesPersistence(this IServiceCollection services, string connectionString)
 		=> services
-			.AddContext(config)
+			.AddContext(connectionString)
 			.AddReads()
 			.AddWrites()
 			.AddUnitOfWork();
 
-	public static IServiceCollection AddContext(this IServiceCollection services, IConfiguration config)
-	{
-		string connectionString = config.GetConnectionString("ApplicationConnection")
-			?? throw new KeyNotFoundException("Could not find connection string 'ApplicationConnection'.");
-
-		services.AddDbContext<FilesContext>(options =>
-			options.UseNpgsql(connectionString, opt =>
-				opt.MigrationsHistoryTable("__EFMigrationsHistory", "Files")
+	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
+		=> services.AddDbContext<FilesContext>(options =>
+			options.UseNpgsql(connectionString, opt
+				=> opt.MigrationsHistoryTable(MigrationsTable, Schemes.Files)
 			)
 		);
-
-		return services;
-	}
 
 	public static IServiceCollection AddReads(this IServiceCollection services)
 	{

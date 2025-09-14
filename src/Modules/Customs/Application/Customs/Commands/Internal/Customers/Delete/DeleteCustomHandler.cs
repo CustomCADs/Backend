@@ -4,9 +4,10 @@ using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
-using static CustomCADs.Shared.Application.Constants;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Delete;
+
+using static ApplicationConstants;
 
 public sealed class DeleteCustomHandler(ICustomReads reads, IWrites<Custom> writes, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<DeleteCustomCommand>

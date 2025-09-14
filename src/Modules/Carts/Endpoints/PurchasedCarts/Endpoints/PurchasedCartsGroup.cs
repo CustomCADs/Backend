@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Carts.Endpoints.PurchasedCarts.Endpoints;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static EndpointsConstants;
 
 public class PurchasedCartsGroup : Group

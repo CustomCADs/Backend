@@ -7,7 +7,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
-using static Constants.Users;
+using static DomainConstants.Users;
 using static ShipmentsData;
 
 public class GetShipmentWaybillHandlerUnitTests : ShipmentsBaseUnitTests

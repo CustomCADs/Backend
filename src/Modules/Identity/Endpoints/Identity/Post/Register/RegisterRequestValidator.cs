@@ -1,10 +1,11 @@
-﻿using CustomCADs.Shared.Domain;
+﻿using CustomCADs.Shared.Application;
+using CustomCADs.Shared.Domain;
 using FluentValidation;
 
 namespace CustomCADs.Identity.Endpoints.Identity.Post.Register;
 
-using static Constants;
-using static Constants.FluentMessages;
+using static DomainConstants;
+using static ApplicationConstants.FluentMessages;
 
 public class RegisterRequestValidator : Validator<RegisterRequest>
 {

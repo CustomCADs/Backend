@@ -9,7 +9,8 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Create;
 
-using static Shared.Domain.Constants;
+using static ApplicationConstants;
+using static DomainConstants;
 
 public sealed class CreateProductHandler(IProductWrites writes, IUnitOfWork uow, IRequestSender sender)
 	: ICommandHandler<CreateProductCommand, ProductId>

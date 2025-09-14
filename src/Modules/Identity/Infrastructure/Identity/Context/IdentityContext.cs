@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Identity.Infrastructure.Identity;
+namespace CustomCADs.Identity.Infrastructure.Identity.Context;
 
 public class IdentityContext(DbContextOptions<IdentityContext> opt) : IdentityDbContext<AppUser, AppRole, Guid>(opt)
 {

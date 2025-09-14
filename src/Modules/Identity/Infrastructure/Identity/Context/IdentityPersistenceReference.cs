@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Identity.Infrastructure.Identity;
+namespace CustomCADs.Identity.Infrastructure.Identity.Context;
 
 public class IdentityPersistenceReference
 {

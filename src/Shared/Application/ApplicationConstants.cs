@@ -1,7 +1,34 @@
 namespace CustomCADs.Shared.Application;
 
-public static class Constants
+public static class ApplicationConstants
 {
+	public static class FluentMessages
+	{
+		public const string RequiredError = "{PropertyName} is required";
+		public const string LengthError = "{PropertyName} length must be between {MinLength} and {MaxLength} characters";
+		public const string MinimumError = "{PropertyName} length must be more than {MinLength} characters";
+		public const string RangeError = "{PropertyName} must be between {From} and {To}";
+		public const string EmailError = "Invalid Email";
+		public const string PhoneError = "Invalid Phone";
+	}
+
+	public static class Cads
+	{
+		public const string StlContentType = "model/stl";
+		public const string GlbContentType = "model/gltf-binary";
+		public const string GltfContentType = "model/gltf+json";
+
+		public static readonly string[] PrintableContentTypes = [
+			StlContentType,
+		];
+	}
+
+	public static class Pages
+	{
+		public const string ConfirmEmailPage = "{0}/confirm-email?username={1}&token={2}";
+		public const string ResetPasswordPage = "{0}/reset-password?email={1}&token={2}";
+	}
+
 	public static class Notifications
 	{
 		public static class Messages

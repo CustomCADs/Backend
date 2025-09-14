@@ -2,8 +2,11 @@
 using CustomCADs.Catalog.Domain.Products;
 using CustomCADs.Catalog.Domain.Tags;
 using CustomCADs.Catalog.Persistence.ShadowEntities;
+using CustomCADs.Shared.Persistence;
 
 namespace CustomCADs.Catalog.Persistence;
+
+using static PersistenceConstants;
 
 public class CatalogContext(DbContextOptions<CatalogContext> opts) : DbContext(opts)
 {
@@ -14,7 +17,7 @@ public class CatalogContext(DbContextOptions<CatalogContext> opts) : DbContext(o
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.HasDefaultSchema("Catalog");
+		builder.HasDefaultSchema(Schemes.Catalog);
 		builder.ApplyConfigurationsFromAssembly(CatalogPersistenceReference.Assembly);
 	}
 }

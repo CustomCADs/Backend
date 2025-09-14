@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Delivery.Endpoints.Shipments.Endpoints;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static EndpointsConstants;
 
 public class ShipmentsGroup : Group

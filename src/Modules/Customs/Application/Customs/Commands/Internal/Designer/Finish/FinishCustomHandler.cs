@@ -9,7 +9,7 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Finish;
 
-using static Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class FinishCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 	: ICommandHandler<FinishCustomCommand>

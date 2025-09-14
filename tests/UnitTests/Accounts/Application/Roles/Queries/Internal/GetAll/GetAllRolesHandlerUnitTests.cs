@@ -5,7 +5,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Roles.Queries.Internal.GetAll;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 
 public class GetAllRolesHandlerUnitTests : RolesBaseUnitTests
 {

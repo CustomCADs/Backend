@@ -3,11 +3,13 @@ using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Catalog.Domain.Repositories.Writes;
 using CustomCADs.Catalog.Persistence;
 using CustomCADs.Catalog.Persistence.Repositories;
+using CustomCADs.Shared.Persistence;
 using Microsoft.Extensions.Configuration;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
+using static PersistenceConstants;
 using CategoryReads = CustomCADs.Catalog.Persistence.Repositories.Categories.Reads;
 using CategoryWrites = CustomCADs.Catalog.Persistence.Repositories.Categories.Writes;
 using ProductReads = CustomCADs.Catalog.Persistence.Repositories.Products.Reads;
@@ -25,26 +27,19 @@ public static class DependencyInjection
 		return provider;
 	}
 
-	public static IServiceCollection AddCatalogPersistence(this IServiceCollection services, IConfiguration config)
+	public static IServiceCollection AddCatalogPersistence(this IServiceCollection services, string connectionString)
 		=> services
-			.AddContext(config)
+			.AddContext(connectionString)
 			.AddReads()
 			.AddWrites()
 			.AddUnitOfWork();
 
-	private static IServiceCollection AddContext(this IServiceCollection services, IConfiguration config)
-	{
-		string connectionString = config.GetConnectionString("ApplicationConnection")
-			?? throw new KeyNotFoundException("Could not find connection string 'ApplicationConnection'.");
-
-		services.AddDbContext<CatalogContext>(options =>
+	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
+		=> services.AddDbContext<CatalogContext>(options =>
 			options.UseNpgsql(connectionString, opt =>
-				opt.MigrationsHistoryTable("__EFMigrationsHistory", "Catalog")
+				opt.MigrationsHistoryTable(MigrationsTable, Schemes.Catalog)
 			)
 		);
-
-		return services;
-	}
 
 	private static IServiceCollection AddReads(this IServiceCollection services)
 	{

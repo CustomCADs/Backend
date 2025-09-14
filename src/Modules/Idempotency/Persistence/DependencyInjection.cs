@@ -2,12 +2,14 @@ using CustomCADs.Idempotency.Domain.Repositories;
 using CustomCADs.Idempotency.Domain.Repositories.Reads;
 using CustomCADs.Idempotency.Persistence;
 using CustomCADs.Idempotency.Persistence.Repositories;
+using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
+using static PersistenceConstants;
 using IdempotencyKeyReads = CustomCADs.Idempotency.Persistence.Repositories.IdempotencyKeys.Reads;
 
 public static class DependencyInjection
@@ -20,26 +22,19 @@ public static class DependencyInjection
 		return provider;
 	}
 
-	public static IServiceCollection AddIdempotencyPersistence(this IServiceCollection services, IConfiguration config)
+	public static IServiceCollection AddIdempotencyPersistence(this IServiceCollection services, string connectionString)
 		=> services
-			.AddContext(config)
+			.AddContext(connectionString)
 			.AddReads()
 			.AddWrites()
 			.AddUnitOfWork();
 
-	private static IServiceCollection AddContext(this IServiceCollection services, IConfiguration config)
-	{
-		string connectionString = config.GetConnectionString("ApplicationConnection")
-				?? throw new KeyNotFoundException("Could not find connection string 'ApplicationConnection'.");
-
-		services.AddDbContext<IdempotencyContext>(options =>
-			options.UseNpgsql(connectionString, opt =>
-				opt.MigrationsHistoryTable("_EFMigrationsHistory", "Idempotency")
+	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
+		=> services.AddDbContext<IdempotencyContext>(options =>
+			options.UseNpgsql(connectionString, opt
+				=> opt.MigrationsHistoryTable(MigrationsTable, Schemes.Idempotency)
 			)
 		);
-
-		return services;
-	}
 
 	private static IServiceCollection AddReads(this IServiceCollection services)
 	{

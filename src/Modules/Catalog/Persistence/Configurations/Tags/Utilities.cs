@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Catalog.Persistence.Configurations.Tags;
 
-using static Constants.Tags;
+using static DomainConstants.Tags;
 using static TagConstants;
 
 static class Utilities

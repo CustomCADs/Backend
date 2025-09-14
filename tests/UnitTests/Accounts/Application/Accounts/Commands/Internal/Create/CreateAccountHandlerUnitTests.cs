@@ -8,7 +8,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Commands.Internal.Create;
 
 using static AccountsData;
-using static Constants;
+using static DomainConstants;
 
 public class CreateAccountHandlerUnitTests : AccountsBaseUnitTests
 {

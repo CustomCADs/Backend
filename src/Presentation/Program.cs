@@ -1,5 +1,5 @@
 using CustomCADs.Presentation;
-using static CustomCADs.Shared.Domain.Constants.Roles;
+using static CustomCADs.Shared.Domain.DomainConstants.Roles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +26,9 @@ builder.Services.AddRealTimeNotifiers();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddIdentity(builder.Configuration);
 builder.Services.AddDomainServices();
-builder.Services.AddGlobalExceptionHandler();
 
 // API
+builder.Services.AddGlobalExceptionHandler();
 builder.Services.AddEndpoints();
 builder.Services.AddJsonOptions();
 builder.Services.AddApiDocumentation();

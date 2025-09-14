@@ -7,8 +7,8 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.GetUsernames;
 
 using static AccountsData;
-using static Constants.Roles;
-using static Constants.Users;
+using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
 {

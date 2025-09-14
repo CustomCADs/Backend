@@ -1,6 +1,7 @@
 #pragma warning disable IDE0130
 using CustomCADs.Identity.Application.Contracts;
 using CustomCADs.Identity.Infrastructure.Identity;
+using CustomCADs.Identity.Infrastructure.Identity.Context;
 using CustomCADs.Identity.Infrastructure.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -22,8 +23,7 @@ public static class DependencyInjection
 		services.AddDbContext<IdentityContext>(options =>
 			options.UseNpgsql(
 				dataSource: new NpgsqlDataSourceBuilder(connectionString).EnableDynamicJson().Build(),
-				npgsqlOptionsAction: opt =>
-				opt.MigrationsHistoryTable("__EFMigrationsHistory", "Identity")
+				npgsqlOptionsAction: opt => opt.MigrationsHistoryTable("__EFMigrationsHistory", "Identity")
 			)
 		);
 

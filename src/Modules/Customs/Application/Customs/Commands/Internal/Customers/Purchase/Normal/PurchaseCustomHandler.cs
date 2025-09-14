@@ -9,7 +9,7 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
 
-using static Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class PurchaseCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IPaymentService payment, IEventRaiser raiser)
 	: ICommandHandler<PurchaseCustomCommand, PaymentDto>

@@ -7,7 +7,7 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.SetDelivery;
 
-using static CustomCADs.Shared.Application.Constants;
+using static ApplicationConstants;
 
 public class SetCustomDeliveryHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<SetCustomDeliveryCommand>

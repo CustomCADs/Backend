@@ -4,9 +4,10 @@ using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
-using static CustomCADs.Shared.Application.Constants;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Edit;
+
+using static ApplicationConstants;
 
 public sealed class EditCustomHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<EditCustomCommand>

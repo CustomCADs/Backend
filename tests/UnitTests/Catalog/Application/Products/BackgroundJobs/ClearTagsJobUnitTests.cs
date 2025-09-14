@@ -4,6 +4,7 @@ using CustomCADs.Catalog.Domain.Repositories.Reads;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.BackgroundJobs;
 
+using static DomainConstants;
 using static ProductConstants;
 using static ProductsData;
 
@@ -13,7 +14,7 @@ public class ClearTagsJobUnitTests : ProductsBaseUnitTests
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
-	private const string tag = Constants.Tags.New;
+	private const string tag = Tags.New;
 	private static readonly ProductId[] ids = [];
 	private static readonly DateTimeOffset today = DateTimeOffset.UtcNow.Date;
 	private readonly Product oldestByTag = CreateProductWithId(

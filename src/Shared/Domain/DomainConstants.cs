@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace CustomCADs.Shared.Domain;
 
-public static partial class Constants
+public static partial class DomainConstants
 {
 	public partial class Regexes
 	{
@@ -16,27 +16,6 @@ public static partial class Constants
 
 		[GeneratedRegex(@"^\+?[1-9]\d{1,14}$", RegexOptions.Compiled)]
 		private static partial Regex PhoneRegex();
-	}
-
-	public static class FluentMessages
-	{
-		public const string RequiredError = "{PropertyName} is required";
-		public const string LengthError = "{PropertyName} length must be between {MinLength} and {MaxLength} characters";
-		public const string MinimumError = "{PropertyName} length must be more than {MinLength} characters";
-		public const string RangeError = "{PropertyName} must be between {From} and {To}";
-		public const string EmailError = "Invalid Email";
-		public const string PhoneError = "Invalid Phone";
-	}
-
-	public static class Cads
-	{
-		public const string StlContentType = "model/stl";
-		public const string GlbContentType = "model/gltf-binary";
-		public const string GltfContentType = "model/gltf+json";
-
-		public static readonly string[] PrintableContentTypes = [
-			StlContentType,
-		];
 	}
 
 	public static class Tags

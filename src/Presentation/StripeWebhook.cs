@@ -40,8 +40,8 @@ public static class StripeWebhook
 				await raiser.RaiseApplicationEventAsync(
 					new NotificationRequestedEvent(
 						Type: NotificationType.PaymentFailed,
-						Description: Shared.Application.Constants.Notifications.Messages.PaymentFailed,
-						Link: Shared.Application.Constants.Notifications.Links.PaymentFailed,
+						Description: Shared.Application.ApplicationConstants.Notifications.Messages.PaymentFailed,
+						Link: Shared.Application.ApplicationConstants.Notifications.Links.PaymentFailed,
 						AuthorId: buyerId,
 						ReceiverIds: [buyerId]
 					)
@@ -90,8 +90,8 @@ public static class StripeWebhook
 				await raiser.RaiseApplicationEventAsync(
 					new NotificationRequestedEvent(
 						Type: NotificationType.PaymentCompleted,
-						Description: Shared.Application.Constants.Notifications.Messages.PaymentCompleted,
-						Link: Shared.Application.Constants.Notifications.Links.PaymentCompleted,
+						Description: Shared.Application.ApplicationConstants.Notifications.Messages.PaymentCompleted,
+						Link: Shared.Application.ApplicationConstants.Notifications.Links.PaymentCompleted,
 						AuthorId: buyerId,
 						ReceiverIds: [buyerId]
 					)

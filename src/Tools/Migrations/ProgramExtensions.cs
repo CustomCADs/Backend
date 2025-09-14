@@ -1,16 +1,22 @@
 using CustomCADs.Identity.Domain.Users;
-using CustomCADs.Identity.Infrastructure.Identity;
+using CustomCADs.Identity.Infrastructure.Identity.Context;
 using CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Printing.Domain.Services;
+using CustomCADs.Shared.Infrastructure.Utilities;
+using CustomCADs.Shared.Persistence;
 using Microsoft.AspNetCore.Identity;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
 using static UserConstants;
+using static PersistenceConstants;
 
 public static class ProgramExtensions
 {
+	private static string GetConnectionString(this IConfiguration config)
+		=> config.GetApplicationConnectionString(ConnectionString);
+
 	public static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration config)
 	{
 		services.AddIdentity<AppUser, AppRole>(options =>
@@ -30,26 +36,25 @@ public static class ProgramExtensions
 		.AddEntityFrameworkStores<IdentityContext>()
 		.AddDefaultTokenProviders();
 
-		const string connectionStringKey = "ApplicationConnection";
-		string? connectionString = config.GetConnectionString(connectionStringKey)
-			?? throw new KeyNotFoundException($"Could not find connection string '{connectionStringKey}'.");
+		string? connectionString = config.GetConnectionString(ConnectionString)
+			?? throw new KeyNotFoundException($"Could not find connection string '{ConnectionString}'.");
 
-		services.AddIdentityServices(connectionString);
+		services.AddIdentityServices(config.GetConnectionString());
 
 		return services;
 	}
 
 	public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration config)
 		=> services
-			.AddAccountsPersistence(config)
-			.AddCartsPersistence(config)
-			.AddCatalogPersistence(config)
-			.AddCustomsPersistence(config)
-			.AddDeliveryPersistence(config)
-			.AddFilesPersistence(config)
-			.AddIdempotencyPersistence(config)
-			.AddNotificationsPersistence(config)
-			.AddPrintingPersistence(config);
+			.AddAccountsPersistence(config.GetConnectionString())
+			.AddCartsPersistence(config.GetConnectionString())
+			.AddCatalogPersistence(config.GetConnectionString())
+			.AddCustomsPersistence(config.GetConnectionString())
+			.AddDeliveryPersistence(config.GetConnectionString())
+			.AddFilesPersistence(config.GetConnectionString())
+			.AddIdempotencyPersistence(config.GetConnectionString())
+			.AddNotificationsPersistence(config.GetConnectionString())
+			.AddPrintingPersistence(config.GetConnectionString());
 
 	public static IServiceCollection AddDomainServices(this IServiceCollection services)
 	{

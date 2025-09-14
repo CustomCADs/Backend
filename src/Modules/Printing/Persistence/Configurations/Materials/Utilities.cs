@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Printing.Persistence.Configurations.Materials;
 
-using static Constants.Textures;
+using static DomainConstants.Textures;
 using static MaterialConstants;
 
 static class Utilities

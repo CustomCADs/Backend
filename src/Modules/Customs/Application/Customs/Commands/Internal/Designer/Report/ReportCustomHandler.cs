@@ -8,7 +8,7 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Report;
 
-using static CustomCADs.Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class ReportCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 	: ICommandHandler<ReportCustomCommand>

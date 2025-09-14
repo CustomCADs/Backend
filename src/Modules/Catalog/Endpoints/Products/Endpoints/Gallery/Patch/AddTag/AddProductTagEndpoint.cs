@@ -3,7 +3,7 @@ using CustomCADs.Shared.Endpoints.Extensions;
 
 namespace CustomCADs.Catalog.Endpoints.Products.Endpoints.Gallery.Patch.AddTag;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 
 public class AddProductTagEndpoint(IRequestSender sender)
 	: Endpoint<AddProductTagRequest>

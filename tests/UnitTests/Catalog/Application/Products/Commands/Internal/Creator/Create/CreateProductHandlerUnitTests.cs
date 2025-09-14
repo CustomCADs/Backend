@@ -2,6 +2,7 @@
 using CustomCADs.Catalog.Domain.Products.Enums;
 using CustomCADs.Catalog.Domain.Repositories;
 using CustomCADs.Catalog.Domain.Repositories.Writes;
+using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
@@ -13,7 +14,6 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Commands.Internal.Creator.Create;
 
-using static Constants.Roles;
 using static ProductsData;
 
 public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
@@ -61,7 +61,7 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserRoleByIdQuery>(x => x.Id == creatorId),
 			ct
-		)).ReturnsAsync(Contributor);
+		)).ReturnsAsync(DomainConstants.Roles.Contributor);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetCategoryExistsByIdQuery>(x => x.Id == categoryId),
@@ -110,7 +110,7 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		), Times.Once());
 		writes.Verify(x => x.AddTagAsync(
 			ValidId,
-			Constants.Tags.NewId,
+			DomainConstants.Tags.NewId,
 			ct
 		));
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Exactly(2));
@@ -166,7 +166,7 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserRoleByIdQuery>(x => x.Id == creatorId),
 			ct
-		)).ReturnsAsync(Designer);
+		)).ReturnsAsync(DomainConstants.Roles.Designer);
 
 		CreateProductCommand command = new(
 			Name: MinValidName,
@@ -195,7 +195,7 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserRoleByIdQuery>(x => x.Id == creatorId),
 			ct
-		)).ReturnsAsync(Designer);
+		)).ReturnsAsync(DomainConstants.Roles.Designer);
 
 		CreateProductCommand command = new(
 			Name: MinValidName,
@@ -216,13 +216,13 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		// Assert
 		writes.Verify(x => x.AddTagAsync(
 			ValidId,
-			Constants.Tags.ProfessionalId,
+			DomainConstants.Tags.ProfessionalId,
 			ct
 		));
 	}
 
 	[Theory]
-	[InlineData(Constants.Cads.StlContentType)]
+	[InlineData(ApplicationConstants.Cads.StlContentType)]
 	public async Task Handle_ShouldTagPrintable_WhenAppropriateContentType(string cadContentType)
 	{
 		// Arrange
@@ -245,7 +245,7 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		// Assert
 		writes.Verify(x => x.AddTagAsync(
 			ValidId,
-			Constants.Tags.PrintableId,
+			DomainConstants.Tags.PrintableId,
 			ct
 		));
 	}

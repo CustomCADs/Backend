@@ -3,7 +3,7 @@ using CustomCADs.Shared.Endpoints.Extensions;
 
 namespace CustomCADs.Catalog.Endpoints.Products.Endpoints.Gallery.Patch.RemoveTag;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 
 public class RemoveProductTagEndpoint(IRequestSender sender)
 	: Endpoint<RemoveProductTagRequest>

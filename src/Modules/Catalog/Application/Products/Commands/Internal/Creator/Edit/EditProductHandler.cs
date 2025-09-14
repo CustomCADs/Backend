@@ -6,9 +6,10 @@ using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
-using static CustomCADs.Shared.Application.Constants;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Edit;
+
+using static CustomCADs.Shared.Application.ApplicationConstants;
 
 public sealed class EditProductHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 	: ICommandHandler<EditProductCommand>

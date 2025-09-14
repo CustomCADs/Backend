@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetCadUrl.Put;
 
-using static CustomCADs.Shared.Domain.Constants.FluentMessages;
+using static ApplicationConstants.FluentMessages;
 
 public class CreatorGetProductCadPresignedUrlPutValidator : QueryValidator<CreatorGetProductCadPresignedUrlPutQuery, CreatorGetProductCadPresignedUrlPutDto>
 {

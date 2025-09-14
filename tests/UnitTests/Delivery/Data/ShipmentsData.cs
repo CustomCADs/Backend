@@ -5,7 +5,7 @@ using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.UnitTests.Delivery.Data;
 
-using static Constants.Users;
+using static DomainConstants.Users;
 using static ShipmentConstants;
 
 public static class ShipmentsData

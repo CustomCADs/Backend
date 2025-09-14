@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Identity.Infrastructure.Identity.Configurations.AppUsers;
 
-using static Constants.Users;
+using static DomainConstants.Users;
 
 public static class Utilities
 {

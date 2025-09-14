@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Accounts.Endpoints.Roles.Endpoints;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static EndpointsConstants;
 
 public class RolesGroup : Group

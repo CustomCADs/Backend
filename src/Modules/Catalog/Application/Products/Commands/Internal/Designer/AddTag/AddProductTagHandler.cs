@@ -7,7 +7,7 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.AddTag;
 
-using static CustomCADs.Shared.Application.Constants;
+using static ApplicationConstants;
 
 public class AddProductTagHandler(IProductReads reads, IProductWrites writes, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<AddProductTagCommand>

@@ -6,7 +6,7 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Cancel;
 
-using static Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class CancelCustomHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<CancelCustomCommand>

@@ -4,7 +4,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Accounts.Data;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static RoleConstants;
 
 public static class RolesData

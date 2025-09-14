@@ -73,7 +73,7 @@ public static class ExceptionExtensions
 
 		if (ComputeCondition(value.Length, length, inclusive))
 		{
-			throw CustomValidationException<TEntity>.Length(property, length.Min, length.Max);
+			throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} length must be more than {length.Min} and less than {length.Max}.");
 		}
 		return entity;
 	}
@@ -93,7 +93,7 @@ public static class ExceptionExtensions
 
 		if (ComputeCondition(value, range, inclusive))
 		{
-			throw CustomValidationException<TEntity>.Range(property, range.Min, range.Max);
+			throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} must be more than {range.Min} and less than {range.Max}.");
 		}
 		return entity;
 	}
@@ -113,7 +113,7 @@ public static class ExceptionExtensions
 
 		if (ComputeCondition(value.Length, size, inclusive))
 		{
-			throw CustomValidationException<TEntity>.Length(property, size.Min, size.Max);
+			throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} length must be more than {size.Min} and less than {size.Max}.");
 		}
 		return entity;
 	}

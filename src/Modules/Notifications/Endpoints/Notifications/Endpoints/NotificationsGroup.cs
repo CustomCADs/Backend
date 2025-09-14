@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Notifications.Endpoints.Notifications.Endpoints;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static EndpointsConstants;
 
 public class NotificationsGroup : Group

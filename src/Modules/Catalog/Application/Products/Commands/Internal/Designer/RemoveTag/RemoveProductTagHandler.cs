@@ -7,7 +7,7 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
 
-using static CustomCADs.Shared.Application.Constants;
+using static ApplicationConstants;
 
 public class RemoveProductTagHandler(IProductReads reads, IProductWrites writes, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<RemoveProductTagCommand>

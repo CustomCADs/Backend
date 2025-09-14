@@ -5,7 +5,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 namespace CustomCADs.UnitTests.Accounts.Data;
 
 using static AccountConstants;
-using static Constants.Users;
+using static DomainConstants.Users;
 
 public static class AccountsData
 {

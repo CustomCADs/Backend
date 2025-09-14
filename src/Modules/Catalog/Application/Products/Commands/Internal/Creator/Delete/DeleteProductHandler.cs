@@ -10,7 +10,7 @@ using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Delete;
 
-using static CustomCADs.Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class DeleteProductHandler(IProductReads reads, IProductWrites writes, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 	: ICommandHandler<DeleteProductCommand>

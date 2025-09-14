@@ -11,7 +11,7 @@ using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 
-using static Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class PurchaseCustomWithDeliveryHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IPaymentService payment, IEventRaiser raiser)
 	: ICommandHandler<PurchaseCustomWithDeliveryCommand, PaymentDto>

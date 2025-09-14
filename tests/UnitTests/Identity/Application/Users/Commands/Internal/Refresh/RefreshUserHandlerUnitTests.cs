@@ -6,6 +6,7 @@ using CustomCADs.Shared.Domain;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Commands.Internal.Refresh;
 
+using static DomainConstants;
 using static UsersData;
 
 public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
@@ -63,7 +64,7 @@ public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
 			id: RefreshTokenId.New(),
 			value: "refresh-token",
 			userId: ValidId,
-			issuedAt: yesterday.AddDays(-Constants.Tokens.RtDurationInDays),
+			issuedAt: yesterday.AddDays(-Tokens.RtDurationInDays),
 			expiresAt: yesterday
 		);
 		service.Setup(x => x.GetByRefreshTokenAsync(token.Value)).ReturnsAsync((user, token));

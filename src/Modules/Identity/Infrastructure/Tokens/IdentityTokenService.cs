@@ -11,7 +11,7 @@ using System.Text;
 
 namespace CustomCADs.Identity.Infrastructure.Tokens;
 
-using static Constants.Tokens;
+using static DomainConstants.Tokens;
 
 public sealed class IdentityTokenService(IOptions<JwtSettings> jwtOptions) : ITokenService
 {

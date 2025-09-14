@@ -11,7 +11,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.SetStatus;
 
-using static Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class SetProductStatusHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 	: ICommandHandler<SetProductStatusCommand>

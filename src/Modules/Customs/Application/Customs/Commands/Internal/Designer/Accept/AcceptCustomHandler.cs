@@ -8,7 +8,7 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Accept;
 
-using static Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class AcceptCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 	: ICommandHandler<AcceptCustomCommand>

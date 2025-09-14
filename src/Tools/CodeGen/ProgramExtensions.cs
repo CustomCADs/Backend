@@ -1,22 +1,28 @@
 using CustomCADs.Delivery.Infrastructure;
 using CustomCADs.Files.Infrastructure;
 using CustomCADs.Identity.Domain.Users;
-using CustomCADs.Identity.Infrastructure.Identity;
+using CustomCADs.Identity.Infrastructure.Identity.Context;
 using CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Identity.Infrastructure.Tokens;
 using CustomCADs.Printing.Domain.Services;
 using CustomCADs.Shared.Infrastructure.Email;
 using CustomCADs.Shared.Infrastructure.Payment;
+using CustomCADs.Shared.Infrastructure.Utilities;
+using CustomCADs.Shared.Persistence;
 using Microsoft.AspNetCore.Identity;
 
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
+using static PersistenceConstants;
 using static UserConstants;
 
 public static class ProgramExtensions
 {
+	private static string GetConnectionString(this IConfiguration config)
+		=> config.GetApplicationConnectionString(ConnectionString);
+
 	public static IServiceCollection AddUseCases(this IServiceCollection services, IWebHostEnvironment env, bool? overrideCodeGenTo = null)
 	{
 		services.AddMessagingServices(
@@ -67,17 +73,6 @@ public static class ProgramExtensions
 	{
 		services.Configure<JwtSettings>(config.GetSection("Jwt"));
 		services.AddTokensService();
-
-		return services;
-	}
-
-	public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration config)
-	{
-		const string connectionStringKey = "ApplicationConnection";
-		string? connectionString = config.GetConnectionString(connectionStringKey)
-			?? throw new KeyNotFoundException($"Could not find connection string '{connectionStringKey}'.");
-
-		services.AddIdentityServices(connectionString);
 
 		return services;
 	}
@@ -141,26 +136,22 @@ public static class ProgramExtensions
 		.AddEntityFrameworkStores<IdentityContext>()
 		.AddDefaultTokenProviders();
 
-		const string connectionStringKey = "ApplicationConnection";
-		string? connectionString = config.GetConnectionString(connectionStringKey)
-			?? throw new KeyNotFoundException($"Could not find connection string '{connectionStringKey}'.");
-
-		services.AddIdentityServices(connectionString);
+		services.AddIdentityServices(config.GetConnectionString());
 
 		return services;
 	}
 
 	public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration config)
 		=> services
-			.AddAccountsPersistence(config)
-			.AddCartsPersistence(config)
-			.AddCatalogPersistence(config)
-			.AddCustomsPersistence(config)
-			.AddDeliveryPersistence(config)
-			.AddFilesPersistence(config)
-			.AddIdempotencyPersistence(config)
-			.AddNotificationsPersistence(config)
-			.AddPrintingPersistence(config);
+			.AddAccountsPersistence(config.GetConnectionString())
+			.AddCartsPersistence(config.GetConnectionString())
+			.AddCatalogPersistence(config.GetConnectionString())
+			.AddCustomsPersistence(config.GetConnectionString())
+			.AddDeliveryPersistence(config.GetConnectionString())
+			.AddFilesPersistence(config.GetConnectionString())
+			.AddIdempotencyPersistence(config.GetConnectionString())
+			.AddNotificationsPersistence(config.GetConnectionString())
+			.AddPrintingPersistence(config.GetConnectionString());
 
 
 	public static IServiceCollection AddDomainServices(this IServiceCollection services)

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Accounts.Persistence.Configurations.Roles;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static RoleConstants;
 
 static class Utilities

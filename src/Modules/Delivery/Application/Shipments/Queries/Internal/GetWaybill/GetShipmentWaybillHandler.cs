@@ -4,7 +4,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
-using static Constants.Users;
+using static DomainConstants.Users;
 
 public class GetShipmentWaybillHandler(IShipmentReads reads, IDeliveryService delivery, BaseCachingService<ShipmentId, Shipment> cache)
 	: IQueryHandler<GetShipmentWaybillQuery, byte[]>

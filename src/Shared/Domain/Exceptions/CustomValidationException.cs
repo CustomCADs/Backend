@@ -6,22 +6,6 @@ public class CustomValidationException<TEntity> : BaseException
 {
 	private CustomValidationException(string message, Exception? inner) : base(message, inner) { }
 
-	public static CustomValidationException<TEntity> Length(
-		string property,
-		int min,
-		int max,
-		Exception? inner = default
-	)
-		=> new($"A/An {typeof(TEntity).Name}'s {property} length must be more than {min} and less than {max}.", inner);
-
-	public static CustomValidationException<TEntity> Range<TRangeType>(
-		string property,
-		TRangeType min,
-		TRangeType max,
-		Exception? inner = default
-	) where TRangeType : struct
-		=> new($"A/An {typeof(TEntity).Name}'s {property} must be more than {min} and less than {max}.", inner);
-
 	public static CustomValidationException<TEntity> Status<TStatus>(
 		TStatus status,
 		Exception? inner = default

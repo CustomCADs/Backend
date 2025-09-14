@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Identity.Infrastructure.Identity.Configurations.AppUserRoles;
 
-using static Constants;
+using static DomainConstants;
 using AppUserRole = Microsoft.AspNetCore.Identity.IdentityUserRole<Guid>;
 
 public static class Utilities

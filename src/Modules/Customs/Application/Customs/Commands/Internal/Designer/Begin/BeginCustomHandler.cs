@@ -6,7 +6,7 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Begin;
 
-using static Shared.Application.Constants;
+using static ApplicationConstants;
 
 public sealed class BeginCustomHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
 	: ICommandHandler<BeginCustomCommand>

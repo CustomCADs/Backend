@@ -1,10 +1,11 @@
-﻿using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
+﻿using CustomCADs.Shared.Application;
+using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
 using CustomCADs.Shared.Application.Dtos.Files;
 using FluentValidation;
 
 namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetTextureUrl.Post;
 
-using static Constants.FluentMessages;
+using static ApplicationConstants.FluentMessages;
 
 public class GetMaterialTexturePresignedUrlPostValidator : QueryValidator<GetMaterialTexturePresignedUrlPostQuery, UploadFileResponse>
 {

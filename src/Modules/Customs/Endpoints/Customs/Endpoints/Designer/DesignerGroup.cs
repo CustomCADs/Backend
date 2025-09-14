@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Designer;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static EndpointsConstants;
 
 public class DesignerGroup : Group
