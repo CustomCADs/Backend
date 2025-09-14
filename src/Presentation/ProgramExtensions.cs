@@ -175,6 +175,24 @@ public static class ProgramExtensions
 		return app;
 	}
 
+	public static IApplicationBuilder UseDisableBrowserCaching(this IApplicationBuilder app)
+	{
+		app.Use(async (context, next) =>
+		{
+			if (context.Request.Path.StartsWithSegments("/api"))
+			{
+				IHeaderDictionary headers = context.Response.Headers;
+				headers.CacheControl = "no-store, no-cache, must-revalidate, proxy-revalidate";
+				headers.Pragma = "no-cache";
+				headers.Expires = "0";
+			}
+
+			await next().ConfigureAwait(false);
+		});
+
+		return app;
+	}
+
 	public static IEndpointRouteBuilder MapApiDocumentationUi(this IEndpointRouteBuilder app, [StringSyntax("Route")] string apiPattern = "/openai/{documentName}.json", [StringSyntax("Route")] string uiPattern = "/scalar/{documentName}")
 	{
 		app.MapOpenApi(apiPattern);

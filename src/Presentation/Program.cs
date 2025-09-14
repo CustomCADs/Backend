@@ -53,6 +53,7 @@ app.UseIdempotencyKeys();
 // API & Documentation
 app.UseEndpoints();
 app.UseRateLimiter();
+app.UseDisableBrowserCaching();
 app.MapApiDocumentationUi(
 	apiPattern: "/openapi/{documentName}.json",
 	uiPattern: "/scalar"
