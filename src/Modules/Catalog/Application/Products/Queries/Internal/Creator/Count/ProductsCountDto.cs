@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.Count;
 
-public record ProductsCountDto(
+public sealed record ProductsCountDto(
 	int Unchecked,
 	int Validated,
 	int Reported,

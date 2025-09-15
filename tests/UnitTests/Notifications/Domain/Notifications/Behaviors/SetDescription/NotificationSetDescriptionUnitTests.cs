@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Behaviors.SetDescription;
 
-using static NotificationsData;
 using Data;
+using static NotificationsData;
 
 public class NotificationSetDescriptionUnitTests : NotificationsBaseUnitTests
 {

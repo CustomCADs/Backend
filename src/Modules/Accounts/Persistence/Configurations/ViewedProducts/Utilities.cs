@@ -26,16 +26,16 @@ static class Utilities
 
 	public static EntityTypeBuilder<ViewedProduct> SetStronglyTypedIds(this EntityTypeBuilder<ViewedProduct> builder)
 	{
-		builder.Property(pt => pt.AccountId)
+		builder.Property(x => x.AccountId)
 			.HasConversion(
-				id => id.Value,
-				val => AccountId.New(val)
+				x => x.Value,
+				x => AccountId.New(x)
 			);
 
-		builder.Property(pt => pt.ProductId)
+		builder.Property(x => x.ProductId)
 			.HasConversion(
-				id => id.Value,
-				val => ProductId.New(val)
+				x => x.Value,
+				x => ProductId.New(x)
 			);
 
 		return builder;

@@ -9,7 +9,7 @@ public sealed class DeleteMaterialEndpoint(IRequestSender sender)
 	{
 		Delete("");
 		Group<MaterialsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Delete")
 			.WithDescription("Delete a Material")
 		);
@@ -18,10 +18,10 @@ public sealed class DeleteMaterialEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DeleteMaterialRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new DeleteMaterialCommand(
+			command: new DeleteMaterialCommand(
 				Id: MaterialId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

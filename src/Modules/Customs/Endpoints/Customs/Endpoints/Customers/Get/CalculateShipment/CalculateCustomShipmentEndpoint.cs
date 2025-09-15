@@ -11,7 +11,7 @@ public class CalculateCustomShipmentEndpoint(IRequestSender sender)
 	{
 		Get("calculate/{id}");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Calculate Shipment")
 			.WithDescription("Calculate the estimted price for the delivery of the Shipment")
 		);
@@ -20,17 +20,17 @@ public class CalculateCustomShipmentEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CalculateCustomShipmentRequest req, CancellationToken ct)
 	{
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
-			new CalculateCustomShipmentQuery(
+			query: new CalculateCustomShipmentQuery(
 				Id: CustomId.New(req.Id),
 				Count: req.Count,
 				Address: new(req.Country, req.City, req.Street),
 				CustomizationId: CustomizationId.New(req.CustomizationId)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		ICollection<CalculateCustomShipmentResponse> response =
-			[.. calculations.Select(c => c.ToResponse())];
+			[.. calculations.Select(x => x.ToResponse())];
 		await Send.OkAsync(response).ConfigureAwait(false);
 	}
 }

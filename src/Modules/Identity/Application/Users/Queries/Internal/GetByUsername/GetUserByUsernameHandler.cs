@@ -5,21 +5,21 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Identity.Application.Users.Queries.Internal.GetByUsername;
 
-public class GetUserByUsernameHandler(IUserService service, IRequestSender sender)
+public sealed class GetUserByUsernameHandler(IUserService service, IRequestSender sender)
 	: IQueryHandler<GetUserByUsernameQuery, GetUserByUsernameDto>
 {
 	public async Task<GetUserByUsernameDto> Handle(GetUserByUsernameQuery req, CancellationToken ct = default)
 	{
 		User user = await service.GetByUsernameAsync(req.Username).ConfigureAwait(false);
 
-		AccountInfo info = await sender.SendQueryAsync(
-			new GetAccountInfoByUsernameQuery(req.Username),
-			ct
+		AccountInfoDto info = await sender.SendQueryAsync(
+			query: new GetAccountInfoByUsernameQuery(req.Username),
+			ct: ct
 		).ConfigureAwait(false);
 
 		ProductId[] viewedProductIds = await sender.SendQueryAsync(
-			new GetAccountViewedProductsByUsernameQuery(req.Username),
-			ct
+			query: new GetAccountViewedProductsByUsernameQuery(req.Username),
+			ct: ct
 		).ConfigureAwait(false);
 
 		return new(

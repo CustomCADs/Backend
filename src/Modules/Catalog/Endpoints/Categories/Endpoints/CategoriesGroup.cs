@@ -7,10 +7,10 @@ public class CategoriesGroup : Group
 {
 	public CategoriesGroup()
 	{
-		Configure(Paths.Categories, ep =>
+		Configure(Paths.Categories, x =>
 		{
-			ep.Roles(Admin);
-			ep.Description(opt => opt.WithTags(Tags[Paths.Categories]));
+			x.Roles(Admin);
+			x.Description(x => x.WithTags(Tags[Paths.Categories]));
 		});
 	}
 }

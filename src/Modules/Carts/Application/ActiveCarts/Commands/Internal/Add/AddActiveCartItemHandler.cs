@@ -6,37 +6,43 @@ using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Add;
 
-public sealed class AddActiveCartItemHandler(IWrites<ActiveCartItem> writes, IUnitOfWork uow, IRequestSender sender)
-	: ICommandHandler<AddActiveCartItemCommand>
+public sealed class AddActiveCartItemHandler(
+	IWrites<ActiveCartItem> writes,
+	IUnitOfWork uow,
+	IRequestSender sender
+) : ICommandHandler<AddActiveCartItemCommand>
 {
 	public async Task Handle(AddActiveCartItemCommand req, CancellationToken ct)
 	{
 		if (!await sender.SendQueryAsync(new GetProductExistsByIdQuery(req.ProductId), ct).ConfigureAwait(false))
 		{
-			throw CustomNotFoundException<ActiveCartItem>.ById(req.BuyerId, "User");
+			throw CustomNotFoundException<ActiveCartItem>.ById(req.CallerId, "User");
 		}
 
-		ActiveCartItem item;
+		await writes.AddAsync(
+			entity: await CreateItemAsync(req, ct).ConfigureAwait(false),
+			ct: ct
+		).ConfigureAwait(false);
+		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+	}
+
+	private async Task<ActiveCartItem> CreateItemAsync(AddActiveCartItemCommand req, CancellationToken ct)
+	{
 		if (!req.ForDelivery)
 		{
-			item = ActiveCartItem.Create(req.ProductId, req.BuyerId);
+			return ActiveCartItem.Create(req.ProductId, req.CallerId);
 		}
-		else if (req.CustomizationId is not null)
-		{
-			CustomizationId id = req.CustomizationId.Value;
-			if (!await sender.SendQueryAsync(new GetCustomizationExistsByIdQuery(id), ct).ConfigureAwait(false))
-			{
-				throw CustomNotFoundException<ActiveCartItem>.ById(req.CustomizationId.Value, "Customization");
-			}
 
-			item = ActiveCartItem.Create(req.ProductId, req.BuyerId, req.CustomizationId.Value);
-		}
-		else
+		if (req.CustomizationId is null)
 		{
 			throw CustomException.Delivery<ActiveCartItem>(markedForDelivery: true);
 		}
+		CustomizationId customizationId = req.CustomizationId.Value;
 
-		await writes.AddAsync(item, ct).ConfigureAwait(false);
-		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+		if (!await sender.SendQueryAsync(new GetCustomizationExistsByIdQuery(customizationId), ct).ConfigureAwait(false))
+		{
+			throw CustomNotFoundException<ActiveCartItem>.ById(customizationId, "Customization");
+		}
+		return ActiveCartItem.Create(req.ProductId, req.CallerId, customizationId);
 	}
 }

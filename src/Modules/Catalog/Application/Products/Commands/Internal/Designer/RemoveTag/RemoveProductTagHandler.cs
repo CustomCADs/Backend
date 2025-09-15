@@ -7,10 +7,13 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
 
-using static ApplicationConstants;
 
-public class RemoveProductTagHandler(IProductReads reads, IProductWrites writes, IUnitOfWork uow, IEventRaiser raiser)
-	: ICommandHandler<RemoveProductTagCommand>
+public sealed class RemoveProductTagHandler(
+	IProductReads reads,
+	IProductWrites writes,
+	IUnitOfWork uow,
+	IEventRaiser raiser
+) : ICommandHandler<RemoveProductTagCommand>
 {
 	public async Task Handle(RemoveProductTagCommand req, CancellationToken ct)
 	{
@@ -21,10 +24,10 @@ public class RemoveProductTagHandler(IProductReads reads, IProductWrites writes,
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			new NotificationRequestedEvent(
+			@event: new NotificationRequestedEvent(
 				Type: NotificationType.ProductTagRemoved,
-				Description: Notifications.Messages.ProductTagRemoved,
-				Link: Notifications.Links.ProductTagRemoved,
+				Description: ApplicationConstants.Notifications.Messages.ProductTagRemoved,
+				Link: ApplicationConstants.Notifications.Links.ProductTagRemoved,
 				AuthorId: req.CallerId,
 				ReceiverIds: [product.CreatorId]
 			)

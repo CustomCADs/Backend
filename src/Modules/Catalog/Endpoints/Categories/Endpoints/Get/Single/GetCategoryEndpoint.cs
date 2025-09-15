@@ -10,7 +10,7 @@ public sealed class GetCategoryEndpoint(IRequestSender sender)
 		Get("{id}");
 		AllowAnonymous();
 		Group<CategoriesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See a Category")
 		);
@@ -19,10 +19,10 @@ public sealed class GetCategoryEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetCategoryRequest req, CancellationToken ct)
 	{
 		CategoryReadDto category = await sender.SendQueryAsync(
-			new GetCategoryByIdQuery(
+			query: new GetCategoryByIdQuery(
 				Id: CategoryId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		CategoryResponse response = category.ToResponse();

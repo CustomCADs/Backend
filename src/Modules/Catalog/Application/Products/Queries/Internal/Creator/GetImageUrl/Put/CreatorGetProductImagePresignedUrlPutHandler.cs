@@ -5,26 +5,24 @@ using CustomCADs.Shared.Application.UseCases.Images.Queries;
 namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetImageUrl.Put;
 
 public sealed class CreatorGetProductImagePresignedUrlPutHandler(IProductReads reads, IRequestSender sender)
-	: IQueryHandler<CreatorGetProductImagePresignedUrlPutQuery, CreatorGetProductImagePresignedUrlPutDto>
+	: IQueryHandler<CreatorGetProductImagePresignedUrlPutQuery, string>
 {
-	public async Task<CreatorGetProductImagePresignedUrlPutDto> Handle(CreatorGetProductImagePresignedUrlPutQuery req, CancellationToken ct)
+	public async Task<string> Handle(CreatorGetProductImagePresignedUrlPutQuery req, CancellationToken ct)
 	{
 		Product product = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(req.Id);
 
-		if (product.CreatorId != req.CreatorId)
+		if (product.CreatorId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Product>.ById(req.Id);
 		}
 
-		string url = await sender.SendQueryAsync(
-			new GetImagePresignedUrlPutByIdQuery(
+		return await sender.SendQueryAsync(
+			query: new GetImagePresignedUrlPutByIdQuery(
 				Id: product.ImageId,
 				NewFile: req.NewImage
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
-
-		return new(PresignedUrl: url);
 	}
 }

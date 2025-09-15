@@ -14,7 +14,7 @@ public readonly struct CustomId
 
 	public static CustomId New() => new(Guid.NewGuid());
 	public static CustomId New(Guid id) => new(id);
-	public static CustomId? New(string? id) => id is null ? null : new(Guid.Parse(id));
+	public static CustomId New(string id) => new(Guid.Parse(id));
 	public static Guid Unwrap(CustomId id) => id.Value;
 	public static Guid? Unwrap(CustomId? id) => id?.Value;
 

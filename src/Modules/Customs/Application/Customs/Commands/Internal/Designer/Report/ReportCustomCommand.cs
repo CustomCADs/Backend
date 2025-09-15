@@ -4,5 +4,5 @@ namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Repo
 
 public sealed record ReportCustomCommand(
 	CustomId Id,
-	AccountId DesignerId
+	AccountId CallerId
 ) : ICommand;

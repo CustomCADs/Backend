@@ -6,10 +6,10 @@ public class GalleryGroup : Group
 {
 	public GalleryGroup()
 	{
-		Configure(Paths.ProductsGallery, ep =>
+		Configure(Paths.ProductsGallery, x =>
 		{
-			ep.AllowAnonymous();
-			ep.Description(d => d.WithTags(Tags[Paths.ProductsGallery]));
+			x.AllowAnonymous();
+			x.Description(x => x.WithTags(Tags[Paths.ProductsGallery]));
 		});
 	}
 }

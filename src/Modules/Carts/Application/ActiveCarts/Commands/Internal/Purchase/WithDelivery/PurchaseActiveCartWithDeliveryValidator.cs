@@ -5,8 +5,8 @@ using FluentValidation;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 
-using static DomainConstants;
 using static ApplicationConstants.FluentMessages;
+using static DomainConstants;
 
 public class PurchaseActiveCartWithDeliveryValidator : CommandValidator<PurchaseActiveCartWithDeliveryCommand, PaymentDto>
 {

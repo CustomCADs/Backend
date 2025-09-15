@@ -4,7 +4,6 @@ using CustomCADs.Accounts.Domain.Repositories.Writes;
 using CustomCADs.Accounts.Persistence;
 using CustomCADs.Accounts.Persistence.Repositories;
 using CustomCADs.Shared.Persistence;
-using Microsoft.Extensions.Configuration;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;

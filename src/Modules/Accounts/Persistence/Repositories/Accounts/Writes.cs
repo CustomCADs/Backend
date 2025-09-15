@@ -13,7 +13,7 @@ public class Writes(AccountsContext context) : IAccountWrites
 	public async Task ViewProductAsync(AccountId id, ProductId productId, CancellationToken ct = default)
 		=> await context.ViewedProducts.AddAsync(
 				entity: ViewedProduct.Create(id, productId),
-				ct
+				cancellationToken: ct
 			).ConfigureAwait(false);
 
 	public void Remove(Account entity)

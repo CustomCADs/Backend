@@ -22,37 +22,37 @@ static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => ProductId.New(v)
+				x => ProductId.New(x)
 			);
 
 		builder.Property(x => x.CategoryId)
 			.HasConversion(
 				x => x.Value,
-				v => CategoryId.New(v)
+				x => CategoryId.New(x)
 			);
 
 		builder.Property(x => x.ImageId)
 			.HasConversion(
 				x => x.Value,
-				v => ImageId.New(v)
+				x => ImageId.New(x)
 			);
 
 		builder.Property(x => x.CadId)
 			.HasConversion(
 				x => x.Value,
-				v => CadId.New(v)
+				x => CadId.New(x)
 			);
 
 		builder.Property(x => x.CreatorId)
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		builder.Property(x => x.DesignerId)
 			.HasConversion(
 				x => AccountId.Unwrap(x),
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		return builder;
@@ -60,13 +60,13 @@ static class Utilities
 
 	public static EntityTypeBuilder<Product> SetValueObjects(this EntityTypeBuilder<Product> builder)
 	{
-		builder.OwnsOne(x => x.Counts, c =>
+		builder.OwnsOne(x => x.Counts, x =>
 		{
-			c.Property(x => x.Purchases)
+			x.Property(x => x.Purchases)
 				.IsRequired()
 				.HasColumnName(nameof(Product.Counts.Purchases));
 
-			c.Property(x => x.Views)
+			x.Property(x => x.Views)
 				.IsRequired()
 				.HasColumnName(nameof(Product.Counts.Views));
 		});

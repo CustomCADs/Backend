@@ -2,11 +2,10 @@
 
 namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetSortings;
 
-public class GetCustomSortingsHandler
-	: IQueryHandler<GetCustomSortingsQuery, string[]>
+public sealed class GetCustomSortingsHandler : IQueryHandler<GetCustomSortingsQuery, CustomSortingType[]>
 {
-	public Task<string[]> Handle(GetCustomSortingsQuery req, CancellationToken ct)
+	public Task<CustomSortingType[]> Handle(GetCustomSortingsQuery req, CancellationToken ct)
 		=> Task.FromResult(
-			Enum.GetNames<CustomSortingType>()
+			Enum.GetValues<CustomSortingType>()
 		);
 }

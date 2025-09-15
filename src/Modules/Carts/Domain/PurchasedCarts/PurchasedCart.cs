@@ -24,8 +24,8 @@ public class PurchasedCart : BaseAggregateRoot
 	public DateTimeOffset PurchasedAt { get; }
 	public AccountId BuyerId { get; private set; }
 	public ShipmentId? ShipmentId { get; private set; }
-	public decimal TotalCost => items.Sum(i => i.Cost);
-	public bool HasDelivery => items.Any(i => i.ForDelivery);
+	public decimal TotalCost => items.Sum(x => x.Cost);
+	public bool HasDelivery => items.Any(x => x.ForDelivery);
 	public IReadOnlyCollection<PurchasedCartItem> Items => [.. items.OrderByDescending(x => x.AddedAt)];
 
 	public static PurchasedCart Create(AccountId buyerId)
@@ -40,15 +40,15 @@ public class PurchasedCart : BaseAggregateRoot
 
 	public PurchasedCart AddItems(CartItemDto[] items)
 	{
-		this.items.AddRange([.. items.Select(i => PurchasedCartItem.Create(
+		this.items.AddRange([.. items.Select(x => PurchasedCartItem.Create(
 			cartId: this.Id,
-			productId: i.ProductId,
-			cadId: i.CadId,
-			customizationId: i.CustomizationId,
-			price: i.Price,
-			quantity: i.Quantity,
-			forDelivery: i.ForDelivery,
-			addedAt: i.AddedAt
+			productId: x.ProductId,
+			cadId: x.CadId,
+			customizationId: x.CustomizationId,
+			price: x.Price,
+			quantity: x.Quantity,
+			forDelivery: x.ForDelivery,
+			addedAt: x.AddedAt
 		))]);
 		this.ValidateItems();
 

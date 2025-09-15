@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
 namespace CustomCADs.Files.Application.Cads.Queries.Shared;
 
-public class GetCadCoordsByIdHandler(ICadReads reads, BaseCachingService<CadId, Cad> cache)
+public sealed class GetCadCoordsByIdHandler(ICadReads reads, BaseCachingService<CadId, Cad> cache)
 	: IQueryHandler<GetCadCoordsByIdQuery, GetCadCoordsByIdDto>
 {
 	public async Task<GetCadCoordsByIdDto> Handle(GetCadCoordsByIdQuery req, CancellationToken ct)

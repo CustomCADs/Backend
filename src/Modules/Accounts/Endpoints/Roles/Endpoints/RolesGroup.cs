@@ -7,10 +7,10 @@ public class RolesGroup : Group
 {
 	public RolesGroup()
 	{
-		Configure(Paths.Roles, ep =>
+		Configure(Paths.Roles, x =>
 		{
-			ep.Roles(Admin);
-			ep.Description(opt => opt.WithTags(Tags[Paths.Roles]));
+			x.Roles(Admin);
+			x.Description(opt => opt.WithTags(Tags[Paths.Roles]));
 		});
 	}
 }

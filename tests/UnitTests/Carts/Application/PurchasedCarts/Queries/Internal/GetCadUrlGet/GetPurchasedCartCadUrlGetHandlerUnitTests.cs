@@ -70,7 +70,7 @@ public class GetPurchasedCartCadUrlGetHandlerUnitTests : PurchasedCartsBaseUnitT
 		GetPurchasedCartItemCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
 			ProductId: CartItemsData.ValidProductId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 		GetPurchasedCartItemCadPresignedUrlGetHandler handler = new(reads.Object, sender.Object);
 
@@ -88,7 +88,7 @@ public class GetPurchasedCartCadUrlGetHandlerUnitTests : PurchasedCartsBaseUnitT
 		GetPurchasedCartItemCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
 			ProductId: CartItemsData.ValidProductId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 		GetPurchasedCartItemCadPresignedUrlGetHandler handler = new(reads.Object, sender.Object);
 
@@ -109,7 +109,7 @@ public class GetPurchasedCartCadUrlGetHandlerUnitTests : PurchasedCartsBaseUnitT
 		GetPurchasedCartItemCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
 			ProductId: CartItemsData.ValidProductId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 		GetPurchasedCartItemCadPresignedUrlGetHandler handler = new(reads.Object, sender.Object);
 
@@ -131,7 +131,7 @@ public class GetPurchasedCartCadUrlGetHandlerUnitTests : PurchasedCartsBaseUnitT
 		GetPurchasedCartItemCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
 			ProductId: CartItemsData.ValidProductId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 
 		// Assert
@@ -148,7 +148,7 @@ public class GetPurchasedCartCadUrlGetHandlerUnitTests : PurchasedCartsBaseUnitT
 		GetPurchasedCartItemCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
 			ProductId: CartItemsData.ValidProductId,
-			BuyerId: AccountId.New()
+			CallerId: AccountId.New()
 		);
 
 		// Assert
@@ -168,7 +168,7 @@ public class GetPurchasedCartCadUrlGetHandlerUnitTests : PurchasedCartsBaseUnitT
 		GetPurchasedCartItemCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
 			ProductId: CartItemsData.ValidProductId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 
 		// Assert

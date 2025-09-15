@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
-public record CalculateShipmentQuery(
+public sealed record CalculateShipmentQuery(
 	double[] Weights,
 	AddressDto Address
 ) : IQuery<CalculateShipmentDto[]>;

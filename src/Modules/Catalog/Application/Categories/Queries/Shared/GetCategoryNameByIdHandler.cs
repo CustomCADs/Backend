@@ -3,8 +3,10 @@ using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
 namespace CustomCADs.Catalog.Application.Categories.Queries.Shared;
 
-public sealed class GetCategoryNameByIdHandler(ICategoryReads reads, BaseCachingService<CategoryId, Category> cache)
-	: IQueryHandler<GetCategoryNameByIdQuery, string>
+public sealed class GetCategoryNameByIdHandler(
+	ICategoryReads reads,
+	BaseCachingService<CategoryId, Category> cache
+) : IQueryHandler<GetCategoryNameByIdQuery, string>
 {
 	public async Task<string> Handle(GetCategoryNameByIdQuery req, CancellationToken ct)
 	{

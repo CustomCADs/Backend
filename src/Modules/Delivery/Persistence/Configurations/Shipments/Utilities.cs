@@ -21,14 +21,14 @@ public static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => ShipmentId.New(v)
+				x => ShipmentId.New(x)
 			);
 
 		builder.Property(x => x.BuyerId)
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		return builder;

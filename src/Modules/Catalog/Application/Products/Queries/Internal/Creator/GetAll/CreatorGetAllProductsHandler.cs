@@ -10,27 +10,25 @@ public sealed class CreatorGetAllProductsHandler(IProductReads reads, IRequestSe
 {
 	public async Task<Result<CreatorGetAllProductsDto>> Handle(CreatorGetAllProductsQuery req, CancellationToken ct)
 	{
-		ProductQuery productQuery = new(
-			CategoryId: req.CategoryId,
-			CreatorId: req.CreatorId,
-			TagIds: req.TagIds,
-			Name: req.Name,
-			Sorting: req.Sorting,
-			Pagination: req.Pagination
-		);
-		Result<Product> result = await reads.AllAsync(productQuery, track: false, ct: ct).ConfigureAwait(false);
-
-		CategoryId[] categoryIds = [.. result.Items.Select(p => p.CategoryId).Distinct()];
-		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
-			new GetCategoryNamesByIdsQuery(categoryIds),
-			ct
+		Result<Product> result = await reads.AllAsync(
+			query: new(
+				CategoryId: req.CategoryId,
+				CreatorId: req.CallerId,
+				TagIds: req.TagIds,
+				Name: req.Name,
+				Sorting: req.Sorting,
+				Pagination: req.Pagination
+			),
+			track: false,
+			ct: ct
 		).ConfigureAwait(false);
 
-		return new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(p => p.ToCreatorGetAllDto(
-				categoryName: categories[p.CategoryId]
-			))]
-		);
+		CategoryId[] categoryIds = [.. result.Items.Select(x => x.CategoryId).Distinct()];
+		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
+			query: new GetCategoryNamesByIdsQuery(categoryIds),
+			ct: ct
+		).ConfigureAwait(false);
+
+		return result.ToNewResult(x => x.ToCreatorGetAllDto(categoryName: categories[x.CategoryId]));
 	}
 }

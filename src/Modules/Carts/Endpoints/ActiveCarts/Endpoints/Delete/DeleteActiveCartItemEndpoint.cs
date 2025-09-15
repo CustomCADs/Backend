@@ -11,7 +11,7 @@ public sealed class DeleteActiveCartItemEndpoint(IRequestSender sender)
 	{
 		Delete("");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Remove Item")
 			.WithDescription("Remove an Item from your Cart")
 		);
@@ -20,11 +20,11 @@ public sealed class DeleteActiveCartItemEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DeleteActiveCartItemRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new RemoveActiveCartItemCommand(
+			command: new RemoveActiveCartItemCommand(
 				ProductId: ProductId.New(req.ProductId),
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

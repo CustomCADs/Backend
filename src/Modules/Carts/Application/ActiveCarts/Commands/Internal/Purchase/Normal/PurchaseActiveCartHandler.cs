@@ -8,52 +8,56 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
 
-public sealed class PurchaseActiveCartHandler(IActiveCartReads reads, IRequestSender sender, IPaymentService payment)
-	: ICommandHandler<PurchaseActiveCartCommand, PaymentDto>
+public sealed class PurchaseActiveCartHandler(
+	IActiveCartReads reads,
+	IRequestSender sender,
+	IPaymentService payment
+) : ICommandHandler<PurchaseActiveCartCommand, PaymentDto>
 {
 	public async Task<PaymentDto> Handle(PurchaseActiveCartCommand req, CancellationToken ct)
 	{
-		if (!await reads.ExistsAsync(req.BuyerId, ct).ConfigureAwait(false))
+		if (!await reads.ExistsAsync(req.CallerId, ct).ConfigureAwait(false))
 		{
 			throw new CustomException("Cart without Items cannot be purchased.");
 		}
 
-		ActiveCartItem[] items = await reads.AllAsync(req.BuyerId, track: false, ct: ct).ConfigureAwait(false);
-
+		ActiveCartItem[] items = await reads.AllAsync(req.CallerId, track: false, ct: ct).ConfigureAwait(false);
 		if (items.Any(x => x.ForDelivery))
 		{
 			throw CustomException.Delivery<ActiveCartItem>(markedForDelivery: true);
 		}
 
 		Dictionary<ProductId, decimal> prices = await sender.SendQueryAsync(
-			new GetProductPricesByIdsQuery(
-				Ids: [.. items.Select(i => i.ProductId)]
+			query: new GetProductPricesByIdsQuery(
+				Ids: [.. items.Select(x => x.ProductId)]
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
-		decimal totalCost = prices.Sum(p => p.Value);
+		decimal totalSum = prices.Sum(x => x.Value);
 
 		string buyer = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(req.BuyerId),
-			ct
+			query: new GetUsernameByIdQuery(req.CallerId),
+			ct: ct
 		).ConfigureAwait(false);
 
 		PurchasedCartId purchasedCartId = await sender.SendCommandAsync(
-			new CreatePurchasedCartCommand(
-				BuyerId: req.BuyerId,
-				Items: [.. items.Select(x => x.ToDto(buyer))],
-				Prices: prices
+			command: new CreatePurchasedCartCommand(
+				BuyerId: req.CallerId,
+				Items: items.ToDictionary(
+					x => x.ToDto(buyer),
+					x => prices[x.ProductId]
+				)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		PaymentDto response = await payment.InitializeCartPayment(
 			paymentMethodId: req.PaymentMethodId,
-			buyerId: req.BuyerId,
+			buyerId: req.CallerId,
 			cartId: purchasedCartId,
-			price: totalCost,
-			description: $"{buyer} bought {items.Length} products for a total of {totalCost}$.",
-			ct
+			total: totalSum,
+			description: (buyer, items.Length),
+			ct: ct
 		).ConfigureAwait(false);
 
 		return response;

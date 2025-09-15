@@ -29,7 +29,11 @@ public class UnitOfWork(NotificationsContext context) : IUnitOfWork
 		try
 		{
 			await context.BulkInsertAsync(notifications, cancellationToken: ct).ConfigureAwait(false);
-			return notifications;
+
+			return await context.Notifications
+				.Where(x => notifications.Select(x => x.Id).Contains(x.Id))
+				.ToArrayAsync(ct)
+				.ConfigureAwait(false);
 		}
 		catch (DbUpdateConcurrencyException ex)
 		{

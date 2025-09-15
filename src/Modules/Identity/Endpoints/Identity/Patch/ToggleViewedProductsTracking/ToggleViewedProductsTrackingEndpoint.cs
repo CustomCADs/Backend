@@ -10,7 +10,7 @@ public sealed class ToggleViewedProductsTrackingEndpoint(IRequestSender sender)
 	{
 		Patch("viewed-products");
 		Group<IdentityGroup>();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.ToggleViewedProductsTracking)
 			.WithSummary("Viewed Products Tracking")
 			.WithDescription("Toggle whether the Products you View get Tracked")
@@ -20,10 +20,10 @@ public sealed class ToggleViewedProductsTrackingEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new ToggleViewedProductsTrackingCommand(
+			command: new ToggleViewedProductsTrackingCommand(
 				Username: User.GetName()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

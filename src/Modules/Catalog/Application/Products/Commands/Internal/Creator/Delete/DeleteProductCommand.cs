@@ -4,5 +4,5 @@ namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Dele
 
 public sealed record DeleteProductCommand(
 	ProductId Id,
-	AccountId CreatorId
+	AccountId CallerId
 ) : ICommand;

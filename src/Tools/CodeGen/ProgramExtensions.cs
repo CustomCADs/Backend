@@ -9,6 +9,7 @@ using CustomCADs.Shared.Infrastructure.Email;
 using CustomCADs.Shared.Infrastructure.Payment;
 using CustomCADs.Shared.Infrastructure.Utilities;
 using CustomCADs.Shared.Persistence;
+using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -21,7 +22,7 @@ using static UserConstants;
 public static class ProgramExtensions
 {
 	private static string GetConnectionString(this IConfiguration config)
-		=> config.GetApplicationConnectionString(ConnectionString);
+		=> config.GetApplicationConnectionString(ConnectionString, DatabaseConnectionException.Missing(ConnectionString));
 
 	public static IServiceCollection AddUseCases(this IServiceCollection services, IWebHostEnvironment env, bool? overrideCodeGenTo = null)
 	{

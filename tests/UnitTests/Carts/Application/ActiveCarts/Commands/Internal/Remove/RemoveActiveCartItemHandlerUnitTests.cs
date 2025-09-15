@@ -29,7 +29,7 @@ public class RemoveActiveCartItemHandlerUnitTests : ActiveCartsBaseUnitTests
 	{
 		// Arrange
 		RemoveActiveCartItemCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ValidProductId
 		);
 
@@ -45,7 +45,7 @@ public class RemoveActiveCartItemHandlerUnitTests : ActiveCartsBaseUnitTests
 	{
 		// Arrange
 		RemoveActiveCartItemCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ValidProductId
 		);
 
@@ -64,7 +64,7 @@ public class RemoveActiveCartItemHandlerUnitTests : ActiveCartsBaseUnitTests
 			.ReturnsAsync(null as ActiveCartItem);
 
 		RemoveActiveCartItemCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ValidProductId
 		);
 

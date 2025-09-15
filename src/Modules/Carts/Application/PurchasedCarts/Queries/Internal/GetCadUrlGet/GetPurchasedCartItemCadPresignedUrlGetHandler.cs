@@ -15,7 +15,7 @@ public sealed class GetPurchasedCartItemCadPresignedUrlGetHandler(IPurchasedCart
 		PurchasedCart cart = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<PurchasedCart>.ById(req.Id);
 
-		if (cart.BuyerId != req.BuyerId)
+		if (cart.BuyerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<PurchasedCart>.ById(req.Id);
 		}
@@ -28,13 +28,13 @@ public sealed class GetPurchasedCartItemCadPresignedUrlGetHandler(IPurchasedCart
 			?? throw CustomNotFoundException<PurchasedCartItem>.ById(req.ProductId);
 
 		DownloadFileResponse file = await sender.SendQueryAsync(
-			new GetCadPresignedUrlGetByIdQuery(item.CadId),
-			ct
+			query: new GetCadPresignedUrlGetByIdQuery(item.CadId),
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetCadCoordsByIdDto coords = await sender.SendQueryAsync(
-			new GetCadCoordsByIdQuery(item.CadId),
-			ct
+			query: new GetCadCoordsByIdQuery(item.CadId),
+			ct: ct
 		).ConfigureAwait(false);
 
 		return new(

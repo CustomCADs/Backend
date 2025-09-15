@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Products.ValueObjects;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.ValueObjects;
 
 namespace CustomCADs.Catalog.Domain.Repositories.Reads;
 
@@ -14,5 +14,5 @@ public record ProductQuery(
 	CategoryId? CategoryId = null,
 	ProductStatus? Status = null,
 	string? Name = null,
-	ProductSorting? Sorting = null
+	Sorting<ProductSortingType>? Sorting = null
 );

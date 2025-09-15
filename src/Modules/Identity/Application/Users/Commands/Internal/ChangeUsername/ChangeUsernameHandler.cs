@@ -3,8 +3,10 @@ using CustomCADs.Shared.Application.Events.Identity;
 
 namespace CustomCADs.Identity.Application.Users.Commands.Internal.ChangeUsername;
 
-public class ChangeUsernameHandler(IUserService service, IEventRaiser raiser)
-	: ICommandHandler<ChangeUsernameCommand>
+public sealed class ChangeUsernameHandler(
+	IUserService service,
+	IEventRaiser raiser
+) : ICommandHandler<ChangeUsernameCommand>
 {
 	public async Task Handle(ChangeUsernameCommand req, CancellationToken ct)
 	{
@@ -14,7 +16,7 @@ public class ChangeUsernameHandler(IUserService service, IEventRaiser raiser)
 		await service.UpdateUsernameAsync(user.Id, user.Username).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			new UserEditedApplicationEvent(
+			@event: new UserEditedApplicationEvent(
 				Id: user.AccountId,
 				Username: user.Username
 			)

@@ -10,7 +10,7 @@ public sealed class GetRoleEndpoint(IRequestSender sender)
 	{
 		Get("{name}");
 		Group<RolesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See a Role in detail")
 		);
@@ -18,9 +18,9 @@ public sealed class GetRoleEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(GetRoleRequest req, CancellationToken ct)
 	{
-		RoleReadDto role = await sender.SendQueryAsync(
-			new GetRoleByIdQuery(RoleId.New(req.Id)),
-			ct
+		RoleDto role = await sender.SendQueryAsync(
+			query: new GetRoleByIdQuery(RoleId.New(req.Id)),
+			ct: ct
 		).ConfigureAwait(false);
 
 		RoleResponse response = role.ToResponse();

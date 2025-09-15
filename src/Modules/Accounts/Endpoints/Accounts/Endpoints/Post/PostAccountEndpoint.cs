@@ -13,7 +13,7 @@ public sealed class PostAccountEndpoint(IRequestSender sender)
 	{
 		Post("");
 		Group<AccountsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Create")
 			.WithDescription("Create an Account")
 		);
@@ -22,7 +22,7 @@ public sealed class PostAccountEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PostAccountRequest req, CancellationToken ct)
 	{
 		AccountId id = await sender.SendCommandAsync(
-			new CreateAccountCommand(
+			command: new CreateAccountCommand(
 				Role: req.Role,
 				Username: req.Username,
 				Email: req.Email,
@@ -30,11 +30,11 @@ public sealed class PostAccountEndpoint(IRequestSender sender)
 				FirstName: req.FirstName,
 				LastName: req.LastName
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetAccountByIdDto newAccount = await sender.SendQueryAsync(
-			new GetAccountByIdQuery(id)
+			query: new GetAccountByIdQuery(id)
 		, ct).ConfigureAwait(false);
 
 		AccountResponse response = newAccount.ToResponse();

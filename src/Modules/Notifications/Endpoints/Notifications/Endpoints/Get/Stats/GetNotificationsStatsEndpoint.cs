@@ -10,7 +10,7 @@ public sealed class GetNotificationsStatsEndpoint(IRequestSender sender)
 	{
 		Get("stats");
 		Group<NotificationsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Stats")
 			.WithDescription("See your Notifications' stats")
 		);
@@ -19,10 +19,10 @@ public sealed class GetNotificationsStatsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		CountNotificationsDto response = await sender.SendQueryAsync(
-			new CountNotificationsQuery(
-				ReceiverId: User.GetAccountId()
+			query: new CountNotificationsQuery(
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

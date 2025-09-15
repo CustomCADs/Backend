@@ -23,7 +23,7 @@ static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		return builder;

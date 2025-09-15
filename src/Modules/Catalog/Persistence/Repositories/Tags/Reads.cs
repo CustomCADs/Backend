@@ -15,13 +15,13 @@ public sealed class Reads(CatalogContext context) : ITagReads
 	public async Task<Tag?> SingleByIdAsync(TagId id, bool track = true, CancellationToken ct = default)
 		=> await context.Tags
 			.WithTracking(track)
-			.FirstOrDefaultAsync(p => p.Id == id, ct)
+			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<bool> ExistsByIdAsync(TagId id, CancellationToken ct = default)
 		=> await context.Tags
 			.WithTracking(false)
-			.AnyAsync(p => p.Id == id, ct)
+			.AnyAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<Dictionary<TagId, int>> CountByProductAsync(CancellationToken ct = default)

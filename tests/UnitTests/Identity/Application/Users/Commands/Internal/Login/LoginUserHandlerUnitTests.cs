@@ -1,5 +1,6 @@
 using CustomCADs.Identity.Application.Contracts;
 using CustomCADs.Identity.Application.Users.Commands.Internal.Login;
+using CustomCADs.Identity.Application.Users.Dtos;
 using CustomCADs.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
 
@@ -11,21 +12,28 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 {
 	private readonly LoginUserHandler handler;
 	private readonly Mock<IUserService> service = new();
-	private readonly Mock<ITokenService> tokens = new();
+	private readonly Mock<ITokenService> tokenService = new();
 
-	private readonly User user = CreateUser(username: MaxValidUsername);
+	private readonly User User = CreateUser(username: MaxValidUsername);
+	private static readonly RefreshToken RefreshToken = RefreshToken.Create("refresh-token", ValidId, false);
+	private static readonly TokensDto Tokens = new(
+		Role: "role",
+		AccessToken: new("access-token", DateTimeOffset.UtcNow),
+		RefreshToken: new("refresh-token", DateTimeOffset.UtcNow),
+		CsrfToken: new("csrf-token", DateTimeOffset.UtcNow)
+	);
 
 	public LoginUserHandlerUnitTests()
 	{
-		handler = new(service.Object, tokens.Object);
+		handler = new(service.Object, tokenService.Object);
 
-		const string Token = "refresh-token";
-		tokens.Setup(x => x.GenerateRefreshToken()).Returns(Token);
-		service.Setup(x => x.AddRefreshTokenAsync(user, Token, false))
-			.ReturnsAsync(RefreshToken.Create(Token, user.Id, false));
+		tokenService.Setup(x => x.IssueRefreshToken(
+			It.IsAny<Func<string, RefreshToken>>())
+		).Returns(RefreshToken);
+		tokenService.Setup(x => x.IssueTokens(User, RefreshToken)).Returns(Tokens);
 
-		service.Setup(x => x.GetByUsernameAsync(user.Username)).ReturnsAsync(user);
-		service.Setup(x => x.CheckPasswordAsync(user.Username, MinValidPassword)).ReturnsAsync(true);
+		service.Setup(x => x.GetByUsernameAsync(User.Username)).ReturnsAsync(User);
+		service.Setup(x => x.CheckPasswordAsync(User.Username, MinValidPassword)).ReturnsAsync(true);
 	}
 
 	[Fact]
@@ -33,7 +41,7 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 	{
 		// Arrange
 		LoginUserCommand command = new(
-			Username: user.Username,
+			Username: User.Username,
 			Password: MinValidPassword,
 			LongerExpireTime: false
 		);
@@ -44,17 +52,54 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 		// Assert
 		service.Verify(x => x.GetByUsernameAsync(MaxValidUsername), Times.Once());
 		service.Verify(x => x.GetIsLockedOutAsync(MaxValidUsername), Times.Once());
-		service.Verify(x => x.CheckPasswordAsync(user.Username, MinValidPassword), Times.Once());
+		service.Verify(x => x.CheckPasswordAsync(User.Username, MinValidPassword), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldIssueTokens()
+	{
+		// Arrange
+		LoginUserCommand command = new(
+			Username: User.Username,
+			Password: MinValidPassword,
+			LongerExpireTime: false
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		tokenService.Verify(x => x.IssueRefreshToken(
+			It.IsAny<Func<string, RefreshToken>>()
+		), Times.Once());
+		tokenService.Verify(x => x.IssueTokens(User, RefreshToken), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldReturnResult()
+	{
+		// Arrange
+		LoginUserCommand command = new(
+			Username: User.Username,
+			Password: MinValidPassword,
+			LongerExpireTime: false
+		);
+
+		// Act
+		TokensDto tokens = await handler.Handle(command, ct);
+
+		// Assert
+		Assert.Equal(Tokens, tokens);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldThrowException_WhenPasswordIncorrect()
 	{
 		// Arrange
-		service.Setup(x => x.CheckPasswordAsync(user.Username, MinValidPassword)).ReturnsAsync(false);
+		service.Setup(x => x.CheckPasswordAsync(User.Username, MinValidPassword)).ReturnsAsync(false);
 
 		LoginUserCommand command = new(
-			Username: user.Username,
+			Username: User.Username,
 			Password: MinValidPassword,
 			LongerExpireTime: false
 		);
@@ -70,10 +115,10 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUserLockedOut()
 	{
 		// Arrange
-		service.Setup(x => x.GetIsLockedOutAsync(user.Username)).ReturnsAsync(DateTimeOffset.UtcNow);
+		service.Setup(x => x.GetIsLockedOutAsync(User.Username)).ReturnsAsync(DateTimeOffset.UtcNow);
 
 		LoginUserCommand command = new(
-			Username: user.Username,
+			Username: User.Username,
 			Password: MinValidPassword,
 			LongerExpireTime: false
 		);

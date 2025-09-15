@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
-public record GetShipmentWaybillQuery(
+public sealed record GetShipmentWaybillQuery(
 	ShipmentId Id,
-	AccountId DesignerId
+	AccountId CallerId
 ) : IQuery<byte[]>;

@@ -11,7 +11,7 @@ public static class CookieHelper
 	private const string UsernameCookie = "username";
 
 	public static string? GetRefreshTokenCookie(this HttpContext context)
-		=> context.Request.Cookies.FirstOrDefault(c => c.Key == RefreshTokenCookie).Value;
+		=> context.Request.Cookies.FirstOrDefault(x => x.Key == RefreshTokenCookie).Value;
 
 	public static void SaveAccessTokenCookie(this HttpContext context, TokenDto jwt, string? domain)
 		=> context.Response.Cookies.Append(AccessTokenCookie, jwt.Value, CookieOptions(jwt.ExpiresAt, httpOnly: true, domain: domain));

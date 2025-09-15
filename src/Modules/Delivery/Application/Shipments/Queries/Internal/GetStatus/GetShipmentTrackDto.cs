@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetStatus;
 
-public record GetShipmentTrackDto(
+public sealed record GetShipmentTrackDto(
 	string Message,
 	string? Place
 );

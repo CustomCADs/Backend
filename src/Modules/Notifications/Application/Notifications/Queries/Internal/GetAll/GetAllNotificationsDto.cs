@@ -1,9 +1,9 @@
+using CustomCADs.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Application.Dtos.Notifications;
-using CustomCADs.Shared.Domain.Enums;
 
 namespace CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
 
-public record GetAllNotificationsDto(
+public sealed record GetAllNotificationsDto(
 	NotificationId Id,
 	NotificationType Type,
 	NotificationStatus Status,

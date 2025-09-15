@@ -14,7 +14,7 @@ public sealed class PostActiveCartItemEndpoint(IRequestSender sender)
 	{
 		Post("");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Add Item")
 			.WithDescription("Add an Item to your Cart")
 		);
@@ -22,24 +22,24 @@ public sealed class PostActiveCartItemEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(PostActiveCartItemRequest req, CancellationToken ct)
 	{
-		AccountId buyerId = User.GetAccountId();
+		AccountId callerId = User.GetAccountId();
 
 		await sender.SendCommandAsync(
-			new AddActiveCartItemCommand(
+			command: new AddActiveCartItemCommand(
 				ProductId: ProductId.New(req.ProductId),
 				ForDelivery: req.ForDelivery,
 				CustomizationId: CustomizationId.New(req.CustomizationId),
-				BuyerId: buyerId
+				CallerId: callerId
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		ActiveCartItemDto item = await sender.SendQueryAsync(
-			new GetActiveCartItemQuery(
-				BuyerId: buyerId,
+			query: new GetActiveCartItemQuery(
+				CallerId: callerId,
 				ProductId: ProductId.New(req.ProductId)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		ActiveCartItemResponse response = item.ToResponse();

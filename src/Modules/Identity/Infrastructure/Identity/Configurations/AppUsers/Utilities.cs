@@ -12,10 +12,10 @@ public static class Utilities
 {
 	public static EntityTypeBuilder<AppUser> SetStronglyTypedIds(this EntityTypeBuilder<AppUser> builder)
 	{
-		builder.Property(u => u.AccountId)
+		builder.Property(x => x.AccountId)
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		return builder;
@@ -34,7 +34,7 @@ public static class Utilities
 
 	public static EntityTypeBuilder<AppUser> SetValidations(this EntityTypeBuilder<AppUser> builder)
 	{
-		builder.Property(u => u.AccountId)
+		builder.Property(x => x.AccountId)
 			.IsRequired()
 			.HasColumnName(nameof(AppUser.AccountId));
 

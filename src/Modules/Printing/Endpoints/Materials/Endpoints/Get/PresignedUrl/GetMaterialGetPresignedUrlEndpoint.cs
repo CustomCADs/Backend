@@ -13,7 +13,7 @@ public sealed class GetMaterialGetPresignedUrlEndpoint(IRequestSender sender)
 		Post("presignedUrls/download");
 		Group<MaterialsGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Download Texture")
 			.WithDescription("Download your Material's Texture")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -23,10 +23,10 @@ public sealed class GetMaterialGetPresignedUrlEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetMaterialGetPresignedUrlRequest req, CancellationToken ct)
 	{
 		DownloadFileResponse response = await sender.SendQueryAsync(
-			new GetMaterialTexturePresignedUrlGetQuery(
+			query: new GetMaterialTexturePresignedUrlGetQuery(
 				Id: MaterialId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

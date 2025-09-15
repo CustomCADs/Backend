@@ -9,7 +9,7 @@ public class CancelShipmentEndpoint(IRequestSender sender)
 	{
 		Patch("");
 		Group<ShipmentsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Cancel")
 			.WithDescription("Cancel a Shipment (this doesn't delete the shipment, it simply cancels the requested delivery)")
 		);
@@ -18,11 +18,11 @@ public class CancelShipmentEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancelShipmentRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new CancelShipmentCommand(
+			command: new CancelShipmentCommand(
 				Id: ShipmentId.New(req.Id),
 				Comment: req.Comment
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

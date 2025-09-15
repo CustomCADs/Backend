@@ -50,7 +50,7 @@ public class GetAllShipmentsHandlerUnitTests : ShipmentsBaseUnitTests
 		// Arrange
 		GetAllShipmentsQuery query = new(
 			Pagination: new(),
-			CustomerId: null,
+			CallerId: null,
 			Sorting: null
 		);
 
@@ -70,7 +70,7 @@ public class GetAllShipmentsHandlerUnitTests : ShipmentsBaseUnitTests
 		// Arrange
 		GetAllShipmentsQuery query = new(
 			Pagination: new(),
-			CustomerId: null,
+			CallerId: null,
 			Sorting: null
 		);
 
@@ -90,7 +90,7 @@ public class GetAllShipmentsHandlerUnitTests : ShipmentsBaseUnitTests
 		// Arrange
 		GetAllShipmentsQuery query = new(
 			Pagination: new(),
-			CustomerId: null,
+			CallerId: null,
 			Sorting: null
 		);
 

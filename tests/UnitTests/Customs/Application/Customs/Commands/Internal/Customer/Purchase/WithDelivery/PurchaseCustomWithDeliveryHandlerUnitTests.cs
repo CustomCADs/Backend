@@ -71,7 +71,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -93,7 +93,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -123,7 +123,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -137,7 +137,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<AccountId>(x => x == ValidBuyerId),
 			It.Is<CustomId>(x => x == ValidId),
 			It.Is<decimal>(x => x == ValidPrice),
-			It.Is<string>(x => x.Contains(custom.Name)),
+			It.Is<(string, string Name, string)>(x => x.Name == custom.Name),
 			ct
 		), Times.Once());
 	}
@@ -152,7 +152,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -176,7 +176,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<AccountId>(x => x == ValidBuyerId),
 			It.Is<CustomId>(x => x == ValidId),
 			It.Is<decimal>(x => x == ValidPrice),
-			It.Is<string>(x => x.Contains(custom.Name)),
+			It.Is<(string, string Name, string)>(x => x.Name == custom.Name),
 			ct
 		)).ReturnsAsync(expected);
 
@@ -186,7 +186,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -208,7 +208,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: buyerId,
+			CallerId: buyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -234,7 +234,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -261,7 +261,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -286,7 +286,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -311,7 +311,7 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);

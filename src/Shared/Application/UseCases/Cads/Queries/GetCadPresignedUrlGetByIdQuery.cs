@@ -2,6 +2,6 @@
 
 namespace CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
-public record GetCadPresignedUrlGetByIdQuery(
+public sealed record GetCadPresignedUrlGetByIdQuery(
 	CadId Id
 ) : IQuery<DownloadFileResponse>;

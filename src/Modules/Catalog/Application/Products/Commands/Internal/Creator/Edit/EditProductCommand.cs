@@ -8,5 +8,5 @@ public sealed record EditProductCommand(
 	string Description,
 	decimal Price,
 	CategoryId CategoryId,
-	AccountId CreatorId
+	AccountId CallerId
 ) : ICommand;

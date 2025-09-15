@@ -1,5 +1,5 @@
+using CustomCADs.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Application.Dtos.Notifications;
-using CustomCADs.Shared.Domain.Enums;
 
 namespace CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Get.All;
 

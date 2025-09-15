@@ -41,7 +41,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -57,7 +57,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -73,7 +73,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -96,7 +96,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -114,7 +114,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -138,7 +138,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert
@@ -157,7 +157,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert

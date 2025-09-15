@@ -23,7 +23,7 @@ public interface IUserService
 	#region Mutation
 	Task<bool> CheckPasswordAsync(string username, string password);
 	Task UpdateUsernameAsync(UserId id, string username);
-	Task<RefreshToken> AddRefreshTokenAsync(User user, string token, bool longerSession);
+	Task SaveRefreshTokensAsync(User user);
 	Task RevokeRefreshTokenAsync(string token);
 	#endregion
 

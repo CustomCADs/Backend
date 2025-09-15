@@ -5,7 +5,13 @@ namespace CustomCADs.Accounts.Domain.Accounts;
 public class Account : BaseAggregateRoot
 {
 	private Account() { }
-	private Account(string role, string username, string email, string? firstName, string? lastName) : this()
+	private Account(
+		string role,
+		string username,
+		string email,
+		string? firstName,
+		string? lastName
+	) : this()
 	{
 		TrackViewedProducts = true;
 		CreatedAt = DateTimeOffset.UtcNow;
@@ -49,7 +55,7 @@ public class Account : BaseAggregateRoot
 	) => new Account(role, username, email, firstName, lastName)
 	{
 		Id = id,
-		CreatedAt = createdAt
+		CreatedAt = createdAt,
 	}
 	.ValidateRole()
 	.ValidateUsername()

@@ -13,5 +13,5 @@ public sealed record PurchaseCustomWithDeliveryCommand(
 	AddressDto Address,
 	ContactDto Contact,
 	CustomizationId CustomizationId,
-	AccountId BuyerId
+	AccountId CallerId
 ) : ICommand<PaymentDto>;

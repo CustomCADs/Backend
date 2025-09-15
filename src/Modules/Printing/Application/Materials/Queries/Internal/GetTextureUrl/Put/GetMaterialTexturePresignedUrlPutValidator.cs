@@ -6,7 +6,7 @@ namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetTextureU
 
 using static ApplicationConstants.FluentMessages;
 
-public class GetMaterialTexturePresignedUrlPutValidator : QueryValidator<GetMaterialTexturePresignedUrlPutQuery, GetMaterialTexturePresignedUrlPutDto>
+public class GetMaterialTexturePresignedUrlPutValidator : QueryValidator<GetMaterialTexturePresignedUrlPutQuery, string>
 {
 	public GetMaterialTexturePresignedUrlPutValidator()
 	{

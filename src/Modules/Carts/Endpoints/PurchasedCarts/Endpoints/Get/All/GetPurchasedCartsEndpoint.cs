@@ -11,7 +11,7 @@ public sealed class GetPurchasedCartsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<PurchasedCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all your Carts with Sorting and Pagination options")
 		);
@@ -19,20 +19,18 @@ public sealed class GetPurchasedCartsEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(GetPurchasedCartsRequest req, CancellationToken ct)
 	{
-		Result<GetAllPurchasedCartsDto> carts = await sender.SendQueryAsync(
-			new GetAllPurchasedCartsQuery(
-				BuyerId: User.GetAccountId(),
+		Result<GetAllPurchasedCartsDto> result = await sender.SendQueryAsync(
+			query: new GetAllPurchasedCartsQuery(
+				CallerId: User.GetAccountId(),
 				PaymentStatus: req.PaymentStatus,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Result<GetPurchasedCartsResponse> response = new(
-			Count: carts.Count,
-			Items: [.. carts.Items.Select(c => c.ToResponse())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(
+			response: result.ToNewResult(x => x.ToResponse())
+		).ConfigureAwait(false);
 	}
 }

@@ -54,8 +54,8 @@ public static class ApplicationConstants
 
 		public static class Links
 		{
-			public const string? ProductEdited = null;
-			public const string? ProductDeleted = null;
+			public const string ProductEdited = "/gallery/{0}";
+			public const string ProductDeleted = "/cart";
 			public const string? ProductValidated = null;
 			public const string? ProductReported = null;
 			public const string? ProductTagAdded = null;
@@ -69,7 +69,7 @@ public static class ApplicationConstants
 			public const string? CustomCanceled = null;
 			public const string? CustomFinished = null;
 			public const string? CustomCompleted = null;
-			public const string? PaymentCompleted = null;
+			public const string PaymentCompleted = "{0}/{1}";
 			public const string? PaymentFailed = null;
 		}
 	}

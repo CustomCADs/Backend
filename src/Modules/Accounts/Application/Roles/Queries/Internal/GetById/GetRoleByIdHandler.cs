@@ -3,9 +3,9 @@
 namespace CustomCADs.Accounts.Application.Roles.Queries.Internal.GetById;
 
 public sealed class GetRoleByIdHandler(IRoleReads reads, BaseCachingService<RoleId, Role> cache)
-	: IQueryHandler<GetRoleByIdQuery, RoleReadDto>
+	: IQueryHandler<GetRoleByIdQuery, RoleDto>
 {
-	public async Task<RoleReadDto> Handle(GetRoleByIdQuery req, CancellationToken ct)
+	public async Task<RoleDto> Handle(GetRoleByIdQuery req, CancellationToken ct)
 	{
 		Role role = await cache.GetOrCreateAsync(
 			id: req.Id,

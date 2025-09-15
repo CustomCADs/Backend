@@ -5,15 +5,17 @@ using CustomCADs.Shared.Application.UseCases.Images.Commands;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.SetFiles;
 
-public sealed class SetProductFilesHandler(IProductReads reads, IRequestSender sender)
-	: ICommandHandler<SetProductFilesCommand>
+public sealed class SetProductFilesHandler(
+	IProductReads reads,
+	IRequestSender sender
+) : ICommandHandler<SetProductFilesCommand>
 {
 	public async Task Handle(SetProductFilesCommand req, CancellationToken ct)
 	{
 		Product product = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(req.Id);
 
-		if (product.CreatorId != req.CreatorId)
+		if (product.CreatorId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Product>.ById(req.Id);
 		}
@@ -22,14 +24,14 @@ public sealed class SetProductFilesHandler(IProductReads reads, IRequestSender s
 		{
 			await sender.SendCommandAsync(
 				new SetImageKeyCommand(product.ImageId, req.Image.Key),
-				ct
+				ct: ct
 			).ConfigureAwait(false);
 		}
 		if (req.Image.ContentType is not null)
 		{
 			await sender.SendCommandAsync(
 				new SetImageContentTypeCommand(product.ImageId, req.Image.ContentType),
-				ct
+				ct: ct
 			).ConfigureAwait(false);
 		}
 
@@ -37,21 +39,21 @@ public sealed class SetProductFilesHandler(IProductReads reads, IRequestSender s
 		{
 			await sender.SendCommandAsync(
 				new SetCadKeyCommand(product.CadId, req.Cad.Key),
-				ct
+				ct: ct
 			).ConfigureAwait(false);
 		}
 		if (req.Cad.ContentType is not null)
 		{
 			await sender.SendCommandAsync(
 				new SetCadContentTypeCommand(product.CadId, req.Cad.ContentType),
-				ct
+				ct: ct
 			).ConfigureAwait(false);
 		}
 		if (req.Cad.Volume is not null)
 		{
 			await sender.SendCommandAsync(
 				new SetCadVolumeCommand(product.CadId, req.Cad.Volume.Value),
-				ct
+				ct: ct
 			).ConfigureAwait(false);
 		}
 	}

@@ -4,8 +4,10 @@ using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.Notifications.Application.Notifications.Commands.Internal.Hide;
 
-public class HideNotificationHandler(INotificationReads reads, IUnitOfWork uow)
-	: ICommandHandler<HideNotificationCommand>
+public sealed class HideNotificationHandler(
+	INotificationReads reads,
+	IUnitOfWork uow
+) : ICommandHandler<HideNotificationCommand>
 {
 	public async Task Handle(HideNotificationCommand req, CancellationToken ct = default)
 	{

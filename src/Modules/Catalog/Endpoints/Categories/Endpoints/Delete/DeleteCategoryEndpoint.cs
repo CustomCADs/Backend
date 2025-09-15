@@ -9,7 +9,7 @@ public sealed class DeleteCategoryEndpoint(IRequestSender sender)
 	{
 		Delete("");
 		Group<CategoriesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Delete")
 			.WithDescription("Delete a Category")
 		);
@@ -18,10 +18,10 @@ public sealed class DeleteCategoryEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DeleteCategoryRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new DeleteCategoryCommand(
+			command: new DeleteCategoryCommand(
 				Id: CategoryId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

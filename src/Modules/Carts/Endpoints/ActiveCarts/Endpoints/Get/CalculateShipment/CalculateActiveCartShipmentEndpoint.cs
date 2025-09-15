@@ -11,7 +11,7 @@ public class CalculateActiveCartShipmentEndpoint(IRequestSender sender)
 	{
 		Get("calculate");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Calculate Shipment")
 			.WithDescription("Calculate the estimted price for the delivery of the Shipment")
 		);
@@ -20,11 +20,11 @@ public class CalculateActiveCartShipmentEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CalculateActiveCartShipmentRequest req, CancellationToken ct)
 	{
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
-			new CalculateActiveCartShipmentQuery(
-				BuyerId: User.GetAccountId(),
+			query: new CalculateActiveCartShipmentQuery(
+				CallerId: User.GetAccountId(),
 				Address: new(req.Country, req.City, req.Street)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		ICollection<CalculateActiveCartShipmentResponse> response =

@@ -7,10 +7,10 @@ public class ShipmentsGroup : Group
 {
 	public ShipmentsGroup()
 	{
-		Configure(Paths.Shipments, ep =>
+		Configure(Paths.Shipments, x =>
 		{
-			ep.Roles(Customer);
-			ep.Description(d => d.WithTags(Tags[Paths.Shipments]));
+			x.Roles(Customer);
+			x.Description(x => x.WithTags(Tags[Paths.Shipments]));
 		});
 	}
 }

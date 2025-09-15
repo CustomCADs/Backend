@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Builder;
 namespace CustomCADs.Printing.Endpoints.Materials.Endpoints.Put.PresignedUrl;
 
 public sealed class GetMaterialPutPresignedUrlEndpoint(IRequestSender sender)
-	: Endpoint<GetMaterialPutPresignedUrlRequest, GetMaterialTexturePresignedUrlPutDto>
+	: Endpoint<GetMaterialPutPresignedUrlRequest, string>
 {
 	public override void Configure()
 	{
 		Post("presignedUrls/replace");
 		Group<MaterialsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Change Texture")
 			.WithDescription("Change your Material's Texture")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -20,14 +20,14 @@ public sealed class GetMaterialPutPresignedUrlEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(GetMaterialPutPresignedUrlRequest req, CancellationToken ct)
 	{
-		GetMaterialTexturePresignedUrlPutDto response = await sender.SendQueryAsync(
-			new GetMaterialTexturePresignedUrlPutQuery(
+		string url = await sender.SendQueryAsync(
+			query: new GetMaterialTexturePresignedUrlPutQuery(
 				Id: MaterialId.New(req.Id),
 				NewImage: req.File
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(url).ConfigureAwait(false);
 	}
 }

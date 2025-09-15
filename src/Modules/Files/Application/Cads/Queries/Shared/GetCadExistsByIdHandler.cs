@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
 namespace CustomCADs.Files.Application.Cads.Queries.Shared;
 
-public class GetCadExistsByIdHandler(ICadReads reads)
+public sealed class GetCadExistsByIdHandler(ICadReads reads)
 	: IQueryHandler<GetCadExistsByIdQuery, bool>
 {
 	public async Task<bool> Handle(GetCadExistsByIdQuery req, CancellationToken ct)

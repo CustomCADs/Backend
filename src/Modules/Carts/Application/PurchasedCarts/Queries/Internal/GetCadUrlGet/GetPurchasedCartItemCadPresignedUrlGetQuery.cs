@@ -6,5 +6,5 @@ namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetCadUrl
 public sealed record GetPurchasedCartItemCadPresignedUrlGetQuery(
 	PurchasedCartId Id,
 	ProductId ProductId,
-	AccountId BuyerId
+	AccountId CallerId
 ) : IQuery<GetPurchasedCartItemCadPresignedUrlGetDto>;

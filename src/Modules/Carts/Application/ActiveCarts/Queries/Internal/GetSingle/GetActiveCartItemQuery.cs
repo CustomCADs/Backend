@@ -4,6 +4,6 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 namespace CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.GetSingle;
 
 public sealed record GetActiveCartItemQuery(
-	AccountId BuyerId,
+	AccountId CallerId,
 	ProductId ProductId
 ) : IQuery<ActiveCartItemDto>;

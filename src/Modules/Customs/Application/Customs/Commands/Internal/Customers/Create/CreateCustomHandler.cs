@@ -4,14 +4,17 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Create;
 
-public sealed class CreateCustomHandler(IWrites<Custom> writes, IUnitOfWork uow, IRequestSender sender)
-	: ICommandHandler<CreateCustomCommand, CustomId>
+public sealed class CreateCustomHandler(
+	IWrites<Custom> writes,
+	IUnitOfWork uow,
+	IRequestSender sender
+) : ICommandHandler<CreateCustomCommand, CustomId>
 {
 	public async Task<CustomId> Handle(CreateCustomCommand req, CancellationToken ct)
 	{
-		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.BuyerId), ct).ConfigureAwait(false))
+		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.CallerId), ct).ConfigureAwait(false))
 		{
-			throw CustomNotFoundException<Custom>.ById(req.BuyerId, "User");
+			throw CustomNotFoundException<Custom>.ById(req.CallerId, "User");
 		}
 
 		Custom custom = await writes.AddAsync(
@@ -19,9 +22,9 @@ public sealed class CreateCustomHandler(IWrites<Custom> writes, IUnitOfWork uow,
 				name: req.Name,
 				description: req.Description,
 				forDelivery: req.ForDelivery,
-				buyerId: req.BuyerId
+				buyerId: req.CallerId
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 

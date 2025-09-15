@@ -13,21 +13,20 @@ public sealed class CreatorGetProductByIdHandler(IProductReads reads, IRequestSe
 		Product product = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(req.Id);
 
-		if (product.CreatorId != req.CreatorId)
+		if (product.CreatorId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Product>.ById(req.Id);
 		}
 
-		string username = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(product.CreatorId),
-			ct
-		).ConfigureAwait(false);
-
-		string categoryName = await sender.SendQueryAsync(
-			new GetCategoryNameByIdQuery(product.CategoryId),
-			ct
-		).ConfigureAwait(false);
-
-		return product.ToCreatorGetByIdDto(username, categoryName);
+		return product.ToCreatorGetByIdDto(
+			username: await sender.SendQueryAsync(
+				query: new GetUsernameByIdQuery(product.CreatorId),
+				ct: ct
+			).ConfigureAwait(false),
+			categoryName: await sender.SendQueryAsync(
+				query: new GetCategoryNameByIdQuery(product.CategoryId),
+				ct: ct
+			).ConfigureAwait(false)
+		);
 	}
 }

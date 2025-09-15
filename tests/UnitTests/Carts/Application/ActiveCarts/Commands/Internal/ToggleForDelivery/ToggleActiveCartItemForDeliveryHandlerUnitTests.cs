@@ -43,7 +43,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 	{
 		// Arrange
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: productId1,
 			CustomizationId: null
 		);
@@ -60,7 +60,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 	{
 		// Arrange
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: productId1,
 			CustomizationId: null
 		);
@@ -77,7 +77,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 	{
 		// Arrange
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: productId2,
 			CustomizationId: ValidCustomizationId
 		);
@@ -94,7 +94,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 	{
 		// Arrange
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: productId1,
 			CustomizationId: null
 		);
@@ -114,7 +114,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 	{
 		// Arrange
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: productId2,
 			CustomizationId: ValidCustomizationId
 		);
@@ -137,7 +137,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 			.ReturnsAsync(null as ActiveCartItem);
 
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: productId1,
 			CustomizationId: null
 		);
@@ -154,7 +154,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 	{
 		// Arrange
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ValidProductId,
 			CustomizationId: null
 		);
@@ -176,7 +176,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 		)).ReturnsAsync(false);
 
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: productId2,
 			CustomizationId: ValidCustomizationId
 		);
@@ -193,7 +193,7 @@ public class ToggleActiveCartItemForDeliveryHandlerUnitTests : ActiveCartsBaseUn
 	{
 		// Arrange
 		ToggleActiveCartItemForDeliveryCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: productId2,
 			CustomizationId: null
 		);

@@ -6,9 +6,9 @@ public class IdentityGroup : Group
 {
 	public IdentityGroup()
 	{
-		Configure(Paths.Identity, ep =>
+		Configure(Paths.Identity, x =>
 		{
-			ep.Description(opt => opt.WithTags(Tags[Paths.Identity]));
+			x.Description(x => x.WithTags(Tags[Paths.Identity]));
 		});
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using CustomCADs.Notifications.Domain.Notifications;
-using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Notifications;
 using Microsoft.EntityFrameworkCore;
@@ -22,21 +22,21 @@ public static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => NotificationId.New(v)
+				x => NotificationId.New(x)
 			);
 
 		builder.Property(x => x.AuthorId)
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		builder.Property(x => x.ReceiverId)
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		return builder;
@@ -44,13 +44,13 @@ public static class Utilities
 
 	public static EntityTypeBuilder<Notification> SetValueObjects(this EntityTypeBuilder<Notification> builder)
 	{
-		builder.ComplexProperty(x => x.Content, a =>
+		builder.ComplexProperty(x => x.Content, x =>
 		{
-			a.Property(x => x.Description)
+			x.Property(x => x.Description)
 				.IsRequired()
 				.HasColumnName("Description");
 
-			a.Property(x => x.Link)
+			x.Property(x => x.Link)
 				.IsRequired(required: false)
 				.HasColumnName("Link");
 		});

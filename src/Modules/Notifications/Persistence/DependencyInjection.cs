@@ -1,10 +1,9 @@
 ﻿using CustomCADs.Notifications.Domain.Repositories;
 using CustomCADs.Notifications.Domain.Repositories.Reads;
-using CustomCADs.Notifications.Persistence.Repositories;
 using CustomCADs.Notifications.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using CustomCADs.Notifications.Persistence.Repositories;
 using CustomCADs.Shared.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 
 #pragma warning disable IDE0130

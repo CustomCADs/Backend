@@ -7,10 +7,10 @@ public class DesignerGroup : Group
 {
 	public DesignerGroup()
 	{
-		Configure(Paths.CustomsDesigner, ep =>
+		Configure(Paths.CustomsDesigner, x =>
 		{
-			ep.Roles(Designer);
-			ep.Description(d => d.WithTags(Tags[Paths.CustomsDesigner]));
+			x.Roles(Designer);
+			x.Description(x => x.WithTags(Tags[Paths.CustomsDesigner]));
 		});
 	}
 }

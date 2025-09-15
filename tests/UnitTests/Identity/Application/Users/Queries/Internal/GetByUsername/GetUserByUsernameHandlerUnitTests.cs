@@ -23,7 +23,7 @@ public class GetUserByUsernameHandlerUnitTests : UsersBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == MaxValidUsername),
 			ct
-		)).ReturnsAsync(new AccountInfo(DateTimeOffset.UtcNow, true, null, null));
+		)).ReturnsAsync(new AccountInfoDto(DateTimeOffset.UtcNow, true, null, null));
 	}
 
 	[Fact]

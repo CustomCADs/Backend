@@ -5,7 +5,7 @@ namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetIm
 
 using static ApplicationConstants.FluentMessages;
 
-public class CreatorGetProductImagePresignedUrlPutValidator : QueryValidator<CreatorGetProductImagePresignedUrlPutQuery, CreatorGetProductImagePresignedUrlPutDto>
+public class CreatorGetProductImagePresignedUrlPutValidator : QueryValidator<CreatorGetProductImagePresignedUrlPutQuery, string>
 {
 	public CreatorGetProductImagePresignedUrlPutValidator()
 	{

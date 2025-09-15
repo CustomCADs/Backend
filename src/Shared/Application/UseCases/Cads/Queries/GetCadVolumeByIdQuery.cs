@@ -1,5 +1,5 @@
 ﻿namespace CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
-public record GetCadVolumeByIdQuery(
+public sealed record GetCadVolumeByIdQuery(
 	CadId Id
 ) : IQuery<decimal>;

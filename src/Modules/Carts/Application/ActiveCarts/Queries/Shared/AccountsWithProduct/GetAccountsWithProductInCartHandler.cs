@@ -4,7 +4,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Queries.Shared.AccountsWithProduct;
 
-public class GetAccountsWithProductInCartHandler(IActiveCartReads reads)
+public sealed class GetAccountsWithProductInCartHandler(IActiveCartReads reads)
 	: IQueryHandler<GetAccountsWithProductInCartQuery, AccountId[]>
 {
 	public async Task<AccountId[]> Handle(GetAccountsWithProductInCartQuery req, CancellationToken ct = default)

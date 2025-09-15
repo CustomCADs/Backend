@@ -13,7 +13,7 @@ public class GetShipmentWaybillEndpoint(IRequestSender sender)
 		Get("{id}/waybill");
 		Group<ShipmentsGroup>();
 		Roles(Designer);
-		Description(d => d
+		Description(x => x
 			.WithSummary("Waybill")
 			.WithDescription("Download this Shipment's waybill")
 		);
@@ -22,11 +22,11 @@ public class GetShipmentWaybillEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetShipmentWaybillRequest req, CancellationToken ct)
 	{
 		byte[] bytes = await sender.SendQueryAsync(
-			new GetShipmentWaybillQuery(
+			query: new GetShipmentWaybillQuery(
 				Id: ShipmentId.New(req.Id),
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.BytesAsync(bytes, "waybill.pdf", "application/pdf").ConfigureAwait(false);

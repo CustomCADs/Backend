@@ -32,11 +32,11 @@ public class UnitOfWork(CatalogContext context) : IUnitOfWork
 	public async Task AddProductPurchasesAsync(ProductId[] ids, int count = 1, CancellationToken ct = default)
 		=> await context.Products
 			.Where(x => ids.Contains(x.Id))
-			.ExecuteUpdateAsync(setters => setters
+			.ExecuteUpdateAsync(x => x
 				.SetProperty(
-					p => p.Counts.Purchases,
-					p => p.Counts.Purchases + count
+					x => x.Counts.Purchases,
+					x => x.Counts.Purchases + count
 				),
-				ct
+				cancellationToken: ct
 			).ConfigureAwait(false);
 }

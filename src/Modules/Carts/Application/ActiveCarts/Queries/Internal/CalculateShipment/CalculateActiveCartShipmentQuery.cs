@@ -3,7 +3,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment;
 
-public record CalculateActiveCartShipmentQuery(
-	AccountId BuyerId,
+public sealed record CalculateActiveCartShipmentQuery(
+	AccountId CallerId,
 	AddressDto Address
 ) : IQuery<CalculateShipmentDto[]>;

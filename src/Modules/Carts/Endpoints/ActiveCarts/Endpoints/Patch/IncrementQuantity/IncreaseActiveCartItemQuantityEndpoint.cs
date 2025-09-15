@@ -11,7 +11,7 @@ public class IncreaseActiveCartItemQuantityEndpoint(IRequestSender sender)
 	{
 		Patch("increase");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Increase")
 			.WithDescription("Increase the Cart Item's quantity")
 		);
@@ -20,12 +20,12 @@ public class IncreaseActiveCartItemQuantityEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(IncreaseActiveCartItemQuantityRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new IncreaseActiveCartItemQuantityCommand(
-				BuyerId: User.GetAccountId(),
+			command: new IncreaseActiveCartItemQuantityCommand(
+				CallerId: User.GetAccountId(),
 				ProductId: ProductId.New(req.ProductId),
 				Amount: req.Amount
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

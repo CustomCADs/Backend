@@ -12,16 +12,23 @@ using static Messages;
 public sealed class StripeService(PaymentIntentService service) : IPaymentService
 {
 
-	public async Task<PaymentDto> InitializeCartPayment(string paymentMethodId, AccountId buyerId, PurchasedCartId cartId, decimal price, string description, CancellationToken ct = default)
+	public async Task<PaymentDto> InitializeCartPayment(
+		string paymentMethodId,
+		AccountId buyerId,
+		PurchasedCartId cartId,
+		decimal total,
+		(string Buyer, int ItemsCount) description,
+		CancellationToken ct = default
+	)
 	{
 		PaymentIntent intent = await service.CreateAsync(
 			options: new()
 			{
-				Amount = Convert.ToInt64(price * 100),
+				Amount = Convert.ToInt64(total * 100),
 				Currency = "EUR",
 				PaymentMethod = paymentMethodId,
 				Confirm = true,
-				Description = description,
+				Description = $"{description.Buyer} bought {description.ItemsCount} items for a total of {total}€.",
 				AutomaticPaymentMethods = new()
 				{
 					Enabled = true,
@@ -65,16 +72,23 @@ public sealed class StripeService(PaymentIntentService service) : IPaymentServic
 		}
 	}
 
-	public async Task<PaymentDto> InitializeCustomPayment(string paymentMethodId, AccountId buyerId, CustomId customId, decimal price, string description, CancellationToken ct = default)
+	public async Task<PaymentDto> InitializeCustomPayment(
+		string paymentMethodId,
+		AccountId buyerId,
+		CustomId customId,
+		decimal total,
+		(string Buyer, string Name, string Seller) description,
+		CancellationToken ct = default
+	)
 	{
 		PaymentIntent intent = await service.CreateAsync(
 			options: new()
 			{
-				Amount = Convert.ToInt64(price * 100),
+				Amount = Convert.ToInt64(total * 100),
 				Currency = "EUR",
 				PaymentMethod = paymentMethodId,
 				Confirm = true,
-				Description = description,
+				Description = $"{description.Buyer} bought {description.Name} from {description.Seller} for a total of {total}€.",
 				AutomaticPaymentMethods = new()
 				{
 					Enabled = true,

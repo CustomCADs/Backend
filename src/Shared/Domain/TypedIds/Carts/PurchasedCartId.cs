@@ -14,7 +14,7 @@ public readonly struct PurchasedCartId
 
 	public static PurchasedCartId New() => new(Guid.NewGuid());
 	public static PurchasedCartId New(Guid id) => new(id);
-	public static PurchasedCartId? New(string? id) => id is null ? null : new(Guid.Parse(id));
+	public static PurchasedCartId New(string id) => new(Guid.Parse(id));
 	public static Guid Unwrap(PurchasedCartId id) => id.Value;
 	public static Guid? Unwrap(PurchasedCartId? id) => id?.Value;
 

@@ -2,11 +2,10 @@
 
 namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetSortings;
 
-public class GetProductDesignerSortingsHandler
-	: IQueryHandler<GetProductDesignerSortingsQuery, string[]>
+public sealed class GetProductDesignerSortingsHandler : IQueryHandler<GetProductDesignerSortingsQuery, ProductDesignerSortingType[]>
 {
-	public Task<string[]> Handle(GetProductDesignerSortingsQuery req, CancellationToken ct)
+	public Task<ProductDesignerSortingType[]> Handle(GetProductDesignerSortingsQuery req, CancellationToken ct)
 		=> Task.FromResult(
-				Enum.GetNames<ProductDesignerSortingType>()
+				Enum.GetValues<ProductDesignerSortingType>()
 			);
 }

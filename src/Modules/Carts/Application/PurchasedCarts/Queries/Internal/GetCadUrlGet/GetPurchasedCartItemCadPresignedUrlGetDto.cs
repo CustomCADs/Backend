@@ -2,7 +2,7 @@ using CustomCADs.Shared.Application.Dtos.Files;
 
 namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetCadUrlGet;
 
-public record GetPurchasedCartItemCadPresignedUrlGetDto(
+public sealed record GetPurchasedCartItemCadPresignedUrlGetDto(
 	string PresignedUrl,
 	string ContentType,
 	CoordinatesDto CamCoordinates,

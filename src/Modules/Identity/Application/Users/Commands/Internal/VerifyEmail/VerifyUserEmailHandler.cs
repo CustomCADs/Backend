@@ -1,11 +1,13 @@
 ﻿using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Application.Users.Extensions;
+using CustomCADs.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.Identity.Application.Users.Commands.Internal.VerifyEmail;
 
-public class VerifyUserEmailHandler(IUserService service, ITokenService tokens)
-	: ICommandHandler<VerifyUserEmailCommand, TokensDto>
+public sealed class VerifyUserEmailHandler(
+	IUserService service,
+	ITokenService tokenService
+) : ICommandHandler<VerifyUserEmailCommand, TokensDto>
 {
 	public async Task<TokensDto> Handle(VerifyUserEmailCommand req, CancellationToken ct)
 	{
@@ -17,6 +19,11 @@ public class VerifyUserEmailHandler(IUserService service, ITokenService tokens)
 		}
 		await service.ConfirmEmailAsync(req.Username, req.Token).ConfigureAwait(false);
 
-		return await service.IssueTokens(tokens, user, longerSession: false).ConfigureAwait(false);
+		RefreshToken rt = tokenService.IssueRefreshToken(
+			createRefreshToken: (token) => user.AddRefreshToken(token, longerSession: false)
+		);
+		await service.SaveRefreshTokensAsync(user).ConfigureAwait(false);
+
+		return tokenService.IssueTokens(user, rt);
 	}
 }

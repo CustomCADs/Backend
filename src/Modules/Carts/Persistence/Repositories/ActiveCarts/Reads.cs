@@ -12,34 +12,34 @@ public sealed class Reads(CartsContext context) : IActiveCartReads
 	public async Task<ActiveCartItem[]> AllAsync(AccountId buyerId, bool track = true, CancellationToken ct = default)
 		=> await context.ActiveCartItems
 			.WithTracking(track)
-			.Where(p => p.BuyerId == buyerId)
-			.OrderByDescending(p => p.AddedAt)
+			.Where(x => x.BuyerId == buyerId)
+			.OrderByDescending(x => x.AddedAt)
 			.ToArrayAsync(ct)
 			.ConfigureAwait(false);
 
 	public async Task<ActiveCartItem[]> AllAsync(ProductId productId, bool track = true, CancellationToken ct = default)
 		=> await context.ActiveCartItems
 			.WithTracking(track)
-			.Where(p => p.ProductId == productId)
+			.Where(x => x.ProductId == productId)
 			.ToArrayAsync(ct)
 			.ConfigureAwait(false);
 
 	public async Task<ActiveCartItem?> SingleAsync(AccountId buyerId, ProductId productId, bool track = true, CancellationToken ct = default)
 		=> await context.ActiveCartItems
 			.WithTracking(track)
-			.FirstOrDefaultAsync(c => c.BuyerId == buyerId && c.ProductId == productId, ct)
+			.FirstOrDefaultAsync(x => x.BuyerId == buyerId && x.ProductId == productId, ct)
 			.ConfigureAwait(false);
 
 	public async Task<bool> ExistsAsync(AccountId buyerId, CancellationToken ct = default)
 		=> await context.ActiveCartItems
 			.WithTracking(false)
-			.AnyAsync(c => c.BuyerId == buyerId, ct)
+			.AnyAsync(x => x.BuyerId == buyerId, ct)
 			.ConfigureAwait(false);
 
 	public async Task<int> CountAsync(AccountId buyerId, CancellationToken ct = default)
 		=> await context.ActiveCartItems
 			.WithTracking(false)
-			.Where(c => c.BuyerId == buyerId)
+			.Where(x => x.BuyerId == buyerId)
 			.CountAsync(ct)
 			.ConfigureAwait(false);
 

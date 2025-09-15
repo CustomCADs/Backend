@@ -14,7 +14,7 @@ public sealed class GetCustomCadPresignedUrlGetHandler(ICustomReads reads, IRequ
 		Custom custom = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (custom.BuyerId != req.BuyerId)
+		if (custom.BuyerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Custom>.Custom($"Cannot access another Buyer's Custom: {custom.Id}.");
 		}
@@ -28,8 +28,10 @@ public sealed class GetCustomCadPresignedUrlGetHandler(ICustomReads reads, IRequ
 		}
 
 		return await sender.SendQueryAsync(
-			new GetCadPresignedUrlGetByIdQuery(custom.FinishedCustom!.CadId),
-			ct
+			query: new GetCadPresignedUrlGetByIdQuery(
+				Id: custom.FinishedCustom!.CadId
+			),
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

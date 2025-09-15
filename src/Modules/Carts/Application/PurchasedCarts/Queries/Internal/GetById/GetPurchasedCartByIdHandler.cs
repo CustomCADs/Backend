@@ -12,14 +12,14 @@ public sealed class GetPurchasedCartByIdHandler(IPurchasedCartReads reads, IRequ
 		PurchasedCart cart = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<PurchasedCart>.ById(req.Id);
 
-		if (cart.BuyerId != req.BuyerId)
+		if (cart.BuyerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<PurchasedCart>.ById(req.Id);
 		}
 
 		string buyer = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(cart.BuyerId),
-			ct
+			query: new GetUsernameByIdQuery(cart.BuyerId),
+			ct: ct
 		).ConfigureAwait(false);
 
 		return cart.ToGetByIdDto(buyer);

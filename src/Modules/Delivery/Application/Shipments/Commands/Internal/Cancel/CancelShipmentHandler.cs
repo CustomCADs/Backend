@@ -3,8 +3,11 @@ using CustomCADs.Delivery.Domain.Repositories.Reads;
 
 namespace CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
 
-public class CancelShipmentHandler(IShipmentReads reads, IDeliveryService delivery, BaseCachingService<ShipmentId, Shipment> cache)
-	: ICommandHandler<CancelShipmentCommand>
+public sealed class CancelShipmentHandler(
+	IShipmentReads reads,
+	IDeliveryService delivery,
+	BaseCachingService<ShipmentId, Shipment> cache
+) : ICommandHandler<CancelShipmentCommand>
 {
 	public async Task Handle(CancelShipmentCommand req, CancellationToken ct)
 	{

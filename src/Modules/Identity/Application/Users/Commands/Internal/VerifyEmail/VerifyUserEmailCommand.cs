@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Identity.Application.Users.Commands.Internal.VerifyEmail;
 
-public record class VerifyUserEmailCommand(
+public sealed record VerifyUserEmailCommand(
 	string Username,
 	string Token
 ) : ICommand<TokensDto>;

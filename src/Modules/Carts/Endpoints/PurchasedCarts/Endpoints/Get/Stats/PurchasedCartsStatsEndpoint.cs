@@ -12,7 +12,7 @@ public sealed class PurchasedCartsStatsEndpoint(IRequestSender sender)
 	{
 		Get("stats");
 		Group<PurchasedCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Stats")
 			.WithDescription("See your Carts' Stats")
 		);
@@ -21,17 +21,17 @@ public sealed class PurchasedCartsStatsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		int totalCartCount = await sender.SendQueryAsync(
-			new CountPurchasedCartsQuery(
-				BuyerId: User.GetAccountId()
+			query: new CountPurchasedCartsQuery(
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		Dictionary<PurchasedCartId, int> counts = await sender.SendQueryAsync(
-			new CountPurchasedCartItemsQuery(
-				BuyerId: User.GetAccountId()
+			query: new CountPurchasedCartItemsQuery(
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		PurchasedCartsStatsResponse response = new(

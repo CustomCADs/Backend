@@ -10,7 +10,7 @@ public sealed class ProductsStatsEndpoint(IRequestSender sender)
 	{
 		Get("stats");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Stats")
 			.WithDescription("See your Products' stats")
 		);
@@ -19,10 +19,10 @@ public sealed class ProductsStatsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		ProductsCountDto counts = await sender.SendQueryAsync(
-			new ProductsCountQuery(
-				CreatorId: User.GetAccountId()
+			query: new ProductsCountQuery(
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		ProductsStatsResponse response = new(

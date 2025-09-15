@@ -13,7 +13,7 @@ public sealed class RecentProductsEndpoint(IRequestSender sender)
 	{
 		Get("recent");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Recent")
 			.WithDescription("See your most recent Products")
 		);
@@ -22,18 +22,18 @@ public sealed class RecentProductsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(RecentProductsRequest req, CancellationToken ct)
 	{
 		Result<CreatorGetAllProductsDto> result = await sender.SendQueryAsync(
-			new CreatorGetAllProductsQuery(
-				CreatorId: User.GetAccountId(),
+			query: new CreatorGetAllProductsQuery(
+				CallerId: User.GetAccountId(),
 				Sorting: new(
 					ProductCreatorSortingType.UploadedAt.ToBase(),
 					SortingDirection.Descending
 				),
 				Pagination: new(Limit: req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		RecentProductsResponse[] response = [.. result.Items.Select(p => p.ToRecentResponse())];
+		RecentProductsResponse[] response = [.. result.Items.Select(x => x.ToRecentResponse())];
 		await Send.OkAsync(response).ConfigureAwait(false);
 	}
 }

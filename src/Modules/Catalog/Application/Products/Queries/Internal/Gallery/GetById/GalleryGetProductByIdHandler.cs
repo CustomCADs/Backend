@@ -22,43 +22,37 @@ public sealed class GalleryGetProductByIdHandler(IProductReads reads, IRequestSe
 		{
 			throw CustomStatusException<Product>.ById(req.Id);
 		}
-		string[] tags = await reads.TagsByIdAsync(req.Id, ct).ConfigureAwait(false);
 
-		decimal volume = await sender.SendQueryAsync(
-			new GetCadVolumeByIdQuery(product.CadId),
-			ct
-		).ConfigureAwait(false);
-
-		string username = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(product.CreatorId),
-			ct
-		).ConfigureAwait(false);
-
-		string categoryName = await sender.SendQueryAsync(
-			new GetCategoryNameByIdQuery(product.CategoryId),
-			ct
-		).ConfigureAwait(false);
-
-		(CoordinatesDto cam, CoordinatesDto pan) = await sender.SendQueryAsync(
-			new GetCadCoordsByIdQuery(product.CadId),
-			ct
-		).ConfigureAwait(false);
-
-		if (!req.AccountId.IsEmpty())
+		if (!req.CallerId.IsEmpty())
 		{
-			await raiser.RaiseApplicationEventAsync(new ProductViewedApplicationEvent(
-				Id: req.Id,
-				AccountId: req.AccountId
-			)).ConfigureAwait(false);
+			await raiser.RaiseApplicationEventAsync(
+				@event: new ProductViewedApplicationEvent(
+					Id: req.Id,
+					AccountId: req.CallerId
+				)
+			).ConfigureAwait(false);
 		}
 
+		(CoordinatesDto Cam, CoordinatesDto Pan) = await sender.SendQueryAsync(
+			query: new GetCadCoordsByIdQuery(product.CadId),
+			ct: ct
+		).ConfigureAwait(false);
+
 		return product.ToGalleryGetByIdDto(
-			volume: volume,
-			username: username,
-			categoryName: categoryName,
-			tags: tags,
-			camCoords: cam,
-			panCoords: pan
+			volume: await sender.SendQueryAsync(
+				query: new GetCadVolumeByIdQuery(product.CadId),
+				ct: ct
+			).ConfigureAwait(false),
+			username: await sender.SendQueryAsync(
+				query: new GetUsernameByIdQuery(product.CreatorId),
+				ct: ct
+			).ConfigureAwait(false),
+			categoryName: await sender.SendQueryAsync(
+				query: new GetCategoryNameByIdQuery(product.CategoryId),
+				ct: ct
+			).ConfigureAwait(false),
+			tags: await reads.TagsByIdAsync(req.Id, ct).ConfigureAwait(false),
+			coords: (Cam, Pan)
 		);
 	}
 }

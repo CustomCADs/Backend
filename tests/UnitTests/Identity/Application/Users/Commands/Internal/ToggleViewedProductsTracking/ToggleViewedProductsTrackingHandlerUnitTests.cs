@@ -26,7 +26,7 @@ public class ToggleViewedProductsTrackingHandlerUnitTests : UsersBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == MaxValidUsername),
 			ct
-		)).ReturnsAsync(new AccountInfo(default, InitialTrackViewedProducts, null, null));
+		)).ReturnsAsync(new AccountInfoDto(default, InitialTrackViewedProducts, null, null));
 	}
 
 	[Fact]

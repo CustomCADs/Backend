@@ -11,7 +11,7 @@ public class GetAllTagsEndpoint(IRequestSender sender)
 		Get("");
 		Group<TagGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("Get Tags")
 		);
@@ -19,9 +19,9 @@ public class GetAllTagsEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(CancellationToken ct)
 	{
-		TagReadDto[] tags = await sender.SendQueryAsync(
-			new GetAllTagsQuery(),
-			ct
+		TagDto[] tags = await sender.SendQueryAsync(
+			query: new GetAllTagsQuery(),
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetAllTagsResponse[] response = [.. tags.Select(x => x.ToGetAllTagsResponse())];

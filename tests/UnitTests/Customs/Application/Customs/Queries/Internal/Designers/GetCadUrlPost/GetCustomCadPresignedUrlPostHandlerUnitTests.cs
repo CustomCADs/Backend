@@ -41,7 +41,7 @@ public class GetCustomCadPresignedUrlPostHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		GetCustomCadPresignedUrlPostQuery query = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			Cad: req
 		);
 
@@ -61,7 +61,7 @@ public class GetCustomCadPresignedUrlPostHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		GetCustomCadPresignedUrlPostQuery query = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			Cad: req
 		);
 
@@ -79,7 +79,7 @@ public class GetCustomCadPresignedUrlPostHandlerUnitTests : CustomsBaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Custom);
 		GetCustomCadPresignedUrlPostQuery query = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			Cad: req
 		);
 
@@ -96,7 +96,7 @@ public class GetCustomCadPresignedUrlPostHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		GetCustomCadPresignedUrlPostQuery query = new(
 			Id: ValidId,
-			DesignerId: AccountId.New(),
+			CallerId: AccountId.New(),
 			Cad: req
 		);
 
@@ -114,7 +114,7 @@ public class GetCustomCadPresignedUrlPostHandlerUnitTests : CustomsBaseUnitTests
 		custom.Cancel();
 		GetCustomCadPresignedUrlPostQuery query = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			Cad: req
 		);
 

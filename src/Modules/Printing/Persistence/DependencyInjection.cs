@@ -3,7 +3,6 @@ using CustomCADs.Printing.Domain.Repositories.Reads;
 using CustomCADs.Printing.Persistence;
 using CustomCADs.Printing.Persistence.Repositories;
 using CustomCADs.Shared.Persistence;
-using Microsoft.Extensions.Configuration;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;

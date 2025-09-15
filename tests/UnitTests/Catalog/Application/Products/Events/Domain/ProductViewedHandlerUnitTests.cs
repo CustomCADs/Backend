@@ -21,7 +21,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	private readonly Mock<IEventRaiser> raiser = new();
 
 	private const string Username = Users.CustomerUsername;
-	private readonly AccountInfo info = new(
+	private readonly AccountInfoDto info = new(
 		CreatedAt: default,
 		TrackViewedProducts: true,
 		FirstName: null,

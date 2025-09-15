@@ -10,7 +10,7 @@ public sealed class GetCategoriesEndpoint(IRequestSender sender)
 		Get("");
 		AllowAnonymous();
 		Group<CategoriesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all Categories")
 		);
@@ -19,8 +19,8 @@ public sealed class GetCategoriesEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		IEnumerable<CategoryReadDto> categories = await sender.SendQueryAsync(
-			new GetAllCategoriesQuery(),
-			ct
+			query: new GetAllCategoriesQuery(),
+			ct: ct
 		).ConfigureAwait(false);
 
 		CategoryResponse[] response = [.. categories.Select(c => c.ToResponse())];

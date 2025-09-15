@@ -19,7 +19,7 @@ static class Utilities
 		builder.Property(x => x.Id)
 			.HasConversion(
 				x => x.Value,
-				v => CategoryId.New(v)
+				x => CategoryId.New(x)
 			).UseIdentityColumn();
 
 		return builder;

@@ -2,5 +2,5 @@
 
 namespace CustomCADs.Catalog.Application.Tags.Queries.Internal.GetAll;
 
-public record GetAllTagsQuery
- : IQuery<TagReadDto[]>;
+public sealed record GetAllTagsQuery
+ : IQuery<TagDto[]>;

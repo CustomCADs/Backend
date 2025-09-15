@@ -12,7 +12,7 @@ public sealed class GetProductGetPresignedUrlsEndpoint(IRequestSender sender)
 	{
 		Post("presignedUrls/download/image");
 		Group<GalleryGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Download Image")
 			.WithDescription("Download the Image for a Product")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -22,10 +22,10 @@ public sealed class GetProductGetPresignedUrlsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetProductGetPresignedUrlsRequest req, CancellationToken ct)
 	{
 		DownloadFileResponse response = await sender.SendQueryAsync(
-			new GalleryGetProductImagePresignedUrlGetQuery(
+			query: new GalleryGetProductImagePresignedUrlGetQuery(
 				Id: ProductId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

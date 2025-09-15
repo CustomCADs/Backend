@@ -5,8 +5,11 @@ using CustomCADs.Shared.Application.UseCases.Images.Commands;
 
 namespace CustomCADs.Files.Application.Images.Commands.Shared.SetKey;
 
-public sealed class SetImageKeyHandler(IImageReads reads, IUnitOfWork uow, BaseCachingService<ImageId, Image> cache)
-	: ICommandHandler<SetImageKeyCommand>
+public sealed class SetImageKeyHandler(
+	IImageReads reads,
+	IUnitOfWork uow,
+	BaseCachingService<ImageId, Image> cache
+) : ICommandHandler<SetImageKeyCommand>
 {
 	public async Task Handle(SetImageKeyCommand req, CancellationToken ct = default)
 	{

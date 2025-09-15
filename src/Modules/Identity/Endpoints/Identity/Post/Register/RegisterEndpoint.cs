@@ -12,7 +12,7 @@ public sealed class RegisterEndpoint(IRequestSender sender)
 		Post("register");
 		Group<IdentityGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.Register)
 			.WithSummary("Register")
 			.WithDescription("Register an Account")
@@ -23,7 +23,7 @@ public sealed class RegisterEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(RegisterRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new RegisterUserCommand(
+			command: new RegisterUserCommand(
 				Role: req.Role,
 				Username: req.Username,
 				Email: req.Email,
@@ -31,14 +31,14 @@ public sealed class RegisterEndpoint(IRequestSender sender)
 				FirstName: req.FirstName,
 				LastName: req.LastName
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await sender.SendCommandAsync(
-			new VerificationEmailCommand(
+			command: new VerificationEmailCommand(
 				Username: req.Username
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync().ConfigureAwait(false);

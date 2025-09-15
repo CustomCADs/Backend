@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.Dtos.Files;
 namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 
 [AddRequestCaching(ExpirationType.Absolute, TimeType.Minute, 1)]
-public record GalleryGetProductByIdDto(
+public sealed record GalleryGetProductByIdDto(
 	ProductId Id,
 	string Name,
 	string Description,

@@ -10,7 +10,7 @@ public sealed class DeleteAccountEndpoint(IRequestSender sender)
 	{
 		Delete("");
 		Group<AccountsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Delete")
 			.WithDescription("Delete an Account")
 		);
@@ -19,8 +19,8 @@ public sealed class DeleteAccountEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DeleteAccountRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new DeleteAccountCommand(AccountId.New(req.Id)),
-			ct
+			command: new DeleteAccountCommand(AccountId.New(req.Id)),
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

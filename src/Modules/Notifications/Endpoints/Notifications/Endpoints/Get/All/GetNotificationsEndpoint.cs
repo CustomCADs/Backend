@@ -1,4 +1,3 @@
-using CustomCADs.Notifications.Application.Notifications.Queries.Internal;
 using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Endpoints.Extensions;
@@ -12,7 +11,7 @@ public class GetNotificationsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<NotificationsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all your Notifications with Sort and Pagination options")
 		);
@@ -21,19 +20,17 @@ public class GetNotificationsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetNotificationsRequest req, CancellationToken ct)
 	{
 		Result<GetAllNotificationsDto> result = await sender.SendQueryAsync(
-			new GetAllNotificationsQuery(
+			query: new GetAllNotificationsQuery(
 				Pagination: new(req.Page, req.Limit),
-				ReceiverId: User.GetAccountId(),
+				CallerId: User.GetAccountId(),
 				Status: req.Status,
 				Sorting: new(req.SortingType, req.SortingDirection)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Result<GetNotificationsResponse> response = new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(x => x.ToResponse())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(
+			response: result.ToNewResult(x => x.ToResponse())
+		).ConfigureAwait(false);
 	}
 }

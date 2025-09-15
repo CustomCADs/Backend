@@ -10,7 +10,7 @@ public sealed class AcceptCustomEndpoint(IRequestSender sender)
 	{
 		Patch("accept");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Accept")
 			.WithDescription("Set an Custom's Status to Accepted")
 		);
@@ -19,11 +19,11 @@ public sealed class AcceptCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(AcceptCustomRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new AcceptCustomCommand(
+			command: new AcceptCustomCommand(
 				Id: CustomId.New(req.Id),
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

@@ -6,5 +6,5 @@ public sealed record EditCustomCommand(
 	CustomId Id,
 	string Name,
 	string Description,
-	AccountId BuyerId
+	AccountId CallerId
 ) : ICommand;

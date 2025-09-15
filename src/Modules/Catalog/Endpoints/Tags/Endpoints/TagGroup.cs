@@ -7,10 +7,10 @@ public class TagGroup : Group
 {
 	public TagGroup()
 	{
-		Configure(Paths.Tags, ep =>
+		Configure(Paths.Tags, x =>
 		{
-			ep.Roles(Admin);
-			ep.Description(d => d.WithTags(Tags[Paths.Tags]));
+			x.Roles(Admin);
+			x.Description(x => x.WithTags(Tags[Paths.Tags]));
 		});
 	}
 }

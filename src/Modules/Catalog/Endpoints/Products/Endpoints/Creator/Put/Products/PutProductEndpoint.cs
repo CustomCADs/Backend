@@ -11,7 +11,7 @@ public sealed class PutProductEndpoint(IRequestSender sender)
 	{
 		Put("");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Edit")
 			.WithDescription("Edit your Product")
 		);
@@ -27,19 +27,19 @@ public sealed class PutProductEndpoint(IRequestSender sender)
 				Description: req.Description,
 				CategoryId: CategoryId.New(req.CategoryId),
 				Price: req.Price,
-				CreatorId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await sender.SendCommandAsync(
-			new SetProductFilesCommand(
+			command: new SetProductFilesCommand(
 				Id: id,
 				Cad: (req.CadKey, req.CadContentType, req.CadVolume),
 				Image: (req.ImageKey, req.ImageContentType),
-				CreatorId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

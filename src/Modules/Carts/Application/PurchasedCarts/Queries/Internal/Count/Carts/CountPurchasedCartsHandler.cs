@@ -6,7 +6,5 @@ public sealed class CountPurchasedCartsHandler(IPurchasedCartReads reads)
 	: IQueryHandler<CountPurchasedCartsQuery, int>
 {
 	public async Task<int> Handle(CountPurchasedCartsQuery req, CancellationToken ct)
-	{
-		return await reads.CountAsync(req.BuyerId, ct: ct).ConfigureAwait(false);
-	}
+		=> await reads.CountAsync(req.CallerId, ct: ct).ConfigureAwait(false);
 }

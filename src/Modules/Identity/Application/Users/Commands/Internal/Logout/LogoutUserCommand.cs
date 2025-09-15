@@ -1,5 +1,5 @@
 ﻿namespace CustomCADs.Identity.Application.Users.Commands.Internal.Logout;
 
-public record LogoutUserCommand(
+public sealed record LogoutUserCommand(
 	string? RefreshToken
 ) : ICommand;

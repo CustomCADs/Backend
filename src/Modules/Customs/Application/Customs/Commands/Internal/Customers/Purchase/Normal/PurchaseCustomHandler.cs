@@ -9,35 +9,27 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
 
-using static ApplicationConstants;
 
-public sealed class PurchaseCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IPaymentService payment, IEventRaiser raiser)
-	: ICommandHandler<PurchaseCustomCommand, PaymentDto>
+public sealed class PurchaseCustomHandler(
+	ICustomReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IPaymentService payment,
+	IEventRaiser raiser
+) : ICommandHandler<PurchaseCustomCommand, PaymentDto>
 {
 	public async Task<PaymentDto> Handle(PurchaseCustomCommand req, CancellationToken ct)
 	{
 		Custom custom = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (custom.BuyerId != req.BuyerId)
-		{
-			throw CustomAuthorizationException<Custom>.ById(custom.Id);
-		}
-
-		if (custom.ForDelivery)
-		{
-			throw CustomException.Delivery<Custom>(custom.ForDelivery);
-		}
-
-		if (custom.AcceptedCustom is null)
-		{
-			throw CustomException.NullProp<Custom>(nameof(custom.AcceptedCustom));
-		}
-
-		if (custom.FinishedCustom is null)
-		{
-			throw CustomException.NullProp<Custom>(nameof(custom.FinishedCustom));
-		}
+		PurchaseCustomExtensions.EnsureCustomCanBePurchased(
+			isDeliveryWrong: custom.ForDelivery, // here, delivery is wrong if the custom **is** for delivery
+			callerId: req.CallerId,
+			ownerId: custom.BuyerId,
+			acceptedCustom: custom.AcceptedCustom,
+			finishedCustom: custom.FinishedCustom
+		);
 
 		string[] users = await Task.WhenAll(
 			sender.SendQueryAsync(new GetUsernameByIdQuery(custom.BuyerId), ct),
@@ -51,10 +43,10 @@ public sealed class PurchaseCustomHandler(ICustomReads reads, IUnitOfWork uow, I
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			new NotificationRequestedEvent(
+			@event: new NotificationRequestedEvent(
 				Type: NotificationType.CustomCompleted,
-				Description: string.Format(Notifications.Messages.CustomCompleted, custom.Name, seller),
-				Link: Notifications.Links.CustomCompleted,
+				Description: string.Format(ApplicationConstants.Notifications.Messages.CustomCompleted, custom.Name, seller),
+				Link: ApplicationConstants.Notifications.Links.CustomCompleted,
 				AuthorId: custom.AcceptedCustom.DesignerId,
 				ReceiverIds: [custom.BuyerId]
 			)
@@ -62,11 +54,11 @@ public sealed class PurchaseCustomHandler(ICustomReads reads, IUnitOfWork uow, I
 
 		PaymentDto response = await payment.InitializeCustomPayment(
 			paymentMethodId: req.PaymentMethodId,
-			buyerId: req.BuyerId,
+			buyerId: req.CallerId,
 			customId: custom.Id,
-			price: total,
-			description: $"{buyer} bought {custom.Name} from {seller}.",
-			ct
+			total: total,
+			description: (buyer, custom.Name, seller),
+			ct: ct
 		).ConfigureAwait(false);
 
 		return response;

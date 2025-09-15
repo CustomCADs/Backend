@@ -9,7 +9,7 @@ public sealed class PutCategoryEndpoint(IRequestSender sender)
 	{
 		Put("");
 		Group<CategoriesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Edit")
 			.WithDescription("Edit a Category")
 		);
@@ -18,11 +18,11 @@ public sealed class PutCategoryEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PutCategoryRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new EditCategoryCommand(
+			command: new EditCategoryCommand(
 				Id: CategoryId.New(req.Id),
 				Dto: new CategoryWriteDto(req.Name, req.Description)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

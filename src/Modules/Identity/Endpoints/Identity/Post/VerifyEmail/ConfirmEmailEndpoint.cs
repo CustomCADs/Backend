@@ -13,7 +13,7 @@ public sealed class ConfirmEmailEndpoint(IRequestSender sender, IOptions<CookieS
 		Post("email/confirm");
 		Group<IdentityGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.ConfirmEmail)
 			.WithSummary("Confirm Email")
 			.WithDescription("Confirm the verification email")
@@ -24,11 +24,11 @@ public sealed class ConfirmEmailEndpoint(IRequestSender sender, IOptions<CookieS
 	public override async Task HandleAsync(ConfirmEmailRequest req, CancellationToken ct)
 	{
 		TokensDto tokens = await sender.SendCommandAsync(
-			new VerifyUserEmailCommand(
+			command: new VerifyUserEmailCommand(
 				Username: req.Username,
 				Token: req.Token.Replace(' ', '+')
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		HttpContext.SaveAllCookies(

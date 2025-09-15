@@ -10,7 +10,7 @@ public sealed class PutCustomEndpoint(IRequestSender sender)
 	{
 		Put("");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Edit")
 			.WithDescription("Edit your Custom")
 		);
@@ -19,13 +19,13 @@ public sealed class PutCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PutCustomRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new EditCustomCommand(
+			command: new EditCustomCommand(
 				Id: CustomId.New(req.Id),
 				Name: req.Name,
 				Description: req.Description,
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

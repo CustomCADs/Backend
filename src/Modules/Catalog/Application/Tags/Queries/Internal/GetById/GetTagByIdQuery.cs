@@ -2,6 +2,6 @@
 
 namespace CustomCADs.Catalog.Application.Tags.Queries.Internal.GetById;
 
-public record GetTagByIdQuery(
+public sealed record GetTagByIdQuery(
 	TagId Id
-) : IQuery<TagReadDto>;
+) : IQuery<TagDto>;

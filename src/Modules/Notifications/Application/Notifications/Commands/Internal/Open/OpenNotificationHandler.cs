@@ -4,8 +4,10 @@ using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.Notifications.Application.Notifications.Commands.Internal.Open;
 
-public class OpenNotificationHandler(INotificationReads reads, IUnitOfWork uow)
-	: ICommandHandler<OpenNotificationCommand>
+public sealed class OpenNotificationHandler(
+	INotificationReads reads,
+	IUnitOfWork uow
+) : ICommandHandler<OpenNotificationCommand>
 {
 	public async Task Handle(OpenNotificationCommand req, CancellationToken ct = default)
 	{

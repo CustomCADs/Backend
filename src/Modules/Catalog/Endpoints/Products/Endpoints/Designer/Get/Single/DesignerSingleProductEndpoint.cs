@@ -10,7 +10,7 @@ public sealed class DesignerSingleProductEndpoint(IRequestSender sender)
 	{
 		Get("{id}");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single Unchecked")
 			.WithDescription("See an Unchecked Product")
 		);
@@ -19,11 +19,11 @@ public sealed class DesignerSingleProductEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DesignerSingleProductRequest req, CancellationToken ct)
 	{
 		DesignerGetProductByIdDto product = await sender.SendQueryAsync(
-			new DesignerGetProductByIdQuery(
+			query: new DesignerGetProductByIdQuery(
 				Id: ProductId.New(req.Id),
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		DesignerSingleProductResponse response = product.ToResponse();

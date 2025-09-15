@@ -1,4 +1,4 @@
-using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Notifications.Domain.Notifications.Enums;
 
 namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Behaviors.Statuses;
 

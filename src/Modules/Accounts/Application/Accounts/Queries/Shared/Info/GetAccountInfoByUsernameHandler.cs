@@ -3,10 +3,10 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Accounts.Application.Accounts.Queries.Shared.Info;
 
-public class GetAccountInfoByUsernameHandler(IAccountReads reads)
-	: IQueryHandler<GetAccountInfoByUsernameQuery, AccountInfo>
+public sealed class GetAccountInfoByUsernameHandler(IAccountReads reads)
+	: IQueryHandler<GetAccountInfoByUsernameQuery, AccountInfoDto>
 {
-	public async Task<AccountInfo> Handle(GetAccountInfoByUsernameQuery req, CancellationToken ct = default)
+	public async Task<AccountInfoDto> Handle(GetAccountInfoByUsernameQuery req, CancellationToken ct = default)
 	{
 		Account account = await reads.SingleByUsernameAsync(req.Username, track: false, ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Account>.ByProp(nameof(req.Username), req.Username);

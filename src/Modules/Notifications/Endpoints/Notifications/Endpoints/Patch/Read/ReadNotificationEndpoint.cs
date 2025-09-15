@@ -10,7 +10,7 @@ public class ReadNotificationEndpoint(IRequestSender sender)
 	{
 		Patch("read");
 		Group<NotificationsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Read")
 			.WithDescription("Read your Notification")
 		);
@@ -19,11 +19,11 @@ public class ReadNotificationEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ReadNotificationRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new ReadNotificationCommand(
+			command: new ReadNotificationCommand(
 				Id: NotificationId.New(req.Id),
 				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

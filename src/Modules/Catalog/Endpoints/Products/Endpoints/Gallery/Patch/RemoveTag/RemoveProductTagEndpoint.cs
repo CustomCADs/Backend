@@ -13,7 +13,7 @@ public class RemoveProductTagEndpoint(IRequestSender sender)
 		Patch("tags/remove");
 		Group<GalleryGroup>();
 		Roles(Admin);
-		Description(d => d
+		Description(x => x
 			.WithSummary("Remove Tag")
 			.WithDescription("Removes a Tag from a Product")
 		);
@@ -22,12 +22,12 @@ public class RemoveProductTagEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(RemoveProductTagRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new RemoveProductTagCommand(
+			command: new RemoveProductTagCommand(
 				Id: ProductId.New(req.Id),
 				TagId: TagId.New(req.TagId),
 				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

@@ -5,4 +5,4 @@ namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetTextureU
 public sealed record GetMaterialTexturePresignedUrlPutQuery(
 	MaterialId Id,
 	UploadFileRequest NewImage
-) : IQuery<GetMaterialTexturePresignedUrlPutDto>;
+) : IQuery<string>;

@@ -6,8 +6,13 @@ using CustomCADs.Shared.Application.Events.Account.Roles;
 
 namespace CustomCADs.Accounts.Application.Roles.Commands.Internal.Delete;
 
-public sealed class DeleteRoleHandler(IRoleReads reads, IRoleWrites writes, IUnitOfWork uow, BaseCachingService<RoleId, Role> cache, IEventRaiser raiser)
-	: ICommandHandler<DeleteRoleCommand>
+public sealed class DeleteRoleHandler(
+	IRoleReads reads,
+	IRoleWrites writes,
+	IUnitOfWork uow,
+	BaseCachingService<RoleId, Role> cache,
+	IEventRaiser raiser
+) : ICommandHandler<DeleteRoleCommand>
 {
 	public async Task Handle(DeleteRoleCommand req, CancellationToken ct)
 	{
@@ -19,8 +24,10 @@ public sealed class DeleteRoleHandler(IRoleReads reads, IRoleWrites writes, IUni
 
 		await cache.ClearAsync(role.Id).ConfigureAwait(false);
 
-		await raiser.RaiseApplicationEventAsync(new RoleDeletedApplicationEvent(
-			Name: role.Name
-		)).ConfigureAwait(false);
+		await raiser.RaiseApplicationEventAsync(
+			@event: new RoleDeletedApplicationEvent(
+				Name: role.Name
+			)
+		).ConfigureAwait(false);
 	}
 }

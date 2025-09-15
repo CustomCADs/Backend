@@ -52,7 +52,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 			Id: ValidId,
 			Cad: cad,
 			Price: ValidPrice,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -70,7 +70,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 			Id: ValidId,
 			Cad: cad,
 			Price: ValidPrice,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -88,7 +88,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 			Id: ValidId,
 			Cad: cad,
 			Price: ValidPrice,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -108,7 +108,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 			Id: ValidId,
 			Cad: cad,
 			Price: ValidPrice,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -134,7 +134,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 			Id: ValidId,
 			Cad: cad,
 			Price: ValidPrice,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert
@@ -155,7 +155,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 			Id: ValidId,
 			Cad: cad,
 			Price: ValidPrice,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert

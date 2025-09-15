@@ -10,7 +10,7 @@ public sealed class DesignerGetCustomEndpoint(IRequestSender sender)
 	{
 		Get("{id}");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See an Accepted by You or a Pending Custom")
 		);
@@ -19,11 +19,11 @@ public sealed class DesignerGetCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DesignerGetCustomRequest req, CancellationToken ct)
 	{
 		DesignerGetCustomByIdDto custom = await sender.SendQueryAsync(
-			new DesignerGetCustomByIdQuery(
+			query: new DesignerGetCustomByIdQuery(
 				Id: CustomId.New(req.Id),
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		DesignerGetCustomResponse response = custom.ToResponse();

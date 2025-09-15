@@ -51,7 +51,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -71,7 +71,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -91,7 +91,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -118,7 +118,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -140,7 +140,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert
@@ -165,7 +165,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Assert
@@ -188,7 +188,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert

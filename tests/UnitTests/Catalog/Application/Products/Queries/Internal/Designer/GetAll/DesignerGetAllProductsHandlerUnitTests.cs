@@ -56,7 +56,7 @@ public class DesignerGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		DesignerGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			CategoryId: this.query.CategoryId,
 			Status: Status,
 			Name: this.query.Name,
@@ -80,7 +80,7 @@ public class DesignerGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		DesignerGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			CategoryId: this.query.CategoryId,
 			Status: Status,
 			Name: this.query.Name,
@@ -107,7 +107,7 @@ public class DesignerGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		DesignerGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			CategoryId: this.query.CategoryId,
 			Status: Status,
 			Name: this.query.Name,

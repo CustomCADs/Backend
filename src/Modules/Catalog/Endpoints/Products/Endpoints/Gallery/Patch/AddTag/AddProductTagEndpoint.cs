@@ -13,7 +13,7 @@ public class AddProductTagEndpoint(IRequestSender sender)
 		Patch("tags/add");
 		Group<GalleryGroup>();
 		Roles(Admin);
-		Description(d => d
+		Description(x => x
 			.WithSummary("Add Tag")
 			.WithDescription("Adds a Tag to a Product")
 		);
@@ -22,12 +22,12 @@ public class AddProductTagEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(AddProductTagRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new AddProductTagCommand(
+			command: new AddProductTagCommand(
 				Id: ProductId.New(req.Id),
 				TagId: TagId.New(req.TagId),
 				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

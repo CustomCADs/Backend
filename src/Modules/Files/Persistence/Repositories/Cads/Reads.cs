@@ -26,12 +26,12 @@ public sealed class Reads(FilesContext context) : ICadReads
 	public async Task<Cad?> SingleByIdAsync(CadId id, bool track = true, CancellationToken ct = default)
 		=> await context.Cads
 			.WithTracking(track)
-			.FirstOrDefaultAsync(c => c.Id == id, ct)
+			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<bool> ExistsByIdAsync(CadId id, CancellationToken ct = default)
 		=> await context.Cads
 			.WithTracking(false)
-			.AnyAsync(c => c.Id == id, ct)
+			.AnyAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 }

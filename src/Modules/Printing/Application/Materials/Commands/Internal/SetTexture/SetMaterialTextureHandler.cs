@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.UseCases.Images.Commands;
 
 namespace CustomCADs.Printing.Application.Materials.Commands.Internal.SetTexture;
 
-public class SetMaterialTextureHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache, IRequestSender sender)
+public sealed class SetMaterialTextureHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache, IRequestSender sender)
 	: ICommandHandler<SetMaterialTextureCommand>
 {
 	public async Task Handle(SetMaterialTextureCommand req, CancellationToken ct)
@@ -19,14 +19,14 @@ public class SetMaterialTextureHandler(IMaterialReads reads, BaseCachingService<
 		{
 			await sender.SendCommandAsync(
 				new SetImageKeyCommand(material.TextureId, req.Key),
-				ct
+				ct: ct
 			).ConfigureAwait(false);
 		}
 		if (req.ContentType is not null)
 		{
 			await sender.SendCommandAsync(
 				new SetImageContentTypeCommand(material.TextureId, req.ContentType),
-				ct
+				ct: ct
 			).ConfigureAwait(false);
 		}
 	}

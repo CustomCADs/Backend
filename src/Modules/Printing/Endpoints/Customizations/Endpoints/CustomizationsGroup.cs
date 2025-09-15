@@ -6,10 +6,10 @@ public class CustomizationsGroup : Group
 {
 	public CustomizationsGroup()
 	{
-		Configure(Paths.Customizations, ep =>
+		Configure(Paths.Customizations, x =>
 		{
-			ep.AllowAnonymous();
-			ep.Description(opt => opt.WithTags(Tags[Paths.Customizations]));
+			x.AllowAnonymous();
+			x.Description(x => x.WithTags(Tags[Paths.Customizations]));
 		});
 	}
 }

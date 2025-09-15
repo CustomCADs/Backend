@@ -4,5 +4,5 @@ namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Del
 
 public sealed record DeleteCustomCommand(
 	CustomId Id,
-	AccountId BuyerId
+	AccountId CallerId
 ) : ICommand;

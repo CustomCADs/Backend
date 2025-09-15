@@ -10,7 +10,7 @@ public class HideNotificationEndpoint(IRequestSender sender)
 	{
 		Patch("hide");
 		Group<NotificationsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Hide")
 			.WithDescription("Hide your Notification")
 		);
@@ -19,11 +19,11 @@ public class HideNotificationEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(HideNotificationRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new HideNotificationCommand(
+			command: new HideNotificationCommand(
 				Id: NotificationId.New(req.Id),
 				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

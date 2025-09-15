@@ -7,10 +7,10 @@ public class MaterialsGroup : Group
 {
 	public MaterialsGroup()
 	{
-		Configure(Paths.Materials, ep =>
+		Configure(Paths.Materials, x =>
 		{
-			ep.Roles(Admin);
-			ep.Description(opt => opt.WithTags(Tags[Paths.Materials]));
+			x.Roles(Admin);
+			x.Description(x => x.WithTags(Tags[Paths.Materials]));
 		});
 	}
 }

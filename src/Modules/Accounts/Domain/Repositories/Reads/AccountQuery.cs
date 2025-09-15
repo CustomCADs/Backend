@@ -1,5 +1,6 @@
-﻿using CustomCADs.Accounts.Domain.Accounts.ValueObjects;
+﻿using CustomCADs.Accounts.Domain.Accounts.Enums;
 using CustomCADs.Shared.Domain.Querying;
+using CustomCADs.Shared.Domain.ValueObjects;
 
 namespace CustomCADs.Accounts.Domain.Repositories.Reads;
 
@@ -11,5 +12,5 @@ public record AccountQuery(
 	string? Email = null,
 	string? FirstName = null,
 	string? LastName = null,
-	AccountSorting? Sorting = null
+	Sorting<AccountSortingType>? Sorting = null
 );

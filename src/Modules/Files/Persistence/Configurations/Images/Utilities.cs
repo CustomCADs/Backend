@@ -23,7 +23,7 @@ public static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => ImageId.New(v)
+				x => ImageId.New(x)
 			);
 
 		return builder;

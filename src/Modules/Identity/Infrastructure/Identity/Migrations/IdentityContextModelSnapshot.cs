@@ -2,6 +2,7 @@
 
 using System;
 using CustomCADs.Identity.Infrastructure.Identity;
+using CustomCADs.Identity.Infrastructure.Identity.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;

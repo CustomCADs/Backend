@@ -6,17 +6,19 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Begin;
 
-using static ApplicationConstants;
 
-public sealed class BeginCustomHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
-	: ICommandHandler<BeginCustomCommand>
+public sealed class BeginCustomHandler(
+	ICustomReads reads,
+	IUnitOfWork uow,
+	IEventRaiser raiser
+) : ICommandHandler<BeginCustomCommand>
 {
 	public async Task Handle(BeginCustomCommand req, CancellationToken ct)
 	{
 		Custom custom = await reads.SingleByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (req.DesignerId != custom.AcceptedCustom?.DesignerId)
+		if (req.CallerId != custom.AcceptedCustom?.DesignerId)
 		{
 			throw CustomAuthorizationException<Custom>.ById(req.Id);
 		}
@@ -25,11 +27,11 @@ public sealed class BeginCustomHandler(ICustomReads reads, IUnitOfWork uow, IEve
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			new NotificationRequestedEvent(
+			@event: new NotificationRequestedEvent(
 				Type: NotificationType.CustomBegun,
-				Description: Notifications.Messages.CustomBegun,
-				Link: Notifications.Links.CustomBegun,
-				AuthorId: req.DesignerId,
+				Description: ApplicationConstants.Notifications.Messages.CustomBegun,
+				Link: ApplicationConstants.Notifications.Links.CustomBegun,
+				AuthorId: req.CallerId,
 				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);

@@ -4,37 +4,35 @@ using CustomCADs.Shared.Endpoints.Extensions;
 
 namespace CustomCADs.Catalog.Endpoints.Products.Endpoints.Gallery.Get.All;
 
-public sealed class GetAllGaleryProductsEndpoint(IRequestSender sender)
-	: Endpoint<GetAllGaleryProductsRequest, Result<GetAllGaleryProductsResponse>>
+public sealed class GetAllGalleryProductsEndpoint(IRequestSender sender)
+	: Endpoint<GetAllGalleryProductsRequest, Result<GetAllGalleryProductsResponse>>
 {
 	public override void Configure()
 	{
 		Get("");
 		Group<GalleryGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all the Validated Products with Filter, Search, Sort and Pagination options")
 		);
 	}
 
-	public override async Task HandleAsync(GetAllGaleryProductsRequest req, CancellationToken ct)
+	public override async Task HandleAsync(GetAllGalleryProductsRequest req, CancellationToken ct)
 	{
 		Result<GalleryGetAllProductsDto> result = await sender.SendQueryAsync(
-			new GalleryGetAllProductsQuery(
-				BuyerId: User.GetAccountId(),
+			query: new GalleryGetAllProductsQuery(
+				CallerId: User.GetAccountId(),
 				CategoryId: CategoryId.New(req.CategoryId),
 				TagIds: TagId.New(req.TagIds),
 				Name: req.Name,
 				Sorting: new(req.SortingType.ToBase(), req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Result<GetAllGaleryProductsResponse> response = new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(i => i.ToResponse())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(
+			response: result.ToNewResult(x => x.ToResponse())
+		).ConfigureAwait(false);
 	}
 }

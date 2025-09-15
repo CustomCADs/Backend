@@ -5,8 +5,11 @@ using CustomCADs.Shared.Application.UseCases.Images.Commands;
 
 namespace CustomCADs.Files.Application.Images.Commands.Shared.SetContentType;
 
-public sealed class SetImageContentTypeHandler(IImageReads reads, IUnitOfWork uow, BaseCachingService<ImageId, Image> cache)
-	: ICommandHandler<SetImageContentTypeCommand>
+public sealed class SetImageContentTypeHandler(
+	IImageReads reads,
+	IUnitOfWork uow,
+	BaseCachingService<ImageId, Image> cache
+) : ICommandHandler<SetImageContentTypeCommand>
 {
 	public async Task Handle(SetImageContentTypeCommand req, CancellationToken ct = default)
 	{

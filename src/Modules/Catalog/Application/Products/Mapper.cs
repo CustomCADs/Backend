@@ -22,7 +22,7 @@ internal static class Mapper
 			CreatorName: username
 		);
 
-	internal static GalleryGetProductByIdDto ToGalleryGetByIdDto(this Product product, decimal volume, string username, string categoryName, string[] tags, CoordinatesDto camCoords, CoordinatesDto panCoords)
+	internal static GalleryGetProductByIdDto ToGalleryGetByIdDto(this Product product, decimal volume, string username, string categoryName, string[] tags, (CoordinatesDto Cam, CoordinatesDto Pan) coords)
 		=> new(
 			Id: product.Id,
 			Name: product.Name,
@@ -32,8 +32,8 @@ internal static class Mapper
 			CreatorName: username,
 			Tags: tags,
 			UploadedAt: product.UploadedAt,
-			CamCoordinates: camCoords,
-			PanCoordinates: panCoords,
+			CamCoordinates: coords.Cam,
+			PanCoordinates: coords.Pan,
 			Counts: product.Counts.ToDto(),
 			Category: new(product.CategoryId, categoryName)
 		);

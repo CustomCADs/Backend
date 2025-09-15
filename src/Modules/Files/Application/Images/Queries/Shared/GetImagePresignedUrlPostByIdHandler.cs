@@ -5,7 +5,7 @@ using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
 namespace CustomCADs.Files.Application.Images.Queries.Shared;
 
-public class GetImagePresignedUrlPostByIdHandler(IImageStorageService storage)
+public sealed class GetImagePresignedUrlPostByIdHandler(IImageStorageService storage)
 	: IQueryHandler<GetImagePresignedUrlPostByIdQuery, UploadFileResponse>
 {
 	public async Task<UploadFileResponse> Handle(GetImagePresignedUrlPostByIdQuery req, CancellationToken ct)

@@ -1,5 +1,5 @@
 using CustomCADs.Notifications.Domain.Notifications;
-using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 

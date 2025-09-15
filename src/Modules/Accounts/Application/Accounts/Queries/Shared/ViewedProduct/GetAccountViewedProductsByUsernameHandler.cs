@@ -4,11 +4,9 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Accounts.Application.Accounts.Queries.Shared.ViewedProduct;
 
-public class GetAccountViewedProductsByUsernameHandler(IAccountReads reads)
+public sealed class GetAccountViewedProductsByUsernameHandler(IAccountReads reads)
 	: IQueryHandler<GetAccountViewedProductsByUsernameQuery, ProductId[]>
 {
 	public async Task<ProductId[]> Handle(GetAccountViewedProductsByUsernameQuery req, CancellationToken ct)
-	{
-		return await reads.ViewedProductsByUsernameAsync(req.Username, ct).ConfigureAwait(false);
-	}
+		=> await reads.ViewedProductsByUsernameAsync(req.Username, ct).ConfigureAwait(false);
 }

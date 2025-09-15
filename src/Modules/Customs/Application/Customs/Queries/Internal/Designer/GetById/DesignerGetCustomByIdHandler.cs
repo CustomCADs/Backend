@@ -14,7 +14,7 @@ public sealed class DesignerGetCustomByIdHandler(ICustomReads reads, IRequestSen
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
 		if (custom.CustomStatus is not CustomStatus.Pending
-			&& custom.AcceptedCustom?.DesignerId != req.DesignerId)
+			&& custom.AcceptedCustom?.DesignerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Custom>.ById(req.Id);
 		}
@@ -22,12 +22,12 @@ public sealed class DesignerGetCustomByIdHandler(ICustomReads reads, IRequestSen
 		return custom.ToDesignerGetByIdDto(
 			buyer: await sender.SendQueryAsync(
 				new GetUsernameByIdQuery(custom.BuyerId),
-				ct
+				ct: ct
 			).ConfigureAwait(false),
 			accepted: custom.AcceptedCustom?.ToDto(
 				designerName: await sender.SendQueryAsync(
 					new GetUsernameByIdQuery(custom.AcceptedCustom.DesignerId),
-					ct
+					ct: ct
 				).ConfigureAwait(false)
 			),
 			finished: custom.FinishedCustom?.ToDto(),

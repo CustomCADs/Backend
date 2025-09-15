@@ -7,10 +7,10 @@ public class NotificationsGroup : Group
 {
 	public NotificationsGroup()
 	{
-		Configure(Paths.Notifications, ep =>
+		Configure(Paths.Notifications, x =>
 		{
-			ep.Roles(Customer, Contributor, Designer, Admin);
-			ep.Description(d => d.WithTags(Tags[Paths.Notifications]));
+			x.Roles(Customer, Contributor, Designer, Admin);
+			x.Description(x => x.WithTags(Tags[Paths.Notifications]));
 		});
 	}
 }

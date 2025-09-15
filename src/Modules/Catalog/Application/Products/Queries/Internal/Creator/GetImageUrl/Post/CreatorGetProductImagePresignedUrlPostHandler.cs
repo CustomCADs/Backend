@@ -8,13 +8,11 @@ public sealed class CreatorGetProductImagePresignedUrlPostHandler(IRequestSender
 	: IQueryHandler<CreatorGetProductImagePresignedUrlPostQuery, UploadFileResponse>
 {
 	public async Task<UploadFileResponse> Handle(CreatorGetProductImagePresignedUrlPostQuery req, CancellationToken ct)
-	{
-		return await sender.SendQueryAsync(
-			new GetImagePresignedUrlPostByIdQuery(
+		=> await sender.SendQueryAsync(
+			query: new GetImagePresignedUrlPostByIdQuery(
 				Name: req.ProductName,
 				File: req.Image
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
-	}
 }

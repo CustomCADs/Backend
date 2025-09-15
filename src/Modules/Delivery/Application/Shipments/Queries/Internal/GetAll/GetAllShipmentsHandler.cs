@@ -6,15 +6,18 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
 
-public class GetAllShipmentsHandler(IShipmentReads reads, IRequestSender sender, BaseCachingService<ShipmentId, Shipment> cache)
-	: IQueryHandler<GetAllShipmentsQuery, Result<GetAllShipmentsDto>>
+public sealed class GetAllShipmentsHandler(
+	IShipmentReads reads,
+	IRequestSender sender,
+	BaseCachingService<ShipmentId, Shipment> cache
+) : IQueryHandler<GetAllShipmentsQuery, Result<GetAllShipmentsDto>>
 {
 	public async Task<Result<GetAllShipmentsDto>> Handle(GetAllShipmentsQuery req, CancellationToken ct)
 	{
 		Result<Shipment> result = await cache.GetOrCreateAsync(
 			factory: async () => await reads.AllAsync(
 				query: new(
-					CustomerId: req.CustomerId,
+					CustomerId: req.CallerId,
 					Sorting: req.Sorting,
 					Pagination: req.Pagination
 				),
@@ -24,13 +27,10 @@ public class GetAllShipmentsHandler(IShipmentReads reads, IRequestSender sender,
 		).ConfigureAwait(false);
 
 		Dictionary<AccountId, string> buyers = await sender.SendQueryAsync(
-			new GetUsernamesByIdsQuery([.. result.Items.Select(i => i.BuyerId)]),
-			ct
+			query: new GetUsernamesByIdsQuery([.. result.Items.Select(x => x.BuyerId)]),
+			ct: ct
 		).ConfigureAwait(false);
 
-		return new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(i => i.ToGetAllDto(buyers[i.BuyerId]))]
-		);
+		return result.ToNewResult(x => x.ToGetAllDto(buyers[x.BuyerId]));
 	}
 }

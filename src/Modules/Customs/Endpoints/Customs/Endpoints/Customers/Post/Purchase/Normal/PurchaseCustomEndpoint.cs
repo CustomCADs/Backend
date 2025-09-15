@@ -12,7 +12,7 @@ public sealed class PurchaseCustomEndpoint(IRequestSender sender)
 	{
 		Post("purchase");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Purchase")
 			.WithDescription("Purchase a Custom")
 		);
@@ -21,12 +21,12 @@ public sealed class PurchaseCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PurchaseCustomRequest req, CancellationToken ct)
 	{
 		PaymentDto dto = await sender.SendCommandAsync(
-			new PurchaseCustomCommand(
+			command: new PurchaseCustomCommand(
 				Id: CustomId.New(req.Id),
 				PaymentMethodId: req.PaymentMethodId,
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		PaymentResponse response = dto.ToResponse();

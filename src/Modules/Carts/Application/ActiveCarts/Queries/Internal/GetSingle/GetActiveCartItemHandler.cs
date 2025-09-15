@@ -9,12 +9,12 @@ public sealed class GetActiveCartItemHandler(IActiveCartReads reads, IRequestSen
 {
 	public async Task<ActiveCartItemDto> Handle(GetActiveCartItemQuery req, CancellationToken ct)
 	{
-		ActiveCartItem item = await reads.SingleAsync(req.BuyerId, req.ProductId, track: false, ct: ct).ConfigureAwait(false)
-			?? throw CustomNotFoundException<ActiveCartItem>.ById(new { req.BuyerId, req.ProductId });
+		ActiveCartItem item = await reads.SingleAsync(req.CallerId, req.ProductId, track: false, ct: ct).ConfigureAwait(false)
+			?? throw CustomNotFoundException<ActiveCartItem>.ById(new { req.CallerId, req.ProductId });
 
 		string buyer = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(req.BuyerId),
-			ct
+			query: new GetUsernameByIdQuery(req.CallerId),
+			ct: ct
 		).ConfigureAwait(false);
 
 		return item.ToDto(buyer);

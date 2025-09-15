@@ -4,20 +4,23 @@ using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Printing.Application.Customizations.Queries.Shared.Cost;
 
-public class GetCustomizationsCostByIdsHandler(ICustomizationReads customizationReads, IMaterialReads materialReads, IPrintCalculator calculator)
-	: IQueryHandler<GetCustomizationsCostByIdsQuery, Dictionary<CustomizationId, decimal>>
+public sealed class GetCustomizationsCostByIdsHandler(
+	ICustomizationReads customizationReads,
+	IMaterialReads materialReads,
+	IPrintCalculator calculator
+) : IQueryHandler<GetCustomizationsCostByIdsQuery, Dictionary<CustomizationId, decimal>>
 {
 	public async Task<Dictionary<CustomizationId, decimal>> Handle(GetCustomizationsCostByIdsQuery req, CancellationToken ct)
 	{
-		Dictionary<CustomizationId, Customization> customizations = await customizationReads.AllByIdsAsync(req.Ids, track: false, ct).ConfigureAwait(false);
-		MaterialId[] materialIds = [.. customizations.Values.Select(x => x.MaterialId).Distinct()];
+		ICollection<Customization> customizations = await customizationReads.AllAsync(req.Ids, track: false, ct).ConfigureAwait(false);
+		MaterialId[] materialIds = [.. customizations.Select(x => x.MaterialId).Distinct()];
 
 		Dictionary<MaterialId, Material> materials = await materialReads.AllByIdsAsync(materialIds, track: false, ct).ConfigureAwait(false);
 		return customizations.ToDictionary(
-			x => x.Key,
+			x => x.Id,
 			x =>
 			{
-				Customization customization = x.Value;
+				Customization customization = x;
 				Material material = materials[customization.MaterialId];
 				return calculator.CalculateCost(customization, material);
 			}

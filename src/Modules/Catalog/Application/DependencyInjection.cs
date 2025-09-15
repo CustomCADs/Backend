@@ -10,10 +10,10 @@ public static partial class DependencyInjection
 {
 	public static IServiceCollection AddCatalogBackgroundJobs(this IServiceCollection services)
 	{
-		services.AddQuartz(q =>
+		services.AddQuartz(configurator =>
 		{
-			q.AddTrigger(opts => opts
-				.ForJob(q.AddJob<ClearTagsJob>())
+			configurator.AddTrigger(conf => conf
+				.ForJob(configurator.AddJob<ClearTagsJob>())
 				.WithSimpleSchedule(schedule =>
 					schedule
 						.WithInterval(TimeSpan.FromDays(ClearTagsIntervalDays))

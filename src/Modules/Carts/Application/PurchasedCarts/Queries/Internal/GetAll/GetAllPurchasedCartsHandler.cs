@@ -8,17 +8,17 @@ public sealed class GetAllPurchasedCartsHandler(IPurchasedCartReads reads)
 {
 	public async Task<Result<GetAllPurchasedCartsDto>> Handle(GetAllPurchasedCartsQuery req, CancellationToken ct)
 	{
-		PurchasedCartQuery query = new(
-			BuyerId: req.BuyerId,
-			PaymentStatus: req.PaymentStatus,
-			Sorting: req.Sorting,
-			Pagination: req.Pagination
-		);
-		Result<PurchasedCart> result = await reads.AllAsync(query, track: false, ct: ct).ConfigureAwait(false);
+		Result<PurchasedCart> result = await reads.AllAsync(
+			query: new(
+				BuyerId: req.CallerId,
+				PaymentStatus: req.PaymentStatus,
+				Sorting: req.Sorting,
+				Pagination: req.Pagination
+			),
+			track: false,
+			ct: ct
+		).ConfigureAwait(false);
 
-		return new(
-			result.Count,
-			[.. result.Items.Select(c => c.ToGetAllDto())]
-		);
+		return result.ToNewResult(x => x.ToGetAllDto());
 	}
 }

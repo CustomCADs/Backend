@@ -32,7 +32,7 @@ public class IncreaseActiveCartItemQuantityHandlerUnitTests : ActiveCartsBaseUni
 	{
 		// Arrange
 		IncreaseActiveCartItemQuantityCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ValidProductId,
 			Amount: MinValidQuantity
 		);
@@ -49,7 +49,7 @@ public class IncreaseActiveCartItemQuantityHandlerUnitTests : ActiveCartsBaseUni
 	{
 		// Arrange
 		IncreaseActiveCartItemQuantityCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ValidProductId,
 			Amount: MinValidQuantity
 		);
@@ -66,7 +66,7 @@ public class IncreaseActiveCartItemQuantityHandlerUnitTests : ActiveCartsBaseUni
 	{
 		// Arrange
 		IncreaseActiveCartItemQuantityCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ValidProductId,
 			Amount: MinValidQuantity
 		);
@@ -86,7 +86,7 @@ public class IncreaseActiveCartItemQuantityHandlerUnitTests : ActiveCartsBaseUni
 			.ReturnsAsync(null as ActiveCartItem);
 
 		IncreaseActiveCartItemQuantityCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ValidProductId,
 			Amount: MinValidQuantity
 		);
@@ -103,7 +103,7 @@ public class IncreaseActiveCartItemQuantityHandlerUnitTests : ActiveCartsBaseUni
 	{
 		// Arrange
 		IncreaseActiveCartItemQuantityCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ProductId: ProductId.New(),
 			Amount: MinValidQuantity
 		);

@@ -12,7 +12,7 @@ public class ToggleActiveCartItemForDeliveryEndpoint(IRequestSender sender)
 	{
 		Patch("delivery");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Toggle ForDelivery")
 			.WithDescription("Turn on/off the Cart Item's planned Delivery")
 		);
@@ -21,12 +21,12 @@ public class ToggleActiveCartItemForDeliveryEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ToggleActiveCartItemForDeliveryRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new ToggleActiveCartItemForDeliveryCommand(
-				BuyerId: User.GetAccountId(),
+			command: new ToggleActiveCartItemForDeliveryCommand(
+				CallerId: User.GetAccountId(),
 				ProductId: ProductId.New(req.ProductId),
 				CustomizationId: CustomizationId.New(req.CustomizationId)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

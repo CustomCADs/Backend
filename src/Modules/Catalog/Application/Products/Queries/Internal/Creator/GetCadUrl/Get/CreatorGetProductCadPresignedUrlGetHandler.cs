@@ -13,14 +13,14 @@ public sealed class CreatorGetProductCadPresignedUrlGetHandler(IProductReads rea
 		Product product = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(req.Id);
 
-		if (product.CreatorId != req.CreatorId)
+		if (product.CreatorId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Product>.ById(product.Id);
 		}
 
 		return await sender.SendQueryAsync(
-			new GetCadPresignedUrlGetByIdQuery(product.CadId),
-			ct
+			query: new GetCadPresignedUrlGetByIdQuery(product.CadId),
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

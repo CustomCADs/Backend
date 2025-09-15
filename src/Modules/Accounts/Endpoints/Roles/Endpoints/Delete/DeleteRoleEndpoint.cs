@@ -10,7 +10,7 @@ public sealed class DeleteRoleEndpoint(IRequestSender sender)
 	{
 		Delete("");
 		Group<RolesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Delete")
 			.WithDescription("Delete a Role")
 		);
@@ -19,8 +19,8 @@ public sealed class DeleteRoleEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DeleteRoleRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new DeleteRoleCommand(RoleId.New(req.Id)),
-			ct
+			command: new DeleteRoleCommand(RoleId.New(req.Id)),
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

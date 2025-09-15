@@ -13,7 +13,7 @@ public sealed class GetProductGetPresignedCadUrlEndpoint(IRequestSender sender)
 	{
 		Post("presignedUrls/download/cad");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Download Cad")
 			.WithDescription("Download a Product's Cad")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -23,11 +23,11 @@ public sealed class GetProductGetPresignedCadUrlEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetProductGetPresignedCadUrlRequest req, CancellationToken ct)
 	{
 		DownloadFileResponse response = await sender.SendQueryAsync(
-			new CreatorGetProductCadPresignedUrlGetQuery(
+			query: new CreatorGetProductCadPresignedUrlGetQuery(
 				Id: ProductId.New(req.Id),
-				CreatorId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

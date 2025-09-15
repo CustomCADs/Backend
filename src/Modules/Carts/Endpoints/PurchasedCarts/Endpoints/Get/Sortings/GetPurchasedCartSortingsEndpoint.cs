@@ -1,15 +1,16 @@
 ﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetSortings;
+using CustomCADs.Carts.Domain.PurchasedCarts.Enums;
 
 namespace CustomCADs.Carts.Endpoints.PurchasedCarts.Endpoints.Get.Sortings;
 
 public sealed class GetPurchasedCartSortingsEndpoint(IRequestSender sender)
-	: EndpointWithoutRequest<string[]>
+	: EndpointWithoutRequest<PurchasedCartSortingType[]>
 {
 	public override void Configure()
 	{
 		Get("sortings");
 		Group<PurchasedCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Sortings")
 			.WithDescription("See all Purchased Cart Sorting types")
 		);
@@ -17,9 +18,9 @@ public sealed class GetPurchasedCartSortingsEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(CancellationToken ct)
 	{
-		string[] result = await sender.SendQueryAsync(
-			new GetPurchasedCartSortingsQuery(),
-			ct
+		PurchasedCartSortingType[] result = await sender.SendQueryAsync(
+			query: new GetPurchasedCartSortingsQuery(),
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(result).ConfigureAwait(false);

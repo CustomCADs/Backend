@@ -1,11 +1,11 @@
-﻿using CustomCADs.Notifications.Domain.Repositories.Reads;
-using CustomCADs.Notifications.Domain.Notifications;
+﻿using CustomCADs.Notifications.Domain.Notifications;
+using CustomCADs.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Notifications.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Notifications;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
-using CustomCADs.Shared.Domain.Enums;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Notifications.Persistence.Repositories.Notifications;
 
@@ -19,7 +19,7 @@ public sealed class Reads(NotificationsContext context) : INotificationReads
 
 		int count = await queryable.CountAsync(ct).ConfigureAwait(false);
 		Notification[] notifications = await queryable
-			.WithSorting(query.Sorting ?? new())
+			.WithSorting(query.Sorting)
 			.WithPagination(query.Pagination)
 			.ToArrayAsync(ct)
 			.ConfigureAwait(false);
@@ -30,7 +30,7 @@ public sealed class Reads(NotificationsContext context) : INotificationReads
 	public async Task<Notification?> SingleByIdAsync(NotificationId id, bool track = true, CancellationToken ct = default)
 		=> await context.Notifications
 			.WithTracking(track)
-			.FirstOrDefaultAsync(s => s.Id == id, ct)
+			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<Dictionary<NotificationStatus, int>> CountByStatusAsync(AccountId receiverId, CancellationToken ct = default)

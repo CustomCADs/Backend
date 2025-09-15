@@ -1,6 +1,6 @@
 namespace CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
 
-public record CancelShipmentCommand(
+public sealed record CancelShipmentCommand(
 	ShipmentId Id,
 	string Comment
 ) : ICommand;

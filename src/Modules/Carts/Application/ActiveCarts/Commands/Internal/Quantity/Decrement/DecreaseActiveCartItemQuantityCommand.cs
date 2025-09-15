@@ -3,8 +3,8 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Quantity.Decrement;
 
-public record DecreaseActiveCartItemQuantityCommand(
-	AccountId BuyerId,
+public sealed record DecreaseActiveCartItemQuantityCommand(
+	AccountId CallerId,
 	ProductId ProductId,
 	int Amount
 ) : ICommand<int>;

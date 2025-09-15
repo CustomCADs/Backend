@@ -4,20 +4,22 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Identity.Application.Users.Commands.Internal.Register;
 
-public class RegisterUserHandler(IUserService service, IRequestSender sender)
-	: ICommandHandler<RegisterUserCommand>
+public sealed class RegisterUserHandler(
+	IUserService service,
+	IRequestSender sender
+) : ICommandHandler<RegisterUserCommand>
 {
 	public async Task Handle(RegisterUserCommand req, CancellationToken ct)
 	{
 		AccountId accountId = await sender.SendCommandAsync(
-			new CreateAccountCommand(
+			command: new CreateAccountCommand(
 				Role: req.Role,
 				Username: req.Username,
 				Email: req.Email,
 				FirstName: req.FirstName,
 				LastName: req.LastName
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await service.CreateAsync(

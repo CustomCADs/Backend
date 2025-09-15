@@ -1,10 +1,10 @@
 namespace CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
-public record GetAccountInfoByUsernameQuery(
+public sealed record GetAccountInfoByUsernameQuery(
 	string Username
-) : IQuery<AccountInfo>;
+) : IQuery<AccountInfoDto>;
 
-public record AccountInfo(
+public sealed record AccountInfoDto(
 	DateTimeOffset CreatedAt,
 	bool TrackViewedProducts,
 	string? FirstName,

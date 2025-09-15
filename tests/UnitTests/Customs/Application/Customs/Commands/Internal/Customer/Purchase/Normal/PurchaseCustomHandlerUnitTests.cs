@@ -105,7 +105,7 @@ public class PurchaseCustomHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<AccountId>(x => x == custom.BuyerId),
 			It.Is<CustomId>(x => x == custom.Id),
 			It.Is<decimal>(x => x == ValidPrice),
-			It.Is<string>(x => x.Contains(custom.Name)),
+			It.Is<(string, string Name, string)>(x => x.Name == custom.Name),
 			ct
 		), Times.Once());
 	}
@@ -120,7 +120,7 @@ public class PurchaseCustomHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<AccountId>(x => x == custom.BuyerId),
 			It.Is<CustomId>(x => x == custom.Id),
 			It.Is<decimal>(x => x == ValidPrice),
-			It.Is<string>(x => x.Contains(custom.Name)),
+			It.Is<(string, string Name, string)>(x => x.Name == custom.Name),
 			ct
 		)).ReturnsAsync(expected);
 		PurchaseCustomCommand command = new(ValidId, PaymentMethodId, ValidBuyerId);

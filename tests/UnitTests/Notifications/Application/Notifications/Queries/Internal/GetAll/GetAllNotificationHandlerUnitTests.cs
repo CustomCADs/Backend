@@ -51,7 +51,7 @@ public class GetAllNotificationHandlerUnitTests : NotificationsBaseUnitTests
 		// Arrange
 		GetAllNotificationsQuery query = new(
 			Pagination: this.query.Pagination,
-			ReceiverId: ValidReceiverId,
+			CallerId: ValidReceiverId,
 			Sorting: this.query.Sorting
 		);
 
@@ -72,7 +72,7 @@ public class GetAllNotificationHandlerUnitTests : NotificationsBaseUnitTests
 		// Arrange
 		GetAllNotificationsQuery query = new(
 			Pagination: this.query.Pagination,
-			ReceiverId: ValidReceiverId,
+			CallerId: ValidReceiverId,
 			Sorting: this.query.Sorting
 		);
 
@@ -92,7 +92,7 @@ public class GetAllNotificationHandlerUnitTests : NotificationsBaseUnitTests
 		// Arrange
 		GetAllNotificationsQuery query = new(
 			Pagination: this.query.Pagination,
-			ReceiverId: ValidReceiverId,
+			CallerId: ValidReceiverId,
 			Sorting: this.query.Sorting
 		);
 

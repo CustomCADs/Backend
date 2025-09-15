@@ -2,8 +2,10 @@
 
 namespace CustomCADs.Catalog.Application.Categories.Queries.Internal.GetAll;
 
-public sealed class GetAllCategoriesHandler(ICategoryReads reads, BaseCachingService<CategoryId, Category> cache)
-	: IQueryHandler<GetAllCategoriesQuery, IEnumerable<CategoryReadDto>>
+public sealed class GetAllCategoriesHandler(
+	ICategoryReads reads,
+	BaseCachingService<CategoryId, Category> cache
+) : IQueryHandler<GetAllCategoriesQuery, IEnumerable<CategoryReadDto>>
 {
 	public async Task<IEnumerable<CategoryReadDto>> Handle(GetAllCategoriesQuery req, CancellationToken ct)
 	{
@@ -11,6 +13,6 @@ public sealed class GetAllCategoriesHandler(ICategoryReads reads, BaseCachingSer
 			factory: async () => [.. await reads.AllAsync(track: false, ct: ct).ConfigureAwait(false)]
 		).ConfigureAwait(false);
 
-		return categories.Select(c => c.ToDto());
+		return categories.Select(x => x.ToDto());
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Printing.Application.Customizations.Commands.Internal.Create;
 
-public record CreateCustomizationCommand(
+public sealed record CreateCustomizationCommand(
 	decimal Scale,
 	decimal Infill,
 	decimal Volume,

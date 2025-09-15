@@ -10,7 +10,7 @@ public sealed class FinishCustomEndpoint(IRequestSender sender)
 	{
 		Patch("finish");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Finish")
 			.WithDescription("Set an Custom's Status to Finished")
 		);
@@ -19,13 +19,13 @@ public sealed class FinishCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(FinishCustomRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new FinishCustomCommand(
+			command: new FinishCustomCommand(
 				Id: CustomId.New(req.Id),
 				Price: req.Price,
 				Cad: req.ToTuple(),
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

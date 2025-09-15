@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
 
-public record CreatorGetAllProductsDto(
+public sealed record CreatorGetAllProductsDto(
 	ProductId Id,
 	string Name,
 	string Status,

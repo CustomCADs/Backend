@@ -9,15 +9,19 @@ namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Del
 
 using static ApplicationConstants;
 
-public sealed class DeleteCustomHandler(ICustomReads reads, IWrites<Custom> writes, IUnitOfWork uow, IEventRaiser raiser)
-	: ICommandHandler<DeleteCustomCommand>
+public sealed class DeleteCustomHandler(
+	ICustomReads reads,
+	IWrites<Custom> writes,
+	IUnitOfWork uow,
+	IEventRaiser raiser
+) : ICommandHandler<DeleteCustomCommand>
 {
 	public async Task Handle(DeleteCustomCommand req, CancellationToken ct)
 	{
 		Custom custom = await reads.SingleByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (custom.BuyerId != req.BuyerId)
+		if (custom.BuyerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Custom>.ById(req.Id);
 		}
@@ -28,9 +32,9 @@ public sealed class DeleteCustomHandler(ICustomReads reads, IWrites<Custom> writ
 		if (custom is { CustomStatus: not CustomStatus.Pending, AcceptedCustom: not null })
 		{
 			await raiser.RaiseApplicationEventAsync(
-				new NotificationRequestedEvent(
+				@event: new NotificationRequestedEvent(
 					Type: NotificationType.CustomDeleted,
-					Description: string.Format(Notifications.Messages.CustomDeleted, custom.ForDelivery ? "on" : "off"),
+					Description: Notifications.Messages.CustomDeleted,
 					Link: Notifications.Links.CustomDeleted,
 					AuthorId: custom.BuyerId,
 					ReceiverIds: [custom.AcceptedCustom.DesignerId]

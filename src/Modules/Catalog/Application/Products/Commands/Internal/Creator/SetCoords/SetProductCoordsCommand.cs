@@ -5,7 +5,7 @@ namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.SetC
 
 public sealed record SetProductCoordsCommand(
 	ProductId Id,
-	AccountId CreatorId,
+	AccountId CallerId,
 	CoordinatesDto? CamCoordinates = default,
 	CoordinatesDto? PanCoordinates = default
 ) : ICommand;

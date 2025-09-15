@@ -35,7 +35,7 @@ public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		DeleteCustomCommand command = new(
 			Id: id,
-			BuyerId: buyerId
+			CallerId: buyerId
 		);
 
 		// Act
@@ -51,7 +51,7 @@ public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		DeleteCustomCommand command = new(
 			Id: id,
-			BuyerId: buyerId
+			CallerId: buyerId
 		);
 
 		// Act
@@ -77,7 +77,7 @@ public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		DeleteCustomCommand command = new(
 			Id: id,
-			BuyerId: buyerId
+			CallerId: buyerId
 		);
 
 		// Act

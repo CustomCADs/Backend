@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.Count;
 
-public record CountCustomsDto(
+public sealed record CountCustomsDto(
 	int Pending,
 	int Accepted,
 	int Begun,

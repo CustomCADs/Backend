@@ -12,7 +12,7 @@ public sealed class PostRoleEndpoint(IRequestSender sender)
 	{
 		Post("");
 		Group<RolesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Create")
 			.WithDescription("Create a Role")
 		);
@@ -21,17 +21,18 @@ public sealed class PostRoleEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PostRoleRequest req, CancellationToken ct)
 	{
 		RoleId id = await sender.SendCommandAsync(
-			new CreateRoleCommand(
-				Dto: new RoleWriteDto(req.Name, req.Description)
+			command: new CreateRoleCommand(
+				Name: req.Name,
+				Description: req.Description
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		RoleReadDto role = await sender.SendQueryAsync(
-			new GetRoleByIdQuery(
+		RoleDto role = await sender.SendQueryAsync(
+			query: new GetRoleByIdQuery(
 				Id: id
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		RoleResponse response = role.ToResponse();

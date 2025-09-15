@@ -29,7 +29,7 @@ public class UnitOfWork(CartsContext context) : IUnitOfWork
 		try
 		{
 			await context.ActiveCartItems
-				.Where(item => item.BuyerId == id)
+				.Where(x => x.BuyerId == id)
 				.ExecuteDeleteAsync(ct)
 				.ConfigureAwait(false);
 		}
@@ -48,7 +48,7 @@ public class UnitOfWork(CartsContext context) : IUnitOfWork
 		try
 		{
 			await context.ActiveCartItems
-				.Where(item => item.ProductId == id)
+				.Where(x => x.ProductId == id)
 				.ExecuteDeleteAsync(ct)
 				.ConfigureAwait(false);
 		}

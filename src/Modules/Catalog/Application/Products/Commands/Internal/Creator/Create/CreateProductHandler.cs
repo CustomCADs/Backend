@@ -12,8 +12,11 @@ namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Crea
 using static ApplicationConstants;
 using static DomainConstants;
 
-public sealed class CreateProductHandler(IProductWrites writes, IUnitOfWork uow, IRequestSender sender)
-	: ICommandHandler<CreateProductCommand, ProductId>
+public sealed class CreateProductHandler(
+	IProductWrites writes,
+	IUnitOfWork uow,
+	IRequestSender sender
+) : ICommandHandler<CreateProductCommand, ProductId>
 {
 	public async Task<ProductId> Handle(CreateProductCommand req, CancellationToken ct)
 	{
@@ -22,26 +25,26 @@ public sealed class CreateProductHandler(IProductWrites writes, IUnitOfWork uow,
 			throw CustomNotFoundException<Product>.ById(req.CategoryId, "Category");
 		}
 
-		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.CreatorId), ct).ConfigureAwait(false))
+		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.CallerId), ct).ConfigureAwait(false))
 		{
-			throw CustomNotFoundException<Product>.ById(req.CreatorId, "User");
+			throw CustomNotFoundException<Product>.ById(req.CallerId, "User");
 		}
 
 		CadId cadId = await sender.SendCommandAsync(
-			new CreateCadCommand(
+			command: new CreateCadCommand(
 				Key: req.CadKey,
 				ContentType: req.CadContentType,
 				Volume: req.CadVolume
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		ImageId imageId = await sender.SendCommandAsync(
-			new CreateImageCommand(
+			command: new CreateImageCommand(
 				Key: req.ImageKey,
 				ContentType: req.ImageContentType
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		Product product = await writes.AddAsync(
@@ -50,17 +53,17 @@ public sealed class CreateProductHandler(IProductWrites writes, IUnitOfWork uow,
 				description: req.Description,
 				price: req.Price,
 				categoryId: req.CategoryId,
-				creatorId: req.CreatorId,
+				creatorId: req.CallerId,
 				imageId: imageId,
 				cadId: cadId
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		string role = await sender.SendQueryAsync(
-			new GetUserRoleByIdQuery(req.CreatorId),
-			ct
+			query: new GetUserRoleByIdQuery(req.CallerId),
+			ct: ct
 		).ConfigureAwait(false);
 
 		if (role is Roles.Designer)

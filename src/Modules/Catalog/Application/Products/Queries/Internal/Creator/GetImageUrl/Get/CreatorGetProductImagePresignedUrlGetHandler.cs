@@ -13,14 +13,14 @@ public sealed class CreatorGetProductImagePresignedUrlGetHandler(IProductReads r
 		Product product = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(req.Id);
 
-		if (product.CreatorId != req.CreatorId)
+		if (product.CreatorId != req.CallerId)
 		{
-			throw CustomAuthorizationException<Product>.ById(req.CreatorId);
+			throw CustomAuthorizationException<Product>.ById(req.CallerId);
 		}
 
 		return await sender.SendQueryAsync(
-			new GetImagePresignedUrlGetByIdQuery(product.ImageId),
-			ct
+			query: new GetImagePresignedUrlGetByIdQuery(product.ImageId),
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

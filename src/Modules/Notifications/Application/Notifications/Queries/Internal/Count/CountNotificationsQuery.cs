@@ -3,5 +3,5 @@
 namespace CustomCADs.Notifications.Application.Notifications.Queries.Internal.Count;
 
 public sealed record CountNotificationsQuery(
-	AccountId ReceiverId
+	AccountId CallerId
 ) : IQuery<CountNotificationsDto>;

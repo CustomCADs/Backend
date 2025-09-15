@@ -10,7 +10,7 @@ public sealed class CountActiveCartItemsEndpoint(IRequestSender sender)
 	{
 		Get("count");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Count")
 			.WithDescription("Count your Cart Items")
 		);
@@ -19,10 +19,10 @@ public sealed class CountActiveCartItemsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		int count = await sender.SendQueryAsync(
-			new CountActiveCartItemsQuery(
-				BuyerId: User.GetAccountId()
+			query: new CountActiveCartItemsQuery(
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(count).ConfigureAwait(false);

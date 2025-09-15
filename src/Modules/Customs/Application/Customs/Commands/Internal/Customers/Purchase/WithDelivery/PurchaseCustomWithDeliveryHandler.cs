@@ -11,35 +11,27 @@ using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 
-using static ApplicationConstants;
 
-public sealed class PurchaseCustomWithDeliveryHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IPaymentService payment, IEventRaiser raiser)
-	: ICommandHandler<PurchaseCustomWithDeliveryCommand, PaymentDto>
+public sealed class PurchaseCustomWithDeliveryHandler(
+	ICustomReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IPaymentService payment,
+	IEventRaiser raiser
+) : ICommandHandler<PurchaseCustomWithDeliveryCommand, PaymentDto>
 {
 	public async Task<PaymentDto> Handle(PurchaseCustomWithDeliveryCommand req, CancellationToken ct)
 	{
 		Custom custom = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (custom.BuyerId != req.BuyerId)
-		{
-			throw CustomAuthorizationException<Custom>.ById(custom.Id);
-		}
-
-		if (!custom.ForDelivery)
-		{
-			throw CustomException.Delivery<Custom>(custom.ForDelivery);
-		}
-
-		if (custom.AcceptedCustom is null)
-		{
-			throw CustomException.NullProp<Custom>(nameof(custom.AcceptedCustom.DesignerId));
-		}
-
-		if (custom.FinishedCustom is null)
-		{
-			throw CustomException.NullProp<Custom>(nameof(custom.FinishedCustom.CadId));
-		}
+		PurchaseCustomExtensions.EnsureCustomCanBePurchased(
+			isDeliveryWrong: !custom.ForDelivery, // here, delivery is wrong if the custom **isn't** for delivery
+			callerId: req.CallerId,
+			ownerId: custom.BuyerId,
+			acceptedCustom: custom.AcceptedCustom,
+			finishedCustom: custom.FinishedCustom
+		);
 
 		string[] users = await Task.WhenAll(
 			sender.SendQueryAsync(new GetUsernameByIdQuery(custom.BuyerId), ct),
@@ -52,8 +44,8 @@ public sealed class PurchaseCustomWithDeliveryHandler(ICustomReads reads, IUnitO
 		decimal total = req.Count * (custom.FinishedCustom.Price + cost);
 
 		double weight = await sender.SendQueryAsync(
-			new GetCustomizationWeightByIdQuery(req.CustomizationId),
-			ct
+			query: new GetCustomizationWeightByIdQuery(req.CustomizationId),
+			ct: ct
 		).ConfigureAwait(false);
 
 		if (!await sender.SendQueryAsync(new GetCustomizationExistsByIdQuery(req.CustomizationId), ct).ConfigureAwait(false))
@@ -65,31 +57,33 @@ public sealed class PurchaseCustomWithDeliveryHandler(ICustomReads reads, IUnitO
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			new NotificationRequestedEvent(
+			@event: new NotificationRequestedEvent(
 				Type: NotificationType.CustomCompleted,
-				Description: string.Format(Notifications.Messages.CustomCompleted, custom.Name, seller),
-				Link: Notifications.Links.CustomCompleted,
+				Description: string.Format(ApplicationConstants.Notifications.Messages.CustomCompleted, custom.Name, seller),
+				Link: ApplicationConstants.Notifications.Links.CustomCompleted,
 				AuthorId: custom.AcceptedCustom.DesignerId,
 				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);
 
-		await raiser.RaiseApplicationEventAsync(new CustomDeliveryRequestedApplicationEvent(
-			Id: req.Id,
-			ShipmentService: req.ShipmentService,
-			Weight: weight / 100 * req.Count,
-			Count: req.Count,
-			Address: req.Address,
-			Contact: req.Contact
-		)).ConfigureAwait(false);
+		await raiser.RaiseApplicationEventAsync(
+			@event: new CustomDeliveryRequestedApplicationEvent(
+				Id: req.Id,
+				ShipmentService: req.ShipmentService,
+				Weight: weight / 100 * req.Count,
+				Count: req.Count,
+				Address: req.Address,
+				Contact: req.Contact
+			)
+		).ConfigureAwait(false);
 
 		PaymentDto response = await payment.InitializeCustomPayment(
 			paymentMethodId: req.PaymentMethodId,
-			buyerId: req.BuyerId,
+			buyerId: req.CallerId,
 			customId: custom.Id,
-			price: total,
-			description: $"{buyer} bought {custom.Name} from {seller} for {total}$.",
-			ct
+			total: total,
+			description: (buyer, custom.Name, seller),
+			ct: ct
 		).ConfigureAwait(false);
 
 		return response;

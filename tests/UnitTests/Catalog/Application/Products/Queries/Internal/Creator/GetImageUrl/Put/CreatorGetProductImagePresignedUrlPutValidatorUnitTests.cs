@@ -17,7 +17,7 @@ public class CreatorGetProductImagePresignedUrlPutValidatorUnitTests : ProductsB
 		CreatorGetProductImagePresignedUrlPutQuery query = new(
 			Id: ValidId,
 			NewImage: new("image/jpeg", "Hand.jpg"),
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -35,7 +35,7 @@ public class CreatorGetProductImagePresignedUrlPutValidatorUnitTests : ProductsB
 		CreatorGetProductImagePresignedUrlPutQuery query = new(
 			Id: ValidId,
 			NewImage: file,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 

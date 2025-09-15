@@ -7,10 +7,12 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.SetDelivery;
 
-using static ApplicationConstants;
 
-public class SetCustomDeliveryHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
-	: ICommandHandler<SetCustomDeliveryCommand>
+public sealed class SetCustomDeliveryHandler(
+	ICustomReads reads,
+	IUnitOfWork uow,
+	IEventRaiser raiser
+) : ICommandHandler<SetCustomDeliveryCommand>
 {
 	public async Task Handle(SetCustomDeliveryCommand req, CancellationToken ct)
 	{
@@ -23,10 +25,10 @@ public class SetCustomDeliveryHandler(ICustomReads reads, IUnitOfWork uow, IEven
 		if (custom is { CustomStatus: not CustomStatus.Pending, AcceptedCustom: not null })
 		{
 			await raiser.RaiseApplicationEventAsync(
-				new NotificationRequestedEvent(
+				@event: new NotificationRequestedEvent(
 					Type: NotificationType.CustomToggledDelivery,
-					Description: string.Format(Notifications.Messages.CustomToggledDelivery, custom.ForDelivery ? "on" : "off"),
-					Link: Notifications.Links.CustomToggledDelivery,
+					Description: string.Format(ApplicationConstants.Notifications.Messages.CustomToggledDelivery, custom.ForDelivery ? "on" : "off"),
+					Link: ApplicationConstants.Notifications.Links.CustomToggledDelivery,
 					AuthorId: custom.BuyerId,
 					ReceiverIds: [custom.AcceptedCustom.DesignerId]
 				)

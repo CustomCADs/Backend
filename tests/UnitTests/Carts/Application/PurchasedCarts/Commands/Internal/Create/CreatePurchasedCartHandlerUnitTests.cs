@@ -26,9 +26,8 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 	private readonly Mock<IEventRaiser> raiser = new();
 
 	private static readonly AccountId buyerId = AccountId.New();
-	private static readonly ActiveCartItemDto[] items = [];
-	private static readonly ProductId[] productIds = [.. items.Select(x => x.ProductId)];
-	private static readonly Dictionary<ProductId, decimal> prices = [];
+	private static readonly Dictionary<ActiveCartItemDto, decimal> items = [];
+	private static readonly ProductId[] productIds = [.. items.Keys.Select(x => x.ProductId)];
 	private static readonly Dictionary<ProductId, CadId> cads = [];
 	private static readonly CadId[] cadIds = [.. cads.Select(x => x.Value)];
 
@@ -63,8 +62,7 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 		// Arrange
 		CreatePurchasedCartCommand command = new(
 			BuyerId: buyerId,
-			Items: items,
-			Prices: prices
+			Items: items
 		);
 
 		// Act
@@ -84,8 +82,7 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 		// Arrange
 		CreatePurchasedCartCommand command = new(
 			BuyerId: buyerId,
-			Items: items,
-			Prices: prices
+			Items: items
 		);
 
 		// Act
@@ -112,8 +109,7 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 		// Arrange
 		CreatePurchasedCartCommand command = new(
 			BuyerId: buyerId,
-			Items: items,
-			Prices: prices
+			Items: items
 		);
 
 		// Act
@@ -131,8 +127,7 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 		// Arrange
 		CreatePurchasedCartCommand command = new(
 			BuyerId: buyerId,
-			Items: items,
-			Prices: prices
+			Items: items
 		);
 
 		// Act
@@ -153,8 +148,7 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 
 		CreatePurchasedCartCommand command = new(
 			BuyerId: buyerId,
-			Items: items,
-			Prices: prices
+			Items: items
 		);
 
 		// Assert

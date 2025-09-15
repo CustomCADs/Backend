@@ -10,7 +10,7 @@ public class OpenNotificationEndpoint(IRequestSender sender)
 	{
 		Patch("open");
 		Group<NotificationsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Open")
 			.WithDescription("Open your Notification")
 		);
@@ -19,11 +19,11 @@ public class OpenNotificationEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(OpenNotificationRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new OpenNotificationCommand(
+			command: new OpenNotificationCommand(
 				Id: NotificationId.New(req.Id),
 				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

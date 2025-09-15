@@ -10,7 +10,7 @@ public sealed class PostCategoryEndpoint(IRequestSender sender)
 	{
 		Post("");
 		Group<CategoriesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Create")
 			.WithDescription("Add a Category")
 		);
@@ -19,10 +19,10 @@ public sealed class PostCategoryEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PostCategoryRequest req, CancellationToken ct)
 	{
 		CategoryId id = await sender.SendCommandAsync(
-			new CreateCategoryCommand(
+			command: new CreateCategoryCommand(
 				Dto: new CategoryWriteDto(req.Name, req.Description)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		CategoryResponse response = new(id.Value, req.Name, req.Description);

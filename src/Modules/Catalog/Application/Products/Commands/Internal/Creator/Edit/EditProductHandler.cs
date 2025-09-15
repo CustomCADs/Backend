@@ -9,17 +9,20 @@ using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Edit;
 
-using static CustomCADs.Shared.Application.ApplicationConstants;
 
-public sealed class EditProductHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
-	: ICommandHandler<EditProductCommand>
+public sealed class EditProductHandler(
+	IProductReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IEventRaiser raiser
+) : ICommandHandler<EditProductCommand>
 {
 	public async Task Handle(EditProductCommand req, CancellationToken ct)
 	{
 		Product product = await reads.SingleByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(req.Id);
 
-		if (product.CreatorId != req.CreatorId)
+		if (product.CreatorId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Product>.ById(req.Id);
 		}
@@ -38,14 +41,14 @@ public sealed class EditProductHandler(IProductReads reads, IUnitOfWork uow, IRe
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			new NotificationRequestedEvent(
+			@event: new NotificationRequestedEvent(
 				Type: NotificationType.ProductEdited,
-				Description: Notifications.Messages.ProductEdited,
-				Link: Notifications.Links.ProductEdited,
-				AuthorId: req.CreatorId,
+				Description: ApplicationConstants.Notifications.Messages.ProductEdited,
+				Link: string.Format(ApplicationConstants.Notifications.Links.ProductEdited, product.Id),
+				AuthorId: req.CallerId,
 				ReceiverIds: await sender.SendQueryAsync(
 					new GetAccountsWithProductInCartQuery(product.Id),
-					ct
+					ct: ct
 				).ConfigureAwait(false)
 			)
 		).ConfigureAwait(false);

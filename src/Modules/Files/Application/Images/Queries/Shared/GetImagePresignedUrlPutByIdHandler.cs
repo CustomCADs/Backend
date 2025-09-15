@@ -5,8 +5,11 @@ using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
 namespace CustomCADs.Files.Application.Images.Queries.Shared;
 
-public class GetImagePresignedUrlPutByIdHandler(IImageReads reads, IImageStorageService storage, BaseCachingService<ImageId, Image> cache)
-	: IQueryHandler<GetImagePresignedUrlPutByIdQuery, string>
+public sealed class GetImagePresignedUrlPutByIdHandler(
+	IImageReads reads,
+	IImageStorageService storage,
+	BaseCachingService<ImageId, Image> cache
+) : IQueryHandler<GetImagePresignedUrlPutByIdQuery, string>
 {
 	public async Task<string> Handle(GetImagePresignedUrlPutByIdQuery req, CancellationToken ct)
 	{
@@ -16,11 +19,9 @@ public class GetImagePresignedUrlPutByIdHandler(IImageReads reads, IImageStorage
 				?? throw CustomNotFoundException<Image>.ById(req.Id)
 		).ConfigureAwait(false);
 
-		string url = await storage.GetPresignedPutUrlAsync(
+		return await storage.GetPresignedPutUrlAsync(
 			key: image.Key,
 			file: req.NewFile
 		).ConfigureAwait(false);
-
-		return url;
 	}
 }

@@ -8,17 +8,20 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Report;
 
-using static ApplicationConstants;
 
-public sealed class ReportCustomHandler(ICustomReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
-	: ICommandHandler<ReportCustomCommand>
+public sealed class ReportCustomHandler(
+	ICustomReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IEventRaiser raiser
+) : ICommandHandler<ReportCustomCommand>
 {
 	public async Task Handle(ReportCustomCommand req, CancellationToken ct)
 	{
 		Custom custom = await reads.SingleByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (custom.AcceptedCustom?.DesignerId != req.DesignerId)
+		if (custom.AcceptedCustom?.DesignerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Custom>.ById(req.Id);
 		}
@@ -26,13 +29,13 @@ public sealed class ReportCustomHandler(ICustomReads reads, IUnitOfWork uow, IRe
 		custom.Report();
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
-		string designerName = await sender.SendQueryAsync(new GetUsernameByIdQuery(req.DesignerId), ct).ConfigureAwait(false);
+		string designerName = await sender.SendQueryAsync(new GetUsernameByIdQuery(req.CallerId), ct).ConfigureAwait(false);
 		await raiser.RaiseApplicationEventAsync(
-			new NotificationRequestedEvent(
+			@event: new NotificationRequestedEvent(
 				Type: NotificationType.CustomReported,
-				Description: string.Format(Notifications.Messages.CustomReported, designerName),
-				Link: Notifications.Links.CustomReported,
-				AuthorId: req.DesignerId,
+				Description: string.Format(ApplicationConstants.Notifications.Messages.CustomReported, designerName),
+				Link: ApplicationConstants.Notifications.Links.CustomReported,
+				AuthorId: req.CallerId,
 				ReceiverIds: [custom.BuyerId]
 			)
 		).ConfigureAwait(false);

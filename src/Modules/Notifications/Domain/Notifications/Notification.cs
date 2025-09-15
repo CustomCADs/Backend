@@ -1,6 +1,6 @@
+using CustomCADs.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Notifications.Domain.Notifications.ValueObjects;
 using CustomCADs.Shared.Domain.Bases.Entities;
-using CustomCADs.Shared.Domain.Enums;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Notifications.Domain.Notifications;

@@ -7,17 +7,19 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Edit;
 
-using static ApplicationConstants;
 
-public sealed class EditCustomHandler(ICustomReads reads, IUnitOfWork uow, IEventRaiser raiser)
-	: ICommandHandler<EditCustomCommand>
+public sealed class EditCustomHandler(
+	ICustomReads reads,
+	IUnitOfWork uow,
+	IEventRaiser raiser
+) : ICommandHandler<EditCustomCommand>
 {
 	public async Task Handle(EditCustomCommand req, CancellationToken ct)
 	{
 		Custom custom = await reads.SingleByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (custom.BuyerId != req.BuyerId)
+		if (custom.BuyerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Custom>.ById(req.Id);
 		}
@@ -31,10 +33,10 @@ public sealed class EditCustomHandler(ICustomReads reads, IUnitOfWork uow, IEven
 		if (custom is { CustomStatus: not CustomStatus.Pending, AcceptedCustom: not null })
 		{
 			await raiser.RaiseApplicationEventAsync(
-				new NotificationRequestedEvent(
+				@event: new NotificationRequestedEvent(
 					Type: NotificationType.CustomEdited,
-					Description: Notifications.Messages.CustomEdited,
-					Link: Notifications.Links.CustomEdited,
+					Description: ApplicationConstants.Notifications.Messages.CustomEdited,
+					Link: ApplicationConstants.Notifications.Links.CustomEdited,
 					AuthorId: custom.BuyerId,
 					ReceiverIds: [custom.AcceptedCustom.DesignerId]
 				)

@@ -30,17 +30,18 @@ public class PurchaseActiveCartHandlerUnitTests : ActiveCartsBaseUnitTests
 		reads.Setup(x => x.ExistsAsync(ValidBuyerId, ct))
 			.ReturnsAsync(true);
 
+		ActiveCartItem[] items = [
+			CreateItem(productId: ProductId.New()),
+			CreateItem(productId: ProductId.New()),
+			CreateItem(productId: ProductId.New()),
+		];
 		reads.Setup(x => x.AllAsync(ValidBuyerId, false, ct))
-			.ReturnsAsync([
-				CreateItem(productId: ProductId.New()),
-				CreateItem(productId: ProductId.New()),
-				CreateItem(productId: ProductId.New()),
-			]);
+			.ReturnsAsync(items);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.IsAny<GetProductPricesByIdsQuery>(),
 			ct
-		)).ReturnsAsync([]);
+		)).ReturnsAsync(items.ToDictionary(x => x.ProductId, x => 0m));
 	}
 
 	[Fact]
@@ -96,7 +97,7 @@ public class PurchaseActiveCartHandlerUnitTests : ActiveCartsBaseUnitTests
 			It.Is<AccountId>(x => x == ValidBuyerId),
 			It.IsAny<PurchasedCartId>(),
 			It.IsAny<decimal>(),
-			It.IsAny<string>(),
+			It.IsAny<(string, int)>(),
 			ct
 		), Times.Once());
 	}
@@ -111,7 +112,7 @@ public class PurchaseActiveCartHandlerUnitTests : ActiveCartsBaseUnitTests
 			It.Is<AccountId>(x => x == ValidBuyerId),
 			It.IsAny<PurchasedCartId>(),
 			It.IsAny<decimal>(),
-			It.IsAny<string>(),
+			It.IsAny<(string, int)>(),
 			ct
 		)).ReturnsAsync(expected);
 

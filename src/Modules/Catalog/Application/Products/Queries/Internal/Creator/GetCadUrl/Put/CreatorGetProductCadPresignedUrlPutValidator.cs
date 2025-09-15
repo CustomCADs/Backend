@@ -5,7 +5,7 @@ namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetCa
 
 using static ApplicationConstants.FluentMessages;
 
-public class CreatorGetProductCadPresignedUrlPutValidator : QueryValidator<CreatorGetProductCadPresignedUrlPutQuery, CreatorGetProductCadPresignedUrlPutDto>
+public class CreatorGetProductCadPresignedUrlPutValidator : QueryValidator<CreatorGetProductCadPresignedUrlPutQuery, string>
 {
 	public CreatorGetProductCadPresignedUrlPutValidator()
 	{

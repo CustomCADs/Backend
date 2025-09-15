@@ -9,7 +9,7 @@ public static class Utilities
 	{
 		if (ids is not null)
 		{
-			query = query.Where(c => ids.Contains(c.Id));
+			query = query.Where(x => ids.Contains(x.Id));
 		}
 
 		return query;

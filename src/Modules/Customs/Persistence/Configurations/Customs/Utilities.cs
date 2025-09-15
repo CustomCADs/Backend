@@ -24,13 +24,13 @@ public static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => CustomId.New(v)
+				x => CustomId.New(x)
 			);
 
 		builder.Property(x => x.BuyerId)
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		return builder;

@@ -12,7 +12,7 @@ public sealed class GetUncheckedProductsEndpoint(IRequestSender sender)
 	{
 		Get("unchecked");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All Unchecked")
 			.WithDescription("See all Unchecked Products with Search, Sorting and Pagination options")
 		);
@@ -21,21 +21,19 @@ public sealed class GetUncheckedProductsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetUncheckedProductsRequest req, CancellationToken ct)
 	{
 		Result<DesignerGetAllProductsDto> result = await sender.SendQueryAsync(
-			new DesignerGetAllProductsQuery(
-				DesignerId: User.GetAccountId(),
+			query: new DesignerGetAllProductsQuery(
+				CallerId: User.GetAccountId(),
 				Status: ProductStatus.Unchecked,
 				CategoryId: CategoryId.New(req.CategoryId),
 				Name: req.Name,
 				Sorting: new(req.SortingType.ToBase(), req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Result<GetUncheckedProductsResponse> response = new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(p => p.ToGetUncheckedDto())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(
+			response: result.ToNewResult(x => x.ToGetUncheckedDto())
+		).ConfigureAwait(false);
 	}
 }

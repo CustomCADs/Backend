@@ -4,8 +4,11 @@ using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Printing.Application.Customizations.Queries.Shared.Weight;
 
-public class GetCustomizationWeightByIdHandler(ICustomizationReads customizationReads, IMaterialReads materialReads, IPrintCalculator calculator)
-	: IQueryHandler<GetCustomizationWeightByIdQuery, double>
+public sealed class GetCustomizationWeightByIdHandler(
+	ICustomizationReads customizationReads,
+	IMaterialReads materialReads,
+	IPrintCalculator calculator
+) : IQueryHandler<GetCustomizationWeightByIdQuery, double>
 {
 	public async Task<double> Handle(GetCustomizationWeightByIdQuery req, CancellationToken ct)
 	{

@@ -10,7 +10,7 @@ public sealed class GetGalleryProductEndpoint(IRequestSender sender)
 	{
 		Get("{id}");
 		Group<GalleryGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See a Validated Product in detail")
 		);
@@ -19,11 +19,11 @@ public sealed class GetGalleryProductEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetGalleryProductRequest req, CancellationToken ct)
 	{
 		GalleryGetProductByIdDto product = await sender.SendQueryAsync(
-			new GalleryGetProductByIdQuery(
+			query: new GalleryGetProductByIdQuery(
 				Id: ProductId.New(req.Id),
-				AccountId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetGalleryProductResponse response = product.ToResponse();

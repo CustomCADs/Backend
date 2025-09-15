@@ -4,18 +4,19 @@ using CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Printing.Domain.Services;
 using CustomCADs.Shared.Infrastructure.Utilities;
 using CustomCADs.Shared.Persistence;
+using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
-using static UserConstants;
 using static PersistenceConstants;
+using static UserConstants;
 
 public static class ProgramExtensions
 {
 	private static string GetConnectionString(this IConfiguration config)
-		=> config.GetApplicationConnectionString(ConnectionString);
+		=> config.GetApplicationConnectionString(ConnectionString, DatabaseConnectionException.Missing(ConnectionString));
 
 	public static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration config)
 	{

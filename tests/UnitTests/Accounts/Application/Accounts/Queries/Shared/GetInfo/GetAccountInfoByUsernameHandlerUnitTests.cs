@@ -41,7 +41,7 @@ public class GetAccountInfoByUsernameHandlerUnitTests : AccountsBaseUnitTests
 		GetAccountInfoByUsernameQuery query = new(ValidUsername);
 
 		// Act
-		AccountInfo info = await handler.Handle(query, ct);
+		AccountInfoDto info = await handler.Handle(query, ct);
 
 		// Assert
 		Assert.Multiple(

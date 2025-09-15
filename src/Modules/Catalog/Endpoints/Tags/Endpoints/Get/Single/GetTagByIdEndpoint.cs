@@ -11,7 +11,7 @@ public class GetTagByIdEndpoint(IRequestSender sender)
 		Get("{id}");
 		Group<TagGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("Get Tag")
 		);
@@ -19,11 +19,11 @@ public class GetTagByIdEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(GetTagByIdRequest req, CancellationToken ct)
 	{
-		TagReadDto tag = await sender.SendQueryAsync(
-			new GetTagByIdQuery(
+		TagDto tag = await sender.SendQueryAsync(
+			query: new GetTagByIdQuery(
 				Id: TagId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetTagByIdResponse response = tag.ToGetTagByIdResponse();

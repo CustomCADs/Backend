@@ -33,14 +33,14 @@ static class Utilities
 	{
 		builder.Property(pt => pt.ProductId)
 			.HasConversion(
-				id => id.Value,
-				val => ProductId.New(val)
+				x => x.Value,
+				x => ProductId.New(x)
 			);
 
 		builder.Property(pt => pt.TagId)
 			.HasConversion(
-				id => id.Value,
-				val => TagId.New(val)
+				x => x.Value,
+				x => TagId.New(x)
 			);
 
 		return builder;

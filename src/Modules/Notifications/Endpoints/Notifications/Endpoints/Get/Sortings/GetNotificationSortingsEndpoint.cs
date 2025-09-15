@@ -11,7 +11,7 @@ public class GetNotificationSortingsEndpoint(IRequestSender sender)
 		Get("sortings");
 		Group<NotificationsGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Sortings")
 			.WithDescription("See all Notification Sorting types")
 		);
@@ -20,8 +20,8 @@ public class GetNotificationSortingsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		NotificationSortingType[] response = await sender.SendQueryAsync(
-			new GetNotificationSortingsQuery(),
-			ct
+			query: new GetNotificationSortingsQuery(),
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

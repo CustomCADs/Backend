@@ -12,7 +12,6 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 {
 	private readonly DuplicateCadsByIdsHandler handler;
 	private readonly Mock<ICadReads> reads = new();
-	private readonly Mock<IWrites<Cad>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
@@ -25,13 +24,18 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 
 	public DuplicateCadsByIdsHandlerUnitTests()
 	{
-		handler = new(reads.Object, writes.Object, uow.Object, cache.Object);
+		handler = new(reads.Object, uow.Object, cache.Object);
 
 		query = new(new(1, ids.Length), ids);
 		result = new Result<Cad>(cads.Length, cads);
 
 		reads.Setup(x => x.AllAsync(query, false, ct))
 			.ReturnsAsync(result);
+
+		uow.Setup(x => x.BulkInsertCadsAsync(
+			It.Is<ICollection<Cad>>(x => x.Count() == result.Count),
+			ct
+		)).ReturnsAsync(result.Items);
 	}
 
 	[Fact]
@@ -57,11 +61,10 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<Cad>(x => cads.Any(c => x.Key == c.Key)),
+		uow.Verify(x => x.BulkInsertCadsAsync(
+			It.Is<ICollection<Cad>>(x => x.Count == result.Count),
 			ct
-		), Times.Exactly(cads.Length));
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		), Times.Once());
 	}
 
 	[Fact]

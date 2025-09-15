@@ -12,7 +12,7 @@ public sealed class DeleteAccountEndpoint(IRequestSender sender, IOptions<Cookie
 	{
 		Delete("");
 		Group<IdentityGroup>();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.DeleteAccount)
 			.WithSummary("Delete")
 			.WithDescription("Delete your account")
@@ -22,8 +22,8 @@ public sealed class DeleteAccountEndpoint(IRequestSender sender, IOptions<Cookie
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new DeleteUserCommand(Username: User.GetName()),
-			ct
+			command: new DeleteUserCommand(Username: User.GetName()),
+			ct: ct
 		).ConfigureAwait(false);
 
 		HttpContext.DeleteAllCookies(settings.Value.Domain);

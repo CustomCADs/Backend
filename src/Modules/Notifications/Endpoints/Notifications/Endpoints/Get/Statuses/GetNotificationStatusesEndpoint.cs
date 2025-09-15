@@ -1,5 +1,5 @@
 using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetStatuses;
-using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Notifications.Domain.Notifications.Enums;
 
 namespace CustomCADs.Notifications.Endpoints.Notifications.Endpoints.Get.Statuses;
 
@@ -11,7 +11,7 @@ public class GetNotificationStatusesEndpoint(IRequestSender sender)
 		Get("statuses");
 		Group<NotificationsGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Status")
 			.WithDescription("See all Notification statuses")
 		);
@@ -20,8 +20,8 @@ public class GetNotificationStatusesEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		NotificationStatus[] response = await sender.SendQueryAsync(
-			new GetNotificationStatusesQuery(),
-			ct
+			query: new GetNotificationStatusesQuery(),
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

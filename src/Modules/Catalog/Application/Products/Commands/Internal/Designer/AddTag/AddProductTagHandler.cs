@@ -7,10 +7,13 @@ using CustomCADs.Shared.Application.Events.Notifications;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.AddTag;
 
-using static ApplicationConstants;
 
-public class AddProductTagHandler(IProductReads reads, IProductWrites writes, IUnitOfWork uow, IEventRaiser raiser)
-	: ICommandHandler<AddProductTagCommand>
+public sealed class AddProductTagHandler(
+	IProductReads reads,
+	IProductWrites writes,
+	IUnitOfWork uow,
+	IEventRaiser raiser
+) : ICommandHandler<AddProductTagCommand>
 {
 	public async Task Handle(AddProductTagCommand req, CancellationToken ct)
 	{
@@ -21,10 +24,10 @@ public class AddProductTagHandler(IProductReads reads, IProductWrites writes, IU
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			new NotificationRequestedEvent(
+			@event: new NotificationRequestedEvent(
 				Type: NotificationType.ProductTagAdded,
-				Description: Notifications.Messages.ProductTagAdded,
-				Link: Notifications.Links.ProductTagAdded,
+				Description: ApplicationConstants.Notifications.Messages.ProductTagAdded,
+				Link: ApplicationConstants.Notifications.Links.ProductTagAdded,
 				AuthorId: req.CallerId,
 				ReceiverIds: [product.CreatorId]
 			)

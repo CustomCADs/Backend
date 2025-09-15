@@ -1,5 +1,5 @@
 ﻿namespace CustomCADs.Identity.Application.Users.Commands.Internal.ResetPasswordEmail;
 
-public record ResetPasswordEmailCommand(
+public sealed record ResetPasswordEmailCommand(
 	string Email
 ) : ICommand;

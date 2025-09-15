@@ -12,5 +12,5 @@ public sealed record CreateProductCommand(
 	string CadContentType,
 	decimal CadVolume,
 	decimal Price,
-	AccountId CreatorId
+	AccountId CallerId
 ) : ICommand<ProductId>;

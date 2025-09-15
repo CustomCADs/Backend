@@ -26,9 +26,6 @@ public static class AccountsData
 	public const string InvalidEmailTLD = "local@domain";
 	public const string InvalidEmailTLDMin = "local@domain.a";
 
-	public const string ValidPassword = "password123";
-	public static readonly string MinInvalidPassword = new('a', PasswordMinLength - 1);
-
 	public const string? ValidFirstName = "John";
 	public const string? ValidFirstNameNull = null;
 	public static readonly string MinInvalidFirstName = new('a', NameMinLength - 1);
@@ -39,5 +36,6 @@ public static class AccountsData
 	public static readonly string MinInvalidLastName = new('a', NameMinLength - 1);
 	public static readonly string MaxInvalidLastName = new('a', NameMaxLength + 1);
 
+	public const string ValidPassword = "password123";
 	public static readonly AccountId ValidId = AccountId.New(CustomerAccountId);
 }

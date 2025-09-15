@@ -22,7 +22,7 @@ static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => TagId.New(v)
+				x => TagId.New(x)
 			);
 
 		return builder;

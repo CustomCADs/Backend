@@ -9,7 +9,7 @@ public static class DependencyInjection
 {
 	public static IServiceCollection AddSharedBackgroundJobs(this IServiceCollection services)
 	{
-		services.AddQuartz(q =>
+		services.AddQuartz(configurator =>
 		{
 			TimeZoneInfo cet = TimeZoneInfo.FindSystemTimeZoneById(
 				id: RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
@@ -17,8 +17,8 @@ public static class DependencyInjection
 					: "Europe/Berlin"
 			);
 
-			q.AddTrigger(opts => opts
-				.ForJob(q.AddJob<UpdateExchangeRatesCacheBackgroundJob>())
+			configurator.AddTrigger(opts => opts
+				.ForJob(configurator.AddJob<UpdateExchangeRatesCacheBackgroundJob>())
 				.WithSchedule(
 					CronScheduleBuilder
 						.DailyAtHourAndMinute(16, 30)
@@ -33,7 +33,7 @@ public static class DependencyInjection
 		where TJob : IJob
 	{
 		JobKey key = new(name ?? typeof(TJob).Name);
-		q.AddJob<TJob>(opts => opts.WithIdentity(key));
+		q.AddJob<TJob>(conf => conf.WithIdentity(key));
 		return key;
 	}
 }

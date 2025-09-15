@@ -1,3 +1,4 @@
+using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Carts;
@@ -13,6 +14,7 @@ using Stripe;
 
 namespace CustomCADs.Presentation;
 
+using static ApplicationConstants;
 using static Shared.Endpoints.EndpointsConstants;
 
 public static class StripeWebhook
@@ -38,10 +40,10 @@ public static class StripeWebhook
 			if (stripeEvent.Type is EventTypes.PaymentIntentPaymentFailed)
 			{
 				await raiser.RaiseApplicationEventAsync(
-					new NotificationRequestedEvent(
+					@event: new NotificationRequestedEvent(
 						Type: NotificationType.PaymentFailed,
-						Description: Shared.Application.ApplicationConstants.Notifications.Messages.PaymentFailed,
-						Link: Shared.Application.ApplicationConstants.Notifications.Links.PaymentFailed,
+						Description: Notifications.Messages.PaymentFailed,
+						Link: Notifications.Links.PaymentFailed,
 						AuthorId: buyerId,
 						ReceiverIds: [buyerId]
 					)
@@ -49,21 +51,21 @@ public static class StripeWebhook
 			}
 			else if (stripeEvent.Type is EventTypes.PaymentIntentSucceeded)
 			{
-				IResult resultMissingRewardId = Results.BadRequest("Missing RewardId");
-				string rewardType = intent.Metadata["rewardType"];
+				string? rewardType = intent.Metadata["rewardType"];
+				string? rewardId = intent.Metadata["rewardId"];
+
+				if (rewardId is null || rewardType is not "cart" or "custom")
+				{
+					return Results.BadRequest("Missing RewardId");
+				}
+
 				switch (rewardType)
 				{
 					case "cart":
 						{
-							PurchasedCartId? rewardId = PurchasedCartId.New(intent.Metadata["rewardId"]);
-							if (rewardId is null)
-							{
-								return resultMissingRewardId;
-							}
-
 							await raiser.RaiseApplicationEventAsync(
 								@event: new CartPaymentCompletedApplicationEvent(
-									Id: rewardId.Value,
+									Id: PurchasedCartId.New(rewardId),
 									BuyerId: buyerId
 								)
 							).ConfigureAwait(false);
@@ -72,15 +74,9 @@ public static class StripeWebhook
 
 					case "custom":
 						{
-							CustomId? rewardId = CustomId.New(intent.Metadata["rewardId"]);
-							if (rewardId is null)
-							{
-								return resultMissingRewardId;
-							}
-
 							await raiser.RaiseApplicationEventAsync(
 								@event: new CustomPaymentCompletedApplicationEvent(
-									Id: rewardId.Value,
+									Id: CustomId.New(intent.Metadata["rewardId"]),
 									BuyerId: buyerId
 								)
 							).ConfigureAwait(false);
@@ -88,10 +84,10 @@ public static class StripeWebhook
 						}
 				}
 				await raiser.RaiseApplicationEventAsync(
-					new NotificationRequestedEvent(
+					@event: new NotificationRequestedEvent(
 						Type: NotificationType.PaymentCompleted,
-						Description: Shared.Application.ApplicationConstants.Notifications.Messages.PaymentCompleted,
-						Link: Shared.Application.ApplicationConstants.Notifications.Links.PaymentCompleted,
+						Description: Notifications.Messages.PaymentCompleted,
+						Link: Notifications.Links.PaymentCompleted,
 						AuthorId: buyerId,
 						ReceiverIds: [buyerId]
 					)

@@ -84,4 +84,5 @@ public class RemoveProductTagHandlerUnitTests : ProductsBaseUnitTests
 			// Act
 			async () => await handler.Handle(command, ct)
 		);
-	}}
+	}
+}

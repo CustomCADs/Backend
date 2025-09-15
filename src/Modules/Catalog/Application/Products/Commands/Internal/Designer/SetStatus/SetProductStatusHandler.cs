@@ -11,10 +11,13 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.SetStatus;
 
-using static ApplicationConstants;
 
-public sealed class SetProductStatusHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
-	: ICommandHandler<SetProductStatusCommand>
+public sealed class SetProductStatusHandler(
+	IProductReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IEventRaiser raiser
+) : ICommandHandler<SetProductStatusCommand>
 {
 	public async Task Handle(SetProductStatusCommand req, CancellationToken ct)
 	{
@@ -26,12 +29,12 @@ public sealed class SetProductStatusHandler(IProductReads reads, IUnitOfWork uow
 			throw CustomAuthorizationException<Product>.Custom($"A Designer has already checked this Product: {req.Id}.");
 		}
 
-		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.DesignerId), ct).ConfigureAwait(false))
+		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.CallerId), ct).ConfigureAwait(false))
 		{
-			throw CustomNotFoundException<Product>.ById(req.DesignerId, "User");
+			throw CustomNotFoundException<Product>.ById(req.CallerId, "User");
 		}
 
-		product.SetDesignerId(req.DesignerId);
+		product.SetDesignerId(req.CallerId);
 
 		switch (req.Status)
 		{
@@ -42,12 +45,12 @@ public sealed class SetProductStatusHandler(IProductReads reads, IUnitOfWork uow
 
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
-		string designerName = await sender.SendQueryAsync(new GetUsernameByIdQuery(req.DesignerId), ct).ConfigureAwait(false);
+		string designerName = await sender.SendQueryAsync(new GetUsernameByIdQuery(req.CallerId), ct).ConfigureAwait(false);
 		await raiser.RaiseApplicationEventAsync(
-			CreateNotificationRequestedEvent(
+			@event: CreateNotificationRequestedEvent(
 				status: req.Status,
 				designerName: designerName,
-				designerId: req.DesignerId,
+				designerId: req.CallerId,
 				creatorId: product.CreatorId,
 				statusException: CustomStatusException<Product>.Forbidden(product.Id, req.Status.ToString())
 			)
@@ -69,14 +72,14 @@ public sealed class SetProductStatusHandler(IProductReads reads, IUnitOfWork uow
 			},
 			Description: status switch
 			{
-				ProductStatus.Validated => string.Format(Notifications.Messages.ProductValidated, designerName),
-				ProductStatus.Reported => string.Format(Notifications.Messages.ProductReported, designerName),
+				ProductStatus.Validated => string.Format(ApplicationConstants.Notifications.Messages.ProductValidated, designerName),
+				ProductStatus.Reported => string.Format(ApplicationConstants.Notifications.Messages.ProductReported, designerName),
 				_ => throw statusException,
 			},
 			Link: status switch
 			{
-				ProductStatus.Validated => Notifications.Links.ProductValidated,
-				ProductStatus.Reported => Notifications.Links.ProductReported,
+				ProductStatus.Validated => ApplicationConstants.Notifications.Links.ProductValidated,
+				ProductStatus.Reported => ApplicationConstants.Notifications.Links.ProductReported,
 				_ => throw statusException,
 			},
 			AuthorId: designerId,

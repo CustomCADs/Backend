@@ -5,5 +5,5 @@ namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetIm
 
 public sealed record CreatorGetProductImagePresignedUrlGetQuery(
 	ProductId Id,
-	AccountId CreatorId
+	AccountId CallerId
 ) : IQuery<DownloadFileResponse>;

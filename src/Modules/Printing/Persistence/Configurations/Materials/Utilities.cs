@@ -23,13 +23,13 @@ static class Utilities
 		builder.Property(x => x.Id)
 			.HasConversion(
 				x => x.Value,
-				v => MaterialId.New(v)
+				x => MaterialId.New(x)
 			).UseIdentityColumn();
 
 		builder.Property(x => x.TextureId)
 			.HasConversion(
 				x => x.Value,
-				v => ImageId.New(v)
+				x => ImageId.New(x)
 			);
 
 		return builder;

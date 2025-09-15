@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.Notifications.Application.Notifications.Commands.Internal.Read;
 
-public class ReadNotificationHandler(INotificationReads reads, IUnitOfWork uow)
+public sealed class ReadNotificationHandler(INotificationReads reads, IUnitOfWork uow)
 	: ICommandHandler<ReadNotificationCommand>
 {
 	public async Task Handle(ReadNotificationCommand req, CancellationToken ct = default)

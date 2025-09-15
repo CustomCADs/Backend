@@ -12,7 +12,7 @@ public sealed class LogoutEndpoint(IRequestSender sender, IOptions<CookieSetting
 	{
 		Post("logout");
 		Group<IdentityGroup>();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.Logout)
 			.WithSummary("Log out")
 			.WithDescription("Log out of your account")
@@ -23,10 +23,10 @@ public sealed class LogoutEndpoint(IRequestSender sender, IOptions<CookieSetting
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new LogoutUserCommand(
+			command: new LogoutUserCommand(
 				RefreshToken: HttpContext.GetRefreshTokenCookie()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		HttpContext.DeleteAllCookies(settings.Value.Domain);

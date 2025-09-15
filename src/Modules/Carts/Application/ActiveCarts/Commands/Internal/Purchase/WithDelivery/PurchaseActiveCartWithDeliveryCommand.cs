@@ -9,5 +9,5 @@ public sealed record PurchaseActiveCartWithDeliveryCommand(
 	string ShipmentService,
 	AddressDto Address,
 	ContactDto Contact,
-	AccountId BuyerId
+	AccountId CallerId
 ) : ICommand<PaymentDto>;

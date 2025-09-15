@@ -7,10 +7,10 @@ public class CustomerGroup : Group
 {
 	public CustomerGroup()
 	{
-		Configure(Paths.CustomsCustomer, ep =>
+		Configure(Paths.CustomsCustomer, x =>
 		{
-			ep.Roles(Customer);
-			ep.Description(d => d.WithTags(Tags[Paths.CustomsCustomer]));
+			x.Roles(Customer);
+			x.Description(x => x.WithTags(Tags[Paths.CustomsCustomer]));
 		});
 	}
 }

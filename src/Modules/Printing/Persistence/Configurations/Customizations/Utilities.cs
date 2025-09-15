@@ -19,13 +19,13 @@ public static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => CustomizationId.New(v)
+				x => CustomizationId.New(x)
 			);
 
 		builder.Property(x => x.MaterialId)
 			.HasConversion(
 				x => x.Value,
-				v => MaterialId.New(v)
+				x => MaterialId.New(x)
 			);
 
 		return builder;

@@ -1,8 +1,8 @@
 ﻿using CustomCADs.Catalog.Domain.Products;
-using CustomCADs.Catalog.Domain.Products.ValueObjects;
 using CustomCADs.Catalog.Persistence.ShadowEntities;
-using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.ValueObjects;
 
 namespace CustomCADs.Catalog.Persistence.Repositories.Products;
 
@@ -21,31 +21,31 @@ public static class Utilities
 	{
 		if (ids is not null)
 		{
-			query = query.Where(c => ids.Contains(c.Id));
+			query = query.Where(x => ids.Contains(x.Id));
 		}
 		if (creatorId is not null)
 		{
-			query = query.Where(c => c.CreatorId == creatorId);
+			query = query.Where(x => x.CreatorId == creatorId);
 		}
 		if (designerId is not null)
 		{
-			query = query.Where(c => c.DesignerId == designerId);
+			query = query.Where(x => x.DesignerId == designerId);
 		}
 		if (categoryId is not null)
 		{
-			query = query.Where(c => c.CategoryId == categoryId);
+			query = query.Where(x => x.CategoryId == categoryId);
 		}
 		if (status is not null)
 		{
-			query = query.Where(c => c.Status == status);
+			query = query.Where(x => x.Status == status);
 		}
 		if (before is not null)
 		{
-			query = query.Where(c => c.UploadedAt <= before);
+			query = query.Where(x => x.UploadedAt <= before);
 		}
 		if (after is not null)
 		{
-			query = query.Where(c => c.UploadedAt >= after);
+			query = query.Where(x => x.UploadedAt >= after);
 		}
 
 		return query;
@@ -55,27 +55,21 @@ public static class Utilities
 	{
 		if (!string.IsNullOrWhiteSpace(name))
 		{
-			query = query.Where(c => c.Name.ToLower().Contains(name.ToLower()));
+			query = query.Where(x => x.Name.ToLower().Contains(name.ToLower()));
 		}
 
 		return query;
 	}
 
-	public static IQueryable<Product> WithSorting(this IQueryable<Product> query, ProductSorting? sorting = null)
-		=> sorting switch
+	public static IQueryable<Product> WithSorting(this IQueryable<Product> query, Sorting<ProductSortingType>? sorting = null)
+		=> sorting?.Type switch
 		{
-			{ Type: ProductSortingType.UploadedAt, Direction: SortingDirection.Ascending } => query.OrderBy(c => c.UploadedAt),
-			{ Type: ProductSortingType.UploadedAt, Direction: SortingDirection.Descending } => query.OrderByDescending(c => c.UploadedAt),
-			{ Type: ProductSortingType.Alphabetical, Direction: SortingDirection.Ascending } => query.OrderBy(c => c.Name),
-			{ Type: ProductSortingType.Alphabetical, Direction: SortingDirection.Descending } => query.OrderByDescending(c => c.Name),
-			{ Type: ProductSortingType.Status, Direction: SortingDirection.Ascending } => query.OrderBy(m => (int)m.Status),
-			{ Type: ProductSortingType.Status, Direction: SortingDirection.Descending } => query.OrderByDescending(m => (int)m.Status),
-			{ Type: ProductSortingType.Cost, Direction: SortingDirection.Ascending } => query.OrderBy(m => m.Price),
-			{ Type: ProductSortingType.Cost, Direction: SortingDirection.Descending } => query.OrderByDescending(m => m.Price),
-			{ Type: ProductSortingType.Purchases, Direction: SortingDirection.Ascending } => query.OrderBy(m => m.Counts.Purchases),
-			{ Type: ProductSortingType.Purchases, Direction: SortingDirection.Descending } => query.OrderByDescending(m => m.Counts.Purchases),
-			{ Type: ProductSortingType.Views, Direction: SortingDirection.Ascending } => query.OrderBy(m => m.Counts.Views),
-			{ Type: ProductSortingType.Views, Direction: SortingDirection.Descending } => query.OrderByDescending(m => m.Counts.Views),
+			ProductSortingType.UploadedAt => query.ToSorted(sorting, x => x.UploadedAt),
+			ProductSortingType.Alphabetical => query.ToSorted(sorting, x => x.Name),
+			ProductSortingType.Status => query.ToSorted(sorting, x => (int)x.Status),
+			ProductSortingType.Cost => query.ToSorted(sorting, x => x.Price),
+			ProductSortingType.Purchases => query.ToSorted(sorting, x => x.Counts.Purchases),
+			ProductSortingType.Views => query.ToSorted(sorting, x => x.Counts.Views),
 			_ => query,
 		};
 

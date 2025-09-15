@@ -16,13 +16,13 @@ public class ActiveCartDeliveryRequestedApplicationEventHandler(IPurchasedCartRe
 			?? throw CustomNotFoundException<PurchasedCart>.ById(de.Id);
 
 		string buyer = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(cart.BuyerId)
+			query: new GetUsernameByIdQuery(cart.BuyerId)
 		).ConfigureAwait(false);
 		double weight = de.Weight;
 		int count = de.Count;
 
 		ShipmentId shipmentId = await sender.SendCommandAsync(
-			new CreateShipmentCommand(
+			command: new CreateShipmentCommand(
 				Info: new(count, weight, buyer),
 				Service: de.ShipmentService,
 				Address: de.Address,

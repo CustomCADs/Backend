@@ -12,50 +12,94 @@ using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 
-public sealed class PurchaseActiveCartWithDeliveryHandler(IActiveCartReads reads, IRequestSender sender, IPaymentService payment, IEventRaiser raiser)
-	: ICommandHandler<PurchaseActiveCartWithDeliveryCommand, PaymentDto>
+public sealed class PurchaseActiveCartWithDeliveryHandler(
+	IActiveCartReads reads,
+	IRequestSender sender,
+	IPaymentService payment,
+	IEventRaiser raiser
+) : ICommandHandler<PurchaseActiveCartWithDeliveryCommand, PaymentDto>
 {
 	public async Task<PaymentDto> Handle(PurchaseActiveCartWithDeliveryCommand req, CancellationToken ct)
 	{
-		if (!await reads.ExistsAsync(req.BuyerId, ct).ConfigureAwait(false))
+		if (!await reads.ExistsAsync(req.CallerId, ct).ConfigureAwait(false))
 		{
 			throw new CustomException("Cart without Items cannot be purchased.");
 		}
 
-		ActiveCartItem[] items = await reads.AllAsync(req.BuyerId, track: false, ct: ct).ConfigureAwait(false);
+		ActiveCartItem[] items = await reads.AllAsync(req.CallerId, track: false, ct: ct).ConfigureAwait(false);
 		if (!items.Any(x => x.ForDelivery))
 		{
 			throw CustomException.Delivery<ActiveCartItem>(markedForDelivery: false);
 		}
-
-		Dictionary<ProductId, decimal> prices = await sender.SendQueryAsync(
-			new GetProductPricesByIdsQuery(
-				Ids: [.. items.Select(i => i.ProductId)]
-			),
-			ct
-		).ConfigureAwait(false);
-		prices = prices.ToDictionary(
-			x => x.Key,
-			x =>
-			{
-				ActiveCartItem item = items.First(i => i.ProductId == x.Key);
-				return item.ForDelivery ? x.Value * item.Quantity : x.Value;
-			}
-		);
 
 		CustomizationId[] customizationIds = [..
 			items
 				.Where(x => x.ForDelivery && x.CustomizationId is not null)
 				.Select(x => x.CustomizationId!.Value)
 		];
+		Dictionary<CustomizationId, decimal> costs = await SnapshotCosts(items, customizationIds, ct).ConfigureAwait(false);
 
-		Dictionary<CustomizationId, decimal> costs = await sender.SendQueryAsync(
-			new GetCustomizationsCostByIdsQuery(
+		Dictionary<ProductId, decimal> prices = await SnapshotPrices(items, ct).ConfigureAwait(false);
+		decimal totalSum = prices.Sum(x => x.Value) + costs.Sum(x => x.Value);
+
+		string buyer = await sender.SendQueryAsync(
+			query: new GetUsernameByIdQuery(req.CallerId),
+			ct: ct
+		).ConfigureAwait(false);
+
+		PurchasedCartId purchasedCartId = await sender.SendCommandAsync(
+			command: new CreatePurchasedCartCommand(
+				BuyerId: req.CallerId,
+				Items: items.ToDictionary(
+					x => x.ToDto(buyer),
+					x => x.ForDelivery && x.CustomizationId is not null
+							? prices[x.ProductId] + costs[x.CustomizationId.Value]
+							: prices[x.ProductId]
+				)
+			),
+			ct: ct
+		).ConfigureAwait(false);
+
+		Dictionary<CustomizationId, double> weights = await sender.SendQueryAsync(
+			query: new GetCustomizationsWeightByIdsQuery(
 				Ids: customizationIds
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
-		costs = costs.ToDictionary(
+
+		await raiser.RaiseApplicationEventAsync(
+			@event: new ActiveCartDeliveryRequestedApplicationEvent(
+				Id: purchasedCartId,
+				Weight: weights.Sum(x => x.Value) / 1000,
+				Count: items.Count(x => x.ForDelivery),
+				ShipmentService: req.ShipmentService,
+				Address: req.Address,
+				Contact: req.Contact
+			)
+		).ConfigureAwait(false);
+
+		PaymentDto response = await payment.InitializeCartPayment(
+			paymentMethodId: req.PaymentMethodId,
+			buyerId: req.CallerId,
+			cartId: purchasedCartId,
+			total: totalSum,
+			description: (buyer, items.Length),
+			ct: ct
+		).ConfigureAwait(false);
+
+		return response;
+	}
+
+	private async Task<Dictionary<CustomizationId, decimal>> SnapshotCosts(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
+	{
+		Dictionary<CustomizationId, decimal> costs = await sender.SendQueryAsync(
+			query: new GetCustomizationsCostByIdsQuery(
+				Ids: customizationIds
+			),
+			ct: ct
+		).ConfigureAwait(false);
+
+		return costs.ToDictionary(
 			x => x.Key,
 			x =>
 			{
@@ -63,59 +107,24 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(IActiveCartReads reads
 				return x.Value * item.Quantity;
 			}
 		);
+	}
 
-		decimal totalCost = prices.Sum(p => p.Value) + costs.Sum(c => c.Value);
-
-		string buyer = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(req.BuyerId),
-			ct
-		).ConfigureAwait(false);
-
-		PurchasedCartId purchasedCartId = await sender.SendCommandAsync(
-			new CreatePurchasedCartCommand(
-				BuyerId: req.BuyerId,
-				Items: [.. items.Select(x => x.ToDto(buyer))],
-				Prices: prices.ToDictionary(
-					x => x.Key,
-					x =>
-					{
-						decimal price = x.Value;
-						ActiveCartItem item = items.First(i => i.ProductId == x.Key);
-
-						return item.ForDelivery && item.CustomizationId is not null
-							? price + costs[item.CustomizationId.Value]
-							: price;
-					}
-				)
+	private async Task<Dictionary<ProductId, decimal>> SnapshotPrices(ActiveCartItem[] items, CancellationToken ct)
+	{
+		Dictionary<ProductId, decimal> prices = await sender.SendQueryAsync(
+			query: new GetProductPricesByIdsQuery(
+				Ids: [.. items.Select(x => x.ProductId)]
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Dictionary<CustomizationId, double> weights = await sender.SendQueryAsync(
-			new GetCustomizationsWeightByIdsQuery(
-				Ids: customizationIds
-			),
-			ct
-		).ConfigureAwait(false);
-
-		await raiser.RaiseApplicationEventAsync(new ActiveCartDeliveryRequestedApplicationEvent(
-			Id: purchasedCartId,
-			Weight: weights.Sum(x => x.Value) / 1000,
-			Count: items.Count(x => x.ForDelivery),
-			ShipmentService: req.ShipmentService,
-			Address: req.Address,
-			Contact: req.Contact
-		)).ConfigureAwait(false);
-
-		PaymentDto response = await payment.InitializeCartPayment(
-			paymentMethodId: req.PaymentMethodId,
-			buyerId: req.BuyerId,
-			cartId: purchasedCartId,
-			price: totalCost,
-			description: $"{buyer} bought {items.Length} products for a total of {totalCost}$.",
-			ct
-		).ConfigureAwait(false);
-
-		return response;
+		return prices.ToDictionary(
+			x => x.Key,
+			x =>
+			{
+				ActiveCartItem item = items.First(i => i.ProductId == x.Key);
+				return item.ForDelivery ? x.Value * item.Quantity : x.Value;
+			}
+		);
 	}
 }

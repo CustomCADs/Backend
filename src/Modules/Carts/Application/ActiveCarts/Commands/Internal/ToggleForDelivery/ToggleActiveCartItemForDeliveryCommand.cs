@@ -4,8 +4,8 @@ using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.ToggleForDelivery;
 
-public record ToggleActiveCartItemForDeliveryCommand(
-	AccountId BuyerId,
+public sealed record ToggleActiveCartItemForDeliveryCommand(
+	AccountId CallerId,
 	ProductId ProductId,
 	CustomizationId? CustomizationId
 ) : ICommand;

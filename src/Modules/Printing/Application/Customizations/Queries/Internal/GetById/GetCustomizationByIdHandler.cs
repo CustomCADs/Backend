@@ -3,8 +3,11 @@ using CustomCADs.Printing.Domain.Services;
 
 namespace CustomCADs.Printing.Application.Customizations.Queries.Internal.GetById;
 
-public class GetCustomizationByIdHandler(ICustomizationReads customizationReads, IMaterialReads materialReads, IPrintCalculator calculator)
-	: IQueryHandler<GetCustomizationByIdQuery, CustomizationDto>
+public sealed class GetCustomizationByIdHandler(
+	ICustomizationReads customizationReads,
+	IMaterialReads materialReads,
+	IPrintCalculator calculator
+) : IQueryHandler<GetCustomizationByIdQuery, CustomizationDto>
 {
 	public async Task<CustomizationDto> Handle(GetCustomizationByIdQuery req, CancellationToken ct)
 	{

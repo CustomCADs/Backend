@@ -4,7 +4,6 @@ using CustomCADs.Carts.Persistence;
 using CustomCADs.Carts.Persistence.Repositories;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;

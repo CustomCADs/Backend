@@ -1,8 +1,8 @@
 ﻿using CustomCADs.Delivery.Domain.Shipments;
 using CustomCADs.Delivery.Domain.Shipments.Enums;
-using CustomCADs.Delivery.Domain.Shipments.ValueObjects;
-using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.ValueObjects;
 
 namespace CustomCADs.Delivery.Persistence.Repositories.Shipments;
 
@@ -12,21 +12,18 @@ public static class Utilities
 	{
 		if (clientId is not null)
 		{
-			query = query.Where(s => s.BuyerId == clientId);
+			query = query.Where(x => x.BuyerId == clientId);
 		}
 
 		return query;
 	}
 
-	public static IQueryable<Shipment> WithSorting(this IQueryable<Shipment> query, ShipmentSorting sorting)
-		=> sorting switch
+	public static IQueryable<Shipment> WithSorting(this IQueryable<Shipment> query, Sorting<ShipmentSortingType>? sorting = null)
+		=> sorting?.Type switch
 		{
-			{ Type: ShipmentSortingType.RequestedAt, Direction: SortingDirection.Ascending } => query.OrderBy(s => s.RequestedAt),
-			{ Type: ShipmentSortingType.RequestedAt, Direction: SortingDirection.Descending } => query.OrderByDescending(s => s.RequestedAt),
-			{ Type: ShipmentSortingType.Country, Direction: SortingDirection.Ascending } => query.OrderBy(s => s.Address.Country),
-			{ Type: ShipmentSortingType.Country, Direction: SortingDirection.Descending } => query.OrderByDescending(s => s.Address.Country),
-			{ Type: ShipmentSortingType.City, Direction: SortingDirection.Ascending } => query.OrderBy(s => s.Address.City),
-			{ Type: ShipmentSortingType.City, Direction: SortingDirection.Descending } => query.OrderByDescending(s => s.Address.City),
+			ShipmentSortingType.RequestedAt => query.ToSorted(sorting, x => x.RequestedAt),
+			ShipmentSortingType.Country => query.ToSorted(sorting, x => x.Address.Country),
+			ShipmentSortingType.City => query.ToSorted(sorting, x => x.Address.City),
 			_ => query,
 		};
 }

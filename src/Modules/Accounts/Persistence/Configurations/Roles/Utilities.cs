@@ -21,7 +21,7 @@ static class Utilities
 		builder.Property(x => x.Id)
 			.HasConversion(
 				x => x.Value,
-				v => RoleId.New(v)
+				x => RoleId.New(x)
 			).UseIdentityColumn();
 
 		return builder;

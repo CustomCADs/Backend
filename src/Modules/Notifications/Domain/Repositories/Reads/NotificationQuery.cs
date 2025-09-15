@@ -1,7 +1,7 @@
-using CustomCADs.Notifications.Domain.Notifications.ValueObjects;
-using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.ValueObjects;
 
 namespace CustomCADs.Notifications.Domain.Repositories.Reads;
 
@@ -9,5 +9,5 @@ public record NotificationQuery(
 	Pagination Pagination,
 	AccountId? ReceiverId = null,
 	NotificationStatus? Status = null,
-	NotificationSorting? Sorting = null
+	Sorting<NotificationSortingType>? Sorting = null
 );
