@@ -1,5 +1,8 @@
-﻿namespace CustomCADs.Identity.Domain.Users;
+﻿using CustomCADs.Shared.Domain;
 
+namespace CustomCADs.Identity.Domain.Users;
+
+using static DomainConstants;
 using static UserConstants;
 
 public static class Validations
@@ -28,7 +31,7 @@ public static class Validations
 				predicate: string.IsNullOrWhiteSpace
 			).ThrowIfPredicateIsFalse(
 				expression: (x) => x.Email.Value,
-				predicate: Shared.Domain.Constants.Regexes.Email.IsMatch,
+				predicate: Regexes.Email.IsMatch,
 				message: "A {0} must have a proper {1}."
 			);
 }

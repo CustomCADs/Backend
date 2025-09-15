@@ -9,7 +9,7 @@ public class TrackShipmentEndpoint(IRequestSender sender)
 	{
 		Get("{id}/track");
 		Group<ShipmentsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Track")
 			.WithDescription("See the tracking history of your shipment")
 		);
@@ -18,10 +18,10 @@ public class TrackShipmentEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(TrackShipmentRequest req, CancellationToken ct)
 	{
 		Dictionary<DateTimeOffset, GetShipmentTrackDto> tracks = await sender.SendQueryAsync(
-			new GetShipmentTrackQuery(
+			query: new GetShipmentTrackQuery(
 				Id: ShipmentId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		Dictionary<DateTimeOffset, TrackShipmentResponse> response = tracks.ToResponse();

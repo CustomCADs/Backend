@@ -3,11 +3,9 @@ using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
 namespace CustomCADs.Catalog.Application.Categories.Queries.Shared;
 
-public class GetCategoryExistsByIdHandler(ICategoryReads reads)
+public sealed class GetCategoryExistsByIdHandler(ICategoryReads reads)
 	: IQueryHandler<GetCategoryExistsByIdQuery, bool>
 {
 	public async Task<bool> Handle(GetCategoryExistsByIdQuery req, CancellationToken ct)
-	{
-		return await reads.ExistsByIdAsync(req.Id, ct).ConfigureAwait(false);
-	}
+		=> await reads.ExistsByIdAsync(req.Id, ct).ConfigureAwait(false);
 }

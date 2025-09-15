@@ -1,5 +1,5 @@
 ﻿namespace CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
-public record GetCustomizationExistsByIdQuery(
+public sealed record GetCustomizationExistsByIdQuery(
 	CustomizationId Id
 ) : IQuery<bool>;

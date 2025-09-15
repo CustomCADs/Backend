@@ -11,7 +11,7 @@ public sealed class GetProductsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all your Product with Filter, Search, Sorting and Pagination options")
 		);
@@ -20,20 +20,18 @@ public sealed class GetProductsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetProductsRequest req, CancellationToken ct)
 	{
 		Result<CreatorGetAllProductsDto> result = await sender.SendQueryAsync(
-			new CreatorGetAllProductsQuery(
-				CreatorId: User.GetAccountId(),
+			query: new CreatorGetAllProductsQuery(
+				CallerId: User.GetAccountId(),
 				CategoryId: CategoryId.New(req.CategoryId),
 				Name: req.Name,
 				Sorting: new(req.SortingType.ToBase(), req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Result<GetProductsResponse> response = new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(p => p.ToResponse())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(
+			response: result.ToNewResult(x => x.ToResponse())
+		).ConfigureAwait(false);
 	}
 }

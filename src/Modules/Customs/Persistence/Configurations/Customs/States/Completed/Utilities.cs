@@ -23,19 +23,19 @@ public static class Utilities
 		builder.Property(x => x.CustomId)
 			.HasConversion(
 				x => x.Value,
-				v => CustomId.New(v)
+				x => CustomId.New(x)
 			);
 
 		builder.Property(x => x.ShipmentId)
 			.HasConversion(
 				x => ShipmentId.Unwrap(x),
-				v => ShipmentId.New(v)
+				x => ShipmentId.New(x)
 			);
 
 		builder.Property(x => x.CustomizationId)
 			.HasConversion(
 				x => CustomizationId.Unwrap(x),
-				v => CustomizationId.New(v)
+				x => CustomizationId.New(x)
 			);
 
 		return builder;
@@ -56,8 +56,8 @@ public static class Utilities
 		builder.Property(x => x.PaymentStatus)
 			.IsRequired()
 			.HasConversion(
-				v => v.ToString(),
-				s => Enum.Parse<PaymentStatus>(s)
+				x => x.ToString(),
+				x => Enum.Parse<PaymentStatus>(x)
 			).HasColumnName(nameof(CompletedCustom.PaymentStatus));
 
 		builder.Property(x => x.ShipmentId)

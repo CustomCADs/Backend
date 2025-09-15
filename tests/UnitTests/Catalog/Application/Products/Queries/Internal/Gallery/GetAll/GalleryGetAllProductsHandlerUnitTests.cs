@@ -54,7 +54,7 @@ public class GalleryGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		GalleryGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			BuyerId: ValidCreatorId,
+			CallerId: ValidCreatorId,
 			CategoryId: this.query.CategoryId,
 			Name: this.query.Name,
 			Sorting: this.query.Sorting
@@ -77,7 +77,7 @@ public class GalleryGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		GalleryGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			BuyerId: ValidCreatorId,
+			CallerId: ValidCreatorId,
 			CategoryId: this.query.CategoryId,
 			Name: this.query.Name,
 			Sorting: this.query.Sorting
@@ -103,7 +103,7 @@ public class GalleryGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		GalleryGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			BuyerId: ValidCreatorId,
+			CallerId: ValidCreatorId,
 			CategoryId: this.query.CategoryId,
 			Name: this.query.Name,
 			Sorting: this.query.Sorting

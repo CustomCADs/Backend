@@ -6,5 +6,5 @@ namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetIm
 public sealed record CreatorGetProductImagePresignedUrlPutQuery(
 	ProductId Id,
 	UploadFileRequest NewImage,
-	AccountId CreatorId
-) : IQuery<CreatorGetProductImagePresignedUrlPutDto>;
+	AccountId CallerId
+) : IQuery<string>;

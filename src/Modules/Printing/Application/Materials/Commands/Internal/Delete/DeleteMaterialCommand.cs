@@ -1,5 +1,5 @@
 ﻿namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Delete;
 
-public record DeleteMaterialCommand(
+public sealed record DeleteMaterialCommand(
 	MaterialId Id
 ) : ICommand;

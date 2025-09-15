@@ -1,16 +1,16 @@
 ﻿namespace CustomCADs.Catalog.Endpoints.Products.Endpoints.Creator;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static EndpointsConstants;
 
 public class CreatorGroup : Group
 {
 	public CreatorGroup()
 	{
-		Configure(Paths.ProductsCreator, ep =>
+		Configure(Paths.ProductsCreator, x =>
 		{
-			ep.Roles(Contributor, Designer);
-			ep.Description(d => d.WithTags(Tags[Paths.ProductsCreator]));
+			x.Roles(Contributor, Designer);
+			x.Description(x => x.WithTags(Tags[Paths.ProductsCreator]));
 		});
 	}
 }

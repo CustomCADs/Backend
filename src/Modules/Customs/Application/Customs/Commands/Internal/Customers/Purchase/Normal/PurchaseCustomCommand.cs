@@ -6,5 +6,5 @@ namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Pur
 public sealed record PurchaseCustomCommand(
 	CustomId Id,
 	string PaymentMethodId,
-	AccountId BuyerId
+	AccountId CallerId
 ) : ICommand<PaymentDto>;

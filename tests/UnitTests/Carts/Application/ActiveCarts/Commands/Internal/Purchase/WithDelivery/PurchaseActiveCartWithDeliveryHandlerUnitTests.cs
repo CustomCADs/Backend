@@ -13,6 +13,7 @@ using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
+using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 
@@ -38,27 +39,36 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 		reads.Setup(x => x.ExistsAsync(ValidBuyerId, ct))
 			.ReturnsAsync(true);
 
+		ActiveCartItem[] items = [
+			CreateItemWithDelivery(productId: ProductId.New(), customizationId: CustomizationId.New()),
+			CreateItem(productId: ProductId.New()),
+			CreateItemWithDelivery(productId: ProductId.New(), customizationId: CustomizationId.New()),
+		];
 		reads.Setup(x => x.AllAsync(ValidBuyerId, false, ct))
-			.ReturnsAsync([
-				CreateItemWithDelivery(productId: ProductId.New()),
-				CreateItem(productId: ProductId.New()),
-				CreateItemWithDelivery(productId: ProductId.New()),
-			]);
+			.ReturnsAsync(items);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.IsAny<GetProductPricesByIdsQuery>(),
 			ct
-		)).ReturnsAsync([]);
+		)).ReturnsAsync(items.ToDictionary(x => x.ProductId, x => 0m));
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.IsAny<GetCustomizationsCostByIdsQuery>(),
 			ct
-		)).ReturnsAsync([]);
+		)).ReturnsAsync(
+			items
+				.Where(x => x.CustomizationId is not null)
+				.ToDictionary(x => x.CustomizationId!.Value, x => 0m)
+		);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.IsAny<GetCustomizationsWeightByIdsQuery>(),
 			ct
-		)).ReturnsAsync([]);
+		)).ReturnsAsync(
+			items
+				.Where(x => x.CustomizationId is not null)
+				.ToDictionary(x => x.CustomizationId!.Value, x => 0d)
+		);
 	}
 
 	[Fact]
@@ -68,7 +78,7 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
 			ShipmentService: shipmentService,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -88,7 +98,7 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
 			ShipmentService: shipmentService,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -126,7 +136,7 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -140,7 +150,7 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 			It.Is<AccountId>(x => x == ValidBuyerId),
 			It.IsAny<PurchasedCartId>(),
 			It.IsAny<decimal>(),
-			It.IsAny<string>(),
+			It.IsAny<(string, int)>(),
 			ct
 		), Times.Once());
 	}
@@ -152,7 +162,7 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
 			ShipmentService: shipmentService,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -176,14 +186,14 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 			It.Is<AccountId>(x => x == ValidBuyerId),
 			It.IsAny<PurchasedCartId>(),
 			It.IsAny<decimal>(),
-			It.IsAny<string>(),
+			It.IsAny<(string, int)>(),
 			ct
 		)).ReturnsAsync(expected);
 
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
 			ShipmentService: shipmentService,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);
@@ -209,7 +219,7 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
 			ShipmentService: shipmentService,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			Address: address,
 			Contact: contact
 		);

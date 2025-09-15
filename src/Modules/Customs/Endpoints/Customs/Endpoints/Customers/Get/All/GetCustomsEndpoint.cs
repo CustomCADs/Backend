@@ -11,7 +11,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all your Customs with Filter, Search, Sorting and Pagination options")
 		);
@@ -20,21 +20,19 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetCustomsRequest req, CancellationToken ct)
 	{
 		Result<GetAllCustomsDto> result = await sender.SendQueryAsync(
-			new GetAllCustomsQuery(
+			query: new GetAllCustomsQuery(
 				ForDelivery: req.ForDelivery,
 				CustomStatus: req.Status,
-				BuyerId: User.GetAccountId(),
+				CustomerId: User.GetAccountId(),
 				Name: req.Name,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Result<GetCustomsResponse> response = new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(o => o.ToGetResponse())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(
+			response: result.ToNewResult(x => x.ToGetResponse())
+		).ConfigureAwait(false);
 	}
 }

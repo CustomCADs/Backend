@@ -18,11 +18,8 @@ public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnit
 
 	private const decimal Cost = 10.5m;
 	private static readonly CustomizationId[] ids = [];
-	private static readonly Dictionary<CustomizationId, Customization> customizations = new()
-	{
-		[ValidId] = CreateCustomization(),
-	};
-	private static readonly MaterialId[] materialIds = [.. customizations.Values.Select(x => x.MaterialId)];
+	private static readonly Customization[] customizations = [CreateCustomization()];
+	private static readonly MaterialId[] materialIds = [.. customizations.Select(x => x.MaterialId)];
 	private static readonly Dictionary<MaterialId, Material> materials = new()
 	{
 		[ValidMaterialId] = CreateMaterial(),
@@ -32,7 +29,7 @@ public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnit
 	{
 		handler = new(reads.Object, materialReads.Object, calculator.Object);
 
-		reads.Setup(x => x.AllByIdsAsync(ids, false, ct))
+		reads.Setup(x => x.AllAsync(ids, false, ct))
 			.ReturnsAsync(customizations);
 
 		materialReads.Setup(x => x.AllByIdsAsync(materialIds, false, ct))
@@ -52,7 +49,7 @@ public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnit
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(v => v.AllByIdsAsync(ids, false, ct), Times.Once());
+		reads.Verify(v => v.AllAsync(ids, false, ct), Times.Once());
 		materialReads.Verify(v => v.AllByIdsAsync(materialIds, false, ct), Times.Once());
 	}
 
@@ -67,9 +64,9 @@ public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnit
 
 		// Assert
 		calculator.Verify(v => v.CalculateCost(
-			It.Is<Customization>(x => customizations.Values.Contains(x)),
+			It.Is<Customization>(x => customizations.Contains(x)),
 			It.Is<Material>(x => materials.Values.Contains(x))
-		), Times.Exactly(customizations.Count));
+		), Times.Exactly(customizations.Length));
 	}
 
 	[Fact]

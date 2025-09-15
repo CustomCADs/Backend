@@ -48,7 +48,7 @@ public class CreatorGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		CreatorGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			CreatorId: ValidCreatorId,
+			CallerId: ValidCreatorId,
 			CategoryId: this.query.CategoryId,
 			Name: this.query.Name,
 			Sorting: this.query.Sorting
@@ -71,7 +71,7 @@ public class CreatorGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		CreatorGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			CreatorId: ValidCreatorId,
+			CallerId: ValidCreatorId,
 			CategoryId: this.query.CategoryId,
 			Name: this.query.Name,
 			Sorting: this.query.Sorting
@@ -93,7 +93,7 @@ public class CreatorGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		CreatorGetAllProductsQuery query = new(
 			Pagination: this.query.Pagination,
-			CreatorId: ValidCreatorId,
+			CallerId: ValidCreatorId,
 			CategoryId: this.query.CategoryId,
 			Name: this.query.Name,
 			Sorting: this.query.Sorting

@@ -5,8 +5,11 @@ using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
 namespace CustomCADs.Files.Application.Cads.Queries.Shared;
 
-public class GetCadPresignedUrlPutByIdHandler(ICadReads reads, ICadStorageService storage, BaseCachingService<CadId, Cad> cache)
-	: IQueryHandler<GetCadPresignedUrlPutByIdQuery, string>
+public sealed class GetCadPresignedUrlPutByIdHandler(
+	ICadReads reads,
+	ICadStorageService storage,
+	BaseCachingService<CadId, Cad> cache
+) : IQueryHandler<GetCadPresignedUrlPutByIdQuery, string>
 {
 	public async Task<string> Handle(GetCadPresignedUrlPutByIdQuery req, CancellationToken ct)
 	{
@@ -16,11 +19,9 @@ public class GetCadPresignedUrlPutByIdHandler(ICadReads reads, ICadStorageServic
 				?? throw CustomNotFoundException<Cad>.ById(req.Id)
 		).ConfigureAwait(false);
 
-		string url = await storage.GetPresignedPutUrlAsync(
+		return await storage.GetPresignedPutUrlAsync(
 			key: cad.Key,
 			file: req.NewFile
 		).ConfigureAwait(false);
-
-		return url;
 	}
 }

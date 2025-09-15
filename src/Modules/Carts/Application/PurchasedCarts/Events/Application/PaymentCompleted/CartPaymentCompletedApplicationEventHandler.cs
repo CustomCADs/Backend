@@ -21,11 +21,11 @@ public class CartPaymentCompletedApplicationEventHandler(IPurchasedCartReads rea
 		await uow.BulkDeleteItemsByBuyerIdAsync(ae.BuyerId).ConfigureAwait(false);
 
 		string to = await sender.SendQueryAsync(
-			new GetUserEmailByIdQuery(ae.BuyerId)
+			query: new GetUserEmailByIdQuery(ae.BuyerId)
 		).ConfigureAwait(false);
 
 		string url = await sender.SendQueryAsync(
-			new GetClientUrlQuery()
+			query: new GetClientUrlQuery()
 		).ConfigureAwait(false);
 
 		await email.SendRewardGrantedEmailAsync(to, $"{url}/carts").ConfigureAwait(false);

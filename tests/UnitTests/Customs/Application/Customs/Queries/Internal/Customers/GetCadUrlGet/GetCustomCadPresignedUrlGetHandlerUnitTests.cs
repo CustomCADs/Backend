@@ -45,7 +45,7 @@ public class GetCustomCadPresignedUrlGetHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		GetCustomCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 
 		// Act
@@ -61,7 +61,7 @@ public class GetCustomCadPresignedUrlGetHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		GetCustomCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 
 		// Act
@@ -80,7 +80,7 @@ public class GetCustomCadPresignedUrlGetHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		GetCustomCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 
 		// Act
@@ -96,7 +96,7 @@ public class GetCustomCadPresignedUrlGetHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		GetCustomCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
-			BuyerId: buyerId
+			CallerId: buyerId
 		);
 
 		// Assert
@@ -115,7 +115,7 @@ public class GetCustomCadPresignedUrlGetHandlerUnitTests : CustomsBaseUnitTests
 
 		GetCustomCadPresignedUrlGetQuery query = new(
 			Id: ValidId,
-			BuyerId: ValidBuyerId
+			CallerId: ValidBuyerId
 		);
 
 		// Assert

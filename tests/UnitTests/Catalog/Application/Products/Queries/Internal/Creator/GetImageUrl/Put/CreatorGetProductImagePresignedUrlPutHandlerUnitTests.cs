@@ -39,7 +39,7 @@ public class CreatorGetProductImagePresignedUrlPutHandlerUnitTests : ProductsBas
 		CreatorGetProductImagePresignedUrlPutQuery query = new(
 			Id: ValidId,
 			NewImage: file,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -56,7 +56,7 @@ public class CreatorGetProductImagePresignedUrlPutHandlerUnitTests : ProductsBas
 		CreatorGetProductImagePresignedUrlPutQuery query = new(
 			Id: ValidId,
 			NewImage: file,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -76,14 +76,14 @@ public class CreatorGetProductImagePresignedUrlPutHandlerUnitTests : ProductsBas
 		CreatorGetProductImagePresignedUrlPutQuery query = new(
 			Id: ValidId,
 			NewImage: file,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		string url = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(Url, result.PresignedUrl);
+		Assert.Equal(Url, url);
 	}
 
 	[Fact]
@@ -93,7 +93,7 @@ public class CreatorGetProductImagePresignedUrlPutHandlerUnitTests : ProductsBas
 		CreatorGetProductImagePresignedUrlPutQuery query = new(
 			Id: ValidId,
 			NewImage: file,
-			CreatorId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert
@@ -113,7 +113,7 @@ public class CreatorGetProductImagePresignedUrlPutHandlerUnitTests : ProductsBas
 		CreatorGetProductImagePresignedUrlPutQuery query = new(
 			Id: ValidId,
 			NewImage: file,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Assert

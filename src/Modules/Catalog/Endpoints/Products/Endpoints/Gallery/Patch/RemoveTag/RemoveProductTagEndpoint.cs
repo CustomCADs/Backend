@@ -1,8 +1,9 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
+using CustomCADs.Shared.Endpoints.Extensions;
 
 namespace CustomCADs.Catalog.Endpoints.Products.Endpoints.Gallery.Patch.RemoveTag;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 
 public class RemoveProductTagEndpoint(IRequestSender sender)
 	: Endpoint<RemoveProductTagRequest>
@@ -12,7 +13,7 @@ public class RemoveProductTagEndpoint(IRequestSender sender)
 		Patch("tags/remove");
 		Group<GalleryGroup>();
 		Roles(Admin);
-		Description(d => d
+		Description(x => x
 			.WithSummary("Remove Tag")
 			.WithDescription("Removes a Tag from a Product")
 		);
@@ -21,11 +22,12 @@ public class RemoveProductTagEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(RemoveProductTagRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new RemoveProductTagCommand(
+			command: new RemoveProductTagCommand(
 				Id: ProductId.New(req.Id),
-				TagId: TagId.New(req.TagId)
+				TagId: TagId.New(req.TagId),
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

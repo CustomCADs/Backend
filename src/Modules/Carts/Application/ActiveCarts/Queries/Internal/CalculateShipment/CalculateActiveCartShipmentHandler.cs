@@ -7,12 +7,12 @@ using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment;
 
-public class CalculateActiveCartShipmentHandler(IActiveCartReads reads, IRequestSender sender)
+public sealed class CalculateActiveCartShipmentHandler(IActiveCartReads reads, IRequestSender sender)
 	: IQueryHandler<CalculateActiveCartShipmentQuery, CalculateShipmentDto[]>
 {
 	public async Task<CalculateShipmentDto[]> Handle(CalculateActiveCartShipmentQuery req, CancellationToken ct)
 	{
-		ActiveCartItem[] items = await reads.AllAsync(req.BuyerId, track: false, ct: ct).ConfigureAwait(false);
+		ActiveCartItem[] items = await reads.AllAsync(req.CallerId, track: false, ct: ct).ConfigureAwait(false);
 
 		if (!items.Any(x => x.ForDelivery))
 		{
@@ -20,28 +20,27 @@ public class CalculateActiveCartShipmentHandler(IActiveCartReads reads, IRequest
 		}
 
 		Dictionary<CustomizationId, double> weights = await sender.SendQueryAsync(
-			new GetCustomizationsWeightByIdsQuery(
-				Ids: [..
-					items
-						.Where(i => i.ForDelivery && i.CustomizationId is not null)
-						.Select(i => i.CustomizationId!.Value)
+			query: new GetCustomizationsWeightByIdsQuery(
+				Ids: [.. items
+					.Where(x => x.ForDelivery && x.CustomizationId is not null)
+					.Select(x => x.CustomizationId!.Value)
 				]
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
-			new CalculateShipmentQuery(
-				Weights: [..
-					weights.Select(weight =>
+			query: new CalculateShipmentQuery(
+				Weights: [.. weights
+					.Select(x =>
 					{
-						ActiveCartItem item = items.First(item => item.CustomizationId == weight.Key);
-						return item.Quantity * weight.Value / 1000;
+						ActiveCartItem item = items.First(item => item.CustomizationId == x.Key);
+						return item.Quantity * x.Value / 1000;
 					})
 				],
 				Address: req.Address
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		return calculations;

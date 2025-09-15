@@ -2,7 +2,11 @@
 using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
+using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Designer.Report;
@@ -14,13 +18,15 @@ public class ReportCustomHandlerUnitTests : CustomsBaseUnitTests
 	private readonly ReportCustomHandler handler;
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
+	private readonly Mock<IRequestSender> sender = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
 	private static readonly AccountId designerId = AccountId.New();
 	private readonly Custom custom = CreateCustom();
 
 	public ReportCustomHandlerUnitTests()
 	{
-		handler = new(reads.Object, uow.Object);
+		handler = new(reads.Object, uow.Object, sender.Object, raiser.Object);
 
 		custom.Accept(ValidDesignerId);
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
@@ -33,7 +39,7 @@ public class ReportCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		ReportCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -49,7 +55,7 @@ public class ReportCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		ReportCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -60,12 +66,49 @@ public class ReportCustomHandlerUnitTests : CustomsBaseUnitTests
 	}
 
 	[Fact]
+	public async Task Handle_ShouldSendRequests()
+	{
+		// Arrange
+		ReportCustomCommand command = new(
+			Id: ValidId,
+			CallerId: ValidDesignerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidDesignerId),
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		ReportCustomCommand command = new(
+			Id: ValidId,
+			CallerId: ValidDesignerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.AuthorId == ValidDesignerId)
+		), Times.Once());
+	}
+
+	[Fact]
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
 		ReportCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -84,7 +127,7 @@ public class ReportCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		ReportCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: designerId
+			CallerId: designerId
 		);
 
 		// Assert
@@ -103,7 +146,7 @@ public class ReportCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		ReportCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert

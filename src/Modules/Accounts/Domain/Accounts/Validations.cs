@@ -1,6 +1,10 @@
-﻿namespace CustomCADs.Accounts.Domain.Accounts;
+﻿using CustomCADs.Accounts.Domain.Roles;
+using CustomCADs.Shared.Domain;
+
+namespace CustomCADs.Accounts.Domain.Accounts;
 
 using static AccountConstants;
+using static DomainConstants;
 
 public static class Validations
 {
@@ -12,7 +16,7 @@ public static class Validations
 			)
 			.ThrowIfInvalidLength(
 				expression: (x) => x.RoleName,
-				length: (Roles.RoleConstants.NameMinLength, Roles.RoleConstants.NameMaxLength)
+				length: (RoleConstants.NameMinLength, RoleConstants.NameMaxLength)
 			);
 
 	public static Account ValidateUsername(this Account account)
@@ -34,7 +38,7 @@ public static class Validations
 			)
 			.ThrowIfPredicateIsFalse(
 				expression: (x) => x.Email,
-				predicate: Shared.Domain.Constants.Regexes.Email.IsMatch,
+				predicate: Regexes.Email.IsMatch,
 				message: "An {0} must have a proper {1}."
 			);
 

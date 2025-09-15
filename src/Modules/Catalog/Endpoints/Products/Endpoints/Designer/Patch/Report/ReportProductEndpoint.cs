@@ -11,7 +11,7 @@ public sealed class ReportProductEndpoint(IRequestSender sender)
 	{
 		Patch("report");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Report")
 			.WithDescription("Set a Product's Status to Reported")
 		);
@@ -20,12 +20,12 @@ public sealed class ReportProductEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ReportProductRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new SetProductStatusCommand(
+			command: new SetProductStatusCommand(
 				Id: ProductId.New(req.Id),
 				Status: ProductStatus.Reported,
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

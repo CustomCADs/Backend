@@ -1,30 +1,30 @@
 ﻿using CustomCADs.Customs.Domain.Customs;
 using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Customs.ValueObjects;
-using CustomCADs.Shared.Domain.Enums;
+using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.ValueObjects;
 
 namespace CustomCADs.Customs.Persistence.Repositories.Customs;
 
 public static class Utilities
 {
-	public static IQueryable<Custom> WithFilter(this IQueryable<Custom> query, bool? forDelivery = null, CustomStatus? status = null, AccountId? buyerId = null, AccountId? designerId = null)
+	public static IQueryable<Custom> WithFilter(this IQueryable<Custom> query, bool? forDelivery = null, CustomStatus? status = null, AccountId? customerId = null, AccountId? designerId = null)
 	{
 		if (forDelivery is not null)
 		{
-			query = query.Where(c => c.ForDelivery == forDelivery);
+			query = query.Where(x => x.ForDelivery == forDelivery);
 		}
 		if (status is not null)
 		{
-			query = query.Where(c => c.CustomStatus == status);
+			query = query.Where(x => x.CustomStatus == status);
 		}
-		if (buyerId is not null)
+		if (customerId is not null)
 		{
-			query = query.Where(c => c.BuyerId == buyerId);
+			query = query.Where(x => x.BuyerId == customerId);
 		}
 		if (designerId is not null)
 		{
-			query = query.Where(c => c.AcceptedCustom != null && c.AcceptedCustom.DesignerId == designerId);
+			query = query.Where(x => x.AcceptedCustom != null && x.AcceptedCustom.DesignerId == designerId);
 		}
 
 		return query;
@@ -34,21 +34,18 @@ public static class Utilities
 	{
 		if (!string.IsNullOrWhiteSpace(name))
 		{
-			query = query.Where(c => c.Name.ToLower().Contains(name.ToLower()));
+			query = query.Where(x => x.Name.ToLower().Contains(name.ToLower()));
 		}
 
 		return query;
 	}
 
-	public static IQueryable<Custom> WithSorting(this IQueryable<Custom> query, CustomSorting? sorting = null)
-		=> sorting switch
+	public static IQueryable<Custom> WithSorting(this IQueryable<Custom> query, Sorting<CustomSortingType>? sorting = null)
+		=> sorting?.Type switch
 		{
-			{ Type: CustomSortingType.OrderedAt, Direction: SortingDirection.Ascending } => query.OrderBy(c => c.OrderedAt),
-			{ Type: CustomSortingType.OrderedAt, Direction: SortingDirection.Descending } => query.OrderByDescending(c => c.OrderedAt),
-			{ Type: CustomSortingType.Alphabetical, Direction: SortingDirection.Ascending } => query.OrderBy(c => c.Name),
-			{ Type: CustomSortingType.Alphabetical, Direction: SortingDirection.Descending } => query.OrderByDescending(c => c.Name),
-			{ Type: CustomSortingType.CustomStatus, Direction: SortingDirection.Ascending } => query.OrderBy(m => (int)m.CustomStatus),
-			{ Type: CustomSortingType.CustomStatus, Direction: SortingDirection.Descending } => query.OrderByDescending(m => (int)m.CustomStatus),
+			CustomSortingType.OrderedAt => query.ToSorted(sorting, x => x.OrderedAt),
+			CustomSortingType.Alphabetical => query.ToSorted(sorting, x => x.Name),
+			CustomSortingType.CustomStatus => query.ToSorted(sorting, x => (int)x.CustomStatus),
 			_ => query,
 		};
 }

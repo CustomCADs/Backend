@@ -18,11 +18,11 @@ public sealed class Reads(CatalogContext context) : IProductReads
 		IQueryable<Product> queryable = context.Products
 				.WithTracking(track)
 				.WithFilter(ids, query.CreatorId, query.DesignerId, query.CategoryId, query.Status)
-				.WithSearch(query.Name)
-				.WithSorting(query.Sorting ?? new());
+				.WithSearch(query.Name);
 
 		int count = await queryable.CountAsync(ct).ConfigureAwait(false);
 		Product[] products = await queryable
+				.WithSorting(query.Sorting)
 				.WithPagination(query.Pagination)
 				.ToArrayAsync(ct)
 				.ConfigureAwait(false);
@@ -51,13 +51,13 @@ public sealed class Reads(CatalogContext context) : IProductReads
 	public async Task<Product?> SingleByIdAsync(ProductId id, bool track = true, CancellationToken ct = default)
 		=> await context.Products
 			.WithTracking(track)
-			.FirstOrDefaultAsync(p => p.Id == id, ct)
+			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<string[]> TagsByIdAsync(ProductId id, CancellationToken ct = default)
 		=> await context.ProductTags
-			.Where(p => p.ProductId == id)
-			.Select(p => p.Tag.Name)
+			.Where(x => x.ProductId == id)
+			.Select(x => x.Tag.Name)
 			.ToArrayAsync(ct)
 			.ConfigureAwait(false);
 
@@ -71,14 +71,14 @@ public sealed class Reads(CatalogContext context) : IProductReads
 	public async Task<bool> ExistsByIdAsync(ProductId id, CancellationToken ct = default)
 		=> await context.Products
 			.WithTracking(false)
-			.AnyAsync(p => p.Id == id, ct)
+			.AnyAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<Dictionary<ProductStatus, int>> CountByStatusAsync(AccountId creatorId, CancellationToken ct = default)
 		=> await context.Products
 			.WithTracking(false)
-			.Where(p => p.CreatorId == creatorId)
-			.GroupBy(p => p.Status)
+			.Where(x => x.CreatorId == creatorId)
+			.GroupBy(x => x.Status)
 			.ToDictionaryAsync(x => x.Key, x => x.Count(), ct)
 			.ConfigureAwait(false);
 }

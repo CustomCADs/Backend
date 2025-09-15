@@ -16,7 +16,7 @@ public class GetCustomCadPresignedUrlPostValidatorUnitTests : CustomsBaseUnitTes
 		// Arrange
 		GetCustomCadPresignedUrlPostQuery query = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			Cad: new("image/jpeg", "Hand.jpg")
 		);
 
@@ -34,7 +34,7 @@ public class GetCustomCadPresignedUrlPostValidatorUnitTests : CustomsBaseUnitTes
 		// Arrange
 		GetCustomCadPresignedUrlPostQuery query = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId,
+			CallerId: ValidDesignerId,
 			Cad: file
 		);
 

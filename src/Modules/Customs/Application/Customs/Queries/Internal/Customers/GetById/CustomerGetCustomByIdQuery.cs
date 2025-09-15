@@ -4,5 +4,5 @@ namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.GetB
 
 public sealed record CustomerGetCustomByIdQuery(
 	CustomId Id,
-	AccountId BuyerId
+	AccountId CallerId
 ) : IQuery<CustomerGetCustomByIdDto>;

@@ -3,7 +3,7 @@ using CustomCADs.Shared.Domain;
 
 namespace CustomCADs.UnitTests.Identity.Domain.Users.Behaviors.AddRefreshToken;
 
-using static Constants;
+using static DomainConstants;
 
 public class UserAddRefreshTokenUnitTests : UsersBaseUnitTests
 {

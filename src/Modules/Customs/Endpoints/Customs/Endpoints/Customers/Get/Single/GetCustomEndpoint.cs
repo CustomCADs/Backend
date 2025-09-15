@@ -10,7 +10,7 @@ public sealed class GetCustomEndpoint(IRequestSender sender)
 	{
 		Get("{id}");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See your Custom")
 		);
@@ -19,11 +19,11 @@ public sealed class GetCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetCustomRequest req, CancellationToken ct)
 	{
 		CustomerGetCustomByIdDto custom = await sender.SendQueryAsync(
-			new CustomerGetCustomByIdQuery(
+			query: new CustomerGetCustomByIdQuery(
 				Id: CustomId.New(req.Id),
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetCustomResponse response = custom.ToResponse();

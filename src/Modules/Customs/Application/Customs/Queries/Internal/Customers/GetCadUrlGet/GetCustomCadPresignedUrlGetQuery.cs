@@ -5,5 +5,5 @@ namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.GetC
 
 public sealed record GetCustomCadPresignedUrlGetQuery(
 	CustomId Id,
-	AccountId BuyerId
+	AccountId CallerId
 ) : IQuery<DownloadFileResponse>;

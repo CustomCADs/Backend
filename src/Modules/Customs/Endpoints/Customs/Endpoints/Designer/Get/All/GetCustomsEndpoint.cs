@@ -12,7 +12,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all Customs with Filter, Search, Sort and Options options")
 		);
@@ -20,8 +20,8 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(GetCustomsRequest req, CancellationToken ct)
 	{
-		Result<GetAllCustomsDto> customs = await sender.SendQueryAsync(
-			new GetAllCustomsQuery(
+		Result<GetAllCustomsDto> result = await sender.SendQueryAsync(
+			query: new GetAllCustomsQuery(
 				CustomStatus: CustomStatus.Finished,
 				ForDelivery: req.ForDelivery,
 				DesignerId: User.GetAccountId(),
@@ -29,13 +29,11 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Result<GetCustomsResponse> response = new(
-			Count: customs.Count,
-			Items: [.. customs.Items.Select(o => o.ToResponse())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(
+			response: result.ToNewResult(x => x.ToResponse())
+		).ConfigureAwait(false);
 	}
 }

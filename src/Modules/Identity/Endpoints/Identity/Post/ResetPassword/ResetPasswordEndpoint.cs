@@ -11,7 +11,7 @@ public sealed class ResetPasswordEndpoint(IRequestSender sender)
 		Post("password/reset");
 		Group<IdentityGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.ResetPassword)
 			.WithSummary("Reset Password")
 			.WithDescription("Reset your Password with the token from the email")
@@ -22,12 +22,12 @@ public sealed class ResetPasswordEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ResetPasswordRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new ResetUserPasswordCommand(
+			command: new ResetUserPasswordCommand(
 				Email: req.Email,
 				Token: req.Token.Replace(' ', '+'),
 				NewPassword: req.NewPassword
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync().ConfigureAwait(false);

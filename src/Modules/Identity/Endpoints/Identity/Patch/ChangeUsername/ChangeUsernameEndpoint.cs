@@ -10,7 +10,7 @@ public sealed class ChangeUsernameEndpoint(IRequestSender sender)
 	{
 		Patch("username");
 		Group<IdentityGroup>();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.ChangeUsername)
 			.WithSummary("Change Username")
 			.WithDescription("Change your Username")
@@ -20,11 +20,11 @@ public sealed class ChangeUsernameEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ChangeUsernameRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new ChangeUsernameCommand(
+			command: new ChangeUsernameCommand(
 				Username: User.GetName(),
 				NewUsername: req.Username
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

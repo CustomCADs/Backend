@@ -26,16 +26,16 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 			ct: ct
 		).ConfigureAwait(false);
 
-		return [.. response.Select(c => new CalculationDto(
-			Service: c.Service,
+		return [.. response.Select(x => new CalculationDto(
+			Service: x.Service,
 			Price: new(
-				Amount: c.Price.Amount,
-				Vat: c.Price.Vat,
-				Total: c.Price.Total,
-				Currency: c.Price.Currency
+				Amount: x.Price.Amount,
+				Vat: x.Price.Vat,
+				Total: x.Price.Total,
+				Currency: x.Price.Currency
 			),
-			PickupDate: c.PickupDate,
-			DeliveryDeadline: c.DeliveryDeadline
+			PickupDate: x.PickupDate,
+			DeliveryDeadline: x.DeliveryDeadline
 		))];
 	}
 
@@ -62,7 +62,7 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 
 		return new(
 			Id: response.Id,
-			ParcelIds: [.. response.Parcels.Select(p => p.Id)],
+			ParcelIds: [.. response.Parcels.Select(x => x.Id)],
 			Price: Convert.ToDecimal(response.Price.Amount),
 			PickupDate: response.PickupDate,
 			DeliveryDeadline: response.DeliveryDeadline
@@ -83,10 +83,10 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 			ct: ct
 		).ConfigureAwait(false);
 
-		return [.. response.Single().Operations.Select(o => new ShipmentStatusDto(
-			DateTime: o.DateTime,
-			Place: o.Place,
-			Message: o.Translate()
+		return [.. response.Single().Operations.Select(x => new ShipmentStatusDto(
+			DateTime: x.DateTime,
+			Place: x.Place,
+			Message: x.Translate()
 		))];
 	}
 

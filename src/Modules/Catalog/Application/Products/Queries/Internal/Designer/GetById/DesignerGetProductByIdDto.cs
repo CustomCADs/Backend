@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetById;
 
-public record DesignerGetProductByIdDto(
+public sealed record DesignerGetProductByIdDto(
 	ProductId Id,
 	string Name,
 	string Description,

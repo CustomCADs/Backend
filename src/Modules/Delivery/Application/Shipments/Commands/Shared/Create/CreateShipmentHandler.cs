@@ -7,8 +7,13 @@ using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 
 namespace CustomCADs.Delivery.Application.Shipments.Commands.Shared.Create;
 
-public sealed class CreateShipmentHandler(IWrites<Shipment> writes, IUnitOfWork uow, IDeliveryService delivery, IRequestSender sender, BaseCachingService<ShipmentId, Shipment> cache)
-	: ICommandHandler<CreateShipmentCommand, ShipmentId>
+public sealed class CreateShipmentHandler(
+	IWrites<Shipment> writes,
+	IUnitOfWork uow,
+	IDeliveryService delivery,
+	IRequestSender sender,
+	BaseCachingService<ShipmentId, Shipment> cache
+) : ICommandHandler<CreateShipmentCommand, ShipmentId>
 {
 	public async Task<ShipmentId> Handle(CreateShipmentCommand req, CancellationToken ct)
 	{
@@ -40,7 +45,7 @@ public sealed class CreateShipmentHandler(IWrites<Shipment> writes, IUnitOfWork 
 				referenceId: reference.Id,
 				buyerId: req.BuyerId
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 

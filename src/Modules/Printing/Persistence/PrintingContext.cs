@@ -1,7 +1,10 @@
 ﻿using CustomCADs.Printing.Domain.Customizations;
 using CustomCADs.Printing.Domain.Materials;
+using CustomCADs.Shared.Persistence;
 
 namespace CustomCADs.Printing.Persistence;
+
+using static PersistenceConstants;
 
 public class PrintingContext(DbContextOptions<PrintingContext> opts) : DbContext(opts)
 {
@@ -10,7 +13,7 @@ public class PrintingContext(DbContextOptions<PrintingContext> opts) : DbContext
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.HasDefaultSchema("Printing");
+		builder.HasDefaultSchema(Schemes.Printing);
 		builder.ApplyConfigurationsFromAssembly(PrintingPersistenceReference.Assembly);
 	}
 }

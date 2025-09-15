@@ -11,6 +11,6 @@ public sealed class Reads(FilesContext context) : IImageReads
 	public async Task<Image?> SingleByIdAsync(ImageId id, bool track = true, CancellationToken ct = default)
 		=> await context.Images
 			.WithTracking(track)
-			.FirstOrDefaultAsync(c => c.Id == id, ct)
+			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 }

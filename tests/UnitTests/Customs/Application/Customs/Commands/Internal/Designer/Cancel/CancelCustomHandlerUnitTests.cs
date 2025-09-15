@@ -2,6 +2,8 @@
 using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
@@ -14,13 +16,14 @@ public class CancelCustomHandlerUnitTests : CustomsBaseUnitTests
 	private readonly CancelCustomHandler handler;
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
 	private static readonly AccountId designerId = AccountId.New();
 	private readonly Custom custom = CreateCustom();
 
 	public CancelCustomHandlerUnitTests()
 	{
-		handler = new(reads.Object, uow.Object);
+		handler = new(reads.Object, uow.Object, raiser.Object);
 
 		custom.Accept(ValidDesignerId);
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
@@ -33,7 +36,7 @@ public class CancelCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		CancelCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -49,7 +52,7 @@ public class CancelCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		CancelCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -60,12 +63,30 @@ public class CancelCustomHandlerUnitTests : CustomsBaseUnitTests
 	}
 
 	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		CancelCustomCommand command = new(
+			Id: ValidId,
+			CallerId: ValidDesignerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.AuthorId == ValidDesignerId)
+		), Times.Once());
+	}
+
+	[Fact]
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
 		CancelCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -89,7 +110,7 @@ public class CancelCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		CancelCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert
@@ -108,7 +129,7 @@ public class CancelCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		CancelCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert

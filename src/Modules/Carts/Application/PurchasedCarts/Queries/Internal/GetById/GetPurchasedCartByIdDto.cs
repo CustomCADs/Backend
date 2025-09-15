@@ -3,7 +3,7 @@ using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
 
-public record GetPurchasedCartByIdDto(
+public sealed record GetPurchasedCartByIdDto(
 	PurchasedCartId Id,
 	decimal Total,
 	DateTimeOffset PurchasedAt,

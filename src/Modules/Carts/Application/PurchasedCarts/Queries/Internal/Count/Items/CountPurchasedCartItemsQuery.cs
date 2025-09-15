@@ -3,5 +3,5 @@
 namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.Count.Items;
 
 public sealed record CountPurchasedCartItemsQuery(
-	AccountId BuyerId
+	AccountId CallerId
 ) : IQuery<Dictionary<PurchasedCartId, int>>;

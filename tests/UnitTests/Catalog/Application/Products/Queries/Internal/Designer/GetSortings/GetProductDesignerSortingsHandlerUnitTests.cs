@@ -14,9 +14,9 @@ public class GetProductDesignerSortingsHandlerUnitTests : ProductsBaseUnitTests
 		GetProductDesignerSortingsQuery query = new();
 
 		// Act
-		string[] sortings = await handler.Handle(query, ct);
+		ProductDesignerSortingType[] sortings = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetNames<ProductDesignerSortingType>());
+		Assert.Equal(sortings, Enum.GetValues<ProductDesignerSortingType>());
 	}
 }

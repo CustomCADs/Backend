@@ -14,9 +14,9 @@ public class GetCustomPaymentStatusesHandlerUnitTests : CustomsBaseUnitTests
 		GetCustomPaymentStatusesQuery query = new();
 
 		// Act
-		string[] sortings = await handler.Handle(query, ct);
+		PaymentStatus[] sortings = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetNames<PaymentStatus>());
+		Assert.Equal(sortings, Enum.GetValues<PaymentStatus>());
 	}
 }

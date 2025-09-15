@@ -2,6 +2,6 @@
 
 internal static class Mapper
 {
-	internal static RoleReadDto ToDto(this Role role)
+	internal static RoleDto ToDto(this Role role)
 		=> new(role.Id, role.Name, role.Description);
 }

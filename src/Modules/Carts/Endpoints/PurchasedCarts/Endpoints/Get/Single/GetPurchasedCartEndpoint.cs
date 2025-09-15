@@ -11,7 +11,7 @@ public sealed class GetPurchasedCartEndpoint(IRequestSender sender)
 	{
 		Get("{id}");
 		Group<PurchasedCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See your Cart in detail")
 		);
@@ -20,11 +20,11 @@ public sealed class GetPurchasedCartEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetPurchasedCartRequest req, CancellationToken ct)
 	{
 		GetPurchasedCartByIdDto cart = await sender.SendQueryAsync(
-			new GetPurchasedCartByIdQuery(
+			query: new GetPurchasedCartByIdQuery(
 				Id: PurchasedCartId.New(req.Id),
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetPurchasedCartResponse response = cart.ToResponse();

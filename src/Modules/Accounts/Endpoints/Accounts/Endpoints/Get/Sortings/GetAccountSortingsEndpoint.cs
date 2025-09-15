@@ -1,15 +1,16 @@
 ﻿using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetSortings;
+using CustomCADs.Accounts.Domain.Accounts.Enums;
 
 namespace CustomCADs.Accounts.Endpoints.Accounts.Endpoints.Get.Sortings;
 
 public sealed class GetAccountSortingsEndpoint(IRequestSender sender)
-	: EndpointWithoutRequest<string[]>
+	: EndpointWithoutRequest<AccountSortingType[]>
 {
 	public override void Configure()
 	{
 		Get("sortings");
 		Group<AccountsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Sortings")
 			.WithDescription("See all Account Sorting types")
 		);
@@ -17,9 +18,9 @@ public sealed class GetAccountSortingsEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(CancellationToken ct)
 	{
-		string[] result = await sender.SendQueryAsync(
-			new GetAccountSortingsQuery(),
-			ct
+		AccountSortingType[] result = await sender.SendQueryAsync(
+			query: new GetAccountSortingsQuery(),
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(result).ConfigureAwait(false);

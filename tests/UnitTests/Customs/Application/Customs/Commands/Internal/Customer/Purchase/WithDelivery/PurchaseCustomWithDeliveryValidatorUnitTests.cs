@@ -23,7 +23,7 @@ public class PurchaseCustomWithDeliveryValidatorUnitTests : CustomsBaseUnitTests
 		PurchaseCustomWithDeliveryCommand command = new(
 			Id: id,
 			PaymentMethodId: paymentMethodId,
-			BuyerId: buyerId,
+			CallerId: buyerId,
 			CustomizationId: customizationId,
 			Count: count,
 			ShipmentService: shipmentService,
@@ -50,7 +50,7 @@ public class PurchaseCustomWithDeliveryValidatorUnitTests : CustomsBaseUnitTests
 		PurchaseCustomWithDeliveryCommand command = new(
 			Id: id,
 			PaymentMethodId: paymentMethodId,
-			BuyerId: buyerId,
+			CallerId: buyerId,
 			CustomizationId: customizationId,
 			Count: count,
 			ShipmentService: shipmentService,
@@ -73,7 +73,7 @@ public class PurchaseCustomWithDeliveryValidatorUnitTests : CustomsBaseUnitTests
 		PurchaseCustomWithDeliveryCommand command = new(
 			Id: id,
 			PaymentMethodId: paymentMethodId,
-			BuyerId: buyerId,
+			CallerId: buyerId,
 			CustomizationId: customizationId,
 			Count: count,
 			ShipmentService: shipmentService,
@@ -96,7 +96,7 @@ public class PurchaseCustomWithDeliveryValidatorUnitTests : CustomsBaseUnitTests
 		PurchaseCustomWithDeliveryCommand command = new(
 			Id: id,
 			PaymentMethodId: paymentMethodId,
-			BuyerId: buyerId,
+			CallerId: buyerId,
 			CustomizationId: customizationId,
 			Count: count,
 			ShipmentService: shipmentService,
@@ -119,7 +119,7 @@ public class PurchaseCustomWithDeliveryValidatorUnitTests : CustomsBaseUnitTests
 		PurchaseCustomWithDeliveryCommand command = new(
 			Id: id,
 			PaymentMethodId: paymentMethodId,
-			BuyerId: buyerId,
+			CallerId: buyerId,
 			CustomizationId: customizationId,
 			Count: count,
 			ShipmentService: shipmentService,
@@ -142,7 +142,7 @@ public class PurchaseCustomWithDeliveryValidatorUnitTests : CustomsBaseUnitTests
 		PurchaseCustomWithDeliveryCommand command = new(
 			Id: id,
 			PaymentMethodId: paymentMethodId,
-			BuyerId: buyerId,
+			CallerId: buyerId,
 			CustomizationId: customizationId,
 			Count: count,
 			ShipmentService: shipmentService,
@@ -165,7 +165,7 @@ public class PurchaseCustomWithDeliveryValidatorUnitTests : CustomsBaseUnitTests
 		PurchaseCustomWithDeliveryCommand command = new(
 			Id: id,
 			PaymentMethodId: paymentMethodId,
-			BuyerId: buyerId,
+			CallerId: buyerId,
 			CustomizationId: customizationId,
 			Count: count,
 			ShipmentService: shipmentService,

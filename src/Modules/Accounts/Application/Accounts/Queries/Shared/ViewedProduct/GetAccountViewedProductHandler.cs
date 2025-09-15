@@ -4,7 +4,7 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Accounts.Application.Accounts.Queries.Shared.ViewedProduct;
 
-public class GetAccountViewedProductHandler(IAccountReads reads)
+public sealed class GetAccountViewedProductHandler(IAccountReads reads)
 	: IQueryHandler<GetAccountViewedProductQuery, bool>
 {
 	public async Task<bool> Handle(GetAccountViewedProductQuery req, CancellationToken ct)

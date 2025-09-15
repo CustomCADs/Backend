@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
 
-public record GetAccountByIdDto(
+public sealed record GetAccountByIdDto(
 	AccountId Id,
 	string Role,
 	string Username,

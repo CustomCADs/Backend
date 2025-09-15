@@ -39,7 +39,7 @@ public class AddActiveCartItemHandlerUnitTests : ActiveCartsBaseUnitTests
 	{
 		// Arrange
 		AddActiveCartItemCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			CustomizationId: customizationId,
 			ForDelivery: customizationId is not null,
 			ProductId: ValidProductId
@@ -58,7 +58,7 @@ public class AddActiveCartItemHandlerUnitTests : ActiveCartsBaseUnitTests
 	{
 		// Arrange
 		AddActiveCartItemCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			CustomizationId: customizationId,
 			ForDelivery: customizationId is not null,
 			ProductId: ValidProductId
@@ -93,7 +93,7 @@ public class AddActiveCartItemHandlerUnitTests : ActiveCartsBaseUnitTests
 		)).ReturnsAsync(false);
 
 		AddActiveCartItemCommand command = new(
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			CustomizationId: customizationId,
 			ForDelivery: customizationId is not null,
 			ProductId: ValidProductId

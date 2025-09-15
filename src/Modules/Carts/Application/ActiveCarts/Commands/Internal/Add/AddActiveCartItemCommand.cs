@@ -5,7 +5,7 @@ using CustomCADs.Shared.Domain.TypedIds.Printing;
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Add;
 
 public sealed record AddActiveCartItemCommand(
-	AccountId BuyerId,
+	AccountId CallerId,
 	bool ForDelivery,
 	ProductId ProductId,
 	CustomizationId? CustomizationId

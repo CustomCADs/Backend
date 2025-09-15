@@ -13,7 +13,7 @@ public sealed class RefreshTokenEndpoint(IRequestSender sender, IOptions<CookieS
 		Post("refresh");
 		Group<IdentityGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.Refresh)
 			.WithSummary("Refresh")
 			.WithDescription("Refresh your login")
@@ -24,10 +24,10 @@ public sealed class RefreshTokenEndpoint(IRequestSender sender, IOptions<CookieS
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		TokensDto tokens = await sender.SendCommandAsync(
-			new RefreshUserCommand(
+			command: new RefreshUserCommand(
 				Token: HttpContext.GetRefreshTokenCookie()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		HttpContext.SaveAccessTokenCookie(tokens.AccessToken, settings.Value.Domain);

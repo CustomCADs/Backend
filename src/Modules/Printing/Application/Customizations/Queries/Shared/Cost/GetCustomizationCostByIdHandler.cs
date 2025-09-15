@@ -4,8 +4,11 @@ using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Printing.Application.Customizations.Queries.Shared.Cost;
 
-public class GetCustomizationCostByIdHandler(ICustomizationReads customizationReads, IMaterialReads materialReads, IPrintCalculator calculator)
-	: IQueryHandler<GetCustomizationCostByIdQuery, decimal>
+public sealed class GetCustomizationCostByIdHandler(
+	ICustomizationReads customizationReads,
+	IMaterialReads materialReads,
+	IPrintCalculator calculator
+) : IQueryHandler<GetCustomizationCostByIdQuery, decimal>
 {
 	public async Task<decimal> Handle(GetCustomizationCostByIdQuery req, CancellationToken ct)
 	{

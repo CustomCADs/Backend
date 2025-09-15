@@ -3,8 +3,12 @@ using CustomCADs.Printing.Domain.Repositories.Reads;
 
 namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Delete;
 
-public class DeleteMaterialHandler(IMaterialReads reads, IWrites<Material> writes, IUnitOfWork uow, BaseCachingService<MaterialId, Material> cache)
-	: ICommandHandler<DeleteMaterialCommand>
+public sealed class DeleteMaterialHandler(
+	IMaterialReads reads,
+	IWrites<Material> writes,
+	IUnitOfWork uow,
+	BaseCachingService<MaterialId, Material> cache
+) : ICommandHandler<DeleteMaterialCommand>
 {
 	public async Task Handle(DeleteMaterialCommand req, CancellationToken ct)
 	{

@@ -27,7 +27,7 @@ public static class DependencyInjection
 			if (context.GetAttribute<EnforceIdempotencyAttribute>() is null)
 			{
 				bool endpointOptedOut = context.GetAttribute<SkipIdempotencyAttribute>() is not null;
-				if (endpointOptedOut || context.Request.ShouldSkipByDefault())
+				if (endpointOptedOut || context.Request.ShouldSkipByDefault() || context.Request.IsSignalR())
 				{
 					await next().ConfigureAwait(false);
 					return;
@@ -49,7 +49,7 @@ public static class DependencyInjection
 			{
 				GetIdempotencyKeyDto? dto = await sender.SendQueryAsync(
 					new GetIdempotencyKeyQuery(idempotencyKey, requestHash),
-					ct
+					ct: ct
 				).ConfigureAwait(false);
 
 				if (dto is null)
@@ -74,7 +74,7 @@ public static class DependencyInjection
 						IdempotencyKey: idempotencyKey,
 						RequestHash: requestHash
 					),
-					ct
+					ct: ct
 				).ConfigureAwait(false);
 
 				Stream originalBody = context.Response.Body;
@@ -94,7 +94,7 @@ public static class DependencyInjection
 							IdempotencyKey: idempotencyKey,
 							RequestHash: requestHash
 						),
-						ct
+						ct: ct
 					).ConfigureAwait(false);
 
 					throw;
@@ -112,7 +112,7 @@ public static class DependencyInjection
 						ResponseBody: responseBody,
 						StatusCode: context.Response.StatusCode
 					),
-					ct
+					ct: ct
 				).ConfigureAwait(false);
 			}
 		});

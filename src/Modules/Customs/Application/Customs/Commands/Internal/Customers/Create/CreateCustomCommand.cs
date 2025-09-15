@@ -6,5 +6,5 @@ public sealed record CreateCustomCommand(
 	string Name,
 	string Description,
 	bool ForDelivery,
-	AccountId BuyerId
+	AccountId CallerId
 ) : ICommand<CustomId>;

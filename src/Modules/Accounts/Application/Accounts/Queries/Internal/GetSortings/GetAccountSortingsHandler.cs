@@ -2,11 +2,10 @@
 
 namespace CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetSortings;
 
-public class GetAccountSortingsHandler
-	: IQueryHandler<GetAccountSortingsQuery, string[]>
+public sealed class GetAccountSortingsHandler : IQueryHandler<GetAccountSortingsQuery, AccountSortingType[]>
 {
-	public Task<string[]> Handle(GetAccountSortingsQuery req, CancellationToken ct)
+	public Task<AccountSortingType[]> Handle(GetAccountSortingsQuery req, CancellationToken ct)
 		=> Task.FromResult(
-			Enum.GetNames<AccountSortingType>()
+			Enum.GetValues<AccountSortingType>()
 		);
 }

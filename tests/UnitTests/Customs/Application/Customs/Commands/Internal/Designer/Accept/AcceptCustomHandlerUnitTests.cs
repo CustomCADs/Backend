@@ -2,7 +2,9 @@
 using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
@@ -16,12 +18,13 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
 	private readonly Custom custom = CreateCustom();
 
 	public AcceptCustomHandlerUnitTests()
 	{
-		handler = new(reads.Object, uow.Object, sender.Object);
+		handler = new(reads.Object, uow.Object, sender.Object, raiser.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
@@ -38,7 +41,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -54,7 +57,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -70,7 +73,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -81,6 +84,28 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidDesignerId),
 			ct
 		), Times.Once());
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidDesignerId),
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		AcceptCustomCommand command = new(
+			Id: ValidId,
+			CallerId: ValidDesignerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.AuthorId == ValidDesignerId)
+		), Times.Once());
 	}
 
 	[Fact]
@@ -89,7 +114,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Act
@@ -113,7 +138,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert
@@ -132,7 +157,7 @@ public class AcceptCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		AcceptCustomCommand command = new(
 			Id: ValidId,
-			DesignerId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert

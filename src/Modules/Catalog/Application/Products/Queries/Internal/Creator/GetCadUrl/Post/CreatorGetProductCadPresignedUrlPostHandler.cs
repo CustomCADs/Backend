@@ -10,11 +10,11 @@ public sealed class CreatorGetProductCadPresignedUrlPostHandler(IRequestSender s
 	public async Task<UploadFileResponse> Handle(CreatorGetProductCadPresignedUrlPostQuery req, CancellationToken ct)
 	{
 		return await sender.SendQueryAsync(
-			new GetCadPresignedUrlPostByIdQuery(
+			query: new GetCadPresignedUrlPostByIdQuery(
 				Name: req.ProductName,
 				File: req.Cad
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

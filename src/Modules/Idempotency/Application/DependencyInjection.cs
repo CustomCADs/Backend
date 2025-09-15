@@ -10,10 +10,10 @@ public static class DependencyInjection
 {
 	public static IServiceCollection AddIdempotencyBackgroundJobs(this IServiceCollection services)
 	{
-		services.AddQuartz(q =>
+		services.AddQuartz(configurator =>
 		{
-			q.AddTrigger(opts => opts
-				.ForJob(q.AddJob<ClearIdempotencyKeysJob>())
+			configurator.AddTrigger(conf => conf
+				.ForJob(configurator.AddJob<ClearIdempotencyKeysJob>())
 				.WithSimpleSchedule(schedule =>
 					schedule
 						.WithInterval(TimeSpan.FromHours(ClearIdempotencyKeysIntervalHours))

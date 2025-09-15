@@ -78,9 +78,9 @@ public class GetMaterialTexturePresignedUrlPutHandlerUnitTests : MaterialsBaseUn
 		);
 
 		// Act
-		GetMaterialTexturePresignedUrlPutDto res = await handler.Handle(query, ct);
+		string url = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(PresignedUrl, res.PresignedUrl);
+		Assert.Equal(PresignedUrl, url);
 	}
 }

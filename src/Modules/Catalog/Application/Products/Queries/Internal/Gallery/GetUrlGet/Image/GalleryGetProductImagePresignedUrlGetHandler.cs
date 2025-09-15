@@ -20,8 +20,8 @@ public sealed class GalleryGetProductImagePresignedUrlGetHandler(IProductReads r
 		}
 
 		return await sender.SendQueryAsync(
-			new GetImagePresignedUrlGetByIdQuery(product.ImageId),
-			ct
+			query: new GetImagePresignedUrlGetByIdQuery(product.ImageId),
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

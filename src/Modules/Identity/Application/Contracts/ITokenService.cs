@@ -1,11 +1,10 @@
 ﻿using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Identity.Domain.Users.Entities;
 
 namespace CustomCADs.Identity.Application.Contracts;
 
 public interface ITokenService
 {
-	string GenerateRefreshToken();
-	TokenDto GenerateCsrfToken();
-	TokenDto GenerateAccessToken(AccountId accountId, string username, string role);
+	RefreshToken IssueRefreshToken(Func<string, RefreshToken> createRefreshToken);
+	TokensDto IssueTokens(User user, RefreshToken refreshToken);
 }

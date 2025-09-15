@@ -10,7 +10,7 @@ public sealed class GetActiveCartItemsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all your Cart Items")
 		);
@@ -19,10 +19,10 @@ public sealed class GetActiveCartItemsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		ActiveCartItemDto[] cart = await sender.SendQueryAsync(
-			new GetActiveCartItemsQuery(
-				BuyerId: User.GetAccountId()
+			query: new GetActiveCartItemsQuery(
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		ICollection<ActiveCartItemResponse> response = [.. cart.Select(x => x.ToResponse())];

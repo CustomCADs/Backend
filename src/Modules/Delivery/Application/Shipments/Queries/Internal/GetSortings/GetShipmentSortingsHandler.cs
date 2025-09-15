@@ -2,11 +2,10 @@
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetSortings;
 
-public class GetShipmentSortingsHandler
-	: IQueryHandler<GetShipmentSortingsQuery, string[]>
+public sealed class GetShipmentSortingsHandler : IQueryHandler<GetShipmentSortingsQuery, ShipmentSortingType[]>
 {
-	public Task<string[]> Handle(GetShipmentSortingsQuery req, CancellationToken ct)
+	public Task<ShipmentSortingType[]> Handle(GetShipmentSortingsQuery req, CancellationToken ct)
 		=> Task.FromResult(
-			Enum.GetNames<ShipmentSortingType>()
+			Enum.GetValues<ShipmentSortingType>()
 		);
 }

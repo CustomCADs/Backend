@@ -1,3 +1,3 @@
 ﻿namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetTextureUrl.Put;
 
-public record GetMaterialTexturePresignedUrlPutDto(string PresignedUrl);
+public sealed record GetMaterialTexturePresignedUrlPutDto(string PresignedUrl);

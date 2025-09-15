@@ -1,6 +1,9 @@
-﻿namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
+﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-public record RemoveProductTagCommand(
+namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
+
+public sealed record RemoveProductTagCommand(
 	ProductId Id,
-	TagId TagId
+	TagId TagId,
+	AccountId CallerId
 ) : ICommand;

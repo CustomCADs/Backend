@@ -5,8 +5,8 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Internal.GetAll;
 
-using static Constants;
-using static Constants.Users;
+using static DomainConstants;
+using static DomainConstants.Users;
 
 public class GetAllAccountsHandlerUnitTests : AccountsBaseUnitTests
 {

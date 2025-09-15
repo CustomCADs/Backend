@@ -2,12 +2,13 @@
 using CustomCADs.Carts.Domain.Repositories.Reads;
 using CustomCADs.Carts.Persistence;
 using CustomCADs.Carts.Persistence.Repositories;
+using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
+using static PersistenceConstants;
 using ActiveCartReads = CustomCADs.Carts.Persistence.Repositories.ActiveCarts.Reads;
 using PurchasedCartReads = CustomCADs.Carts.Persistence.Repositories.PurchasedCarts.Reads;
 
@@ -21,26 +22,19 @@ public static class DependencyInjection
 		return provider;
 	}
 
-	public static IServiceCollection AddCartsPersistence(this IServiceCollection services, IConfiguration config)
+	public static IServiceCollection AddCartsPersistence(this IServiceCollection services, string connectionString)
 		=> services
-			.AddContext(config)
+			.AddContext(connectionString)
 			.AddReads()
 			.AddWrites()
 			.AddUnitOfWork();
 
-	private static IServiceCollection AddContext(this IServiceCollection services, IConfiguration config)
-	{
-		string connectionString = config.GetConnectionString("ApplicationConnection")
-			?? throw new KeyNotFoundException("Could not find connection string 'ApplicationConnection'.");
-
-		services.AddDbContext<CartsContext>(options =>
+	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
+		=> services.AddDbContext<CartsContext>(options =>
 			options.UseNpgsql(connectionString, opt
-				=> opt.MigrationsHistoryTable("__EFMigrationsHistory", "Carts")
+				=> opt.MigrationsHistoryTable(MigrationsTable, Schemes.Carts)
 			)
 		);
-
-		return services;
-	}
 
 	public static IServiceCollection AddReads(this IServiceCollection services)
 	{

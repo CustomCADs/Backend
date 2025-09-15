@@ -6,5 +6,5 @@ public sealed record FinishCustomCommand(
 	CustomId Id,
 	(string Key, string ContentType, decimal Volume) Cad,
 	decimal Price,
-	AccountId DesignerId
+	AccountId CallerId
 ) : ICommand;

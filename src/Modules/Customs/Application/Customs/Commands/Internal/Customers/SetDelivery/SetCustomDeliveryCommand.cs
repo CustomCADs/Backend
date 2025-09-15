@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.SetDelivery;
 
-public record SetCustomDeliveryCommand(
+public sealed record SetCustomDeliveryCommand(
 	CustomId Id,
 	bool Value,
 	AccountId BuyerId

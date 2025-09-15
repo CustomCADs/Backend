@@ -11,8 +11,12 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 
-public class CreatePurchasedCartHandler(IWrites<PurchasedCart> writes, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
-	: ICommandHandler<CreatePurchasedCartCommand, PurchasedCartId>
+public sealed class CreatePurchasedCartHandler(
+	IWrites<PurchasedCart> writes,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IEventRaiser raiser
+) : ICommandHandler<CreatePurchasedCartCommand, PurchasedCartId>
 {
 	public async Task<PurchasedCartId> Handle(CreatePurchasedCartCommand req, CancellationToken ct)
 	{
@@ -20,54 +24,51 @@ public class CreatePurchasedCartHandler(IWrites<PurchasedCart> writes, IUnitOfWo
 		{
 			throw CustomNotFoundException<PurchasedCart>.ById(req.BuyerId, "User");
 		}
-
-		CartItemDto[] items = await SnapshotItemsAsync(
-			items: req.Items,
-			prices: req.Prices,
-			ct: ct
-		).ConfigureAwait(false);
+		CartItemDto[] items = await SnapshotItemsAsync(req.Items, ct).ConfigureAwait(false);
 
 		PurchasedCart cart = await writes.AddAsync(
 			entity: PurchasedCart.Create(req.BuyerId).AddItems(items),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			new UserPurchasedProductApplicationEvent(Ids: [.. items.Select(i => i.ProductId)])
+			@event: new UserPurchasedProductApplicationEvent(
+				Ids: [.. items.Select(x => x.ProductId)]
+			)
 		).ConfigureAwait(false);
 
 		return cart.Id;
 	}
 
-	private async Task<CartItemDto[]> SnapshotItemsAsync(ActiveCartItemDto[] items, Dictionary<ProductId, decimal> prices, CancellationToken ct = default)
+	private async Task<CartItemDto[]> SnapshotItemsAsync(Dictionary<ActiveCartItemDto, decimal> items, CancellationToken ct = default)
 	{
-		ProductId[] productIds = [.. items.Select(i => i.ProductId)];
+		ProductId[] productIds = [.. items.Select(x => x.Key.ProductId)];
 
 		Dictionary<ProductId, CadId> productCads = await sender.SendQueryAsync(
-			new GetProductCadIdsByIdsQuery(productIds),
-			ct
+			query: new GetProductCadIdsByIdsQuery(productIds),
+			ct: ct
 		).ConfigureAwait(false);
 
 		Dictionary<CadId, CadId> itemCads = await sender.SendCommandAsync(
-			new DuplicateCadsByIdsCommand([.. productCads.Select(c => c.Value)]),
-			ct
+			command: new DuplicateCadsByIdsCommand([.. productCads.Select(x => x.Value)]),
+			ct: ct
 		).ConfigureAwait(false);
 
-		return [.. items.Select(item =>
+		return [.. items.Select((x) =>
 		{
-			decimal price = prices[item.ProductId];
-			CadId productCadId = productCads[item.ProductId];
+			(ActiveCartItemDto Item, decimal Price) = (x.Key, x.Value);
+			CadId productCadId = productCads[Item.ProductId];
 			CadId itemCadId = itemCads[productCadId];
 
 			return new CartItemDto(
-				Price: price,
+				Price: Price,
 				CadId: itemCadId,
-				ProductId: item.ProductId,
-				ForDelivery: item.ForDelivery,
-				CustomizationId: item.CustomizationId,
-				Quantity: item.Quantity,
-				AddedAt: item.AddedAt
+				ProductId: Item.ProductId,
+				ForDelivery: Item.ForDelivery,
+				CustomizationId: Item.CustomizationId,
+				Quantity: Item.Quantity,
+				AddedAt: Item.AddedAt
 			);
 		})];
 	}

@@ -10,7 +10,7 @@ public sealed class ReportCustomEndpoint(IRequestSender sender)
 	{
 		Patch("report");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Report")
 			.WithDescription("Set an Custom's Status to Reported")
 		);
@@ -19,11 +19,11 @@ public sealed class ReportCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ReportCustomRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new ReportCustomCommand(
+			command: new ReportCustomCommand(
 				Id: CustomId.New(req.Id),
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

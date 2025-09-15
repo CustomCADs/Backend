@@ -1,6 +1,9 @@
-﻿namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.AddTag;
+﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-public record AddProductTagCommand(
+namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.AddTag;
+
+public sealed record AddProductTagCommand(
 	ProductId Id,
-	TagId TagId
+	TagId TagId,
+	AccountId CallerId
 ) : ICommand;

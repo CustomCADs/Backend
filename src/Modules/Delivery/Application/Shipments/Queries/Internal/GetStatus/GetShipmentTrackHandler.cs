@@ -4,8 +4,11 @@ using CustomCADs.Shared.Abstractions.Delivery.Dtos;
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetStatus;
 
-public class GetShipmentTrackHandler(IShipmentReads reads, IDeliveryService delivery, BaseCachingService<ShipmentId, Shipment> cache)
-	: IQueryHandler<GetShipmentTrackQuery, Dictionary<DateTimeOffset, GetShipmentTrackDto>>
+public sealed class GetShipmentTrackHandler(
+	IShipmentReads reads,
+	IDeliveryService delivery,
+	BaseCachingService<ShipmentId, Shipment> cache
+) : IQueryHandler<GetShipmentTrackQuery, Dictionary<DateTimeOffset, GetShipmentTrackDto>>
 {
 	public async Task<Dictionary<DateTimeOffset, GetShipmentTrackDto>> Handle(GetShipmentTrackQuery req, CancellationToken ct)
 	{
@@ -17,7 +20,7 @@ public class GetShipmentTrackHandler(IShipmentReads reads, IDeliveryService deli
 
 		ShipmentStatusDto[] statuses = await delivery.TrackAsync(
 			shipment.ReferenceId,
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		return statuses.ToDictionary(

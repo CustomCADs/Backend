@@ -2,11 +2,11 @@
 
 namespace CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
-public record GetCadCoordsByIdQuery(
+public sealed record GetCadCoordsByIdQuery(
 	CadId Id
 ) : IQuery<GetCadCoordsByIdDto>;
 
-public record GetCadCoordsByIdDto(
+public sealed record GetCadCoordsByIdDto(
 	CoordinatesDto Cam,
 	CoordinatesDto Pan
 );

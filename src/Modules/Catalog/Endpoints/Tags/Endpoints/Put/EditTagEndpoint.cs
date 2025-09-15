@@ -9,7 +9,7 @@ public class EditTagEndpoint(IRequestSender sender)
 	{
 		Put("");
 		Group<TagGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Edit")
 			.WithDescription("Edit Tag")
 		);
@@ -18,11 +18,11 @@ public class EditTagEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(EditTagRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new EditTagCommand(
+			command: new EditTagCommand(
 				Id: TagId.New(req.Id),
 				Name: req.Name
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

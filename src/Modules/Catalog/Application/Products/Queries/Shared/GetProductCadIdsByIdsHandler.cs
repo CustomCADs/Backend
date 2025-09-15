@@ -10,12 +10,15 @@ public class GetProductCadIdsByIdsHandler(IProductReads reads)
 {
 	public async Task<Dictionary<ProductId, CadId>> Handle(GetProductCadIdsByIdsQuery req, CancellationToken ct)
 	{
-		ProductQuery query = new(
-			Pagination: new(1, req.Ids.Length),
-			Ids: req.Ids
-		);
-		Result<Product> result = await reads.AllAsync(query, track: false, ct).ConfigureAwait(false);
+		Result<Product> result = await reads.AllAsync(
+			query: new(
+				Pagination: new(1, req.Ids.Length),
+				Ids: req.Ids
+			),
+			track: false,
+			ct: ct
+		).ConfigureAwait(false);
 
-		return result.Items.ToDictionary(i => i.Id, i => i.CadId);
+		return result.Items.ToDictionary(x => x.Id, x => x.CadId);
 	}
 }

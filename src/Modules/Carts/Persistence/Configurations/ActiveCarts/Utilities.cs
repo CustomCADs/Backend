@@ -21,19 +21,19 @@ public static class Utilities
 		builder.Property(x => x.BuyerId)
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		builder.Property(x => x.ProductId)
 			.HasConversion(
 				x => x.Value,
-				v => ProductId.New(v)
+				x => ProductId.New(x)
 			);
 
 		builder.Property(x => x.CustomizationId)
 			.HasConversion(
 				x => CustomizationId.Unwrap(x),
-				v => CustomizationId.New(v)
+				x => CustomizationId.New(x)
 			);
 
 		return builder;

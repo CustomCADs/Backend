@@ -4,8 +4,12 @@ using CustomCADs.Catalog.Domain.Repositories.Writes;
 
 namespace CustomCADs.Catalog.Application.Categories.Commands.Internal.Delete;
 
-public sealed class DeleteCategoryHandler(ICategoryReads reads, ICategoryWrites writes, IUnitOfWork uow, BaseCachingService<CategoryId, Category> cache)
-	: ICommandHandler<DeleteCategoryCommand>
+public sealed class DeleteCategoryHandler(
+	ICategoryReads reads,
+	ICategoryWrites writes,
+	IUnitOfWork uow,
+	BaseCachingService<CategoryId, Category> cache
+) : ICommandHandler<DeleteCategoryCommand>
 {
 	public async Task Handle(DeleteCategoryCommand req, CancellationToken ct)
 	{

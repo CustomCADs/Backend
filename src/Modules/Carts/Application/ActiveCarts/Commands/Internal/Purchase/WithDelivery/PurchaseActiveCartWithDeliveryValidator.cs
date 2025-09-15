@@ -1,11 +1,12 @@
-﻿using CustomCADs.Shared.Application.Abstractions.Payment;
+﻿using CustomCADs.Shared.Application;
+using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
 using FluentValidation;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 
-using static Constants;
-using static Constants.FluentMessages;
+using static ApplicationConstants.FluentMessages;
+using static DomainConstants;
 
 public class PurchaseActiveCartWithDeliveryValidator : CommandValidator<PurchaseActiveCartWithDeliveryCommand, PaymentDto>
 {

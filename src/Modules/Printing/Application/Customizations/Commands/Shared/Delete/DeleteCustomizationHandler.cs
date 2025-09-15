@@ -4,8 +4,11 @@ using CustomCADs.Shared.Application.UseCases.Customizations.Commands;
 
 namespace CustomCADs.Printing.Application.Customizations.Commands.Shared.Delete;
 
-public class DeleteCustomizationHandler(ICustomizationReads reads, IWrites<Customization> writes, IUnitOfWork uow)
-	: ICommandHandler<DeleteCustomizationByIdCommand>
+public sealed class DeleteCustomizationHandler(
+	ICustomizationReads reads,
+	IWrites<Customization> writes,
+	IUnitOfWork uow
+) : ICommandHandler<DeleteCustomizationByIdCommand>
 {
 	public async Task Handle(DeleteCustomizationByIdCommand req, CancellationToken ct)
 	{

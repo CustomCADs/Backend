@@ -4,8 +4,11 @@ using CustomCADs.Catalog.Domain.Tags;
 
 namespace CustomCADs.Catalog.Application.Tags.Commands.Internal.Edit;
 
-public class EditTagHandler(ITagReads reads, IUnitOfWork uow, BaseCachingService<TagId, Tag> cache)
-	: ICommandHandler<EditTagCommand>
+public sealed class EditTagHandler(
+	ITagReads reads,
+	IUnitOfWork uow,
+	BaseCachingService<TagId, Tag> cache
+) : ICommandHandler<EditTagCommand>
 {
 	public async Task Handle(EditTagCommand req, CancellationToken ct)
 	{

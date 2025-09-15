@@ -5,14 +5,12 @@ using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
 namespace CustomCADs.Files.Application.Cads.Queries.Shared;
 
-public class GetCadPresignedUrlPostByIdHandler(ICadStorageService storage)
+public sealed class GetCadPresignedUrlPostByIdHandler(ICadStorageService storage)
 	: IQueryHandler<GetCadPresignedUrlPostByIdQuery, UploadFileResponse>
 {
 	public async Task<UploadFileResponse> Handle(GetCadPresignedUrlPostByIdQuery req, CancellationToken ct)
-	{
-		return await storage.GetPresignedPostUrlAsync(
+		=> await storage.GetPresignedPostUrlAsync(
 			name: req.Name,
 			file: req.File
 		).ConfigureAwait(false);
-	}
 }

@@ -4,5 +4,5 @@ namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
 
 public sealed record GetPurchasedCartByIdQuery(
 	PurchasedCartId Id,
-	AccountId BuyerId
+	AccountId CallerId
 ) : IQuery<GetPurchasedCartByIdDto>;

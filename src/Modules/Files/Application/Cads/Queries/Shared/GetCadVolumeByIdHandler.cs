@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
 namespace CustomCADs.Files.Application.Cads.Queries.Shared;
 
-public class GetCadVolumeByIdHandler(ICadReads reads, BaseCachingService<CadId, Cad> cache)
+public sealed class GetCadVolumeByIdHandler(ICadReads reads, BaseCachingService<CadId, Cad> cache)
 	: IQueryHandler<GetCadVolumeByIdQuery, decimal>
 {
 	public async Task<decimal> Handle(GetCadVolumeByIdQuery req, CancellationToken ct)

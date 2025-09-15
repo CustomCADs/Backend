@@ -21,7 +21,7 @@ namespace CustomCADs.Catalog.Endpoints.Products;
 
 internal static class Mapper
 {
-	internal static GetAllGaleryProductsResponse ToResponse(this GalleryGetAllProductsDto product)
+	internal static GetAllGalleryProductsResponse ToResponse(this GalleryGetAllProductsDto product)
 		=> new(
 			Id: product.Id.Value,
 			Name: product.Name,

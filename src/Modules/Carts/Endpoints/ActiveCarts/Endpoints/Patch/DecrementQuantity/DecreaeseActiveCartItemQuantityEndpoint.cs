@@ -11,7 +11,7 @@ public class DecreaeseActiveCartItemQuantityEndpoint(IRequestSender sender)
 	{
 		Patch("decrease");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Decrease")
 			.WithDescription("Decrease the Cart Item's quantity")
 		);
@@ -21,11 +21,11 @@ public class DecreaeseActiveCartItemQuantityEndpoint(IRequestSender sender)
 	{
 		await sender.SendCommandAsync(
 			new DecreaseActiveCartItemQuantityCommand(
-				BuyerId: User.GetAccountId(),
+				CallerId: User.GetAccountId(),
 				ProductId: ProductId.New(req.ProductId),
 				Amount: req.Amount
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

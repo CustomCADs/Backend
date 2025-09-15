@@ -2,6 +2,6 @@
 
 namespace CustomCADs.Shared.Application.UseCases.Images.Queries;
 
-public record GetImagePresignedUrlGetByIdQuery(
+public sealed record GetImagePresignedUrlGetByIdQuery(
 	ImageId Id
 ) : IQuery<DownloadFileResponse>;

@@ -1,9 +1,13 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Edit;
 using CustomCADs.Catalog.Domain.Repositories;
 using CustomCADs.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
+using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Commands.Internal.Creator.Edit;
 
@@ -15,12 +19,14 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
-	private readonly Product product = CreateProduct();
+	private readonly Product product = CreateProductWithId();
+	private readonly AccountId[] receiverIds = [ValidDesignerId, ValidCreatorId];
 
 	public EditProductHandlerUnitTests()
 	{
-		handler = new(reads.Object, uow.Object, sender.Object);
+		handler = new(reads.Object, uow.Object, sender.Object, raiser.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(product);
@@ -29,6 +35,10 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			It.Is<GetCategoryExistsByIdQuery>(x => x.Id == ValidCategoryId),
 			ct
 		)).ReturnsAsync(true);
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<GetAccountsWithProductInCartQuery>(x => x.ProductId == ValidId),
+			ct
+		)).ReturnsAsync(receiverIds);
 	}
 
 	[Fact]
@@ -41,7 +51,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -61,7 +71,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -81,7 +91,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -91,6 +101,32 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 		sender.Verify(x => x.SendQueryAsync(
 			It.Is<GetCategoryExistsByIdQuery>(x => x.Id == ValidCategoryId),
 			ct
+		), Times.Once());
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetAccountsWithProductInCartQuery>(x => x.ProductId == ValidId),
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		EditProductCommand command = new(
+			Id: ValidId,
+			Name: MinValidName,
+			Description: MinValidDescription,
+			Price: MinValidPrice,
+			CategoryId: ValidCategoryId,
+			CallerId: ValidCreatorId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.ReceiverIds == receiverIds)
 		), Times.Once());
 	}
 
@@ -104,7 +140,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert
@@ -129,7 +165,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Assert
@@ -152,7 +188,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 			Description: MinValidDescription,
 			Price: MinValidPrice,
 			CategoryId: ValidCategoryId,
-			CreatorId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert

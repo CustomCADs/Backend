@@ -1,6 +1,6 @@
 namespace CustomCADs.Idempotency.Application.IdempotencyKeys.Commands.Internal.Complete;
 
-public record CompleteIdempotencyKeyCommand(
+public sealed record CompleteIdempotencyKeyCommand(
 	IdempotencyKeyId Id,
 	string RequestHash,
 	string ResponseBody,

@@ -5,5 +5,5 @@ namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.No
 
 public sealed record PurchaseActiveCartCommand(
 	string PaymentMethodId,
-	AccountId BuyerId
+	AccountId CallerId
 ) : ICommand<PaymentDto>;

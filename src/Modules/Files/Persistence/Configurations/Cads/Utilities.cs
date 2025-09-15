@@ -20,7 +20,7 @@ public static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => CadId.New(v)
+				x => CadId.New(x)
 			);
 
 		return builder;
@@ -28,18 +28,18 @@ public static class Utilities
 
 	public static EntityTypeBuilder<Cad> SetValueObjects(this EntityTypeBuilder<Cad> builder)
 	{
-		builder.ComplexProperty(x => x.CamCoordinates, a =>
+		builder.ComplexProperty(x => x.CamCoordinates, x =>
 		{
-			a.Property(x => x.X).IsRequired().HasColumnName("CamX");
-			a.Property(x => x.Y).IsRequired().HasColumnName("CamY");
-			a.Property(x => x.Z).IsRequired().HasColumnName("CamZ");
+			x.Property(x => x.X).IsRequired().HasColumnName("CamX");
+			x.Property(x => x.Y).IsRequired().HasColumnName("CamY");
+			x.Property(x => x.Z).IsRequired().HasColumnName("CamZ");
 		});
 
-		builder.ComplexProperty(x => x.PanCoordinates, a =>
+		builder.ComplexProperty(x => x.PanCoordinates, x =>
 		{
-			a.Property(x => x.X).IsRequired().HasColumnName("PanX");
-			a.Property(x => x.Y).IsRequired().HasColumnName("PanY");
-			a.Property(x => x.Z).IsRequired().HasColumnName("PanZ");
+			x.Property(x => x.X).IsRequired().HasColumnName("PanX");
+			x.Property(x => x.Y).IsRequired().HasColumnName("PanY");
+			x.Property(x => x.Z).IsRequired().HasColumnName("PanZ");
 		});
 
 		return builder;

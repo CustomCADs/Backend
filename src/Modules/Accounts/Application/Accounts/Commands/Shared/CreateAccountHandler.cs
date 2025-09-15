@@ -4,8 +4,10 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Commands;
 
 namespace CustomCADs.Accounts.Application.Accounts.Commands.Shared;
 
-public sealed class CreateAccountHandler(IAccountWrites writes, IUnitOfWork uow)
-	: ICommandHandler<CreateAccountCommand, AccountId>
+public sealed class CreateAccountHandler(
+	IAccountWrites writes,
+	IUnitOfWork uow
+) : ICommandHandler<CreateAccountCommand, AccountId>
 {
 	public async Task<AccountId> Handle(CreateAccountCommand req, CancellationToken ct)
 	{
@@ -17,7 +19,7 @@ public sealed class CreateAccountHandler(IAccountWrites writes, IUnitOfWork uow)
 				firstName: req.FirstName,
 				lastName: req.LastName
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 

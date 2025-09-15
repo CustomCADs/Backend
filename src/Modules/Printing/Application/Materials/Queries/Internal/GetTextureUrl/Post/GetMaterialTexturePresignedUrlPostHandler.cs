@@ -8,13 +8,11 @@ public sealed class GetMaterialTexturePresignedUrlPostHandler(IRequestSender sen
 	: IQueryHandler<GetMaterialTexturePresignedUrlPostQuery, UploadFileResponse>
 {
 	public async Task<UploadFileResponse> Handle(GetMaterialTexturePresignedUrlPostQuery req, CancellationToken ct)
-	{
-		return await sender.SendQueryAsync(
-			new GetImagePresignedUrlPostByIdQuery(
-				Name: req.MaterialName,
-				File: req.Image
-			),
-			ct
-		).ConfigureAwait(false);
-	}
+		=> await sender.SendQueryAsync(
+				query: new GetImagePresignedUrlPostByIdQuery(
+					Name: req.MaterialName,
+					File: req.Image
+				),
+				ct: ct
+			).ConfigureAwait(false);
 }

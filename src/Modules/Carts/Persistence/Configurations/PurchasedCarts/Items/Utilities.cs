@@ -33,25 +33,25 @@ public static class Utilities
 		builder.Property(x => x.CartId)
 			.HasConversion(
 				x => x.Value,
-				v => PurchasedCartId.New(v)
+				x => PurchasedCartId.New(x)
 			);
 
 		builder.Property(x => x.ProductId)
 			.HasConversion(
 				x => x.Value,
-				v => ProductId.New(v)
+				x => ProductId.New(x)
 			);
 
 		builder.Property(x => x.CadId)
 			.HasConversion(
 				x => x.Value,
-				v => CadId.New(v)
+				x => CadId.New(x)
 			);
 
 		builder.Property(x => x.CustomizationId)
 			.HasConversion(
 				x => CustomizationId.Unwrap(x),
-				v => CustomizationId.New(v)
+				x => CustomizationId.New(x)
 			);
 
 		return builder;

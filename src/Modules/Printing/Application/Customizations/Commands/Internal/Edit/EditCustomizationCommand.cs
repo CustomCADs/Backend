@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Printing.Application.Customizations.Commands.Internal.Edit;
 
-public record EditCustomizationCommand(
+public sealed record EditCustomizationCommand(
 	CustomizationId Id,
 	decimal Scale,
 	decimal Infill,

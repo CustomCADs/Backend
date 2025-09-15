@@ -6,5 +6,5 @@ namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetCa
 public sealed record CreatorGetProductCadPresignedUrlPutQuery(
 	ProductId Id,
 	UploadFileRequest NewCad,
-	AccountId CreatorId
-) : IQuery<CreatorGetProductCadPresignedUrlPutDto>;
+	AccountId CallerId
+) : IQuery<string>;

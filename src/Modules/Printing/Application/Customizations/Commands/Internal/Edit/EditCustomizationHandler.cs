@@ -3,8 +3,10 @@ using CustomCADs.Printing.Domain.Repositories.Reads;
 
 namespace CustomCADs.Printing.Application.Customizations.Commands.Internal.Edit;
 
-public class EditCustomizationHandler(ICustomizationReads reads, IUnitOfWork uow)
-	: ICommandHandler<EditCustomizationCommand>
+public sealed class EditCustomizationHandler(
+	ICustomizationReads reads,
+	IUnitOfWork uow
+) : ICommandHandler<EditCustomizationCommand>
 {
 	public async Task Handle(EditCustomizationCommand req, CancellationToken ct)
 	{

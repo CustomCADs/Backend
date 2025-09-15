@@ -11,7 +11,7 @@ public sealed class RetryConfirmEmailEndpoint(IRequestSender sender)
 		Post("email/confirm/retry");
 		Group<IdentityGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.RetryConfirmEmail)
 			.WithSummary("Retry Send Email")
 			.WithDescription("Receive another verification email")
@@ -22,8 +22,8 @@ public sealed class RetryConfirmEmailEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(RetryConfirmEmailRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new VerificationEmailCommand(req.Username),
-			ct
+			command: new VerificationEmailCommand(req.Username),
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync().ConfigureAwait(false);

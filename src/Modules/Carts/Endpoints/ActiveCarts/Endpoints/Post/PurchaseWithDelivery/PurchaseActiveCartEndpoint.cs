@@ -11,7 +11,7 @@ public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 	{
 		Post("purchase-delivery");
 		Group<ActiveCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Purchase (Delivery)")
 			.WithDescription("Purchase all the Items in the Cart (and Ship those marked for Delivery)")
 		);
@@ -20,14 +20,14 @@ public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PurchaseActiveCartRequest req, CancellationToken ct)
 	{
 		PaymentDto dto = await sender.SendCommandAsync(
-			new PurchaseActiveCartWithDeliveryCommand(
+			command: new PurchaseActiveCartWithDeliveryCommand(
 				PaymentMethodId: req.PaymentMethodId,
 				ShipmentService: req.ShipmentService,
 				Address: req.Address,
 				Contact: req.Contact,
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		PaymentResponse response = dto.ToResponse();

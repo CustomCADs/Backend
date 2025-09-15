@@ -7,19 +7,19 @@ namespace CustomCADs.Catalog.Endpoints.Tags;
 
 internal static class Mapper
 {
-	internal static CreateTagResponse ToCreateTagResponse(this TagReadDto tag)
+	internal static CreateTagResponse ToCreateTagResponse(this TagDto tag)
 		=> new(
 			tag.Id.Value,
 			tag.Name
 		);
 
-	internal static GetTagByIdResponse ToGetTagByIdResponse(this TagReadDto tag)
+	internal static GetTagByIdResponse ToGetTagByIdResponse(this TagDto tag)
 		=> new(
 			tag.Id.Value,
 			tag.Name
 		);
 
-	internal static GetAllTagsResponse ToGetAllTagsResponse(this TagReadDto tag)
+	internal static GetAllTagsResponse ToGetAllTagsResponse(this TagDto tag)
 		=> new(
 			tag.Id.Value,
 			tag.Name

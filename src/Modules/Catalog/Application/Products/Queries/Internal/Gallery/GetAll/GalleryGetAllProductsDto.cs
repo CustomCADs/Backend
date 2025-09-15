@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
 
-public record GalleryGetAllProductsDto(
+public sealed record GalleryGetAllProductsDto(
 	ProductId Id,
 	string Name,
 	string CreatorName,

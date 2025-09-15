@@ -11,7 +11,7 @@ public sealed class ForgotPasswordEndpoint(IRequestSender sender)
 		Post("password/forgot");
 		Group<IdentityGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.ForgotPassword)
 			.WithSummary("Reset Password Email")
 			.WithDescription("Receive an Email with a link to reset your Password")
@@ -22,10 +22,10 @@ public sealed class ForgotPasswordEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ForgotPasswordRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new ResetPasswordEmailCommand(
+			command: new ResetPasswordEmailCommand(
 				Email: req.Email
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync().ConfigureAwait(false);

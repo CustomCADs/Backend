@@ -9,7 +9,7 @@ public sealed class GetRolesEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<RolesGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all Roles")
 		);
@@ -17,9 +17,9 @@ public sealed class GetRolesEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(CancellationToken ct)
 	{
-		IEnumerable<RoleReadDto> roles = await sender.SendQueryAsync(
-			new GetAllRolesQuery(),
-			ct
+		IEnumerable<RoleDto> roles = await sender.SendQueryAsync(
+			query: new GetAllRolesQuery(),
+			ct: ct
 		).ConfigureAwait(false);
 
 		RoleResponse[] response = [.. roles.Select(r => r.ToResponse())];

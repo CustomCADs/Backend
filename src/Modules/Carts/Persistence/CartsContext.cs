@@ -1,9 +1,12 @@
 ﻿using CustomCADs.Carts.Domain.ActiveCarts;
 using CustomCADs.Carts.Domain.PurchasedCarts;
 using CustomCADs.Carts.Domain.PurchasedCarts.Entities;
+using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Carts.Persistence;
+
+using static PersistenceConstants;
 
 public class CartsContext(DbContextOptions<CartsContext> opts) : DbContext(opts)
 {
@@ -13,7 +16,7 @@ public class CartsContext(DbContextOptions<CartsContext> opts) : DbContext(opts)
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.HasDefaultSchema("Carts");
+		builder.HasDefaultSchema(Schemes.Carts);
 		builder.ApplyConfigurationsFromAssembly(CartsPersistenceReference.Assembly);
 	}
 }

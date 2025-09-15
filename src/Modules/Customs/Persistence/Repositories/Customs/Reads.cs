@@ -15,12 +15,12 @@ public sealed class Reads(CustomsContext context) : ICustomReads
 	{
 		IQueryable<Custom> queryable = context.Customs
 			.WithTracking(track)
-			.WithFilter(query.ForDelivery, query.CustomStatus, query.BuyerId, query.DesignerId)
+			.WithFilter(query.ForDelivery, query.CustomStatus, query.CustomerId, query.DesignerId)
 			.WithSearch(query.Name);
 
 		int count = await queryable.CountAsync(ct).ConfigureAwait(false);
 		Custom[] customs = await queryable
-			.WithSorting(query.Sorting ?? new())
+			.WithSorting(query.Sorting)
 			.WithPagination(query.Pagination)
 			.ToArrayAsync(ct)
 			.ConfigureAwait(false);
@@ -31,20 +31,20 @@ public sealed class Reads(CustomsContext context) : ICustomReads
 	public async Task<Custom?> SingleByIdAsync(CustomId id, bool track = true, CancellationToken ct = default)
 		=> await context.Customs
 			.WithTracking(track)
-			.FirstOrDefaultAsync(o => o.Id == id, ct)
+			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<bool> ExistsByIdAsync(CustomId id, CancellationToken ct = default)
 		=> await context.Customs
 			.WithTracking(false)
-			.AnyAsync(o => o.Id == id, ct)
+			.AnyAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<Dictionary<CustomStatus, int>> CountAsync(AccountId buyerId, CancellationToken ct = default)
 		=> await context.Customs
 			.WithTracking(false)
-			.Where(o => o.BuyerId == buyerId)
-			.GroupBy(o => o.CustomStatus)
+			.Where(x => x.BuyerId == buyerId)
+			.GroupBy(x => x.CustomStatus)
 			.ToDictionaryAsync(x => x.Key, x => x.Count(), ct)
 			.ConfigureAwait(false);
 }

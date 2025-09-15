@@ -1,9 +1,13 @@
 ﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Delete;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Delete;
+
+using static CustomsData;
 
 public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 {
@@ -11,6 +15,7 @@ public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IWrites<Custom>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
 	private static readonly CustomId id = CustomId.New();
 	private static readonly AccountId buyerId = AccountId.New();
@@ -18,7 +23,7 @@ public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 
 	public DeleteCustomHandlerUnitTests()
 	{
-		handler = new(reads.Object, writes.Object, uow.Object);
+		handler = new(reads.Object, writes.Object, uow.Object, raiser.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(id, true, ct))
 			.ReturnsAsync(custom);
@@ -30,7 +35,7 @@ public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		DeleteCustomCommand command = new(
 			Id: id,
-			BuyerId: buyerId
+			CallerId: buyerId
 		);
 
 		// Act
@@ -46,7 +51,7 @@ public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		DeleteCustomCommand command = new(
 			Id: id,
-			BuyerId: buyerId
+			CallerId: buyerId
 		);
 
 		// Act
@@ -57,5 +62,30 @@ public class DeleteCustomHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<Custom>(x => x.Id == id)
 		), Times.Once());
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+	}
+
+	[Theory]
+	[InlineData(true)]
+	[InlineData(false)]
+	public async Task Handle_ShouldRaiseEvents(bool isPending)
+	{
+		// Arrange
+		if (!isPending)
+		{
+			custom.Accept(ValidDesignerId);
+		}
+
+		DeleteCustomCommand command = new(
+			Id: id,
+			CallerId: buyerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.ReceiverIds.Contains(ValidDesignerId))
+		), Times.Exactly(isPending ? 0 : 1));
 	}
 }

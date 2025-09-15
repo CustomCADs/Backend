@@ -14,9 +14,9 @@ public class GetPurchasedCartSortingsHandlerUnitTests : PurchasedCartsBaseUnitTe
 		GetPurchasedCartSortingsQuery query = new();
 
 		// Act
-		string[] sortings = await handler.Handle(query, ct);
+		PurchasedCartSortingType[] sortings = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetNames<PurchasedCartSortingType>());
+		Assert.Equal(sortings, Enum.GetValues<PurchasedCartSortingType>());
 	}
 }

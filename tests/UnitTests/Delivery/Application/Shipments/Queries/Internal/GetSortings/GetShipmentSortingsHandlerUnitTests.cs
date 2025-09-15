@@ -14,9 +14,9 @@ public class GetShipmentSortingsHandlerUnitTests : ShipmentsBaseUnitTests
 		GetShipmentSortingsQuery query = new();
 
 		// Act
-		string[] sortings = await handler.Handle(query, ct);
+		ShipmentSortingType[] sortings = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetNames<ShipmentSortingType>());
+		Assert.Equal(sortings, Enum.GetValues<ShipmentSortingType>());
 	}
 }

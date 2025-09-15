@@ -49,7 +49,7 @@ public class GetAllTagHandlerUnitTests : TagsBaseUnitTests
 		GetAllTagsQuery query = new();
 
 		// Act
-		TagReadDto[] tags = await handler.Handle(query, ct);
+		TagDto[] tags = await handler.Handle(query, ct);
 
 		// Assert
 		Assert.Multiple(

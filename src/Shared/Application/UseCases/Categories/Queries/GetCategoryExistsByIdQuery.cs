@@ -1,3 +1,3 @@
 ﻿namespace CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
-public record GetCategoryExistsByIdQuery(CategoryId Id) : IQuery<bool>;
+public sealed record GetCategoryExistsByIdQuery(CategoryId Id) : IQuery<bool>;

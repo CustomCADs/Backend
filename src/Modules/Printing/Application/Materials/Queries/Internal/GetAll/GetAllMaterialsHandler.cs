@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetAll;
 
-public class GetAllMaterialsHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache)
+public sealed class GetAllMaterialsHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache)
 	: IQueryHandler<GetAllMaterialsQuery, ICollection<MaterialDto>>
 {
 	public async Task<ICollection<MaterialDto>> Handle(GetAllMaterialsQuery req, CancellationToken ct)

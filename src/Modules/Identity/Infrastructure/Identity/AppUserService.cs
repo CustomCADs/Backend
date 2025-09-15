@@ -120,17 +120,13 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 		await manager.UpdateAsync(appUser).ConfigureAwait(false);
 	}
 
-	public async Task<RefreshToken> AddRefreshTokenAsync(User user, string token, bool longerSession)
+	public async Task SaveRefreshTokensAsync(User user)
 	{
-		RefreshToken refreshToken = user.AddRefreshToken(token, longerSession);
-
 		AppUser appUser = await manager.FindByIdAsync(user.Id.ToString()).ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(user.Id), user.Id);
 
-		appUser.FillRefreshTokens([.. user.RefreshTokens.Select(r => r.ToAppRefreshToken())]);
+		appUser.FillRefreshTokens([.. user.RefreshTokens.Select(x => x.ToAppRefreshToken())]);
 		await manager.UpdateAsync(appUser).ConfigureAwait(false);
-
-		return refreshToken;
 	}
 
 	public async Task RevokeRefreshTokenAsync(string token)
@@ -141,7 +137,7 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 		AppUser appUser = await manager.FindByIdAsync(User.Id.ToString()).ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(User.Id), User.Id);
 
-		appUser.FillRefreshTokens([.. User.RefreshTokens.Select(r => r.ToAppRefreshToken())]);
+		appUser.FillRefreshTokens([.. User.RefreshTokens.Select(x => x.ToAppRefreshToken())]);
 		await manager.UpdateAsync(appUser).ConfigureAwait(false);
 	}
 	#endregion

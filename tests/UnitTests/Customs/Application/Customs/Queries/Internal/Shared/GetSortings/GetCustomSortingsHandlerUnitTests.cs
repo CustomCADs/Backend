@@ -14,9 +14,9 @@ public class GetCustomSortingsHandlerUnitTests : CustomsBaseUnitTests
 		GetCustomSortingsQuery query = new();
 
 		// Act
-		string[] sortings = await handler.Handle(query, ct);
+		CustomSortingType[] sortings = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetNames<CustomSortingType>());
+		Assert.Equal(sortings, Enum.GetValues<CustomSortingType>());
 	}
 }

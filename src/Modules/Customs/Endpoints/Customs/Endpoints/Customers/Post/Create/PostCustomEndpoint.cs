@@ -12,7 +12,7 @@ public sealed class PostCustomEndpoint(IRequestSender sender)
 	{
 		Post("");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Create")
 			.WithDescription("Request a Custom")
 		);
@@ -21,21 +21,21 @@ public sealed class PostCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PostCustomRequest req, CancellationToken ct)
 	{
 		CustomId id = await sender.SendCommandAsync(
-			new CreateCustomCommand(
+			command: new CreateCustomCommand(
 				Name: req.Name,
 				Description: req.Description,
 				ForDelivery: req.ForDelivery,
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		CustomerGetCustomByIdDto custom = await sender.SendQueryAsync(
-			new CustomerGetCustomByIdQuery(
+			query: new CustomerGetCustomByIdQuery(
 				Id: id,
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		PostCustomResponse response = custom.ToPostResponse();

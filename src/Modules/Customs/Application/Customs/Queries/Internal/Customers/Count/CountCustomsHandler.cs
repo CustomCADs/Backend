@@ -9,26 +9,16 @@ public sealed class CountCustomsHandler(ICustomReads reads)
 	public async Task<CountCustomsDto> Handle(CountCustomsQuery req, CancellationToken ct)
 	{
 		Dictionary<CustomStatus, int> counts = await reads
-			.CountAsync(req.BuyerId, ct: ct)
+			.CountAsync(req.CallerId, ct: ct)
 			.ConfigureAwait(false);
 
 		return new(
-			Pending: TryGetCount(counts, CustomStatus.Pending),
-			Accepted: TryGetCount(counts, CustomStatus.Accepted),
-			Begun: TryGetCount(counts, CustomStatus.Begun),
-			Finished: TryGetCount(counts, CustomStatus.Finished),
-			Completed: TryGetCount(counts, CustomStatus.Completed),
-			Reported: TryGetCount(counts, CustomStatus.Reported)
+			Pending: counts.GetCountOrZero(CustomStatus.Pending),
+			Accepted: counts.GetCountOrZero(CustomStatus.Accepted),
+			Begun: counts.GetCountOrZero(CustomStatus.Begun),
+			Finished: counts.GetCountOrZero(CustomStatus.Finished),
+			Completed: counts.GetCountOrZero(CustomStatus.Completed),
+			Reported: counts.GetCountOrZero(CustomStatus.Reported)
 		);
-	}
-
-	private static int TryGetCount(Dictionary<CustomStatus, int> counts, CustomStatus status)
-	{
-		if (counts.TryGetValue(status, out int count))
-		{
-			return count;
-		}
-
-		return 0;
 	}
 }

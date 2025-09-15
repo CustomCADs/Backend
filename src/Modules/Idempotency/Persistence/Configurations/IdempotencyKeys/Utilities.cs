@@ -19,7 +19,7 @@ internal static class Utilities
 		builder.Property(x => x.Id)
 			.HasConversion(
 				x => x.Value,
-				v => IdempotencyKeyId.New(v)
+				x => IdempotencyKeyId.New(x)
 			);
 
 		return builder;

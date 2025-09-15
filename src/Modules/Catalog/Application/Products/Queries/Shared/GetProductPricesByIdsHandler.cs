@@ -4,17 +4,20 @@ using CustomCADs.Shared.Domain.Querying;
 
 namespace CustomCADs.Catalog.Application.Products.Queries.Shared;
 
-public class GetProductPricesByIdsHandler(IProductReads reads)
+public sealed class GetProductPricesByIdsHandler(IProductReads reads)
 	: IQueryHandler<GetProductPricesByIdsQuery, Dictionary<ProductId, decimal>>
 {
 	public async Task<Dictionary<ProductId, decimal>> Handle(GetProductPricesByIdsQuery req, CancellationToken ct)
 	{
-		ProductQuery query = new(
-			Pagination: new(1, req.Ids.Length),
-			Ids: req.Ids
-		);
-		Result<Product> result = await reads.AllAsync(query, track: false, ct).ConfigureAwait(false);
+		Result<Product> result = await reads.AllAsync(
+			query: new(
+				Pagination: new(1, req.Ids.Length),
+				Ids: req.Ids
+			),
+			track: false,
+			ct: ct
+		).ConfigureAwait(false);
 
-		return result.Items.ToDictionary(i => i.Id, i => i.Price);
+		return result.Items.ToDictionary(x => x.Id, x => x.Price);
 	}
 }

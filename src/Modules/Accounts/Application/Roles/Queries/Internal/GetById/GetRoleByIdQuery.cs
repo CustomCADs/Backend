@@ -2,4 +2,4 @@
 
 public sealed record GetRoleByIdQuery(
 	RoleId Id
-) : IQuery<RoleReadDto>;
+) : IQuery<RoleDto>;

@@ -11,7 +11,7 @@ public sealed class GetCategoriesEndpoint(IRequestSender sender)
 		Get("");
 		AllowAnonymous();
 		Group<MaterialsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all Materials")
 		);
@@ -20,11 +20,11 @@ public sealed class GetCategoriesEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		IEnumerable<MaterialDto> categories = await sender.SendQueryAsync(
-			new GetAllMaterialsQuery(),
-			ct
+			query: new GetAllMaterialsQuery(),
+			ct: ct
 		).ConfigureAwait(false);
 
-		MaterialResponse[] response = [.. categories.Select(c => c.ToResponse())];
+		MaterialResponse[] response = [.. categories.Select(x => x.ToResponse())];
 		await Send.OkAsync(response).ConfigureAwait(false);
 	}
 }

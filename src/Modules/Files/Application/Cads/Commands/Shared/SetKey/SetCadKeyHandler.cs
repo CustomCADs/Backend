@@ -5,8 +5,11 @@ using CustomCADs.Shared.Application.UseCases.Cads.Commands;
 
 namespace CustomCADs.Files.Application.Cads.Commands.Shared.SetKey;
 
-public sealed class SetCadKeyHandler(ICadReads reads, IUnitOfWork uow, BaseCachingService<CadId, Cad> cache)
-	: ICommandHandler<SetCadKeyCommand>
+public sealed class SetCadKeyHandler(
+	ICadReads reads,
+	IUnitOfWork uow,
+	BaseCachingService<CadId, Cad> cache
+) : ICommandHandler<SetCadKeyCommand>
 {
 	public async Task Handle(SetCadKeyCommand req, CancellationToken ct = default)
 	{

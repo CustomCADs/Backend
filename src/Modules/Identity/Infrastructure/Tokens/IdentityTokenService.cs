@@ -1,5 +1,7 @@
 ﻿using CustomCADs.Identity.Application.Contracts;
 using CustomCADs.Identity.Application.Users.Dtos;
+using CustomCADs.Identity.Domain.Users;
+using CustomCADs.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using Microsoft.Extensions.Options;
@@ -11,14 +13,37 @@ using System.Text;
 
 namespace CustomCADs.Identity.Infrastructure.Tokens;
 
-using static Constants.Tokens;
+using static DomainConstants.Tokens;
 
 public sealed class IdentityTokenService(IOptions<JwtSettings> jwtOptions) : ITokenService
 {
 	private const string Algorithm = SecurityAlgorithms.HmacSha256;
 	private readonly JwtSettings jwtSettings = jwtOptions.Value;
 
-	public TokenDto GenerateAccessToken(AccountId accountId, string username, string role)
+	public RefreshToken IssueRefreshToken(Func<string, RefreshToken> createRefreshToken)
+		=> createRefreshToken(
+			Base64UrlEncoder.Encode(inArray: GenerateRandomValue())
+		);
+
+	public TokensDto IssueTokens(User user, RefreshToken refreshToken)
+		=> new(
+			Role: user.Role,
+			AccessToken: GenerateAccessToken(
+				accountId: user.AccountId,
+				username: user.Username,
+				role: user.Role
+			),
+			RefreshToken: new(
+				Value: refreshToken.Value,
+				ExpiresAt: refreshToken.ExpiresAt
+			),
+			CsrfToken: new(
+				Value: Convert.ToBase64String(inArray: GenerateRandomValue()),
+				ExpiresAt: DateTime.UtcNow.AddMinutes(JwtDurationInMinutes)
+			)
+		);
+
+	private TokenDto GenerateAccessToken(AccountId accountId, string username, string role)
 	{
 		List<Claim> claims =
 		[
@@ -40,22 +65,10 @@ public sealed class IdentityTokenService(IOptions<JwtSettings> jwtOptions) : ITo
 		return new(jwt, token.ValidTo);
 	}
 
-	public string GenerateRefreshToken()
+	private static byte[] GenerateRandomValue()
 	{
 		byte[] randomNumber = new byte[32];
 		RandomNumberGenerator.Fill(randomNumber);
-
-		return Base64UrlEncoder.Encode(randomNumber);
-	}
-
-	public TokenDto GenerateCsrfToken()
-	{
-		byte[] randomNumber = new byte[32];
-		RandomNumberGenerator.Fill(randomNumber);
-
-		return new(
-			Value: Convert.ToBase64String(randomNumber),
-			ExpiresAt: DateTime.UtcNow.AddMinutes(JwtDurationInMinutes)
-		);
+		return randomNumber;
 	}
 }

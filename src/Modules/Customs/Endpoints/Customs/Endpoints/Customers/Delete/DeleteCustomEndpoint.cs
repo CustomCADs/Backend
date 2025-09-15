@@ -10,7 +10,7 @@ public sealed class DeleteCustomEndpoint(IRequestSender sender)
 	{
 		Delete("");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Delete")
 			.WithDescription("Delete your Custom")
 		);
@@ -19,11 +19,11 @@ public sealed class DeleteCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DeleteCustomRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new DeleteCustomCommand(
+			command: new DeleteCustomCommand(
 				Id: CustomId.New(req.Id),
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

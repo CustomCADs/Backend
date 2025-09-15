@@ -1,5 +1,5 @@
 using CustomCADs.Presentation;
-using static CustomCADs.Shared.Domain.Constants.Roles;
+using static CustomCADs.Shared.Domain.DomainConstants.Roles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,14 +20,15 @@ builder.Services.AddPaymentService(builder.Configuration);
 builder.Services.AddDeliveryService(builder.Configuration);
 builder.Services.AddStorageService(builder.Configuration);
 builder.Services.AddCurrenciesService();
+builder.Services.AddRealTimeNotifiers();
 
 // Modules
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddIdentity(builder.Configuration);
 builder.Services.AddDomainServices();
-builder.Services.AddGlobalExceptionHandler();
 
 // API
+builder.Services.AddGlobalExceptionHandler();
 builder.Services.AddEndpoints();
 builder.Services.AddJsonOptions();
 builder.Services.AddApiDocumentation();
@@ -52,6 +53,7 @@ app.UseIdempotencyKeys();
 // API & Documentation
 app.UseEndpoints();
 app.UseRateLimiter();
+app.UseDisableBrowserCaching();
 app.MapApiDocumentationUi(
 	apiPattern: "/openapi/{documentName}.json",
 	uiPattern: "/scalar"
@@ -59,6 +61,7 @@ app.MapApiDocumentationUi(
 	apiPattern: "/swagger/{documentName}.json",
 	uiPattern: "/swagger"
 );
+app.MapRealTimeHubs();
 app.MapStripeWebhook();
 app.MapExchangeRatesEndpoint();
 app.MapHealthChecks("/health");

@@ -5,8 +5,11 @@ using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
 namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetTextureUrl.Get;
 
-public sealed class GetMaterialTexturePresignedUrlGetHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache, IRequestSender sender)
-	: IQueryHandler<GetMaterialTexturePresignedUrlGetQuery, DownloadFileResponse>
+public sealed class GetMaterialTexturePresignedUrlGetHandler(
+	IMaterialReads reads,
+	BaseCachingService<MaterialId, Material> cache,
+	IRequestSender sender
+) : IQueryHandler<GetMaterialTexturePresignedUrlGetQuery, DownloadFileResponse>
 {
 	public async Task<DownloadFileResponse> Handle(GetMaterialTexturePresignedUrlGetQuery req, CancellationToken ct)
 	{
@@ -17,8 +20,8 @@ public sealed class GetMaterialTexturePresignedUrlGetHandler(IMaterialReads read
 		).ConfigureAwait(false);
 
 		return await sender.SendQueryAsync(
-			new GetImagePresignedUrlGetByIdQuery(material.TextureId),
-			ct
+			query: new GetImagePresignedUrlGetByIdQuery(material.TextureId),
+			ct: ct
 		).ConfigureAwait(false);
 	}
 }

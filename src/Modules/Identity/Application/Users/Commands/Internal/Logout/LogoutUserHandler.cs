@@ -2,8 +2,9 @@
 
 namespace CustomCADs.Identity.Application.Users.Commands.Internal.Logout;
 
-public class LogoutUserHandler(IUserService service)
-	: ICommandHandler<LogoutUserCommand>
+public sealed class LogoutUserHandler(
+	IUserService service
+) : ICommandHandler<LogoutUserCommand>
 {
 	public async Task Handle(LogoutUserCommand req, CancellationToken ct)
 	{

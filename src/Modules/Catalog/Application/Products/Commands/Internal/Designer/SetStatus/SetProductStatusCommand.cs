@@ -6,5 +6,5 @@ namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.Set
 public sealed record SetProductStatusCommand(
 	ProductId Id,
 	ProductStatus Status,
-	AccountId DesignerId
+	AccountId CallerId
 ) : ICommand;

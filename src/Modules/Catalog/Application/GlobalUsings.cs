@@ -2,6 +2,7 @@
 global using CustomCADs.Catalog.Application.Products.Dtos;
 global using CustomCADs.Catalog.Domain.Categories;
 global using CustomCADs.Catalog.Domain.Products;
+global using CustomCADs.Shared.Application;
 global using CustomCADs.Shared.Application.Abstractions.Cache;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Queries;

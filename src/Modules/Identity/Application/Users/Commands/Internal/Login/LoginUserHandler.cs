@@ -1,11 +1,13 @@
 ﻿using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Application.Users.Extensions;
+using CustomCADs.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.Identity.Application.Users.Commands.Internal.Login;
 
-public class LoginUserHandler(IUserService service, ITokenService tokens)
-	: ICommandHandler<LoginUserCommand, TokensDto>
+public sealed class LoginUserHandler(
+	IUserService service,
+	ITokenService tokenService
+) : ICommandHandler<LoginUserCommand, TokensDto>
 {
 	public async Task<TokensDto> Handle(LoginUserCommand req, CancellationToken ct)
 	{
@@ -28,6 +30,11 @@ public class LoginUserHandler(IUserService service, ITokenService tokens)
 			throw CustomAuthorizationException<User>.Custom($"Account: {user.Username} doesn't exist or password is incorrect.");
 		}
 
-		return await service.IssueTokens(tokens, user, req.LongerExpireTime).ConfigureAwait(false);
+		RefreshToken rt = tokenService.IssueRefreshToken(
+			createRefreshToken: (token) => user.AddRefreshToken(token, longerSession: false)
+		);
+		await service.SaveRefreshTokensAsync(user).ConfigureAwait(false);
+
+		return tokenService.IssueTokens(user, rt);
 	}
 }

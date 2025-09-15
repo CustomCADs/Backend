@@ -14,9 +14,9 @@ public class GetAccountSortingsHandlerUnitTests : AccountsBaseUnitTests
 		GetAccountSortingsQuery query = new();
 
 		// Act
-		string[] sortings = await handler.Handle(query, ct);
+		AccountSortingType[] sortings = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetNames<AccountSortingType>());
+		Assert.Equal(sortings, Enum.GetValues<AccountSortingType>());
 	}
 }

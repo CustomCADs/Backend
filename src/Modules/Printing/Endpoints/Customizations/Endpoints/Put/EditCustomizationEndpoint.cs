@@ -9,7 +9,7 @@ public class EditCustomizationEndpoint(IRequestSender sender)
 	{
 		Put("");
 		Group<CustomizationsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Edit")
 			.WithDescription("Edit your Customization")
 		);
@@ -18,7 +18,7 @@ public class EditCustomizationEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(EditCustomizationRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new EditCustomizationCommand(
+			command: new EditCustomizationCommand(
 				Id: CustomizationId.New(req.Id),
 				Scale: req.Scale,
 				Infill: req.Infill,
@@ -26,7 +26,7 @@ public class EditCustomizationEndpoint(IRequestSender sender)
 				Color: req.Color,
 				MaterialId: MaterialId.New(req.MaterialId)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

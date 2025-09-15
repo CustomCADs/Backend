@@ -11,7 +11,7 @@ public sealed class PatchProductCadEndpoint(IRequestSender sender)
 	{
 		Patch("");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Set Cad Coordinates")
 			.WithDescription("Set the Coordinates of your Product's Cad")
 		);
@@ -24,17 +24,17 @@ public sealed class PatchProductCadEndpoint(IRequestSender sender)
 			{
 				CoordinateType.Cam => new SetProductCoordsCommand(
 					Id: ProductId.New(req.Id),
-					CreatorId: User.GetAccountId(),
+					CallerId: User.GetAccountId(),
 					CamCoordinates: req.Coordinates
 				),
 				CoordinateType.Pan => new SetProductCoordsCommand(
 					Id: ProductId.New(req.Id),
-					CreatorId: User.GetAccountId(),
+					CallerId: User.GetAccountId(),
 					PanCoordinates: req.Coordinates
 				),
 				_ => throw new InvalidEnumArgumentException("Coordinate Type must be Cam or Pan"),
 			},
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

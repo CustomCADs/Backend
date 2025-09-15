@@ -2,11 +2,10 @@
 
 namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetPaymentStatuses;
 
-public class GetPurchasedCartPaymentStatusesHandler
-	: IQueryHandler<GetPurchasedCartPaymentStatusesQuery, string[]>
+public sealed class GetPurchasedCartPaymentStatusesHandler : IQueryHandler<GetPurchasedCartPaymentStatusesQuery, PaymentStatus[]>
 {
-	public Task<string[]> Handle(GetPurchasedCartPaymentStatusesQuery req, CancellationToken ct)
+	public Task<PaymentStatus[]> Handle(GetPurchasedCartPaymentStatusesQuery req, CancellationToken ct)
 		=> Task.FromResult(
-			Enum.GetNames<PaymentStatus>()
+			Enum.GetValues<PaymentStatus>()
 		);
 }

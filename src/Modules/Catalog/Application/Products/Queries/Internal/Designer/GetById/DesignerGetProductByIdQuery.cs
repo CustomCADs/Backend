@@ -4,5 +4,5 @@ namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetB
 
 public sealed record DesignerGetProductByIdQuery(
 	ProductId Id,
-	AccountId DesignerId
+	AccountId CallerId
 ) : IQuery<DesignerGetProductByIdDto>;

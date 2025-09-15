@@ -4,5 +4,5 @@ namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetBy
 
 public sealed record GalleryGetProductByIdQuery(
 	ProductId Id,
-	AccountId AccountId
+	AccountId CallerId
 ) : IQuery<GalleryGetProductByIdDto>;

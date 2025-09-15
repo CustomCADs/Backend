@@ -10,7 +10,7 @@ public sealed class PutMaterialEndpoint(IRequestSender sender)
 	{
 		Put("");
 		Group<MaterialsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Edit")
 			.WithDescription("Edit a Material")
 		);
@@ -19,22 +19,22 @@ public sealed class PutMaterialEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PutMaterialRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new EditMaterialCommand(
+			command: new EditMaterialCommand(
 				Id: MaterialId.New(req.Id),
 				Name: req.Name,
 				Density: req.Density,
 				Cost: req.Cost
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await sender.SendCommandAsync(
-			new SetMaterialTextureCommand(
+			command: new SetMaterialTextureCommand(
 				Id: MaterialId.New(req.Id),
 				Key: req.TextureKey,
 				ContentType: req.TextureContentType
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

@@ -33,7 +33,7 @@ public class SetProductFilesHandlerUnitTests : ProductsBaseUnitTests
 			Id: ValidId,
 			Cad: (null, null, null),
 			Image: (null, null),
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -54,7 +54,7 @@ public class SetProductFilesHandlerUnitTests : ProductsBaseUnitTests
 			Id: ValidId,
 			Cad: cad,
 			Image: image,
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Act
@@ -92,7 +92,7 @@ public class SetProductFilesHandlerUnitTests : ProductsBaseUnitTests
 			Id: ValidId,
 			Cad: (null, null, null),
 			Image: (null, null),
-			CreatorId: ValidDesignerId
+			CallerId: ValidDesignerId
 		);
 
 		// Assert
@@ -113,7 +113,7 @@ public class SetProductFilesHandlerUnitTests : ProductsBaseUnitTests
 			Id: ValidId,
 			Cad: (null, null, null),
 			Image: (null, null),
-			CreatorId: ValidCreatorId
+			CallerId: ValidCreatorId
 		);
 
 		// Assert

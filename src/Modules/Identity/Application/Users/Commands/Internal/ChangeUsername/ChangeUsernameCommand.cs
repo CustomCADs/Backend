@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Identity.Application.Users.Commands.Internal.ChangeUsername;
 
-public record ChangeUsernameCommand(
+public sealed record ChangeUsernameCommand(
 	string Username,
 	string NewUsername
 ) : ICommand;

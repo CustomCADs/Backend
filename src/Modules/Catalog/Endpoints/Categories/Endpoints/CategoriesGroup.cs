@@ -1,16 +1,16 @@
 ﻿namespace CustomCADs.Catalog.Endpoints.Categories.Endpoints;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static EndpointsConstants;
 
 public class CategoriesGroup : Group
 {
 	public CategoriesGroup()
 	{
-		Configure(Paths.Categories, ep =>
+		Configure(Paths.Categories, x =>
 		{
-			ep.Roles(Admin);
-			ep.Description(opt => opt.WithTags(Tags[Paths.Categories]));
+			x.Roles(Admin);
+			x.Description(x => x.WithTags(Tags[Paths.Categories]));
 		});
 	}
 }

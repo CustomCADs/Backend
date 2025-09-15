@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Files.Persistence.Configurations.Images;
 
-using static Constants.Textures;
+using static DomainConstants.Textures;
 
 public static class Utilities
 {
@@ -23,7 +23,7 @@ public static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => ImageId.New(v)
+				x => ImageId.New(x)
 			);
 
 		return builder;

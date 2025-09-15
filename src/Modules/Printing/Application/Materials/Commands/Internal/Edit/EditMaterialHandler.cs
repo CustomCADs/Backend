@@ -3,8 +3,11 @@ using CustomCADs.Printing.Domain.Repositories.Reads;
 
 namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Edit;
 
-public class EditMaterialHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache, IUnitOfWork uow)
-	: ICommandHandler<EditMaterialCommand>
+public sealed class EditMaterialHandler(
+	IMaterialReads reads,
+	BaseCachingService<MaterialId, Material> cache,
+	IUnitOfWork uow
+) : ICommandHandler<EditMaterialCommand>
 {
 	public async Task Handle(EditMaterialCommand req, CancellationToken ct)
 	{

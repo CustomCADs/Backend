@@ -1,8 +1,11 @@
 ﻿using CustomCADs.Customs.Domain.Customs;
 using CustomCADs.Customs.Domain.Customs.States.Entities;
+using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Customs.Persistence;
+
+using static PersistenceConstants;
 
 public class CustomsContext(DbContextOptions<CustomsContext> opts) : DbContext(opts)
 {
@@ -13,7 +16,7 @@ public class CustomsContext(DbContextOptions<CustomsContext> opts) : DbContext(o
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.HasDefaultSchema("Customs");
+		builder.HasDefaultSchema(Schemes.Customs);
 		builder.ApplyConfigurationsFromAssembly(CustomsPersistenceReference.Assembly);
 	}
 }

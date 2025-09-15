@@ -13,7 +13,7 @@ public sealed class RecentCustomsEndpoint(IRequestSender sender)
 	{
 		Get("recent");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Recent")
 			.WithDescription("See your most recent Customs")
 		);
@@ -22,16 +22,16 @@ public sealed class RecentCustomsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(RecentCustomsRequest req, CancellationToken ct)
 	{
 		Result<GetAllCustomsDto> result = await sender.SendQueryAsync(
-			new GetAllCustomsQuery(
-				BuyerId: User.GetAccountId(),
+			query: new GetAllCustomsQuery(
+				CustomerId: User.GetAccountId(),
 				Sorting: new(CustomSortingType.OrderedAt, SortingDirection.Descending),
 				Pagination: new(Limit: req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		RecentCustomsResponse[] response =
-			[.. result.Items.Select(o => o.ToRecentResponse())];
+			[.. result.Items.Select(x => x.ToRecentResponse())];
 		await Send.OkAsync(response).ConfigureAwait(false);
 	}
 }

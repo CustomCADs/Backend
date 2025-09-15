@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 
-public record GetAllCustomsDto(
+public sealed record GetAllCustomsDto(
 	CustomId Id,
 	string Name,
 	bool ForDelivery,

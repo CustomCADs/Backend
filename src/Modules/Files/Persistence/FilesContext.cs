@@ -1,8 +1,11 @@
 ﻿using CustomCADs.Files.Domain.Cads;
 using CustomCADs.Files.Domain.Images;
+using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Files.Persistence;
+
+using static PersistenceConstants;
 
 public class FilesContext(DbContextOptions<FilesContext> opts) : DbContext(opts)
 {
@@ -11,7 +14,7 @@ public class FilesContext(DbContextOptions<FilesContext> opts) : DbContext(opts)
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.HasDefaultSchema("Files");
+		builder.HasDefaultSchema(Schemes.Files);
 		builder.ApplyConfigurationsFromAssembly(FilesPersistenceReference.Assembly);
 	}
 }

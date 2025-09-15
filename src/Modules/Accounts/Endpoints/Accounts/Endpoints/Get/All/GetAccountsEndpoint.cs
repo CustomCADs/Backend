@@ -11,7 +11,7 @@ public sealed class GetAccountsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<AccountsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all Accounts with Search, Sort and Pagination options")
 		);
@@ -20,12 +20,12 @@ public sealed class GetAccountsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetAccountsRequest req, CancellationToken ct)
 	{
 		Result<GetAllAccountsDto> result = await sender.SendQueryAsync(
-			new GetAllAccountsQuery(
+			query: new GetAllAccountsQuery(
 				Username: req.Name,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		Result<AccountResponse> response = new(

@@ -13,7 +13,7 @@ public sealed class GetCustomPostPresignedUrlEndpoint(IRequestSender sender)
 	{
 		Post("presignedUrls/upload/cad");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Upload")
 			.WithDescription("Upload a Cad for an Custom")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -23,12 +23,12 @@ public sealed class GetCustomPostPresignedUrlEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetCustomPostPresignedUrlRequest req, CancellationToken ct)
 	{
 		UploadFileResponse response = await sender.SendQueryAsync(
-			new GetCustomCadPresignedUrlPostQuery(
+			query: new GetCustomCadPresignedUrlPostQuery(
 				Id: CustomId.New(req.Id),
 				Cad: req.Cad,
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

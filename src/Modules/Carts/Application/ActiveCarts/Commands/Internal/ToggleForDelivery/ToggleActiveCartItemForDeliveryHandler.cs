@@ -7,13 +7,16 @@ using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.ToggleForDelivery;
 
-public class ToggleActiveCartItemForDeliveryHandler(IActiveCartReads reads, IUnitOfWork uow, IRequestSender sender)
-	: ICommandHandler<ToggleActiveCartItemForDeliveryCommand>
+public sealed class ToggleActiveCartItemForDeliveryHandler(
+	IActiveCartReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender
+) : ICommandHandler<ToggleActiveCartItemForDeliveryCommand>
 {
 	public async Task Handle(ToggleActiveCartItemForDeliveryCommand req, CancellationToken ct)
 	{
-		ActiveCartItem item = await reads.SingleAsync(req.BuyerId, req.ProductId, ct: ct).ConfigureAwait(false)
-			?? throw CustomNotFoundException<ActiveCartItem>.ById(new { req.BuyerId, req.ProductId });
+		ActiveCartItem item = await reads.SingleAsync(req.CallerId, req.ProductId, ct: ct).ConfigureAwait(false)
+			?? throw CustomNotFoundException<ActiveCartItem>.ById(new { req.CallerId, req.ProductId });
 
 		if (item.ForDelivery)
 		{
@@ -25,7 +28,6 @@ public class ToggleActiveCartItemForDeliveryHandler(IActiveCartReads reads, IUni
 		{
 			throw CustomException.Delivery<ActiveCartItem>(markedForDelivery: true);
 		}
-
 		await TurnDeliveryOn(item, req.CustomizationId.Value, ct).ConfigureAwait(false);
 	}
 
@@ -38,7 +40,7 @@ public class ToggleActiveCartItemForDeliveryHandler(IActiveCartReads reads, IUni
 		{
 			await sender.SendCommandAsync(
 				new DeleteCustomizationByIdCommand(customizationId.Value),
-				ct
+				ct: ct
 			).ConfigureAwait(false);
 		}
 	}

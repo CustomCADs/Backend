@@ -1,11 +1,12 @@
-﻿using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
+﻿using CustomCADs.Shared.Application;
+using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 using FluentValidation;
 
 namespace CustomCADs.Delivery.Application.Shipments.Commands.Shared.Create;
 
-using static Constants;
-using static Constants.FluentMessages;
+using static ApplicationConstants.FluentMessages;
+using static DomainConstants;
 using static ShipmentConstants;
 
 public class CreateShipmentValidator : CommandValidator<CreateShipmentCommand, ShipmentId>

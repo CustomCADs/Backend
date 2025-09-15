@@ -21,13 +21,13 @@ public static class Utilities
 		builder.Property(x => x.CustomId)
 			.HasConversion(
 				x => x.Value,
-				v => CustomId.New(v)
+				x => CustomId.New(x)
 			);
 
 		builder.Property(x => x.CadId)
 			.HasConversion(
 				x => x.Value,
-				v => CadId.New(v)
+				x => CadId.New(x)
 			);
 
 		return builder;

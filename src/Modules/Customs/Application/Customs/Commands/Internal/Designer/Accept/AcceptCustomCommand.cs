@@ -4,5 +4,5 @@ namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Acce
 
 public sealed record AcceptCustomCommand(
 	CustomId Id,
-	AccountId DesignerId
+	AccountId CallerId
 ) : ICommand;

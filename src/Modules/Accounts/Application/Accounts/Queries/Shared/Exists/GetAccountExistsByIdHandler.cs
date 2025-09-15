@@ -3,11 +3,9 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Accounts.Application.Accounts.Queries.Shared.Exists;
 
-public class GetAccountExistsByIdHandler(IAccountReads reads)
+public sealed class GetAccountExistsByIdHandler(IAccountReads reads)
 	: IQueryHandler<GetAccountExistsByIdQuery, bool>
 {
 	public async Task<bool> Handle(GetAccountExistsByIdQuery req, CancellationToken ct)
-	{
-		return await reads.ExistsByIdAsync(req.Id, ct).ConfigureAwait(false);
-	}
+		=> await reads.ExistsByIdAsync(req.Id, ct).ConfigureAwait(false);
 }

@@ -12,7 +12,7 @@ public sealed class CustomerGetCustomByIdHandler(ICustomReads reads, IRequestSen
 		Custom custom = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (custom.BuyerId != req.BuyerId)
+		if (custom.BuyerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Custom>.ById(req.Id);
 		}
@@ -21,7 +21,7 @@ public sealed class CustomerGetCustomByIdHandler(ICustomReads reads, IRequestSen
 			accepted: custom.AcceptedCustom?.ToDto(
 				designerName: await sender.SendQueryAsync(
 					new GetUsernameByIdQuery(custom.AcceptedCustom.DesignerId),
-					ct
+					ct: ct
 				).ConfigureAwait(false)
 			),
 			finished: custom.FinishedCustom?.ToDto(),

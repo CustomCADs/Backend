@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace CustomCADs.Identity.Application.Users.Queries.Shared.ClientUrl;
 
-public class GetClientUrlHandler(IOptions<ClientUrlSettings> settings)
+public sealed class GetClientUrlHandler(IOptions<ClientUrlSettings> settings)
 	: IQueryHandler<GetClientUrlQuery, string>
 {
 	public Task<string> Handle(GetClientUrlQuery req, CancellationToken ct = default)

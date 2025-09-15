@@ -11,7 +11,7 @@ public class GetShipmentsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<ShipmentsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all your Shipments with Filter, Search, Sorting and Pagination options")
 		);
@@ -20,18 +20,16 @@ public class GetShipmentsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetShipmentsRequest req, CancellationToken ct)
 	{
 		Result<GetAllShipmentsDto> result = await sender.SendQueryAsync(
-			new GetAllShipmentsQuery(
-				CustomerId: User.GetAccountId(),
+			query: new GetAllShipmentsQuery(
+				CallerId: User.GetAccountId(),
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		Result<GetShipmentsResponse> response = new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(i => i.ToResponse())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(
+			response: result.ToNewResult(x => x.ToResponse())
+		).ConfigureAwait(false);
 	}
 }

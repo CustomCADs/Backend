@@ -3,7 +3,7 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Identity.Application.Users.Queries.Internal.GetByUsername;
 
-public record GetUserByUsernameDto(
+public sealed record GetUserByUsernameDto(
 	UserId Id,
 	string Role,
 	string Username,

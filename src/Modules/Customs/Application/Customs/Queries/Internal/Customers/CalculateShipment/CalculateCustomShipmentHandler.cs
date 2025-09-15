@@ -6,7 +6,7 @@ using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment;
 
-public class CalculateCustomShipmentHandler(ICustomReads reads, IRequestSender sender)
+public sealed class CalculateCustomShipmentHandler(ICustomReads reads, IRequestSender sender)
 	: IQueryHandler<CalculateCustomShipmentQuery, CalculateShipmentDto[]>
 {
 	public async Task<CalculateShipmentDto[]> Handle(CalculateCustomShipmentQuery req, CancellationToken ct)
@@ -20,16 +20,16 @@ public class CalculateCustomShipmentHandler(ICustomReads reads, IRequestSender s
 		}
 
 		double weight = await sender.SendQueryAsync(
-			new GetCustomizationWeightByIdQuery(req.CustomizationId),
-			ct
+			query: new GetCustomizationWeightByIdQuery(req.CustomizationId),
+			ct: ct
 		).ConfigureAwait(false);
 
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
-			new CalculateShipmentQuery(
+			query: new CalculateShipmentQuery(
 				Weights: [.. Enumerable.Range(0, req.Count).Select(x => weight)],
 				Address: req.Address
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		return calculations;

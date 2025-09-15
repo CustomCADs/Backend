@@ -10,9 +10,9 @@ public class ResilientPaymentService(
 	Polly.IAsyncPolicy policy
 ) : IPaymentService
 {
-	public Task<PaymentDto> InitializeCartPayment(string paymentMethodId, AccountId buyerId, PurchasedCartId cartId, decimal price, string description, CancellationToken ct = default)
+	public Task<PaymentDto> InitializeCartPayment(string paymentMethodId, AccountId buyerId, PurchasedCartId cartId, decimal price, (string Buyer, int ItemsCount) description, CancellationToken ct = default)
 		=> policy.ExecuteAsync(() => inner.InitializeCartPayment(paymentMethodId, buyerId, cartId, price, description, ct));
 
-	public Task<PaymentDto> InitializeCustomPayment(string paymentMethodId, AccountId buyerId, CustomId customId, decimal price, string description, CancellationToken ct = default)
+	public Task<PaymentDto> InitializeCustomPayment(string paymentMethodId, AccountId buyerId, CustomId customId, decimal price, (string Buyer, string Name, string Seller) description, CancellationToken ct = default)
 		=> policy.ExecuteAsync(() => inner.InitializeCustomPayment(paymentMethodId, buyerId, customId, price, description, ct));
 }

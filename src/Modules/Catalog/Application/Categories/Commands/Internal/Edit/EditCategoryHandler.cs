@@ -3,16 +3,21 @@ using CustomCADs.Catalog.Domain.Repositories.Reads;
 
 namespace CustomCADs.Catalog.Application.Categories.Commands.Internal.Edit;
 
-public sealed class EditCategoryHandler(ICategoryReads reads, IUnitOfWork uow, BaseCachingService<CategoryId, Category> cache)
-	: ICommandHandler<EditCategoryCommand>
+public sealed class EditCategoryHandler(
+	ICategoryReads reads,
+	IUnitOfWork uow,
+	BaseCachingService<CategoryId, Category> cache
+) : ICommandHandler<EditCategoryCommand>
 {
 	public async Task Handle(EditCategoryCommand req, CancellationToken ct)
 	{
 		Category category = await reads.SingleByIdAsync(req.Id, track: true, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Category>.ById(req.Id);
 
-		category.SetName(req.Dto.Name);
-		category.SetDescription(req.Dto.Description);
+		category
+			.SetName(req.Dto.Name)
+			.SetDescription(req.Dto.Description);
+
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await cache.UpdateAsync(category.Id, category).ConfigureAwait(false);

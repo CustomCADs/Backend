@@ -1,16 +1,16 @@
 ﻿namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Customers;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static EndpointsConstants;
 
 public class CustomerGroup : Group
 {
 	public CustomerGroup()
 	{
-		Configure(Paths.CustomsCustomer, ep =>
+		Configure(Paths.CustomsCustomer, x =>
 		{
-			ep.Roles(Customer);
-			ep.Description(d => d.WithTags(Tags[Paths.CustomsCustomer]));
+			x.Roles(Customer);
+			x.Description(x => x.WithTags(Tags[Paths.CustomsCustomer]));
 		});
 	}
 }

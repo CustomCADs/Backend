@@ -1,7 +1,10 @@
 using CustomCADs.Idempotency.Domain.IdempotencyKeys;
+using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Idempotency.Persistence;
+
+using static PersistenceConstants;
 
 public class IdempotencyContext(DbContextOptions<IdempotencyContext> opt) : DbContext(opt)
 {
@@ -9,7 +12,7 @@ public class IdempotencyContext(DbContextOptions<IdempotencyContext> opt) : DbCo
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		builder.HasDefaultSchema("Idempotency");
+		builder.HasDefaultSchema(Schemes.Idempotency);
 		builder.ApplyConfigurationsFromAssembly(IdempotencyPersistenceReference.Assembly);
 	}
 }

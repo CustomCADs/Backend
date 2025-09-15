@@ -9,7 +9,7 @@ public class GetCustomizationEndpoint(IRequestSender sender)
 	{
 		Get("{id}");
 		Group<CustomizationsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("Get a Customization")
 		);
@@ -18,10 +18,10 @@ public class GetCustomizationEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetCustomizationRequest req, CancellationToken ct)
 	{
 		CustomizationDto customization = await sender.SendQueryAsync(
-			new GetCustomizationByIdQuery(
+			query: new GetCustomizationByIdQuery(
 				Id: CustomizationId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		CustomizationResponse response = customization.ToResponse();

@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Identity.Application.Users.Dtos;
 using CustomCADs.Identity.Infrastructure.Tokens;
+using CustomCADs.Notifications.Infrastructure.Hubs;
 using CustomCADs.Presentation;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Endpoints;
@@ -18,27 +19,6 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class ProgramExtensions
 {
 	private const string AuthScheme = JwtBearerDefaults.AuthenticationScheme;
-
-	public static IServiceCollection AddUseCases(this IServiceCollection services, IWebHostEnvironment env)
-	{
-		services.AddMessagingServices(
-			codeGen: !env.IsDevelopment(),
-			entry: CustomCADs.Tools.CodeGen.CodeGenReference.Assembly,
-			assemblies: [
-				CustomCADs.Accounts.Application.AccountApplicationReference.Assembly,
-				CustomCADs.Carts.Application.CartsApplicationReference.Assembly,
-				CustomCADs.Catalog.Application.CatalogApplicationReference.Assembly,
-				CustomCADs.Printing.Application.PrintingApplicationReference.Assembly,
-				CustomCADs.Customs.Application.CustomsApplicationReference.Assembly,
-				CustomCADs.Delivery.Application.DeliveryApplicationReference.Assembly,
-				CustomCADs.Files.Application.FilesApplicationReference.Assembly,
-				CustomCADs.Idempotency.Application.IdempotencyApplicationReference.Assembly,
-				CustomCADs.Identity.Application.IdentityApplicationReference.Assembly,
-			]
-		);
-
-		return services;
-	}
 
 	public static AuthenticationBuilder AddJwt(this AuthenticationBuilder builder, IConfiguration config)
 	{
@@ -195,6 +175,24 @@ public static class ProgramExtensions
 		return app;
 	}
 
+	public static IApplicationBuilder UseDisableBrowserCaching(this IApplicationBuilder app)
+	{
+		app.Use(async (context, next) =>
+		{
+			if (context.Request.Path.StartsWithSegments("/api"))
+			{
+				IHeaderDictionary headers = context.Response.Headers;
+				headers.CacheControl = "no-store, no-cache, must-revalidate, proxy-revalidate";
+				headers.Pragma = "no-cache";
+				headers.Expires = "0";
+			}
+
+			await next().ConfigureAwait(false);
+		});
+
+		return app;
+	}
+
 	public static IEndpointRouteBuilder MapApiDocumentationUi(this IEndpointRouteBuilder app, [StringSyntax("Route")] string apiPattern = "/openai/{documentName}.json", [StringSyntax("Route")] string uiPattern = "/scalar/{documentName}")
 	{
 		app.MapOpenApi(apiPattern);
@@ -217,6 +215,21 @@ public static class ProgramExtensions
 				.WithFavicon("/favicon.ico")
 				.WithDarkModeToggle(false);
 		});
+
+		return app;
+	}
+
+	public static IEndpointRouteBuilder MapRealTimeHubs(this IEndpointRouteBuilder app)
+	{
+		app
+			.MapRealTimeHub<SignalRNotificationsHub>("Notifications");
+
+		return app;
+	}
+
+	private static IEndpointRouteBuilder MapRealTimeHub<THub>(this IEndpointRouteBuilder app, string pattern) where THub : AspNetCore.SignalR.Hub
+	{
+		app.MapHub<THub>($"{HttpExtensions.PrefixSignalR}/{pattern}");
 
 		return app;
 	}

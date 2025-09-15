@@ -7,11 +7,11 @@ namespace CustomCADs.Printing.Persistence.Repositories.Customizations;
 
 public class Reads(PrintingContext context) : ICustomizationReads
 {
-	public async Task<Dictionary<CustomizationId, Customization>> AllByIdsAsync(CustomizationId[] ids, bool track = true, CancellationToken ct = default)
+	public async Task<ICollection<Customization>> AllAsync(CustomizationId[] ids, bool track = true, CancellationToken ct = default)
 		=> await context.Customizations
 			.WithTracking(track)
 			.Where(x => ids.Contains(x.Id))
-			.ToDictionaryAsync(x => x.Id, x => x, ct)
+			.ToArrayAsync(ct)
 			.ConfigureAwait(false);
 
 	public async Task<Customization?> SingleByIdAsync(CustomizationId id, bool track = true, CancellationToken ct = default)

@@ -45,7 +45,7 @@ public class ProductsBaseUnitTests
 			categoryId: categoryId ?? ValidCategoryId,
 			imageId: imageId ?? ValidImageId,
 			cadId: cadId ?? ValidCadId,
-			id: id,
+			id: id ?? ValidId,
 			uploadedAt: uploadedAt
 		);
 }

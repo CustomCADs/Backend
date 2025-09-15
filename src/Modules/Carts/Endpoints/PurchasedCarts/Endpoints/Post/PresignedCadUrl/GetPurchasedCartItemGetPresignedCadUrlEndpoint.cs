@@ -14,7 +14,7 @@ public sealed class GetPurchasedCartItemGetPresignedCadUrlEndpoint(IRequestSende
 	{
 		Post("presignedUrls/download/response");
 		Group<PurchasedCartsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Download Cad")
 			.WithDescription("Download your Cart Item's Cad")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -24,12 +24,12 @@ public sealed class GetPurchasedCartItemGetPresignedCadUrlEndpoint(IRequestSende
 	public override async Task HandleAsync(GetPurchasedCartItemGetPresignedCadUrlRequest req, CancellationToken ct)
 	{
 		GetPurchasedCartItemCadPresignedUrlGetDto response = await sender.SendQueryAsync(
-			new GetPurchasedCartItemCadPresignedUrlGetQuery(
+			query: new GetPurchasedCartItemCadPresignedUrlGetQuery(
 				Id: PurchasedCartId.New(req.Id),
 				ProductId: ProductId.New(req.ProductId),
-				BuyerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

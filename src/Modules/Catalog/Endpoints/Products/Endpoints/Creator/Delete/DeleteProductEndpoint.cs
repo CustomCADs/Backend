@@ -10,7 +10,7 @@ public sealed class DeleteProductEndpoint(IRequestSender sender)
 	{
 		Delete("");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Delete")
 			.WithDescription("Delete your Product")
 		);
@@ -19,11 +19,11 @@ public sealed class DeleteProductEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DeleteProductRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new DeleteProductCommand(
+			command: new DeleteProductCommand(
 				Id: ProductId.New(req.Id),
-				CreatorId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

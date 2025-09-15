@@ -4,10 +4,10 @@ using CustomCADs.Catalog.Domain.Tags;
 
 namespace CustomCADs.Catalog.Application.Tags.Queries.Internal.GetById;
 
-public class GetTagByIdHandler(ITagReads reads, BaseCachingService<TagId, Tag> cache)
-	: IQueryHandler<GetTagByIdQuery, TagReadDto>
+public sealed class GetTagByIdHandler(ITagReads reads, BaseCachingService<TagId, Tag> cache)
+	: IQueryHandler<GetTagByIdQuery, TagDto>
 {
-	public async Task<TagReadDto> Handle(GetTagByIdQuery req, CancellationToken ct)
+	public async Task<TagDto> Handle(GetTagByIdQuery req, CancellationToken ct)
 	{
 		Tag tag = await cache.GetOrCreateAsync(
 			id: req.Id,

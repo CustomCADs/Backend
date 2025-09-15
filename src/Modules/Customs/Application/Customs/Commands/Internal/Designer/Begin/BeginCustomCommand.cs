@@ -4,5 +4,5 @@ namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Begi
 
 public sealed record BeginCustomCommand(
 	CustomId Id,
-	AccountId DesignerId
+	AccountId CallerId
 ) : ICommand;

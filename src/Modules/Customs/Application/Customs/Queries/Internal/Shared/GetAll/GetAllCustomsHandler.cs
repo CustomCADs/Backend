@@ -11,39 +11,38 @@ public sealed class GetAllCustomsHandler(ICustomReads reads, IRequestSender send
 {
 	public async Task<Result<GetAllCustomsDto>> Handle(GetAllCustomsQuery req, CancellationToken ct)
 	{
-		CustomQuery query = new(
-			ForDelivery: req.ForDelivery,
-			CustomStatus: req.CustomStatus,
-			BuyerId: req.BuyerId,
-			DesignerId: req.DesignerId,
-			Name: req.Name,
-			Sorting: req.Sorting,
-			Pagination: req.Pagination
-		);
-		Result<Custom> result = await reads.AllAsync(query, track: false, ct: ct).ConfigureAwait(false);
-
-		AccountId[] buyerIds = [.. result.Items.Select(o => o.BuyerId)];
-		AccountId[] designerIds = [.. result.Items
-			.Where(o => o.AcceptedCustom is not null)
-			.Select(o => o.AcceptedCustom!.DesignerId)
-		];
-
-		Dictionary<AccountId, string> designers = await sender.SendQueryAsync(
-			new GetUsernamesByIdsQuery(designerIds),
-			ct
+		Result<Custom> result = await reads.AllAsync(
+			query: new(
+				ForDelivery: req.ForDelivery,
+				CustomStatus: req.CustomStatus,
+				CustomerId: req.CustomerId,
+				DesignerId: req.DesignerId,
+				Name: req.Name,
+				Sorting: req.Sorting,
+				Pagination: req.Pagination
+			),
+			track: false,
+			ct: ct
 		).ConfigureAwait(false);
 
+		AccountId[] buyerIds = [.. result.Items.Select(x => x.BuyerId)];
 		Dictionary<AccountId, string> buyers = await sender.SendQueryAsync(
-			new GetUsernamesByIdsQuery(buyerIds),
-			ct
+			query: new GetUsernamesByIdsQuery(buyerIds),
+			ct: ct
 		).ConfigureAwait(false);
 
-		return new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(o => o.ToGetAllDto(
-				buyerName: buyers[o.BuyerId],
-				designerName: o.AcceptedCustom is null ? null : designers[o.AcceptedCustom.DesignerId]
-			))]
-		);
+		AccountId[] designerIds = [.. result.Items
+			.Where(x => x.AcceptedCustom is not null)
+			.Select(x => x.AcceptedCustom!.DesignerId)
+		];
+		Dictionary<AccountId, string> designers = await sender.SendQueryAsync(
+			query: new GetUsernamesByIdsQuery(designerIds),
+			ct: ct
+		).ConfigureAwait(false);
+
+		return result.ToNewResult(x => x.ToGetAllDto(
+			buyerName: buyers[x.BuyerId],
+			designerName: x.AcceptedCustom is null ? null : designers[x.AcceptedCustom.DesignerId]
+		));
 	}
 }

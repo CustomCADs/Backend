@@ -10,7 +10,7 @@ public sealed class GetCustomsStatsEndpoint(IRequestSender sender)
 	{
 		Get("stats");
 		Group<CustomerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Stats")
 			.WithDescription("See your Custom' stats")
 		);
@@ -19,10 +19,10 @@ public sealed class GetCustomsStatsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		CountCustomsDto counts = await sender.SendQueryAsync(
-			new CountCustomsQuery(
-				BuyerId: User.GetAccountId()
+			query: new CountCustomsQuery(
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetCustomsStatsResponse response = new(

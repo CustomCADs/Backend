@@ -11,7 +11,7 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 	{
 		Get("download-info");
 		Group<IdentityGroup>();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.DownloadInfo)
 			.WithSummary("Download Info")
 			.WithDescription("Download all your persisted info")
@@ -21,8 +21,8 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		GetUserByUsernameDto user = await sender.SendQueryAsync(
-			new GetUserByUsernameQuery(User.GetName()),
-			ct
+			query: new GetUserByUsernameQuery(User.GetName()),
+			ct: ct
 		).ConfigureAwait(false);
 
 		using MemoryStream stream = new();

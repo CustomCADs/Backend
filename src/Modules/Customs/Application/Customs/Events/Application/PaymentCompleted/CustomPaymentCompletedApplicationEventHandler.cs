@@ -19,11 +19,11 @@ public class CustomPaymentCompletedApplicationEventHandler(ICustomReads reads, I
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
 		string to = await sender.SendQueryAsync(
-			new GetUserEmailByIdQuery(ae.BuyerId)
+			query: new GetUserEmailByIdQuery(ae.BuyerId)
 		).ConfigureAwait(false);
 
 		string url = await sender.SendQueryAsync(
-			new GetClientUrlQuery()
+			query: new GetClientUrlQuery()
 		).ConfigureAwait(false);
 
 		await email.SendRewardGrantedEmailAsync(to, $"{url}/customs").ConfigureAwait(false);

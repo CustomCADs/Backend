@@ -6,8 +6,12 @@ using CustomCADs.Shared.Application.Events.Account.Accounts;
 
 namespace CustomCADs.Accounts.Application.Accounts.Commands.Internal.Delete;
 
-public sealed class DeleteAccountHandler(IAccountReads reads, IAccountWrites writes, IUnitOfWork uow, IEventRaiser raiser)
-	: ICommandHandler<DeleteAccountCommand>
+public sealed class DeleteAccountHandler(
+	IAccountReads reads,
+	IAccountWrites writes,
+	IUnitOfWork uow,
+	IEventRaiser raiser
+) : ICommandHandler<DeleteAccountCommand>
 {
 	public async Task Handle(DeleteAccountCommand req, CancellationToken ct)
 	{
@@ -17,8 +21,10 @@ public sealed class DeleteAccountHandler(IAccountReads reads, IAccountWrites wri
 		writes.Remove(account);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
-		await raiser.RaiseApplicationEventAsync(new AccountDeletedApplicationEvent(
-			account.Username
-		)).ConfigureAwait(false);
+		await raiser.RaiseApplicationEventAsync(
+				@event: new AccountDeletedApplicationEvent(
+				account.Username
+			)
+		).ConfigureAwait(false);
 	}
 }

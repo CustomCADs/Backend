@@ -14,9 +14,9 @@ public class GetPurchasedCartPaymentStatusesHandlerUnitTests : PurchasedCartsBas
 		GetPurchasedCartPaymentStatusesQuery query = new();
 
 		// Act
-		string[] statuses = await handler.Handle(query, ct);
+		PaymentStatus[] statuses = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(Enum.GetNames<PaymentStatus>(), statuses);
+		Assert.Equal(Enum.GetValues<PaymentStatus>(), statuses);
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Identity.Application.Users.Commands.Internal.Login;
 
-public record LoginUserCommand(
+public sealed record LoginUserCommand(
 	string Username,
 	string Password,
 	bool LongerExpireTime

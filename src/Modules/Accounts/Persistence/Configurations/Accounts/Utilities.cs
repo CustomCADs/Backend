@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace CustomCADs.Accounts.Persistence.Configurations.Accounts;
 
 using static AccountConstants;
-using static Constants.Roles;
-using static Constants.Users;
+using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 static class Utilities
 {
@@ -23,7 +23,7 @@ static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => AccountId.New(v)
+				x => AccountId.New(x)
 			);
 
 		return builder;

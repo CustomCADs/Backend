@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Catalog.Persistence.Configurations.Tags;
 
-using static Constants.Tags;
+using static DomainConstants.Tags;
 using static TagConstants;
 
 static class Utilities
@@ -22,7 +22,7 @@ static class Utilities
 			.ValueGeneratedOnAdd()
 			.HasConversion(
 				x => x.Value,
-				v => TagId.New(v)
+				x => TagId.New(x)
 			);
 
 		return builder;

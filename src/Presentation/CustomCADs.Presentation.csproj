@@ -24,6 +24,7 @@
 		<ProjectReference Include="..\Modules\Files\Application\CustomCADs.Files.Application.csproj" />
 		<ProjectReference Include="..\Modules\Idempotency\Endpoints\CustomCADs.Idempotency.Endpoints.csproj" />
 		<ProjectReference Include="..\Modules\Identity\Endpoints\CustomCADs.Identity.Endpoints.csproj" />
+		<ProjectReference Include="..\Modules\Notifications\Endpoints\CustomCADs.Notifications.Endpoints.csproj" />
 		<ProjectReference Include="..\Modules\Printing\Endpoints\CustomCADs.Printing.Endpoints.csproj" />
 		<ProjectReference Include="..\Shared\Infrastructure\CustomCADs.Shared.Infrastructure.csproj" />
 	</ItemGroup>

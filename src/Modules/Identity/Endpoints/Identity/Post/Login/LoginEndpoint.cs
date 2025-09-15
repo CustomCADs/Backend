@@ -13,7 +13,7 @@ public sealed class LoginEndpoint(IRequestSender sender, IOptions<CookieSettings
 		Post("login");
 		Group<IdentityGroup>();
 		AllowAnonymous();
-		Description(d => d
+		Description(x => x
 			.WithName(IdentityNames.Login)
 			.WithSummary("Login")
 			.WithDescription("Log in to your account")
@@ -24,12 +24,12 @@ public sealed class LoginEndpoint(IRequestSender sender, IOptions<CookieSettings
 	public override async Task HandleAsync(LoginRequest req, CancellationToken ct)
 	{
 		TokensDto tokens = await sender.SendCommandAsync(
-			new LoginUserCommand(
+			command: new LoginUserCommand(
 				Username: req.Username,
 				Password: req.Password,
 				LongerExpireTime: req.RememberMe ?? false
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		HttpContext.SaveAllCookies(

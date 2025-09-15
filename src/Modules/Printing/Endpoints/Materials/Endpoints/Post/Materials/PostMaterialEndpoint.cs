@@ -12,7 +12,7 @@ public sealed class PostMaterialEndpoint(IRequestSender sender)
 	{
 		Post("");
 		Group<MaterialsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Create")
 			.WithDescription("Add a Material")
 		);
@@ -21,19 +21,19 @@ public sealed class PostMaterialEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(PostMaterialRequest req, CancellationToken ct)
 	{
 		MaterialId id = await sender.SendCommandAsync(
-			new CreateMaterialCommand(
+			command: new CreateMaterialCommand(
 				Name: req.Name,
 				Density: req.Density,
 				Cost: req.Cost,
 				TextureKey: req.TextureKey,
 				TextureContentType: req.TextureContentType
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		MaterialDto material = await sender.SendQueryAsync(
-			new GetMaterialByIdQuery(id),
-			ct
+			query: new GetMaterialByIdQuery(id),
+			ct: ct
 		).ConfigureAwait(false);
 
 		MaterialResponse response = material.ToResponse();

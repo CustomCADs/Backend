@@ -2,11 +2,12 @@
 using CustomCADs.Printing.Domain.Repositories.Reads;
 using CustomCADs.Printing.Persistence;
 using CustomCADs.Printing.Persistence.Repositories;
-using Microsoft.Extensions.Configuration;
+using CustomCADs.Shared.Persistence;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
+using static PersistenceConstants;
 using CustomizationReads = CustomCADs.Printing.Persistence.Repositories.Customizations.Reads;
 using MaterialReads = CustomCADs.Printing.Persistence.Repositories.Materials.Reads;
 
@@ -20,26 +21,19 @@ public static class DependencyInjection
 		return provider;
 	}
 
-	public static IServiceCollection AddPrintingPersistence(this IServiceCollection services, IConfiguration config)
+	public static IServiceCollection AddPrintingPersistence(this IServiceCollection services, string connectionString)
 		=> services
-			.AddContext(config)
+			.AddContext(connectionString)
 			.AddReads()
 			.AddWrites()
 			.AddUnitOfWork();
 
-	private static IServiceCollection AddContext(this IServiceCollection services, IConfiguration config)
-	{
-		string connectionString = config.GetConnectionString("ApplicationConnection")
-			?? throw new KeyNotFoundException("Could not find connection string 'ApplicationConnection'.");
-
-		services.AddDbContext<PrintingContext>(options =>
-			options.UseNpgsql(connectionString, opt =>
-				opt.MigrationsHistoryTable("__EFMigrationsHistory", "Printing")
+	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
+		=> services.AddDbContext<PrintingContext>(options =>
+			options.UseNpgsql(connectionString, opt
+				=> opt.MigrationsHistoryTable(MigrationsTable, Schemes.Printing)
 			)
 		);
-
-		return services;
-	}
 
 	private static IServiceCollection AddReads(this IServiceCollection services)
 	{

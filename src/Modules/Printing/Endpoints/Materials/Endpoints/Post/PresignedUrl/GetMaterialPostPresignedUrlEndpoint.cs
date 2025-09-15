@@ -12,7 +12,7 @@ public sealed class GetMaterialPostPresignedUrlEndpoint(IRequestSender sender)
 	{
 		Post("presignedUrls/upload");
 		Group<MaterialsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Upload Texture")
 			.WithDescription("Upload your Material's Texture")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -22,11 +22,11 @@ public sealed class GetMaterialPostPresignedUrlEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetMaterialPostPresignedUrlRequest req, CancellationToken ct)
 	{
 		UploadFileResponse response = await sender.SendQueryAsync(
-			new GetMaterialTexturePresignedUrlPostQuery(
+			query: new GetMaterialTexturePresignedUrlPostQuery(
 				MaterialName: req.MaterialName,
 				Image: req.Image
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(response).ConfigureAwait(false);

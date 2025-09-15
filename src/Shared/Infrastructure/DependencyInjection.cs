@@ -18,6 +18,7 @@ using System.Reflection;
 using Wolverine;
 using Wolverine.FluentValidation;
 
+
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 

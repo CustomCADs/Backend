@@ -3,7 +3,7 @@ using CustomCADs.Shared.Domain.Bases.Entities;
 
 namespace CustomCADs.Identity.Domain.Users.Entities;
 
-using static Constants.Tokens;
+using static DomainConstants.Tokens;
 
 public class RefreshToken : BaseEntity
 {

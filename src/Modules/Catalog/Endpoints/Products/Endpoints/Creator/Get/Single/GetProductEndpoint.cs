@@ -10,7 +10,7 @@ public sealed class GetProductEndpoint(IRequestSender sender)
 	{
 		Get("{id}");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See your Product in detail")
 		);
@@ -19,11 +19,11 @@ public sealed class GetProductEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetProductRequest req, CancellationToken ct)
 	{
 		CreatorGetProductByIdDto product = await sender.SendQueryAsync(
-			new CreatorGetProductByIdQuery(
+			query: new CreatorGetProductByIdQuery(
 				Id: ProductId.New(req.Id),
-				CreatorId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetProductResponse response = product.ToGetResponse();

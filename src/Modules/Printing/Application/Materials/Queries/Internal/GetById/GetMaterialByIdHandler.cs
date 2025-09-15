@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetById;
 
-public class GetMaterialByIdHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache)
+public sealed class GetMaterialByIdHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache)
 	: IQueryHandler<GetMaterialByIdQuery, MaterialDto>
 {
 	public async Task<MaterialDto> Handle(GetMaterialByIdQuery req, CancellationToken ct)

@@ -10,7 +10,7 @@ public sealed class CancelCustomEndpoint(IRequestSender sender)
 	{
 		Patch("cancel");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Cancel")
 			.WithDescription("Set an Custom's Status back to Pending")
 		);
@@ -19,11 +19,11 @@ public sealed class CancelCustomEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancelCustomRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new CancelCustomCommand(
+			command: new CancelCustomCommand(
 				Id: CustomId.New(req.Id),
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

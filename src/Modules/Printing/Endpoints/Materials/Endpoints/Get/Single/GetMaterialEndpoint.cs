@@ -11,7 +11,7 @@ public sealed class GetMaterialEndpoint(IRequestSender sender)
 		Get("{id}");
 		AllowAnonymous();
 		Group<MaterialsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See a Material")
 		);
@@ -20,10 +20,10 @@ public sealed class GetMaterialEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetMaterialRequest req, CancellationToken ct)
 	{
 		MaterialDto category = await sender.SendQueryAsync(
-			new GetMaterialByIdQuery(
+			query: new GetMaterialByIdQuery(
 				Id: MaterialId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		MaterialResponse response = category.ToResponse();

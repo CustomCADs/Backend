@@ -13,7 +13,7 @@ public sealed class GetProductPostPresignedUrlsEndpoint(IRequestSender sender)
 	{
 		Post("presignedUrls/upload");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Upload Image & Cad")
 			.WithDescription("Upload the Image and Cad for a Product")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -23,19 +23,19 @@ public sealed class GetProductPostPresignedUrlsEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetProductPostPresignedUrlsRequest req, CancellationToken ct)
 	{
 		UploadFileResponse image = await sender.SendQueryAsync(
-			new CreatorGetProductImagePresignedUrlPostQuery(
+			query: new CreatorGetProductImagePresignedUrlPostQuery(
 				ProductName: req.ProductName,
 				Image: req.Image
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		UploadFileResponse cad = await sender.SendQueryAsync(
-			new CreatorGetProductCadPresignedUrlPostQuery(
+			query: new CreatorGetProductCadPresignedUrlPostQuery(
 				ProductName: req.ProductName,
 				Cad: req.Cad
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		GetProductPostPresignedUrlsResponse response = new(

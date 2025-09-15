@@ -1,5 +1,5 @@
 namespace CustomCADs.Identity.Application.Users.Commands.Internal.ToggleViewedProductsTracking;
 
-public record ToggleViewedProductsTrackingCommand(
+public sealed record ToggleViewedProductsTrackingCommand(
 	string Username
 ) : ICommand;

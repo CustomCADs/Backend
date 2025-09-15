@@ -11,7 +11,7 @@ public class CreateTagEndpoint(IRequestSender sender)
 	{
 		Post("");
 		Group<TagGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Create")
 			.WithDescription("Create Tag")
 		);
@@ -20,15 +20,15 @@ public class CreateTagEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CreateTagRequest req, CancellationToken ct)
 	{
 		TagId id = await sender.SendCommandAsync(
-			new CreateTagCommand(
+			command: new CreateTagCommand(
 				Name: req.Name
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
-		TagReadDto tag = await sender.SendQueryAsync(
-			new GetTagByIdQuery(id),
-			ct
+		TagDto tag = await sender.SendQueryAsync(
+			query: new GetTagByIdQuery(id),
+			ct: ct
 		).ConfigureAwait(false);
 
 		CreateTagResponse response = tag.ToCreateTagResponse();

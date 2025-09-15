@@ -13,16 +13,15 @@ public sealed class DesignerGetProductByIdHandler(IProductReads reads, IRequestS
 		Product product = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(req.Id);
 
-		string username = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(product.CreatorId),
-			ct
-		).ConfigureAwait(false);
-
-		string category = await sender.SendQueryAsync(
-			new GetCategoryNameByIdQuery(product.CategoryId),
-			ct
-		).ConfigureAwait(false);
-
-		return product.ToDesignerGetByIdDto(username, category);
+		return product.ToDesignerGetByIdDto(
+			username: await sender.SendQueryAsync(
+				query: new GetUsernameByIdQuery(product.CreatorId),
+				ct: ct
+			).ConfigureAwait(false),
+			categoryName: await sender.SendQueryAsync(
+				query: new GetCategoryNameByIdQuery(product.CategoryId),
+				ct: ct
+			).ConfigureAwait(false)
+		);
 	}
 }

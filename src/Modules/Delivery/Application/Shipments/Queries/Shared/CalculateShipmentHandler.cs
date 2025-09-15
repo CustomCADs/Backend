@@ -5,7 +5,7 @@ using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Shared;
 
-public class CalculateShipmentHandler(IDeliveryService delivery)
+public sealed class CalculateShipmentHandler(IDeliveryService delivery)
 	: IQueryHandler<CalculateShipmentQuery, CalculateShipmentDto[]>
 {
 	public async Task<CalculateShipmentDto[]> Handle(CalculateShipmentQuery req, CancellationToken ct)

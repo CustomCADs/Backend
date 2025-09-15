@@ -9,7 +9,7 @@ public class DeleteTagEndpoint(IRequestSender sender)
 	{
 		Delete("");
 		Group<TagGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Delete")
 			.WithDescription("Delete Tag")
 		);
@@ -18,10 +18,10 @@ public class DeleteTagEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(DeleteTagRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new DeleteTagCommand(
+			command: new DeleteTagCommand(
 				Id: TagId.New(req.Id)
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

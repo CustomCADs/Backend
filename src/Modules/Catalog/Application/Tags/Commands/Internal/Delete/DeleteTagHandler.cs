@@ -5,8 +5,12 @@ using CustomCADs.Catalog.Domain.Tags;
 
 namespace CustomCADs.Catalog.Application.Tags.Commands.Internal.Delete;
 
-public class DeleteTagHandler(ITagReads reads, ITagWrites writes, IUnitOfWork uow, BaseCachingService<TagId, Tag> cache)
-	: ICommandHandler<DeleteTagCommand>
+public sealed class DeleteTagHandler(
+	ITagReads reads,
+	ITagWrites writes,
+	IUnitOfWork uow,
+	BaseCachingService<TagId, Tag> cache
+) : ICommandHandler<DeleteTagCommand>
 {
 	public async Task Handle(DeleteTagCommand req, CancellationToken ct)
 	{

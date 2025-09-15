@@ -14,13 +14,13 @@ public class CustomDeliveryRequestedApplicationEventHandler(ICustomReads reads, 
 			?? throw CustomNotFoundException<Custom>.ById(de.Id);
 
 		string buyer = await sender.SendQueryAsync(
-			new GetUsernameByIdQuery(custom.BuyerId)
+			query: new GetUsernameByIdQuery(custom.BuyerId)
 		).ConfigureAwait(false);
 		int count = de.Count;
 		double weight = de.Weight;
 
 		ShipmentId shipmentId = await sender.SendCommandAsync(
-			new CreateShipmentCommand(
+			command: new CreateShipmentCommand(
 				Info: new(count, weight, buyer),
 				Service: de.ShipmentService,
 				Address: de.Address,

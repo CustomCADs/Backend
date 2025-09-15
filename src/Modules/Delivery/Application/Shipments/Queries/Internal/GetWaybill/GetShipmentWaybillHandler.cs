@@ -1,13 +1,15 @@
 ﻿using CustomCADs.Delivery.Application.Contracts;
 using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
-using static Constants.Users;
+using static DomainConstants.Users;
 
-public class GetShipmentWaybillHandler(IShipmentReads reads, IDeliveryService delivery, BaseCachingService<ShipmentId, Shipment> cache)
-	: IQueryHandler<GetShipmentWaybillQuery, byte[]>
+public sealed class GetShipmentWaybillHandler(
+	IShipmentReads reads,
+	IDeliveryService delivery,
+	BaseCachingService<ShipmentId, Shipment> cache
+) : IQueryHandler<GetShipmentWaybillQuery, byte[]>
 {
 	public async Task<byte[]> Handle(GetShipmentWaybillQuery req, CancellationToken ct)
 	{
@@ -18,7 +20,7 @@ public class GetShipmentWaybillHandler(IShipmentReads reads, IDeliveryService de
 		).ConfigureAwait(false);
 
 		Guid headDesignerId = Guid.Parse(DesignerAccountId);
-		if (req.DesignerId != AccountId.New(headDesignerId))
+		if (req.CallerId.Value != headDesignerId)
 		{
 			throw CustomAuthorizationException<Shipment>.ById(req.Id);
 		}

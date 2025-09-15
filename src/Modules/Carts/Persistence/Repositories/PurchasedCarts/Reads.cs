@@ -14,12 +14,12 @@ public sealed class Reads(CartsContext context) : IPurchasedCartReads
 	{
 		IQueryable<PurchasedCart> queryable = context.PurchasedCarts
 			.WithTracking(track)
-			.Include(c => c.Items)
-			.WithFilter(query.BuyerId, query.PaymentStatus)
-			.WithSorting(query.Sorting ?? new());
+			.Include(x => x.Items)
+			.WithFilter(query.BuyerId, query.PaymentStatus);
 
 		int count = await queryable.CountAsync(ct).ConfigureAwait(false);
 		PurchasedCart[] carts = await queryable
+			.WithSorting(query.Sorting)
 			.WithPagination(query.Pagination)
 			.ToArrayAsync(ct)
 			.ConfigureAwait(false);
@@ -30,22 +30,22 @@ public sealed class Reads(CartsContext context) : IPurchasedCartReads
 	public async Task<PurchasedCart?> SingleByIdAsync(PurchasedCartId id, bool track = true, CancellationToken ct = default)
 		=> await context.PurchasedCarts
 			.WithTracking(track)
-			.Include(c => c.Items)
-			.FirstOrDefaultAsync(p => p.Id == id, ct)
+			.Include(x => x.Items)
+			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
 	public async Task<int> CountAsync(AccountId buyerId, CancellationToken ct = default)
 		=> await context.PurchasedCarts
 			.WithTracking(false)
-			.Where(c => c.BuyerId == buyerId)
+			.Where(x => x.BuyerId == buyerId)
 			.CountAsync(ct)
 			.ConfigureAwait(false);
 
 	public async Task<Dictionary<PurchasedCartId, int>> CountItemsAsync(AccountId buyerId, CancellationToken ct = default)
 		=> await context.PurchasedCarts
 			.WithTracking(false)
-			.Include(c => c.Items)
-			.Where(c => c.BuyerId == buyerId)
-			.ToDictionaryAsync(kv => kv.Id, kv => kv.Items.Count, ct)
+			.Include(x => x.Items)
+			.Where(x => x.BuyerId == buyerId)
+			.ToDictionaryAsync(x => x.Id, x => x.Items.Count, ct)
 			.ConfigureAwait(false);
 }

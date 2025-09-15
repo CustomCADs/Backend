@@ -13,37 +13,37 @@ public sealed class GalleryGetAllProductsHandler(IProductReads reads, IRequestSe
 {
 	public async Task<Result<GalleryGetAllProductsDto>> Handle(GalleryGetAllProductsQuery req, CancellationToken ct)
 	{
-		ProductQuery productQuery = new(
-			CategoryId: req.CategoryId,
-			TagIds: req.TagIds,
-			Name: req.Name,
-			Status: ProductStatus.Validated,
-			Sorting: req.Sorting,
-			Pagination: req.Pagination
-		);
-		Result<Product> result = await reads.AllAsync(productQuery, track: false, ct: ct).ConfigureAwait(false);
-
-		Dictionary<ProductId, string[]> tags = await reads.TagsByIdsAsync([.. result.Items.Select(p => p.Id)], ct).ConfigureAwait(false);
-
-		AccountId[] userIds = [.. result.Items.Select(p => p.CreatorId).Distinct()];
-		Dictionary<AccountId, string> users = await sender.SendQueryAsync(
-				new GetUsernamesByIdsQuery(userIds),
-				ct
-			).ConfigureAwait(false);
-
-		CategoryId[] categoryIds = [.. result.Items.Select(p => p.CategoryId).Distinct()];
-		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
-			new GetCategoryNamesByIdsQuery(categoryIds),
-			ct
+		Result<Product> result = await reads.AllAsync(
+			query: new(
+				CategoryId: req.CategoryId,
+				TagIds: req.TagIds,
+				Name: req.Name,
+				Status: ProductStatus.Validated,
+				Sorting: req.Sorting,
+				Pagination: req.Pagination
+			),
+			track: false,
+			ct: ct
 		).ConfigureAwait(false);
 
-		return new(
-			Count: result.Count,
-			Items: [.. result.Items.Select(p => p.ToGalleryGetAllDto(
-				username: users[p.CreatorId],
-				categoryName: categories[p.CategoryId],
-				tags: tags[p.Id]
-			))]
-		);
+		Dictionary<ProductId, string[]> tags = await reads.TagsByIdsAsync([.. result.Items.Select(x => x.Id)], ct).ConfigureAwait(false);
+
+		AccountId[] userIds = [.. result.Items.Select(x => x.CreatorId).Distinct()];
+		Dictionary<AccountId, string> users = await sender.SendQueryAsync(
+				new GetUsernamesByIdsQuery(userIds),
+				ct: ct
+			).ConfigureAwait(false);
+
+		CategoryId[] categoryIds = [.. result.Items.Select(x => x.CategoryId).Distinct()];
+		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
+			query: new GetCategoryNamesByIdsQuery(categoryIds),
+			ct: ct
+		).ConfigureAwait(false);
+
+		return result.ToNewResult(x => x.ToGalleryGetAllDto(
+			username: users[x.CreatorId],
+			categoryName: categories[x.CategoryId],
+			tags: tags[x.Id]
+		));
 	}
 }

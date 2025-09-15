@@ -1,6 +1,6 @@
 namespace CustomCADs.Idempotency.Application.IdempotencyKeys.Queries.Internal.Get;
 
-public record GetIdempotencyKeyDto(
+public sealed record GetIdempotencyKeyDto(
 	string ResponseBody,
 	int StatusCode
 );

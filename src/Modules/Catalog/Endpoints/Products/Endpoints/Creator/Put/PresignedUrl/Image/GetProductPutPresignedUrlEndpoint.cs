@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Builder;
 namespace CustomCADs.Catalog.Endpoints.Products.Endpoints.Creator.Put.PresignedUrl.Image;
 
 public sealed class GetProductPutPresignedUrlEndpoint(IRequestSender sender)
-	: Endpoint<GetProductPutPresignedUrlRequest, CreatorGetProductImagePresignedUrlPutDto>
+	: Endpoint<GetProductPutPresignedUrlRequest, string>
 {
 	public override void Configure()
 	{
 		Post("presignedUrls/replace/image");
 		Group<CreatorGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Change Image")
 			.WithDescription("Change your Product's Image")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -21,14 +21,14 @@ public sealed class GetProductPutPresignedUrlEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(GetProductPutPresignedUrlRequest req, CancellationToken ct)
 	{
-		CreatorGetProductImagePresignedUrlPutDto response = await sender.SendQueryAsync(
-			new CreatorGetProductImagePresignedUrlPutQuery(
+		string url = await sender.SendQueryAsync(
+			query: new CreatorGetProductImagePresignedUrlPutQuery(
 				Id: ProductId.New(req.Id),
 				NewImage: req.File,
-				CreatorId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.OkAsync(url).ConfigureAwait(false);
 	}
 }

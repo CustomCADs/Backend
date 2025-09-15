@@ -5,5 +5,5 @@ namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetCa
 
 public sealed record CreatorGetProductCadPresignedUrlGetQuery(
 	ProductId Id,
-	AccountId CreatorId
+	AccountId CallerId
 ) : IQuery<DownloadFileResponse>;

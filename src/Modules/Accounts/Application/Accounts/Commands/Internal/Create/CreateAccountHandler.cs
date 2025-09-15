@@ -5,8 +5,11 @@ using CustomCADs.Shared.Application.Events.Account.Accounts;
 
 namespace CustomCADs.Accounts.Application.Accounts.Commands.Internal.Create;
 
-public sealed class CreateAccountHandler(IAccountWrites writes, IUnitOfWork uow, IEventRaiser raiser)
-	: ICommandHandler<CreateAccountCommand, AccountId>
+public sealed class CreateAccountHandler(
+	IAccountWrites writes,
+	IUnitOfWork uow,
+	IEventRaiser raiser
+) : ICommandHandler<CreateAccountCommand, AccountId>
 {
 	public async Task<AccountId> Handle(CreateAccountCommand req, CancellationToken ct)
 	{
@@ -18,17 +21,19 @@ public sealed class CreateAccountHandler(IAccountWrites writes, IUnitOfWork uow,
 				firstName: req.FirstName,
 				lastName: req.LastName
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
-		await raiser.RaiseApplicationEventAsync(new AccountCreatedApplicationEvent(
-			Id: account.Id,
-			Role: account.RoleName,
-			Username: account.Username,
-			Email: account.Email,
-			Password: req.Password
-		)).ConfigureAwait(false);
+		await raiser.RaiseApplicationEventAsync(
+			@event: new AccountCreatedApplicationEvent(
+				Id: account.Id,
+				Role: account.RoleName,
+				Username: account.Username,
+				Email: account.Email,
+				Password: req.Password
+			)
+		).ConfigureAwait(false);
 
 		return account.Id;
 	}

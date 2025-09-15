@@ -6,5 +6,5 @@ public sealed record SetProductFilesCommand(
 	ProductId Id,
 	(string? Key, string? ContentType, decimal? Volume) Cad,
 	(string? Key, string? ContentType) Image,
-	AccountId CreatorId
+	AccountId CallerId
 ) : ICommand;

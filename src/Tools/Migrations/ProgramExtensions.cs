@@ -1,16 +1,23 @@
 using CustomCADs.Identity.Domain.Users;
-using CustomCADs.Identity.Infrastructure.Identity;
+using CustomCADs.Identity.Infrastructure.Identity.Context;
 using CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Printing.Domain.Services;
+using CustomCADs.Shared.Infrastructure.Utilities;
+using CustomCADs.Shared.Persistence;
+using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
+using static PersistenceConstants;
 using static UserConstants;
 
 public static class ProgramExtensions
 {
+	private static string GetConnectionString(this IConfiguration config)
+		=> config.GetApplicationConnectionString(ConnectionString, DatabaseConnectionException.Missing(ConnectionString));
+
 	public static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration config)
 	{
 		services.AddIdentity<AppUser, AppRole>(options =>
@@ -30,25 +37,25 @@ public static class ProgramExtensions
 		.AddEntityFrameworkStores<IdentityContext>()
 		.AddDefaultTokenProviders();
 
-		const string connectionStringKey = "ApplicationConnection";
-		string? connectionString = config.GetConnectionString(connectionStringKey)
-			?? throw new KeyNotFoundException($"Could not find connection string '{connectionStringKey}'.");
+		string? connectionString = config.GetConnectionString(ConnectionString)
+			?? throw new KeyNotFoundException($"Could not find connection string '{ConnectionString}'.");
 
-		services.AddIdentityServices(connectionString);
+		services.AddIdentityServices(config.GetConnectionString());
 
 		return services;
 	}
 
 	public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration config)
 		=> services
-			.AddAccountsPersistence(config)
-			.AddCartsPersistence(config)
-			.AddCatalogPersistence(config)
-			.AddPrintingPersistence(config)
-			.AddCustomsPersistence(config)
-			.AddDeliveryPersistence(config)
-			.AddFilesPersistence(config)
-			.AddIdempotencyPersistence(config);
+			.AddAccountsPersistence(config.GetConnectionString())
+			.AddCartsPersistence(config.GetConnectionString())
+			.AddCatalogPersistence(config.GetConnectionString())
+			.AddCustomsPersistence(config.GetConnectionString())
+			.AddDeliveryPersistence(config.GetConnectionString())
+			.AddFilesPersistence(config.GetConnectionString())
+			.AddIdempotencyPersistence(config.GetConnectionString())
+			.AddNotificationsPersistence(config.GetConnectionString())
+			.AddPrintingPersistence(config.GetConnectionString());
 
 	public static IServiceCollection AddDomainServices(this IServiceCollection services)
 	{
@@ -66,12 +73,13 @@ public static class ProgramExtensions
 			provider.UpdateAccountsContextAsync(),
 			provider.UpdateCartsContextAsync(),
 			provider.UpdateCatalogContextAsync(),
-			provider.UpdatePrintingContextAsync(),
 			provider.UpdateCustomsContextAsync(),
 			provider.UpdateDeliveryContextAsync(),
 			provider.UpdateFilesContextAsync(),
 			provider.UpdateIdempotencyContextAsync(),
 			provider.UpdateIdentityContextAsync(),
+			provider.UpdateNotificationsContextAsync(),
+			provider.UpdatePrintingContextAsync(),
 		]).ConfigureAwait(false);
 	}
 }

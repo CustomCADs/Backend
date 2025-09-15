@@ -11,7 +11,7 @@ public sealed class ValidateProductEndpoint(IRequestSender sender)
 	{
 		Patch("validate");
 		Group<DesignerGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Validate")
 			.WithDescription("Set a Product's Status to Validated")
 		);
@@ -20,12 +20,12 @@ public sealed class ValidateProductEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ValidateProductRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			new SetProductStatusCommand(
+			command: new SetProductStatusCommand(
 				Id: ProductId.New(req.Id),
 				Status: ProductStatus.Validated,
-				DesignerId: User.GetAccountId()
+				CallerId: User.GetAccountId()
 			),
-			ct
+			ct: ct
 		).ConfigureAwait(false);
 
 		await Send.NoContentAsync().ConfigureAwait(false);

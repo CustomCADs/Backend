@@ -9,6 +9,7 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Events.Domain;
 
+using static DomainConstants;
 using static ProductsData;
 
 public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
@@ -19,8 +20,8 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private const string Username = Constants.Users.CustomerUsername;
-	private readonly AccountInfo info = new(
+	private const string Username = Users.CustomerUsername;
+	private readonly AccountInfoDto info = new(
 		CreatedAt: default,
 		TrackViewedProducts: true,
 		FirstName: null,

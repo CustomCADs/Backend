@@ -1,3 +1,3 @@
 ﻿namespace CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
-public record GetCadExistsByIdQuery(CadId Id) : IQuery<bool>;
+public sealed record GetCadExistsByIdQuery(CadId Id) : IQuery<bool>;

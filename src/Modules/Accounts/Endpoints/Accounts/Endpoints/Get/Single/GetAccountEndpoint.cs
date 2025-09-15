@@ -11,7 +11,7 @@ public sealed class GetAccountEndpoint(IRequestSender sender)
 	{
 		Get("{username}");
 		Group<AccountsGroup>();
-		Description(d => d
+		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See an Account in detail")
 		);
@@ -20,8 +20,8 @@ public sealed class GetAccountEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(GetAccountRequest req, CancellationToken ct)
 	{
 		GetAccountByIdDto account = await sender.SendQueryAsync(
-			new GetAccountByIdQuery(AccountId.New(req.Id)),
-			ct
+			query: new GetAccountByIdQuery(AccountId.New(req.Id)),
+			ct: ct
 		).ConfigureAwait(false);
 
 		AccountResponse response = account.ToResponse();

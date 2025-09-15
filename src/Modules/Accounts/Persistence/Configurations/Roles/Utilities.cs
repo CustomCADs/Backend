@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Accounts.Persistence.Configurations.Roles;
 
-using static Constants.Roles;
+using static DomainConstants.Roles;
 using static RoleConstants;
 
 static class Utilities
@@ -21,7 +21,7 @@ static class Utilities
 		builder.Property(x => x.Id)
 			.HasConversion(
 				x => x.Value,
-				v => RoleId.New(v)
+				x => RoleId.New(x)
 			).UseIdentityColumn();
 
 		return builder;

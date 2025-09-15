@@ -3,7 +3,7 @@ using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment;
 
-public record CalculateCustomShipmentQuery(
+public sealed record CalculateCustomShipmentQuery(
 	CustomId Id,
 	int Count,
 	AddressDto Address,

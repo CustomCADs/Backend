@@ -17,7 +17,7 @@ public class PurchaseActiveCartWithDeliveryValidatorUnitTests : ActiveCartsBaseU
 		// Arrange
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
 			Contact: new(phone, email)
@@ -41,7 +41,7 @@ public class PurchaseActiveCartWithDeliveryValidatorUnitTests : ActiveCartsBaseU
 		// Arrange
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
 			Contact: new(phone, email)
@@ -61,7 +61,7 @@ public class PurchaseActiveCartWithDeliveryValidatorUnitTests : ActiveCartsBaseU
 		// Arrange
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
 			Contact: new(phone, email)
@@ -81,7 +81,7 @@ public class PurchaseActiveCartWithDeliveryValidatorUnitTests : ActiveCartsBaseU
 		// Arrange
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
 			Contact: new(phone, email)
@@ -101,7 +101,7 @@ public class PurchaseActiveCartWithDeliveryValidatorUnitTests : ActiveCartsBaseU
 		// Arrange
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
 			Contact: new(phone, email)
@@ -121,7 +121,7 @@ public class PurchaseActiveCartWithDeliveryValidatorUnitTests : ActiveCartsBaseU
 		// Arrange
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
 			Contact: new(phone, email)
@@ -141,7 +141,7 @@ public class PurchaseActiveCartWithDeliveryValidatorUnitTests : ActiveCartsBaseU
 		// Arrange
 		PurchaseActiveCartWithDeliveryCommand command = new(
 			PaymentMethodId: paymentMethodId,
-			BuyerId: ValidBuyerId,
+			CallerId: ValidBuyerId,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
 			Contact: new(phone, email)
