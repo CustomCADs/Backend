@@ -1,15 +1,10 @@
 ﻿using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
-using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.Querying;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
 
-public sealed class GetAllShipmentsHandler(
-	IShipmentReads reads,
-	IRequestSender sender
-) : IQueryHandler<GetAllShipmentsQuery, Result<GetAllShipmentsDto>>
+public sealed class GetAllShipmentsHandler(IShipmentReads reads)
+	: IQueryHandler<GetAllShipmentsQuery, Result<GetAllShipmentsDto>>
 {
 	public async Task<Result<GetAllShipmentsDto>> Handle(GetAllShipmentsQuery req, CancellationToken ct)
 	{
@@ -23,11 +18,6 @@ public sealed class GetAllShipmentsHandler(
 			ct: ct
 		).ConfigureAwait(false);
 
-		Dictionary<AccountId, string> buyers = await sender.SendQueryAsync(
-			query: new GetUsernamesByIdsQuery([.. result.Items.Select(x => x.BuyerId)]),
-			ct: ct
-		).ConfigureAwait(false);
-
-		return result.ToNewResult(x => x.ToGetAllDto(buyers[x.BuyerId]));
+		return result.ToNewResult(x => x.ToGetAllDto());
 	}
 }

@@ -1,6 +1,4 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Domain.Repositories;
-using CustomCADs.Shared.Abstractions.Delivery.Dtos;
+﻿using CustomCADs.Delivery.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
@@ -10,29 +8,11 @@ namespace CustomCADs.Delivery.Application.Shipments.Commands.Shared.Create;
 public sealed class CreateShipmentHandler(
 	IWrites<Shipment> writes,
 	IUnitOfWork uow,
-	IDeliveryService delivery,
 	IRequestSender sender
 ) : ICommandHandler<CreateShipmentCommand, ShipmentId>
 {
 	public async Task<ShipmentId> Handle(CreateShipmentCommand req, CancellationToken ct)
 	{
-		ShipmentDto reference = await delivery.ShipAsync(
-			req: new(
-				Package: "BOX",
-				Contents: $"{req.Info.Count} 3D Model/s, each wrapped in a box",
-				ParcelCount: req.Info.Count,
-				Name: req.Info.Recipient,
-				TotalWeight: req.Info.Weight,
-				Service: req.Service,
-				Country: req.Address.Country,
-				City: req.Address.City,
-				Street: req.Address.Street,
-				Phone: req.Contact.Phone,
-				Email: req.Contact.Email
-			),
-			ct: ct
-		).ConfigureAwait(false);
-
 		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.BuyerId), ct).ConfigureAwait(false))
 		{
 			throw CustomNotFoundException<Shipment>.ById(req.BuyerId, "User");
@@ -40,9 +20,16 @@ public sealed class CreateShipmentHandler(
 
 		Shipment shipment = await writes.AddAsync(
 			entity: Shipment.Create(
-				address: req.Address.ToValueObject(),
-				referenceId: reference.Id,
-				buyerId: req.BuyerId
+				buyerId: req.BuyerId,
+				service: req.Service,
+				email: req.Contact.Email,
+				phone: req.Contact.Phone,
+				recipient: req.Info.Recipient,
+				count: req.Info.Count,
+				weight: req.Info.Weight,
+				country: req.Address.City,
+				city: req.Address.City,
+				street: req.Address.Street
 			),
 			ct: ct
 		).ConfigureAwait(false);

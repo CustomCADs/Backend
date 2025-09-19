@@ -5,15 +5,32 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Carts;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Identity.Queries;
+using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
+using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 
-public class CartPaymentCompletedApplicationEventHandler(IPurchasedCartReads reads, IUnitOfWork uow, IRequestSender sender, IEmailService email)
+public class CartPaymentCompletedApplicationEventHandler(
+	IPurchasedCartReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IEmailService email
+)
 {
 	public async Task Handle(CartPaymentCompletedApplicationEvent ae)
 	{
 		PurchasedCart cart = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
 			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.Id);
+
+		if (cart is not { ShipmentId: not null })
+		{
+			throw CustomStatusException<PurchasedCart>.ById(ae.Id);
+		}
+		ShipmentId shipmentId = cart.ShipmentId.Value;
+
+		await sender.SendCommandAsync(
+			new ActivateShipmentCommand(shipmentId)
+		).ConfigureAwait(false);
 
 		cart.FinishPayment(success: true);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
@@ -28,6 +45,9 @@ public class CartPaymentCompletedApplicationEventHandler(IPurchasedCartReads rea
 			query: new GetClientUrlQuery()
 		).ConfigureAwait(false);
 
-		await email.SendRewardGrantedEmailAsync(to, $"{url}/carts").ConfigureAwait(false);
+		await Task.WhenAll([
+			email.SendRewardGrantedEmailAsync(to, $"{url}/carts"),
+			email.SendRewardGrantedEmailAsync(to, $"{url}/shipments/{shipmentId}"),
+		]).ConfigureAwait(false);
 	}
 }

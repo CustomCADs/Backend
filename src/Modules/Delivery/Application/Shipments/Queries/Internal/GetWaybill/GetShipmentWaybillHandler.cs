@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Delivery.Application.Contracts;
 using CustomCADs.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Delivery.Domain.Shipments.Enums;
 
 namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
@@ -21,6 +22,11 @@ public sealed class GetShipmentWaybillHandler(
 			throw CustomAuthorizationException<Shipment>.ById(req.Id);
 		}
 
-		return await delivery.PrintAsync(shipment.ReferenceId, ct: ct).ConfigureAwait(false);
+		if (shipment is not { Status: ShipmentStatus.Active or ShipmentStatus.Delivered, Reference.Id: not null })
+		{
+			throw CustomStatusException<Shipment>.ById(req.Id);
+		}
+
+		return await delivery.PrintAsync(shipment.Reference.Id, ct: ct).ConfigureAwait(false);
 	}
 }
