@@ -166,6 +166,7 @@ public static class ProgramExtensions
 		services
 			.AddSharedBackgroundJobs()
 			.AddCatalogBackgroundJobs()
+			.AddDeliveryBackgroundJobs()
 			.AddIdempotencyBackgroundJobs();
 
 		return services;

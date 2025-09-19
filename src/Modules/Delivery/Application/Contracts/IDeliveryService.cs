@@ -9,5 +9,6 @@ public interface IDeliveryService
 	Task<ShipmentDto> ShipAsync(ShipRequestDto req, CancellationToken ct = default);
 	Task CancelAsync(string shipmentId, string comment, CancellationToken ct = default);
 	Task<ShipmentStatusDto[]> TrackAsync(string shipmentId, CancellationToken ct = default);
+	Task<Dictionary<string, ShipmentStatusDto[]>> TrackAsync(string[] shipmentIds, CancellationToken ct = default);
 	Task<byte[]> PrintAsync(string shipmentId, CancellationToken ct = default);
 }

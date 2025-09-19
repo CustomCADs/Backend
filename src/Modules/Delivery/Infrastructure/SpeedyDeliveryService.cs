@@ -76,24 +76,44 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 			ct: ct
 		).ConfigureAwait(false);
 
-	public async Task<ShipmentStatusDto[]> TrackAsync(string shipmentId, CancellationToken ct = default)
-	{
-		TrackedParcelModel[] response = await service.TrackAsync(
-			shipmentId: shipmentId,
-			ct: ct
-		).ConfigureAwait(false);
-
-		return [.. response.Single().Operations.Select(x => new ShipmentStatusDto(
-			DateTime: x.DateTime,
-			Place: x.Place,
-			Message: x.Translate()
-		))];
-	}
-
 	public async Task<byte[]> PrintAsync(string shipmentId, CancellationToken ct = default)
 		=> await service.PrintAsync(
 			paperSize: paper,
 			shipmentId: shipmentId,
 			ct: ct
 		).ConfigureAwait(false);
+
+	public async Task<ShipmentStatusDto[]> TrackAsync(string shipmentId, CancellationToken ct = default)
+	{
+		Dictionary<string, ICollection<TrackedParcelModel>> response = await service.TrackAsync(
+			shipmentIds: [shipmentId],
+			ct: ct
+		).ConfigureAwait(false);
+
+		return ConvertParcelToStatuses(response.Single().Value);
+	}
+
+	public async Task<Dictionary<string, ShipmentStatusDto[]>> TrackAsync(string[] shipmentIds, CancellationToken ct = default)
+	{
+		Dictionary<string, ICollection<TrackedParcelModel>> response = await service.TrackAsync(
+			shipmentIds: shipmentIds,
+			ct: ct
+		).ConfigureAwait(false);
+
+		return response.ToDictionary(
+			x => x.Key,
+			x => ConvertParcelToStatuses(x.Value)
+		);
+	}
+
+	private static ShipmentStatusDto[] ConvertParcelToStatuses(ICollection<TrackedParcelModel> parcels)
+		=> [.. parcels
+			.SelectMany(x => x.Operations)
+			.Select(x => new ShipmentStatusDto(
+				DateTime: x.DateTime,
+				IsDelivered: x.IsDelivered,
+				Place: x.Place,
+				Message: x.Operation
+			))
+		];
 }
