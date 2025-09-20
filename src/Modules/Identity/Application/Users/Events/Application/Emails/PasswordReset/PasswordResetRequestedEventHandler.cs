@@ -4,8 +4,8 @@ namespace CustomCADs.Identity.Application.Users.Events.Application.Emails.Passwo
 
 public class PasswordResetRequestedEventHandler(IEmailService email)
 {
-	public async Task Handle(PasswordResetRequestedApplicationEvent de)
+	public async Task Handle(PasswordResetRequestedApplicationEvent ae)
 	{
-		await email.SendForgotPasswordEmailAsync(de.Email, de.Endpoint).ConfigureAwait(false);
+		await email.SendForgotPasswordEmailAsync(ae.Email, ae.Endpoint).ConfigureAwait(false);
 	}
 }

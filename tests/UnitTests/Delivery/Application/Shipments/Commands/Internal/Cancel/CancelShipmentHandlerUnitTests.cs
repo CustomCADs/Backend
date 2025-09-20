@@ -1,6 +1,8 @@
 ﻿using CustomCADs.Delivery.Application.Contracts;
 using CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
+using CustomCADs.Delivery.Domain.Repositories;
 using CustomCADs.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Commands.Internal.Cancel;
 
@@ -10,23 +12,21 @@ public class CancelShipmentHandlerUnitTests : ShipmentsBaseUnitTests
 {
 	private readonly CancelShipmentHandler handler;
 	private readonly Mock<IShipmentReads> reads = new();
+	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IDeliveryService> delivery = new();
-	private readonly Mock<BaseCachingService<ShipmentId, Shipment>> cache = new();
 
 	private const string Comment = "Cancelling due to unpredicted travelling abroad";
 
 	public CancelShipmentHandlerUnitTests()
 	{
-		handler = new(reads.Object, delivery.Object, cache.Object);
+		handler = new(reads.Object, uow.Object, delivery.Object);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Shipment>>>()
-		)).ReturnsAsync(CreateShipment(referenceId: ValidReferenceId));
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(CreateShipment().Activate(ValidReferenceId));
 	}
 
 	[Fact]
-	public async Task Handle_ShouldReadCache()
+	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
 		CancelShipmentCommand command = new(ValidId, Comment);
@@ -35,8 +35,24 @@ public class CancelShipmentHandlerUnitTests : ShipmentsBaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		cache.Verify(
-			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Shipment>>>()),
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldPersistToDatabase()
+	{
+		// Arrange
+		CancelShipmentCommand command = new(ValidId, Comment);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
 			Times.Once()
 		);
 	}
@@ -52,5 +68,36 @@ public class CancelShipmentHandlerUnitTests : ShipmentsBaseUnitTests
 
 		// Assert
 		delivery.Verify(x => x.CancelAsync(ValidReferenceId, Comment, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenShipmentStatusInvalid()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(
+			CreateShipment().Activate(ValidReferenceId).Deliver()
+		);
+
+		CancelShipmentCommand command = new(ValidId, Comment);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
+			// Act
+			async () => await handler.Handle(command, ct)
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenShipmentNotFound()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Shipment);
+		CancelShipmentCommand command = new(ValidId, Comment);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
+			// Act
+			async () => await handler.Handle(command, ct)
+		);
 	}
 }

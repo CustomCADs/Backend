@@ -19,7 +19,7 @@ namespace CustomCADs.Delivery.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Delivery")
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -35,16 +35,14 @@ namespace CustomCADs.Delivery.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("BuyerId");
 
-                    b.Property<string>("ReferenceId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("ReferenceId");
-
                     b.Property<DateTimeOffset>("RequestedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("RequestedAt");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Address", "CustomCADs.Delivery.Domain.Shipments.Shipment.Address#Address", b1 =>
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Address", "CustomCADs.Delivery.Domain.Shipments.Shipment.Address#ShipmentAddress", b1 =>
                         {
                             b1.IsRequired();
 
@@ -62,6 +60,51 @@ namespace CustomCADs.Delivery.Persistence.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("Street");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Contact", "CustomCADs.Delivery.Domain.Shipments.Shipment.Contact#ShipmentContact", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Email")
+                                .HasColumnType("text")
+                                .HasColumnName("Email");
+
+                            b1.Property<string>("Phone")
+                                .HasColumnType("text")
+                                .HasColumnName("Phone");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Info", "CustomCADs.Delivery.Domain.Shipments.Shipment.Info#ShipmentInfo", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Count")
+                                .HasColumnType("integer")
+                                .HasColumnName("Count");
+
+                            b1.Property<string>("Recipient")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("Recipient");
+
+                            b1.Property<double>("Weight")
+                                .HasColumnType("double precision")
+                                .HasColumnName("Weight");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Reference", "CustomCADs.Delivery.Domain.Shipments.Shipment.Reference#ShipmentReference", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Id")
+                                .HasColumnType("text")
+                                .HasColumnName("ReferenceId");
+
+                            b1.Property<string>("Service")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("Service");
                         });
 
                     b.HasKey("Id");

@@ -9,13 +9,13 @@ namespace CustomCADs.Catalog.Application.Products.Events.Application.ProductView
 
 public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 {
-	public async Task Handle(ProductViewedApplicationEvent de)
+	public async Task Handle(ProductViewedApplicationEvent ae)
 	{
-		Product product = await reads.SingleByIdAsync(de.Id).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Product>.ById(de.Id);
+		Product product = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Product>.ById(ae.Id);
 
 		string username = await sender.SendQueryAsync(
-			query: new GetUsernameByIdQuery(de.AccountId)
+			query: new GetUsernameByIdQuery(ae.AccountId)
 		).ConfigureAwait(false);
 
 		(DateTimeOffset _, bool UserTracksViewedProducts, string? _, string? _) = await sender.SendQueryAsync(
@@ -28,7 +28,7 @@ public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequest
 		}
 
 		bool userAlreadyViewed = await sender.SendQueryAsync(
-			query: new GetAccountViewedProductQuery(de.AccountId, de.Id)
+			query: new GetAccountViewedProductQuery(ae.AccountId, ae.Id)
 		).ConfigureAwait(false);
 
 		if (userAlreadyViewed)
@@ -41,8 +41,8 @@ public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequest
 
 		await raiser.RaiseApplicationEventAsync(
 			@event: new UserViewedProductApplicationEvent(
-				Id: de.Id,
-				AccountId: de.AccountId
+				Id: ae.Id,
+				AccountId: ae.AccountId
 			)
 		).ConfigureAwait(false);
 	}

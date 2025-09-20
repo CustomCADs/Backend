@@ -1,4 +1,4 @@
-﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetStatus;
+﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetTracks;
 
 namespace CustomCADs.Delivery.Endpoints.Shipments.Endpoints.Get.Track;
 
@@ -17,8 +17,8 @@ public class TrackShipmentEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(TrackShipmentRequest req, CancellationToken ct)
 	{
-		Dictionary<DateTimeOffset, GetShipmentTrackDto> tracks = await sender.SendQueryAsync(
-			query: new GetShipmentTrackQuery(
+		Dictionary<DateTimeOffset, GetShipmentTracksDto> tracks = await sender.SendQueryAsync(
+			query: new GetShipmentTracksQuery(
 				Id: ShipmentId.New(req.Id)
 			),
 			ct: ct

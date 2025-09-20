@@ -7,6 +7,7 @@ using CustomCADs.Shared.Application.Events.Customs;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Identity.Queries;
+using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Events.Application.PaymentCompleted;
 
@@ -23,7 +24,7 @@ public class CustomPaymentCompletedApplicationEventHandlerUnitTests : CustomsBas
 
 	private const string ToEmail = "user123@gmail.com";
 	private const string ClientUrl = "https://www.site123.com";
-	private readonly Custom custom = CreateCustom();
+	private readonly Custom custom = CreateCustomWithId(forDelivery: false);
 
 	public CustomPaymentCompletedApplicationEventHandlerUnitTests()
 	{
@@ -102,7 +103,38 @@ public class CustomPaymentCompletedApplicationEventHandlerUnitTests : CustomsBas
 		// Assert
 		email.Verify(x => x.SendRewardGrantedEmailAsync(
 			ToEmail,
-			$"{ClientUrl}/customs",
+			$"{ClientUrl}/customs/{ValidId}",
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldGrantShipment_WhenForDelivery()
+	{
+		// Arrange
+		Custom custom = CreateCustom(forDelivery: true);
+		custom.Accept(ValidDesignerId);
+		custom.Begin();
+		custom.Finish(ValidCadId, ValidPrice);
+		custom.Complete(ValidCustomizationId);
+		custom.SetShipment(ValidShipmentId);
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
+			.ReturnsAsync(custom);
+
+		CustomPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
+
+		// Act
+		await handler.Handle(ae);
+
+		// Assert
+		sender.Verify(x => x.SendCommandAsync(
+			It.Is<ActivateShipmentCommand>(x => x.Id == ValidShipmentId),
+			ct
+		), Times.Once());
+		email.Verify(x => x.SendRewardGrantedEmailAsync(
+			ToEmail,
+			$"{ClientUrl}/shipments/{ValidShipmentId}",
 			ct
 		), Times.Once());
 	}

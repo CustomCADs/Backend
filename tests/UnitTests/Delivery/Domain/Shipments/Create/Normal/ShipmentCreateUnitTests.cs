@@ -1,5 +1,4 @@
-﻿using CustomCADs.Delivery.Domain.Shipments.ValueObjects;
-using CustomCADs.Shared.Domain.Exceptions;
+﻿using CustomCADs.Shared.Domain.Exceptions;
 
 namespace CustomCADs.UnitTests.Delivery.Domain.Shipments.Create.Normal;
 
@@ -10,44 +9,50 @@ public class ShipmentCreateUnitTests : ShipmentsBaseUnitTests
 	[Fact]
 	public void Create_ShouldNotThrowExcepion_WhenShipmentIsValid()
 	{
-		Shipment.Create(new(ValidCountry, ValidCity, ValidStreet), ValidReferenceId, ValidBuyerId);
+		CreateShipment();
 	}
 
 	[Fact]
 	public void Create_ShouldPopulateProperties_WhenShipmentIsValid()
 	{
-		Address address = new(ValidCountry, ValidCity, ValidStreet);
-		var shipment = Shipment.Create(address, ValidReferenceId, ValidBuyerId);
+		var shipment = CreateShipment();
 
 		Assert.Multiple(
-			() => Assert.Equal(address, shipment.Address),
-			() => Assert.Equal(ValidReferenceId, shipment.ReferenceId),
 			() => Assert.Equal(ValidBuyerId, shipment.BuyerId),
+			() => Assert.Equal(new(ValidCountry, ValidCity, ValidStreet), shipment.Address),
+			() => Assert.Equal(new(MinValidCount, MinValidWeight, ValidRecipient), shipment.Info),
+			() => Assert.Equal(new(null, ValidService), shipment.Reference),
+			() => Assert.Equal(new(ValidPhone, ValidEmail), shipment.Contact),
 			() => Assert.True(DateTimeOffset.UtcNow - shipment.RequestedAt < TimeSpan.FromSeconds(1))
 		);
 	}
 
-	[Fact]
-	public void Create_ShouldThrowException_WhenCountryIsInvalid()
+	[Theory]
+	[ClassData(typeof(Data.ShipmentCreateInvalidData))]
+	public void Create_ShouldThrowException_WhenInvalid(
+		string service,
+		string? email,
+		string? phone,
+		string recipient,
+		int count,
+		double weight,
+		string country,
+		string city,
+		string street
+	)
 	{
 		Assert.Throws<CustomValidationException<Shipment>>(
-			() => CreateShipment(InvalidCountry, ValidCity, ValidStreet, ValidReferenceId, ValidBuyerId)
-		);
-	}
-
-	[Fact]
-	public void Create_ShouldThrowException_WhenCityIsInvalid()
-	{
-		Assert.Throws<CustomValidationException<Shipment>>(
-			() => CreateShipment(ValidCountry, InvalidCity, ValidStreet, ValidReferenceId, ValidBuyerId)
-		);
-	}
-
-	[Fact]
-	public void Create_ShouldThrowException_WhenStreetIsInvalid()
-	{
-		Assert.Throws<CustomValidationException<Shipment>>(
-			() => CreateShipment(ValidCountry, ValidCity, InvalidStreet, ValidReferenceId, ValidBuyerId)
+			() => CreateShipment(
+				service: service,
+				email: email,
+				phone: phone,
+				recipient: recipient,
+				count: count,
+				weight: weight,
+				country: country,
+				city: city,
+				street: street
+			)
 		);
 	}
 }

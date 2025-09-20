@@ -54,7 +54,6 @@ public static class ProgramExtensions
 			.AddRoleCaching()
 			.AddCategoryCaching()
 			.AddTagCaching()
-			.AddShipmentCaching()
 			.AddImageCaching()
 			.AddCadCaching()
 			.AddMaterialCaching();
@@ -167,6 +166,7 @@ public static class ProgramExtensions
 		services
 			.AddSharedBackgroundJobs()
 			.AddCatalogBackgroundJobs()
+			.AddDeliveryBackgroundJobs()
 			.AddIdempotencyBackgroundJobs();
 
 		return services;
