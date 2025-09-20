@@ -27,7 +27,7 @@ public sealed class CreateShipmentHandler(
 				recipient: req.Info.Recipient,
 				count: req.Info.Count,
 				weight: req.Info.Weight,
-				country: req.Address.City,
+				country: req.Address.Country,
 				city: req.Address.City,
 				street: req.Address.Street
 			),

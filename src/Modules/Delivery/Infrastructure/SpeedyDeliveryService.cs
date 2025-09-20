@@ -83,7 +83,7 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 			ct: ct
 		).ConfigureAwait(false);
 
-	public async Task<ShipmentStatusDto[]> TrackAsync(string shipmentId, CancellationToken ct = default)
+	public async Task<ShipmentTrackDto[]> TrackAsync(string shipmentId, CancellationToken ct = default)
 	{
 		Dictionary<string, ICollection<TrackedParcelModel>> response = await service.TrackAsync(
 			shipmentIds: [shipmentId],
@@ -93,7 +93,7 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 		return ConvertParcelToStatuses(response.Single().Value);
 	}
 
-	public async Task<Dictionary<string, ShipmentStatusDto[]>> TrackAsync(string[] shipmentIds, CancellationToken ct = default)
+	public async Task<Dictionary<string, ShipmentTrackDto[]>> TrackAsync(string[] shipmentIds, CancellationToken ct = default)
 	{
 		Dictionary<string, ICollection<TrackedParcelModel>> response = await service.TrackAsync(
 			shipmentIds: shipmentIds,
@@ -106,10 +106,10 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 		);
 	}
 
-	private static ShipmentStatusDto[] ConvertParcelToStatuses(ICollection<TrackedParcelModel> parcels)
+	private static ShipmentTrackDto[] ConvertParcelToStatuses(ICollection<TrackedParcelModel> parcels)
 		=> [.. parcels
 			.SelectMany(x => x.Operations)
-			.Select(x => new ShipmentStatusDto(
+			.Select(x => new ShipmentTrackDto(
 				DateTime: x.DateTime,
 				IsDelivered: x.IsDelivered,
 				Place: x.Place,

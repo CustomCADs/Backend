@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Delivery.Application.Contracts;
 using CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
+using CustomCADs.Delivery.Domain.Repositories;
 using CustomCADs.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 
@@ -11,16 +12,17 @@ public class CancelShipmentHandlerUnitTests : ShipmentsBaseUnitTests
 {
 	private readonly CancelShipmentHandler handler;
 	private readonly Mock<IShipmentReads> reads = new();
+	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IDeliveryService> delivery = new();
 
 	private const string Comment = "Cancelling due to unpredicted travelling abroad";
 
 	public CancelShipmentHandlerUnitTests()
 	{
-		handler = new(reads.Object, delivery.Object);
+		handler = new(reads.Object, uow.Object, delivery.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
-			.ReturnsAsync(CreateShipment(referenceId: ValidReferenceId));
+			.ReturnsAsync(CreateShipment().Activate(ValidReferenceId));
 	}
 
 	[Fact]
@@ -40,6 +42,22 @@ public class CancelShipmentHandlerUnitTests : ShipmentsBaseUnitTests
 	}
 
 	[Fact]
+	public async Task Handle_ShouldPersistToDatabase()
+	{
+		// Arrange
+		CancelShipmentCommand command = new(ValidId, Comment);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
+	}
+
+	[Fact]
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
@@ -50,6 +68,23 @@ public class CancelShipmentHandlerUnitTests : ShipmentsBaseUnitTests
 
 		// Assert
 		delivery.Verify(x => x.CancelAsync(ValidReferenceId, Comment, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenShipmentStatusInvalid()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(
+			CreateShipment().Activate(ValidReferenceId).Deliver()
+		);
+
+		CancelShipmentCommand command = new(ValidId, Comment);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
+			// Act
+			async () => await handler.Handle(command, ct)
+		);
 	}
 
 	[Fact]

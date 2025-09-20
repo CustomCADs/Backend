@@ -1,21 +1,21 @@
 ﻿using CustomCADs.Shared.Domain.Exceptions;
 
-namespace CustomCADs.UnitTests.Delivery.Domain.Shipments.Create.Normal;
+namespace CustomCADs.UnitTests.Delivery.Domain.Shipments.Create.WithId;
 
 using static ShipmentsData;
 
-public class ShipmentCreateUnitTests : ShipmentsBaseUnitTests
+public class ShipmentCreateWithIdUnitTestss : ShipmentsBaseUnitTests
 {
 	[Fact]
-	public void Create_ShouldNotThrowExcepion_WhenShipmentIsValid()
+	public void CreateWithId_ShouldNotThrowExcepion_WhenShipmentIsValid()
 	{
-		CreateShipment();
+		CreateShipmentWithId();
 	}
 
 	[Fact]
-	public void Create_ShouldPopulateProperties_WhenShipmentIsValid()
+	public void CreateWithId_ShouldPopulateProperties_WhenShipmentIsValid()
 	{
-		var shipment = CreateShipment();
+		var shipment = CreateShipmentWithId();
 
 		Assert.Multiple(
 			() => Assert.Equal(ValidBuyerId, shipment.BuyerId),
@@ -29,7 +29,7 @@ public class ShipmentCreateUnitTests : ShipmentsBaseUnitTests
 
 	[Theory]
 	[ClassData(typeof(Data.ShipmentCreateInvalidData))]
-	public void Create_ShouldThrowException_WhenInvalid(
+	public void CreateWithId_ShouldThrowException_WhenInvalid(
 		string service,
 		string? email,
 		string? phone,
@@ -42,7 +42,7 @@ public class ShipmentCreateUnitTests : ShipmentsBaseUnitTests
 	)
 	{
 		Assert.Throws<CustomValidationException<Shipment>>(
-			() => CreateShipment(
+			() => CreateShipmentWithId(
 				service: service,
 				email: email,
 				phone: phone,

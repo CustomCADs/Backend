@@ -102,6 +102,7 @@ public class Shipment : BaseAggregateRoot
 		Status = newStatus;
 
 		Reference = Reference with { Id = referenceId };
+		this.ValidateReference();
 
 		return this;
 	}
@@ -110,6 +111,18 @@ public class Shipment : BaseAggregateRoot
 	{
 		ShipmentStatus newStatus = ShipmentStatus.Cancelled;
 		if (Status is not (ShipmentStatus.Awaiting or ShipmentStatus.Active))
+		{
+			throw CustomValidationException<Shipment>.Status(newStatus, this.Status);
+		}
+		Status = newStatus;
+
+		return this;
+	}
+
+	public Shipment Deliver()
+	{
+		ShipmentStatus newStatus = ShipmentStatus.Delivered;
+		if (Status is not ShipmentStatus.Active)
 		{
 			throw CustomValidationException<Shipment>.Status(newStatus, this.Status);
 		}

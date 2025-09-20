@@ -22,16 +22,6 @@ public class CartPaymentCompletedApplicationEventHandler(
 		PurchasedCart cart = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
 			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.Id);
 
-		if (cart is not { ShipmentId: not null })
-		{
-			throw CustomStatusException<PurchasedCart>.ById(ae.Id);
-		}
-		ShipmentId shipmentId = cart.ShipmentId.Value;
-
-		await sender.SendCommandAsync(
-			new ActivateShipmentCommand(shipmentId)
-		).ConfigureAwait(false);
-
 		cart.FinishPayment(success: true);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
@@ -45,9 +35,16 @@ public class CartPaymentCompletedApplicationEventHandler(
 			query: new GetClientUrlQuery()
 		).ConfigureAwait(false);
 
-		await Task.WhenAll([
-			email.SendRewardGrantedEmailAsync(to, $"{url}/carts"),
-			email.SendRewardGrantedEmailAsync(to, $"{url}/shipments/{shipmentId}"),
-		]).ConfigureAwait(false);
+		await email.SendRewardGrantedEmailAsync(to, $"{url}/carts/{cart.Id}").ConfigureAwait(false);
+
+		if (cart is { HasDelivery: true, ShipmentId: not null })
+		{
+			ShipmentId shipmentId = cart.ShipmentId.Value;
+
+			await sender.SendCommandAsync(
+				new ActivateShipmentCommand(shipmentId)
+			).ConfigureAwait(false);
+			await email.SendRewardGrantedEmailAsync(to, $"{url}/shipments/{shipmentId}").ConfigureAwait(false);
+		}
 	}
 }

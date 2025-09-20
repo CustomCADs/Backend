@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Customs.Application.Customs.Events.Application.DeliveryRequested;
+using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Delivery;
@@ -14,6 +15,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 {
 	private readonly CustomDeliveryRequestedApplicationEventHandler handler;
 	private readonly Mock<ICustomReads> reads = new();
+	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
 
 	private const string ShipmentService = "shipment-service";
@@ -21,18 +23,18 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	private const int Count = 3;
 	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
 	private static readonly ContactDto contact = new("0123456789", null);
-	private readonly Custom custom = CreateCustomWithId(ValidId, forDelivery: true);
+	private readonly Custom custom = CreateCustomWithId(forDelivery: true);
 
 	public CustomDeliveryRequestedApplicationEventHandlerUnitTests()
 	{
-		handler = new(reads.Object, sender.Object);
+		handler = new(reads.Object, uow.Object, sender.Object);
 
 		custom.Accept(ValidDesignerId);
 		custom.Begin();
 		custom.Finish(ValidCadId, ValidPrice);
 		custom.Complete(ValidCustomizationId);
 
-		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 
 		sender.Setup(x => x.SendQueryAsync(
@@ -63,7 +65,27 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 		await handler.Handle(de);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
+		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldPersistToDatabase()
+	{
+		// Arrange
+		CustomDeliveryRequestedApplicationEvent de = new(
+			Id: ValidId,
+			ShipmentService: ShipmentService,
+			Weight: Weight,
+			Count: Count,
+			Address: address,
+			Contact: contact
+		);
+
+		// Act
+		await handler.Handle(de);
+
+		// Assert
+		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
 	}
 
 	[Fact]
@@ -117,7 +139,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
 	{
 		// Arrange
-		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Custom);
 
 		CustomDeliveryRequestedApplicationEvent de = new(

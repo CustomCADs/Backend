@@ -24,13 +24,13 @@ public class GetShipmentWaybillHandlerUnitTests : ShipmentsBaseUnitTests
 		handler = new(reads.Object, delivery.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
-			.ReturnsAsync(CreateShipment());
+			.ReturnsAsync(CreateShipment().Activate(ValidReferenceId));
 
 		delivery.Setup(x => x.PrintAsync(ValidReferenceId, ct)).ReturnsAsync(bytes);
 	}
 
 	[Fact]
-	public async Task Handle_ShouldReadCache()
+	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
 		GetShipmentWaybillQuery query = new(ValidId, headDesignerId);
@@ -79,6 +79,20 @@ public class GetShipmentWaybillHandlerUnitTests : ShipmentsBaseUnitTests
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Shipment>>(
+			// Act
+			async () => await handler.Handle(query, ct)
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenShipmentStatusInvalid()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(CreateShipment());
+		GetShipmentWaybillQuery query = new(ValidId, headDesignerId);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
 			// Act
 			async () => await handler.Handle(query, ct)
 		);

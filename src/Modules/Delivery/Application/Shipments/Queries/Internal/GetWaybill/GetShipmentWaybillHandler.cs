@@ -22,7 +22,7 @@ public sealed class GetShipmentWaybillHandler(
 			throw CustomAuthorizationException<Shipment>.ById(req.Id);
 		}
 
-		if (shipment is not { Status: ShipmentStatus.Active or ShipmentStatus.Delivered, Reference.Id: not null })
+		if (shipment is not { Status: ShipmentStatus.Active, Reference.Id: not null })
 		{
 			throw CustomStatusException<Shipment>.ById(req.Id);
 		}

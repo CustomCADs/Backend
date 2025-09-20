@@ -19,7 +19,7 @@ public class PollShipmentStatusJob(IShipmentReads reads, IUnitOfWork uow, IDeliv
 			await reads.AllIdsByStatusAsync(ShipmentStatus.Active, ct: ct).ConfigureAwait(false)
 		];
 
-		Dictionary<string, ShipmentStatusDto[]> statuses = await delivery.TrackAsync(
+		Dictionary<string, ShipmentTrackDto[]> statuses = await delivery.TrackAsync(
 			[.. activeShipmentReferenceIds.Where(x => x is not null).Select(x => x!)]
 		).ConfigureAwait(false);
 

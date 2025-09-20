@@ -6,6 +6,13 @@ using static ShipmentConstants;
 
 public static class Validations
 {
+	public static Shipment ValidateReference(this Shipment shipment)
+		=> shipment
+			.ThrowIfNull(
+				expression: x => x.Reference.Id,
+				predicate: string.IsNullOrWhiteSpace
+			);
+
 	public static Shipment ValidateService(this Shipment shipment)
 		=> shipment
 			.ThrowIfNull(

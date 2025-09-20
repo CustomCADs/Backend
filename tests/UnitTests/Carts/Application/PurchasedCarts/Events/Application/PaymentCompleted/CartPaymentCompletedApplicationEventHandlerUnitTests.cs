@@ -99,7 +99,32 @@ public class CartPaymentCompletedApplicationEventHandlerUnitTests : PurchasedCar
 		// Assert
 		email.Verify(x => x.SendRewardGrantedEmailAsync(
 			To,
-			It.Is<string>(x => x.Contains(Url)),
+			$"{Url}/carts/{ValidId}",
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldIdk_WhenForDelivery()
+	{
+		// Arrange
+		PurchasedCart cart = CreateCartWithItems(
+			items: [CreateItem(forDelivery: true)]
+		);
+		cart.SetShipmentId(ValidShipmentId);
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
+			.ReturnsAsync(cart);
+
+		CartPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
+
+		// Act
+		await handler.Handle(ae);
+
+		// Assert
+		email.Verify(x => x.SendRewardGrantedEmailAsync(
+			To,
+			$"{Url}/shipments/{ValidShipmentId}",
 			ct
 		), Times.Once());
 	}

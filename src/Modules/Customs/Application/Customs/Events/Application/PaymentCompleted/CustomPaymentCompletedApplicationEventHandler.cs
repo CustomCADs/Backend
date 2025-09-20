@@ -23,16 +23,10 @@ public class CustomPaymentCompletedApplicationEventHandler(
 		Custom custom = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(ae.Id);
 
-		if (custom is not { CustomStatus: CustomStatus.Completed, CompletedCustom.ShipmentId: not null })
+		if (custom is not { CustomStatus: CustomStatus.Completed, CompletedCustom: not null })
 		{
 			throw CustomStatusException<Custom>.ById(ae.Id);
 		}
-		ShipmentId shipmentId = custom.CompletedCustom.ShipmentId.Value;
-
-		await sender.SendCommandAsync(
-			new ActivateShipmentCommand(shipmentId)
-		).ConfigureAwait(false);
-
 		custom.FinishPayment(success: true);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
@@ -44,9 +38,16 @@ public class CustomPaymentCompletedApplicationEventHandler(
 			query: new GetClientUrlQuery()
 		).ConfigureAwait(false);
 
-		await Task.WhenAll([
-			email.SendRewardGrantedEmailAsync(to, $"{url}/customs/{custom.Id}"),
-			email.SendRewardGrantedEmailAsync(to, $"{url}/shipments/{shipmentId}"),
-		]).ConfigureAwait(false);
+		await email.SendRewardGrantedEmailAsync(to, $"{url}/customs/{custom.Id}").ConfigureAwait(false);
+
+		if (custom is { ForDelivery: true, CompletedCustom.ShipmentId: not null })
+		{
+			ShipmentId shipmentId = custom.CompletedCustom.ShipmentId.Value;
+
+			await sender.SendCommandAsync(
+				command: new ActivateShipmentCommand(shipmentId)
+			).ConfigureAwait(false);
+			await email.SendRewardGrantedEmailAsync(to, $"{url}/shipments/{shipmentId}").ConfigureAwait(false);
+		}
 	}
 }

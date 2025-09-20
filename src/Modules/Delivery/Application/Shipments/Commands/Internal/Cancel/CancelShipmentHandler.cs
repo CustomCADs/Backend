@@ -16,7 +16,7 @@ public sealed class CancelShipmentHandler(
 		Shipment shipment = await reads.SingleByIdAsync(req.Id, track: false, ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Shipment>.ById(req.Id);
 
-		if (shipment is not { Status: ShipmentStatus.Awaiting or ShipmentStatus.Active, Reference.Id: not null })
+		if (shipment is not { Status: ShipmentStatus.Active, Reference.Id: not null })
 		{
 			throw CustomStatusException<Shipment>.ById(req.Id);
 		}

@@ -1,5 +1,4 @@
-﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetStatus;
-using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetTracks;
+﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetTracks;
 
 namespace CustomCADs.Delivery.Endpoints.Shipments.Endpoints.Get.Track;
 

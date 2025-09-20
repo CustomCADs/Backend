@@ -20,7 +20,7 @@ public sealed class GetShipmentTracksHandler(
 			throw CustomStatusException<Shipment>.ById(req.Id);
 		}
 
-		ShipmentStatusDto[] statuses = await delivery.TrackAsync(
+		ShipmentTrackDto[] statuses = await delivery.TrackAsync(
 			shipmentId: shipment.Reference.Id,
 			ct: ct
 		).ConfigureAwait(false);

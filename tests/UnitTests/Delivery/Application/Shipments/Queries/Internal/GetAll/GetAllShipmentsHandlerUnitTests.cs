@@ -14,32 +14,21 @@ public class GetAllShipmentsHandlerUnitTests : ShipmentsBaseUnitTests
 {
 	private readonly GetAllShipmentsHandler handler;
 	private readonly Mock<IShipmentReads> reads = new();
-	private readonly Mock<IRequestSender> sender = new();
 
-	private static readonly Dictionary<AccountId, string> buyers = new()
-	{
-		[ValidBuyerId] = "NinjataBG"
-	};
-	private static readonly Address address = new(ValidCountry, ValidCity, ValidStreet);
 	private static readonly Shipment[] shipments = [
-		Shipment.Create(address, ValidReferenceId, ValidBuyerId),
-		Shipment.Create(address, ValidReferenceId, ValidBuyerId),
-		Shipment.Create(address, ValidReferenceId, ValidBuyerId),
-		Shipment.Create(address, ValidReferenceId, ValidBuyerId),
+		CreateShipment(),
+		CreateShipment(),
+		CreateShipment(),
+		CreateShipment(),
 	];
 	private readonly ShipmentQuery shipmentQuery = new(new(), null, null);
 
 	public GetAllShipmentsHandlerUnitTests()
 	{
-		handler = new(reads.Object, sender.Object);
+		handler = new(reads.Object);
 
 		reads.Setup(x => x.AllAsync(shipmentQuery, false, ct))
 			.ReturnsAsync(new Result<Shipment>(shipments.Length, shipments));
-
-		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Length == shipments.Length),
-			ct
-		)).ReturnsAsync(buyers);
 	}
 
 	[Fact]
@@ -63,26 +52,6 @@ public class GetAllShipmentsHandlerUnitTests : ShipmentsBaseUnitTests
 	}
 
 	[Fact]
-	public async Task Handle_ShouldSendRequests()
-	{
-		// Arrange
-		GetAllShipmentsQuery query = new(
-			Pagination: new(),
-			CallerId: null,
-			Sorting: null
-		);
-
-		// Act
-		await handler.Handle(query, ct);
-
-		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Length == shipments.Length),
-			ct
-		), Times.Once());
-	}
-
-	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -96,9 +65,6 @@ public class GetAllShipmentsHandlerUnitTests : ShipmentsBaseUnitTests
 		Result<GetAllShipmentsDto> result = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(result.Items.Select(r => r.Address), shipments.Select(r => r.Address)),
-			() => Assert.Equal(result.Items.Select(r => r.BuyerName), shipments.Select(r => buyers[r.BuyerId]))
-		);
+		Assert.Equal(result.Items.Select(r => r.Address), shipments.Select(r => r.Address));
 	}
 }
