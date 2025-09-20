@@ -65,7 +65,7 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 			@event: new ActiveCartDeliveryRequestedApplicationEvent(
 				Id: purchasedCartId,
 				Weight: weights.Sum(x => x.Value),
-				Count: items.Sum(x => x.Quantity),
+				Count: items.Where(x => x.ForDelivery).Sum(x => x.Quantity),
 				ShipmentService: req.ShipmentService,
 				Address: req.Address,
 				Contact: req.Contact
