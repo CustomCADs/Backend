@@ -6,19 +6,19 @@ using SpeedyNET.Abstractions.Contracts.Shipment;
 using SpeedyNET.Abstractions.Contracts.Track;
 using SpeedyNET.Core.Enums;
 using SpeedyNET.Sdk;
-using SpeedyNET.Services;
 
 namespace CustomCADs.Delivery.Infrastructure;
 
 internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryService
 {
-	private const Payer payer = Payer.RECIPIENT;
-	private const PaperSize paper = PaperSize.A4;
+	private const Payer Payer = SpeedyNET.Core.Enums.Payer.RECIPIENT;
+	private const PaperSize Paper = PaperSize.A4;
+	private const int Count = 1;
 
 	public async Task<CalculationDto[]> CalculateAsync(CalculateRequest req, CancellationToken ct = default)
 	{
 		CalculateModel[] response = await service.CalculateAsync(
-			payer: payer,
+			payer: Payer,
 			weights: req.Weights,
 			country: req.Country,
 			site: req.City,
@@ -45,10 +45,10 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 	)
 	{
 		WrittenShipmentModel response = await service.CreateShipmentAsync(
-			payer: payer,
+			payer: Payer,
 			package: req.Package,
 			contents: req.Contents,
-			parcelCount: req.ParcelCount,
+			parcelCount: Count,
 			totalWeight: req.TotalWeight,
 			country: req.Country,
 			site: req.City,
@@ -78,7 +78,7 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 
 	public async Task<byte[]> PrintAsync(string shipmentId, CancellationToken ct = default)
 		=> await service.PrintAsync(
-			paperSize: paper,
+			paperSize: Paper,
 			shipmentId: shipmentId,
 			ct: ct
 		).ConfigureAwait(false);

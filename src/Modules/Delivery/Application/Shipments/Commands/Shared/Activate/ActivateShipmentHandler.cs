@@ -20,8 +20,7 @@ public class ActivateShipmentHandler(
 		ShipmentDto reference = await delivery.ShipAsync(
 			req: new(
 				Package: "BOX",
-				Contents: $"{shipment.Info.Count} 3D Model/s, each wrapped in a box",
-				ParcelCount: shipment.Info.Count,
+				Contents: $"{shipment.Info.Count} 3D Model/s, wrapped together in a box",
 				Name: shipment.Info.Recipient,
 				TotalWeight: shipment.Info.Weight,
 				Service: shipment.Reference.Service,
