@@ -5,11 +5,12 @@ using SpeedyNET.Abstractions.Contracts.Calculation;
 using SpeedyNET.Abstractions.Contracts.Shipment;
 using SpeedyNET.Abstractions.Contracts.Track;
 using SpeedyNET.Core.Enums;
-using SpeedyNET.Sdk;
 
 namespace CustomCADs.Delivery.Infrastructure;
 
-internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryService
+using ISpeedyClient = SpeedyNET.Sdk.ISpeedyService;
+
+internal sealed class SpeedyDeliveryService(ISpeedyClient speedy) : IDeliveryService
 {
 	private const Payer Payer = SpeedyNET.Core.Enums.Payer.RECIPIENT;
 	private const PaperSize Paper = PaperSize.A4;
@@ -17,7 +18,7 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 
 	public async Task<CalculationDto[]> CalculateAsync(CalculateRequest req, CancellationToken ct = default)
 	{
-		CalculateModel[] response = await service.CalculateAsync(
+		CalculateModel[] response = await speedy.CalculateAsync(
 			payer: Payer,
 			weights: req.Weights,
 			country: req.Country,
@@ -39,12 +40,21 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 		))];
 	}
 
+	public async Task<bool> ValidateAsync(
+		string country,
+		string city,
+		string street,
+		string? phone,
+		CancellationToken ct = default
+	) => await IsAddressValid(country, city, street, ct).ConfigureAwait(false)
+		&& await IsPhoneValid(phone, ct).ConfigureAwait(false);
+
 	public async Task<ShipmentDto> ShipAsync(
 		ShipRequestDto req,
 		CancellationToken ct = default
 	)
 	{
-		WrittenShipmentModel response = await service.CreateShipmentAsync(
+		WrittenShipmentModel response = await speedy.CreateShipmentAsync(
 			payer: Payer,
 			package: req.Package,
 			contents: req.Contents,
@@ -70,14 +80,14 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 	}
 
 	public async Task CancelAsync(string shipmentId, string comment, CancellationToken ct = default)
-		=> await service.CancelShipmentAsync(
+		=> await speedy.CancelShipmentAsync(
 			shipmentId: shipmentId,
 			comment: comment,
 			ct: ct
 		).ConfigureAwait(false);
 
 	public async Task<byte[]> PrintAsync(string shipmentId, CancellationToken ct = default)
-		=> await service.PrintAsync(
+		=> await speedy.PrintAsync(
 			paperSize: Paper,
 			shipmentId: shipmentId,
 			ct: ct
@@ -85,7 +95,7 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 
 	public async Task<ShipmentTrackDto[]> TrackAsync(string shipmentId, CancellationToken ct = default)
 	{
-		Dictionary<string, ICollection<TrackedParcelModel>> response = await service.TrackAsync(
+		Dictionary<string, ICollection<TrackedParcelModel>> response = await speedy.TrackAsync(
 			shipmentIds: [shipmentId],
 			ct: ct
 		).ConfigureAwait(false);
@@ -95,7 +105,7 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 
 	public async Task<Dictionary<string, ShipmentTrackDto[]>> TrackAsync(string[] shipmentIds, CancellationToken ct = default)
 	{
-		Dictionary<string, ICollection<TrackedParcelModel>> response = await service.TrackAsync(
+		Dictionary<string, ICollection<TrackedParcelModel>> response = await speedy.TrackAsync(
 			shipmentIds: shipmentIds,
 			ct: ct
 		).ConfigureAwait(false);
@@ -105,6 +115,12 @@ internal sealed class SpeedyDeliveryService(ISpeedyService service) : IDeliveryS
 			x => ConvertParcelToStatuses(x.Value)
 		);
 	}
+
+	private async Task<bool> IsAddressValid(string country, string city, string street, CancellationToken ct = default)
+		=> await speedy.ValidateAddress(country, city, street, ct).ConfigureAwait(false);
+
+	private async Task<bool> IsPhoneValid(string? phone, CancellationToken ct = default)
+		=> phone is null || await speedy.ValidatePhone(phone, ct).ConfigureAwait(false);
 
 	private static ShipmentTrackDto[] ConvertParcelToStatuses(ICollection<TrackedParcelModel> parcels)
 		=> [.. parcels

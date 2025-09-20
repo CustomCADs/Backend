@@ -27,7 +27,7 @@ public static class DependencyInjection
 		services.AddScoped<IDeliveryService>(
 			(sp) => new ResilientDeliveryService(
 				inner: new SpeedyDeliveryService(
-					service: sp.GetRequiredService<SpeedyNET.Sdk.ISpeedyService>()
+					speedy: sp.GetRequiredService<SpeedyNET.Sdk.ISpeedyService>()
 				),
 				policy: Polly.Policy.WrapAsync(
 					Polly.Policy.Handle<Exception>().AsyncCircuitBreak(),

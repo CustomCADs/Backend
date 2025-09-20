@@ -1,4 +1,5 @@
-﻿using CustomCADs.Delivery.Domain.Repositories;
+﻿using CustomCADs.Delivery.Application.Contracts;
+using CustomCADs.Delivery.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
@@ -8,7 +9,8 @@ namespace CustomCADs.Delivery.Application.Shipments.Commands.Shared.Create;
 public sealed class CreateShipmentHandler(
 	IWrites<Shipment> writes,
 	IUnitOfWork uow,
-	IRequestSender sender
+	IRequestSender sender,
+	IDeliveryService delivery
 ) : ICommandHandler<CreateShipmentCommand, ShipmentId>
 {
 	public async Task<ShipmentId> Handle(CreateShipmentCommand req, CancellationToken ct)
@@ -16,6 +18,18 @@ public sealed class CreateShipmentHandler(
 		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.BuyerId), ct).ConfigureAwait(false))
 		{
 			throw CustomNotFoundException<Shipment>.ById(req.BuyerId, "User");
+		}
+
+		bool isDeliveryDetailsValid = await delivery.ValidateAsync(
+			country: req.Address.Country,
+			city: req.Address.City,
+			street: req.Address.Street,
+			phone: req.Contact.Phone,
+			ct: ct
+		).ConfigureAwait(false);
+		if (!isDeliveryDetailsValid)
+		{
+			throw new CustomException("Country, City, Street and Phone are not as Delivery provider expects them!");
 		}
 
 		Shipment shipment = await writes.AddAsync(

@@ -5,6 +5,7 @@ namespace CustomCADs.Delivery.Application.Contracts;
 
 public interface IDeliveryService
 {
+	Task<bool> ValidateAsync(string country, string city, string street, string? phone, CancellationToken ct = default);
 	Task<CalculationDto[]> CalculateAsync(CalculateRequest req, CancellationToken ct = default);
 	Task<ShipmentDto> ShipAsync(ShipRequestDto req, CancellationToken ct = default);
 	Task CancelAsync(string shipmentId, string comment, CancellationToken ct = default);
