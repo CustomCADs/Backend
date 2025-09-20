@@ -7,6 +7,5 @@ public record GetShipmentsResponse(
 	DateTimeOffset RequestedAt,
 	ShipmentStatus Status,
 	InfoResponse Info,
-	AddressResponse Address,
-	string BuyerName
+	AddressResponse Address
 );

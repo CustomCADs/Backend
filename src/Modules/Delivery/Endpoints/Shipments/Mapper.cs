@@ -20,8 +20,7 @@ internal static class Mapper
 			RequestedAt: shipment.RequestedAt,
 			Status: shipment.Status,
 			Info: shipment.Info.ToResponse(),
-			Address: shipment.Address.ToResponse(),
-			BuyerName: shipment.Info.Recipient
+			Address: shipment.Address.ToResponse()
 		);
 
 	private static InfoResponse ToResponse(this ShipmentInfo info)
