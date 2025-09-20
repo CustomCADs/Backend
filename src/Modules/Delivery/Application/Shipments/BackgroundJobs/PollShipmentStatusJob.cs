@@ -24,7 +24,7 @@ public class PollShipmentStatusJob(IShipmentReads reads, IUnitOfWork uow, IDeliv
 		).ConfigureAwait(false);
 
 		await uow.UpdateStatusByReferenceIdAsync(
-			referenceIds: [.. statuses.Where(x => x.Value.All(x => x.IsDelivered)).Select(x => x.Key)],
+			referenceIds: [.. statuses.Where(x => x.Value.Any(x => x.IsDelivered)).Select(x => x.Key)],
 			status: ShipmentStatus.Delivered,
 			ct: ct
 		).ConfigureAwait(false);
