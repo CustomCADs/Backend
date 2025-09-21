@@ -44,6 +44,7 @@ public static class ApplicationConstants
 			public const string CustomToggledDelivery = "A Custom 3D Model Request's delivery has been turned {0}!";
 			public const string CustomAccepted = "Your Custom 3D Model Request has been accepted by {0}!";
 			public const string CustomReported = "Your Custom 3D Model Request has been reported by {0}!";
+			public const string CustomRemoved = "A Custom 3D Model Request has been removed by an Admin!";
 			public const string CustomBegun = "Your Custom 3D Model Request has been begun!";
 			public const string CustomCanceled = "Your Custom 3D Model Request has been canceled!";
 			public const string CustomFinished = "Your Custom 3D Model Request has been finished!";
@@ -65,6 +66,7 @@ public static class ApplicationConstants
 			public const string? CustomEdited = null;
 			public const string? CustomAccepted = null;
 			public const string? CustomReported = null;
+			public const string? CustomRemoved = null;
 			public const string? CustomBegun = null;
 			public const string? CustomCanceled = null;
 			public const string? CustomFinished = null;

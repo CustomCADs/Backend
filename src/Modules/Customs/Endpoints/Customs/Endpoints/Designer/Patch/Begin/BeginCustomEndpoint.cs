@@ -12,7 +12,7 @@ public sealed class BeginCustomEndpoint(IRequestSender sender)
 		Group<DesignerGroup>();
 		Description(x => x
 			.WithSummary("Begin")
-			.WithDescription("Set an Custom's Status to Begun")
+			.WithDescription("Set a Custom's Status to Begun")
 		);
 	}
 

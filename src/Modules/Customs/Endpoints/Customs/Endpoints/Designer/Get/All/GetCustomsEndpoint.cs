@@ -33,7 +33,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToResponse())
+			response: result.ToNewResult(x => x.ToDesignerResponse())
 		).ConfigureAwait(false);
 	}
 }

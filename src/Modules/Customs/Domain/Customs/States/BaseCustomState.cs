@@ -21,6 +21,8 @@ public abstract class BaseCustomState : ICustomState
 		=> throw InvalidTransition(nameof(Cancel));
 	public virtual void Report(Custom custom)
 		=> throw InvalidTransition(nameof(Report));
+	public virtual void Remove(Custom custom)
+		=> throw InvalidTransition(nameof(Remove));
 
 	protected InvalidOperationException InvalidTransition(string action)
 		=> new($"Cannot {action} a Custom in the {Status} state.");

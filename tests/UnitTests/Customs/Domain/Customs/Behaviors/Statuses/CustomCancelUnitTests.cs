@@ -91,4 +91,17 @@ public class CustomCancelUnitTests : CustomsBaseUnitTests
 			custom.Cancel();
 		});
 	}
+
+	[Fact]
+	public void Cancel_ShouldFail_WhenRemoved()
+	{
+		expectValidationException(() =>
+		{
+			Custom custom = CreateCustom();
+			custom.Report();
+			custom.Remove();
+
+			custom.Cancel();
+		});
+	}
 }

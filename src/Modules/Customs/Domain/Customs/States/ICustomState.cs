@@ -14,4 +14,5 @@ public interface ICustomState
 	void Complete(Custom custom, CustomizationId? customizationId);
 	void Cancel(Custom custom);
 	void Report(Custom custom);
+	void Remove(Custom custom);
 }

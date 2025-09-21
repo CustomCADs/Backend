@@ -1,8 +1,8 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 using CustomCADs.Shared.Domain.Querying;
-using CustomCADs.Shared.Endpoints.Extensions;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Customers.Get.All;
+namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Admins.Get.All;
 
 public sealed class GetCustomsEndpoint(IRequestSender sender)
 	: Endpoint<GetCustomsRequest, Result<GetCustomsResponse>>
@@ -10,10 +10,10 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 	public override void Configure()
 	{
 		Get("");
-		Group<CustomerGroup>();
+		Group<AdminGroup>();
 		Description(x => x
 			.WithSummary("All")
-			.WithDescription("See all your Customs with Filter, Search, Sorting and Pagination options")
+			.WithDescription("See all Customs with Filter, Search, Sorting and Pagination options")
 		);
 	}
 
@@ -23,7 +23,8 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 			query: new GetAllCustomsQuery(
 				ForDelivery: req.ForDelivery,
 				CustomStatus: req.Status,
-				CustomerId: User.GetAccountId(),
+				CustomerId: AccountId.New(req.CustomerId),
+				DesignerId: AccountId.New(req.DesignerId),
 				Name: req.Name,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
@@ -32,7 +33,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToCustomerResponse())
+			response: result.ToNewResult(x => x.ToAdminResponse())
 		).ConfigureAwait(false);
 	}
 }

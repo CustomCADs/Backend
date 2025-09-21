@@ -125,6 +125,7 @@ public class Custom : BaseAggregateRoot
 	public void Complete(CustomizationId? customizationId) => State.Complete(this, customizationId);
 	public void Cancel() => State.Cancel(this);
 	public void Report() => State.Report(this);
+	public void Remove() => State.Remove(this);
 
 	internal void SetState(ICustomState newState)
 	{

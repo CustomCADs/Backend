@@ -12,7 +12,7 @@ public sealed class CancelCustomEndpoint(IRequestSender sender)
 		Group<DesignerGroup>();
 		Description(x => x
 			.WithSummary("Cancel")
-			.WithDescription("Set an Custom's Status back to Pending")
+			.WithDescription("Set a Custom's Status back to Pending")
 		);
 	}
 

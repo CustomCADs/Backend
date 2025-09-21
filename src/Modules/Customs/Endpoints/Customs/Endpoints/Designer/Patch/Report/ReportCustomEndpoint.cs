@@ -12,7 +12,7 @@ public sealed class ReportCustomEndpoint(IRequestSender sender)
 		Group<DesignerGroup>();
 		Description(x => x
 			.WithSummary("Report")
-			.WithDescription("Set an Custom's Status to Reported")
+			.WithDescription("Set a Custom's Status to Reported")
 		);
 	}
 

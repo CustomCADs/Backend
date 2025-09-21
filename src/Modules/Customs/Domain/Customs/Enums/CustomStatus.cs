@@ -8,4 +8,5 @@ public enum CustomStatus
 	Finished,
 	Completed,
 	Reported,
+	Removed,
 }

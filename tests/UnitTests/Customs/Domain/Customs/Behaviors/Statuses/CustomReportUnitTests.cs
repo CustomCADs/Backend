@@ -88,4 +88,17 @@ public class CustomReportUnitTests : CustomsBaseUnitTests
 			custom.Report();
 		});
 	}
+
+	[Fact]
+	public void Report_ShouldFail_WhenRemoved()
+	{
+		expectValidationException(() =>
+		{
+			Custom custom = CreateCustom();
+			custom.Report();
+			custom.Remove();
+
+			custom.Report();
+		});
+	}
 }

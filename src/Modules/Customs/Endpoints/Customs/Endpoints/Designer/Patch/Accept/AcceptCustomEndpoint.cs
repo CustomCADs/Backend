@@ -12,7 +12,7 @@ public sealed class AcceptCustomEndpoint(IRequestSender sender)
 		Group<DesignerGroup>();
 		Description(x => x
 			.WithSummary("Accept")
-			.WithDescription("Set an Custom's Status to Accepted")
+			.WithDescription("Set a Custom's Status to Accepted")
 		);
 	}
 

@@ -1,4 +1,5 @@
-﻿using CustomCADs.Customs.Endpoints.Customs.Dtos;
+﻿using CustomCADs.Customs.Domain.Customs.Enums;
+using CustomCADs.Customs.Endpoints.Customs.Dtos;
 
 namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Designer.Get.Single;
 
@@ -7,7 +8,7 @@ public sealed record DesignerGetCustomResponse(
 	string Name,
 	string Description,
 	DateTimeOffset OrderedAt,
-	string Status,
+	CustomStatus Status,
 	bool ForDelivery,
 	string BuyerName,
 	AcceptedCustomResponse? AcceptedCustom,

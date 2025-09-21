@@ -11,6 +11,7 @@ public enum NotificationType
 	CustomFinished,
 	CustomCompleted,
 	CustomReported,
+	CustomRemoved,
 	ProductEdited,
 	ProductDeleted,
 	ProductValidated,

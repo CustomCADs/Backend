@@ -4,38 +4,47 @@ namespace CustomCADs.UnitTests.Customs.Domain.Customs.Behaviors.Statuses;
 
 using static CustomsData;
 
-public class CustomBeginUnitTests : CustomsBaseUnitTests
+public class CustomRemoveUnitTests : CustomsBaseUnitTests
 {
 	private static readonly Func<Action, InvalidOperationException> expectValidationException
 		= Assert.Throws<InvalidOperationException>;
 
 	[Fact]
-	public void Begin_ShouldSucceed_WhenAccepted()
+	public void Remove_ShouldSucceed_WhenReported()
 	{
 		Custom custom = CreateCustom();
-		custom.Accept(ValidDesignerId);
+		custom.Report();
 
-		custom.Begin();
+		custom.Remove();
 
-		Assert.Multiple(
-			() => Assert.Equal(CustomStatus.Begun, custom.CustomStatus),
-			() => Assert.NotNull(custom.AcceptedCustom)
-		);
+		Assert.Equal(CustomStatus.Removed, custom.CustomStatus);
 	}
 
 	[Fact]
-	public void Begin_ShouldFail_WhenPending()
+	public void Remove_ShouldFail_WhenPending()
 	{
 		expectValidationException(() =>
 		{
 			Custom custom = CreateCustom();
 
-			custom.Begin();
+			custom.Remove();
 		});
 	}
 
 	[Fact]
-	public void Begin_ShouldFail_WhenBegun()
+	public void Remove_ShouldFail_WhenAccepted()
+	{
+		expectValidationException(() =>
+		{
+			Custom custom = CreateCustom();
+			custom.Accept(ValidDesignerId);
+
+			custom.Remove();
+		});
+	}
+
+	[Fact]
+	public void Remove_ShouldFail_WhenBegun()
 	{
 		expectValidationException(() =>
 		{
@@ -43,25 +52,12 @@ public class CustomBeginUnitTests : CustomsBaseUnitTests
 			custom.Accept(ValidDesignerId);
 			custom.Begin();
 
-			custom.Begin();
+			custom.Remove();
 		});
 	}
 
 	[Fact]
-	public void Begin_ShouldFail_WhenReported()
-	{
-		expectValidationException(() =>
-		{
-			Custom custom = CreateCustom();
-			custom.Accept(ValidDesignerId);
-			custom.Report();
-
-			custom.Begin();
-		});
-	}
-
-	[Fact]
-	public void Begin_ShouldFail_WhenFinished()
+	public void Remove_ShouldFail_WhenFinished()
 	{
 		expectValidationException(() =>
 		{
@@ -70,12 +66,12 @@ public class CustomBeginUnitTests : CustomsBaseUnitTests
 			custom.Begin();
 			custom.Finish(ValidCadId, ValidPrice);
 
-			custom.Begin();
+			custom.Remove();
 		});
 	}
 
 	[Fact]
-	public void Begin_ShouldFail_WhenCompleted()
+	public void Remove_ShouldFail_WhenCompleted()
 	{
 		expectValidationException(() =>
 		{
@@ -84,20 +80,7 @@ public class CustomBeginUnitTests : CustomsBaseUnitTests
 			custom.Finish(ValidCadId, ValidPrice);
 			custom.Complete(ValidCustomizationId);
 
-			custom.Begin();
-		});
-	}
-
-	[Fact]
-	public void Begin_ShouldFail_WhenRemoved()
-	{
-		expectValidationException(() =>
-		{
-			Custom custom = CreateCustom();
-			custom.Report();
 			custom.Remove();
-
-			custom.Begin();
 		});
 	}
 }
