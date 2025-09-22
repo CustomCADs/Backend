@@ -9,5 +9,6 @@ public sealed record GetCustomsResponse(
 	CustomStatus Status,
 	bool ForDelivery,
 	string BuyerName,
-	string? DesignerName
+	string? DesignerName,
+	string? CategoryName
 );

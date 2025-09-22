@@ -8,5 +8,6 @@ public sealed record GetCustomsResponse(
 	DateTimeOffset OrderedAt,
 	CustomStatus Status,
 	bool ForDelivery,
-	string? DesignerName
+	string? DesignerName,
+	string? CategoryName
 );

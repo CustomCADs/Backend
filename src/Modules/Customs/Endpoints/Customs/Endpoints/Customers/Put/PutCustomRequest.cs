@@ -3,5 +3,6 @@
 public sealed record PutCustomRequest(
 	Guid Id,
 	string Name,
-	string Description
+	string Description,
+	int? CategoryId
 );

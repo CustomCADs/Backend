@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Admins.Get.All;
 
@@ -25,6 +26,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 				CustomStatus: req.Status,
 				CustomerId: AccountId.New(req.CustomerId),
 				DesignerId: AccountId.New(req.DesignerId),
+				CategoryId: CategoryId.New(req.CategoryId),
 				Name: req.Name,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)

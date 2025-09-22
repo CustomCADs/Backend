@@ -9,6 +9,7 @@ public sealed record GetCustomsRequest(
 	CustomStatus? Status = null,
 	Guid? CustomerId = null,
 	Guid? DesignerId = null,
+	int? CategoryId = null,
 	CustomSortingType SortingType = CustomSortingType.OrderedAt,
 	SortingDirection SortingDirection = SortingDirection.Descending,
 	int Page = 1,

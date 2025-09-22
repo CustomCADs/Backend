@@ -9,5 +9,6 @@ public sealed record GetAllCustomsDto(
 	CustomStatus CustomStatus,
 	DateTimeOffset OrderedAt,
 	string BuyerName,
-	string? DesignerName
+	string? DesignerName,
+	string? CategoryName
 );

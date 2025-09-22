@@ -3,6 +3,7 @@ using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.Internal.Designers.GetById;
@@ -15,14 +16,14 @@ public class DesignerGetCustomByIdHandlerUnitTests : CustomsBaseUnitTests
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private readonly Custom expected = CreateCustomWithId();
+	private readonly Custom custom = CreateCustomWithId();
 
 	public DesignerGetCustomByIdHandlerUnitTests()
 	{
 		handler = new(reads.Object, sender.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
-			.ReturnsAsync(expected);
+			.ReturnsAsync(custom);
 	}
 
 	[Fact]
@@ -38,17 +39,12 @@ public class DesignerGetCustomByIdHandlerUnitTests : CustomsBaseUnitTests
 		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public async Task Handle_ShouldSendRequests(bool isAccepted)
+	[Fact]
+	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		if (isAccepted)
-		{
-			expected.Accept(ValidDesignerId);
-		}
-		DesignerGetCustomByIdQuery query = new(ValidId, ValidDesignerId);
+		custom.SetCategory(null);
+		DesignerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -59,9 +55,25 @@ public class DesignerGetCustomByIdHandlerUnitTests : CustomsBaseUnitTests
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidDesignerId),
+			It.Is<GetCategoryNameByIdQuery>(x => x.Id == ValidCategoryId),
 			ct
-		), Times.Exactly(isAccepted ? 1 : 0));
+		), Times.Never());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldSendRequests_WhenHasCategory()
+	{
+		// Arrange
+		DesignerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
+
+		// Act
+		await handler.Handle(query, ct);
+
+		// Assert
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetCategoryNameByIdQuery>(x => x.Id == ValidCategoryId),
+			ct
+		), Times.Once());
 	}
 
 	[Fact]
@@ -74,7 +86,7 @@ public class DesignerGetCustomByIdHandlerUnitTests : CustomsBaseUnitTests
 		DesignerGetCustomByIdDto custom = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(expected.Id, custom.Id);
+		Assert.Equal(this.custom.Id, custom.Id);
 	}
 
 	[Fact]
@@ -95,7 +107,7 @@ public class DesignerGetCustomByIdHandlerUnitTests : CustomsBaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUnauthorized()
 	{
 		// Arrange
-		expected.Accept(ValidDesignerId);
+		custom.Accept(ValidDesignerId);
 		DesignerGetCustomByIdQuery query = new(ValidId, AccountId.New());
 
 		// Assert

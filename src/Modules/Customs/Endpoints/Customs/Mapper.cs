@@ -27,7 +27,8 @@ internal static class Mapper
 			OrderedAt: custom.OrderedAt,
 			ForDelivery: custom.ForDelivery,
 			Status: custom.CustomStatus,
-			DesignerName: custom.DesignerName
+			DesignerName: custom.DesignerName,
+			CategoryName: custom.CategoryName
 		);
 
 	internal static RecentCustomsResponse ToRecentResponse(this GetAllCustomsDto custom)
@@ -45,7 +46,8 @@ internal static class Mapper
 			Description: custom.Description,
 			OrderedAt: custom.OrderedAt,
 			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus
+			Status: custom.CustomStatus,
+			Category: custom.Category?.ToResponse()
 		);
 
 	internal static CalculateCustomShipmentResponse ToResponse(this CalculateShipmentDto calculation)
@@ -65,6 +67,7 @@ internal static class Mapper
 			OrderedAt: custom.OrderedAt,
 			ForDelivery: custom.ForDelivery,
 			Status: custom.CustomStatus,
+			Category: custom.Category?.ToResponse(),
 			AcceptedCustom: custom.AcceptedCustom?.ToResponse(),
 			FinishedCustom: custom.FinishedCustom?.ToResponse(),
 			CompletedCustom: custom.CompletedCustom?.ToResponse()
@@ -79,6 +82,7 @@ internal static class Mapper
 			ForDelivery: custom.ForDelivery,
 			Status: custom.CustomStatus,
 			BuyerName: custom.BuyerName,
+			Category: custom.Category?.ToResponse(),
 			AcceptedCustom: custom.AcceptedCustom?.ToResponse(),
 			FinishedCustom: custom.FinishedCustom?.ToResponse(),
 			CompletedCustom: custom.CompletedCustom?.ToResponse()
@@ -91,7 +95,8 @@ internal static class Mapper
 			OrderedAt: custom.OrderedAt,
 			Status: custom.CustomStatus,
 			ForDelivery: custom.ForDelivery,
-			BuyerName: custom.BuyerName
+			BuyerName: custom.BuyerName,
+			CategoryName: custom.CategoryName
 		);
 
 	internal static AdminGetCustomsRespose ToAdminResponse(this GetAllCustomsDto custom)
@@ -102,7 +107,8 @@ internal static class Mapper
 			Status: custom.CustomStatus,
 			OrderedAt: custom.OrderedAt,
 			BuyerName: custom.BuyerName,
-			DesignerName: custom.DesignerName
+			DesignerName: custom.DesignerName,
+			CategoryName: custom.CategoryName
 		);
 
 	internal static (string Key, string ContentType, decimal Volume) ToTuple(this FinishCustomRequest req)
@@ -112,6 +118,14 @@ internal static class Mapper
 		=> new(
 			ClientSecret: payment.ClientSecret,
 			Message: payment.Message
+		);
+
+	internal static CustomCategoryResponse ToResponse(this CustomCategoryDto category)
+		=> new(
+			Id: category.Id.Value,
+			Name: category.Name,
+			SetAt: category.SetAt,
+			Setter: category.Setter
 		);
 
 	internal static AcceptedCustomResponse ToResponse(this AcceptedCustomDto custom)

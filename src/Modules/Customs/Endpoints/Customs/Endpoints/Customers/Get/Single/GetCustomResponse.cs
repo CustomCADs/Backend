@@ -10,6 +10,7 @@ public sealed record GetCustomResponse(
 	DateTimeOffset OrderedAt,
 	CustomStatus Status,
 	bool ForDelivery,
+	CustomCategoryResponse? Category,
 	AcceptedCustomResponse? AcceptedCustom,
 	FinishedCustomResponse? FinishedCustom,
 	CompletedCustomResponse? CompletedCustom

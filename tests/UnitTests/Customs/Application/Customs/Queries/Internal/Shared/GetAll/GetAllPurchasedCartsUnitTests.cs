@@ -2,9 +2,11 @@
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 
@@ -29,6 +31,10 @@ public class GetAllCustomsUnitTests : CustomsBaseUnitTests
 	{
 		[ValidDesignerId] = DesignerUsername,
 	};
+	private readonly Dictionary<CategoryId, string> categories = new()
+	{
+		[ValidCategoryId] = "Category123",
+	};
 	private readonly CustomQuery query;
 
 	public GetAllCustomsUnitTests()
@@ -38,6 +44,7 @@ public class GetAllCustomsUnitTests : CustomsBaseUnitTests
 		query = new(
 			Pagination: new(1, customs.Length)
 		);
+		customs.First().Accept(ValidDesignerId);
 
 		reads.Setup(x => x.AllAsync(query, false, ct))
 			.ReturnsAsync(new Result<Custom>(
@@ -54,6 +61,11 @@ public class GetAllCustomsUnitTests : CustomsBaseUnitTests
 			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Contains(ValidDesignerId)),
 			ct
 		)).ReturnsAsync(designers);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<GetCategoryNamesByIdsQuery>(x => x.Ids.Contains(ValidCategoryId)),
+			ct
+		)).ReturnsAsync(categories);
 	}
 
 	[Fact]
@@ -67,6 +79,30 @@ public class GetAllCustomsUnitTests : CustomsBaseUnitTests
 
 		// Assert
 		reads.Verify(x => x.AllAsync(this.query, false, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldSendRequests()
+	{
+		// Arrange
+		GetAllCustomsQuery query = new(this.query.Pagination);
+
+		// Act
+		await handler.Handle(query, ct);
+
+		// Assert
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Contains(ValidBuyerId)),
+			ct
+		), Times.Once());
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Contains(ValidDesignerId)),
+			ct
+		), Times.Once());
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetCategoryNamesByIdsQuery>(x => x.Ids.Contains(ValidCategoryId)),
+			ct
+		), Times.Once());
 	}
 
 	[Fact]

@@ -43,7 +43,8 @@ public class CreateCustomHandlerUnitTests : CustomsBaseUnitTests
 			Name: MaxValidName,
 			Description: MaxValidDescription,
 			ForDelivery: true,
-			CallerId: ValidBuyerId
+			CallerId: ValidBuyerId,
+			CategoryId: ValidCategoryId
 		);
 
 		// Act
@@ -70,7 +71,8 @@ public class CreateCustomHandlerUnitTests : CustomsBaseUnitTests
 			Name: MaxValidName,
 			Description: MaxValidDescription,
 			ForDelivery: true,
-			CallerId: ValidBuyerId
+			CallerId: ValidBuyerId,
+			CategoryId: ValidCategoryId
 		);
 
 		// Act
@@ -92,7 +94,8 @@ public class CreateCustomHandlerUnitTests : CustomsBaseUnitTests
 			Name: MaxValidName,
 			Description: MaxValidDescription,
 			ForDelivery: true,
-			CallerId: ValidBuyerId
+			CallerId: ValidBuyerId,
+			CategoryId: ValidCategoryId
 		);
 
 		// Act
@@ -115,7 +118,8 @@ public class CreateCustomHandlerUnitTests : CustomsBaseUnitTests
 			Name: MaxValidName,
 			Description: MaxValidDescription,
 			ForDelivery: true,
-			CallerId: ValidBuyerId
+			CallerId: ValidBuyerId,
+			CategoryId: ValidCategoryId
 		);
 
 		// Assert

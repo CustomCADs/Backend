@@ -7,6 +7,7 @@ public sealed record GetCustomsResponse(
 	string Name,
 	DateTimeOffset OrderedAt,
 	CustomStatus Status,
+	bool ForDelivery,
 	string BuyerName,
-	bool ForDelivery
+	string? CategoryName
 );

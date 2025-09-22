@@ -25,7 +25,7 @@ public class RemoveCustomHandlerUnitTests : CustomsBaseUnitTests
 	{
 		handler = new(reads.Object, uow.Object, raiser.Object);
 
-		custom.Accept(ValidDesignerId);
+		custom.Report();
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 	}

@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 using CustomCADs.Shared.Domain.Querying;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Endpoints.Extensions;
 
 namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Customers.Get.All;
@@ -24,6 +25,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 				ForDelivery: req.ForDelivery,
 				CustomStatus: req.Status,
 				CustomerId: User.GetAccountId(),
+				CategoryId: CategoryId.New(req.CategoryId),
 				Name: req.Name,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)

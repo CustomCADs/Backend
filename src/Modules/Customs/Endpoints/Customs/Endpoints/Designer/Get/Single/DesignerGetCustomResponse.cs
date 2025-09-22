@@ -11,6 +11,7 @@ public sealed record DesignerGetCustomResponse(
 	CustomStatus Status,
 	bool ForDelivery,
 	string BuyerName,
+	CustomCategoryResponse? Category,
 	AcceptedCustomResponse? AcceptedCustom,
 	FinishedCustomResponse? FinishedCustom,
 	CompletedCustomResponse? CompletedCustom

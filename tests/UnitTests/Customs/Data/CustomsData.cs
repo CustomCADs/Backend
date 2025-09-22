@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Customs.Domain.Customs;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Customs;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 using CustomCADs.Shared.Domain.TypedIds.Files;
@@ -29,6 +30,7 @@ public static class CustomsData
 	public static readonly CustomId ValidId = CustomId.New();
 	public static readonly AccountId ValidBuyerId = AccountId.New();
 	public static readonly AccountId ValidDesignerId = AccountId.New();
+	public static readonly CategoryId ValidCategoryId = CategoryId.New();
 	public static readonly CadId ValidCadId = CadId.New();
 	public static readonly ShipmentId ValidShipmentId = ShipmentId.New();
 	public static readonly CustomizationId ValidCustomizationId = CustomizationId.New();

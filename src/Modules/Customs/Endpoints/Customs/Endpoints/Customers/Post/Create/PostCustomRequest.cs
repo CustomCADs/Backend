@@ -3,5 +3,6 @@
 public sealed record PostCustomRequest(
 	string Name,
 	string Description,
-	bool ForDelivery
+	bool ForDelivery,
+	int? CategoryId
 );

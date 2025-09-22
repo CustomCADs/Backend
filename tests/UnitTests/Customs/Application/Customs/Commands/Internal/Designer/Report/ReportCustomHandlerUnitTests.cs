@@ -138,6 +138,21 @@ public class ReportCustomHandlerUnitTests : CustomsBaseUnitTests
 	}
 
 	[Fact]
+	public async Task Handle_ShouldNotThrowException_WhenUnauthorizedAccessButPendingStatus()
+	{
+		// Arrange
+		custom.Cancel();
+		ReportCustomCommand command = new(
+			Id: ValidId,
+			CallerId: designerId
+		);
+
+		// Assert
+		// Act
+		await handler.Handle(command, ct);
+	}
+
+	[Fact]
 	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
 	{
 		// Arrange

@@ -24,7 +24,7 @@ public class CustomCompleteUnitTests : CustomsBaseUnitTests
 			() => Assert.NotNull(custom.AcceptedCustom),
 			() => Assert.NotNull(custom.FinishedCustom),
 			() => Assert.NotNull(custom.CompletedCustom),
-			() => Assert.Equal(ValidCustomizationId, custom.CompletedCustom!.CustomizationId)
+			() => Assert.Null(custom.CompletedCustom!.CustomizationId)
 		);
 	}
 
