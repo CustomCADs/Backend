@@ -23,7 +23,7 @@ internal static class Mapper
 			PaymentStatus: cart.PaymentStatus,
 			BuyerName: cart.BuyerName,
 			ShipmentId: cart.ShipmentId?.Value,
-			Items: [.. cart.Items.Select(o => o.ToResponse())]
+			Items: [.. cart.Items.Select(x => x.ToResponse())]
 		);
 
 	internal static PurchasedCartItemResponse ToResponse(this PurchasedCartItemDto item)

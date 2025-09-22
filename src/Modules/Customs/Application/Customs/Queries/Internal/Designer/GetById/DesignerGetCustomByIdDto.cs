@@ -11,6 +11,7 @@ public sealed record DesignerGetCustomByIdDto(
 	string BuyerName,
 	CustomStatus CustomStatus,
 	DateTimeOffset OrderedAt,
+	CustomCategoryDto? Category,
 	AcceptedCustomDto? AcceptedCustom,
 	FinishedCustomDto? FinishedCustom,
 	CompletedCustomDto? CompletedCustom

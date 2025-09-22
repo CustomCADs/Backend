@@ -10,6 +10,7 @@ public sealed record CustomerGetCustomByIdDto(
 	bool ForDelivery,
 	CustomStatus CustomStatus,
 	DateTimeOffset OrderedAt,
+	CustomCategoryDto? Category,
 	AcceptedCustomDto? AcceptedCustom,
 	FinishedCustomDto? FinishedCustom,
 	CompletedCustomDto? CompletedCustom

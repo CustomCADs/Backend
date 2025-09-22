@@ -15,7 +15,9 @@ public sealed class Reads(CustomsContext context) : ICustomReads
 	{
 		IQueryable<Custom> queryable = context.Customs
 			.WithTracking(track)
-			.WithFilter(query.ForDelivery, query.CustomStatus, query.CustomerId, query.DesignerId)
+			.Include(x => x.Category)
+			.Include(x => x.AcceptedCustom)
+			.WithFilter(query.ForDelivery, query.CustomStatus, query.CustomerId, query.DesignerId, query.CategoryId)
 			.WithSearch(query.Name);
 
 		int count = await queryable.CountAsync(ct).ConfigureAwait(false);
@@ -31,6 +33,10 @@ public sealed class Reads(CustomsContext context) : ICustomReads
 	public async Task<Custom?> SingleByIdAsync(CustomId id, bool track = true, CancellationToken ct = default)
 		=> await context.Customs
 			.WithTracking(track)
+			.Include(x => x.Category)
+			.Include(x => x.AcceptedCustom)
+			.Include(x => x.FinishedCustom)
+			.Include(x => x.CompletedCustom)
 			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 

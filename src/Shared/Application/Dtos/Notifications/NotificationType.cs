@@ -3,6 +3,7 @@ namespace CustomCADs.Shared.Application.Dtos.Notifications;
 public enum NotificationType
 {
 	CustomToggledDelivery,
+	CustomCreated,
 	CustomEdited,
 	CustomDeleted,
 	CustomAccepted,
@@ -11,6 +12,7 @@ public enum NotificationType
 	CustomFinished,
 	CustomCompleted,
 	CustomReported,
+	CustomRemoved,
 	ProductEdited,
 	ProductDeleted,
 	ProductValidated,

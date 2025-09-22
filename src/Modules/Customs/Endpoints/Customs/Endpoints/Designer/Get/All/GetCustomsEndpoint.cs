@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Querying;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Endpoints.Extensions;
 
 namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Designer.Get.All;
@@ -25,6 +26,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 				CustomStatus: CustomStatus.Finished,
 				ForDelivery: req.ForDelivery,
 				DesignerId: User.GetAccountId(),
+				CategoryId: CategoryId.New(req.CategoryId),
 				Name: req.Name,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
@@ -33,7 +35,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 		).ConfigureAwait(false);
 
 		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToResponse())
+			response: result.ToNewResult(x => x.ToDesignerResponse())
 		).ConfigureAwait(false);
 	}
 }

@@ -17,13 +17,13 @@ public class CustomCreateUnitTests : CustomsBaseUnitTests
 	[ClassData(typeof(CustomCreateValidData))]
 	public void Create_ShouldPopulateProperties(string name, string description, bool forDelivery)
 	{
-		var order = CreateCustom(name, description, forDelivery, ValidBuyerId);
+		var custom = CreateCustom(name, description, forDelivery, ValidBuyerId);
 
 		Assert.Multiple(
-			() => Assert.Equal(name, order.Name),
-			() => Assert.Equal(description, order.Description),
-			() => Assert.Equal(forDelivery, order.ForDelivery),
-			() => Assert.Equal(ValidBuyerId, order.BuyerId)
+			() => Assert.Equal(name, custom.Name),
+			() => Assert.Equal(description, custom.Description),
+			() => Assert.Equal(forDelivery, custom.ForDelivery),
+			() => Assert.Equal(ValidBuyerId, custom.BuyerId)
 		);
 	}
 

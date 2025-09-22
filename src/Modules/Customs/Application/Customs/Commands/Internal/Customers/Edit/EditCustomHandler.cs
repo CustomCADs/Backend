@@ -26,7 +26,12 @@ public sealed class EditCustomHandler(
 
 		custom
 			.SetName(req.Name)
-			.SetDescription(req.Description);
+			.SetDescription(req.Description)
+			.SetCategory(
+				req.CategoryId.HasValue
+				? (req.CategoryId.Value, CustomCategorySetter.Customer)
+				: null
+			);
 
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 

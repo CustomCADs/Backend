@@ -6,6 +6,7 @@ namespace CustomCADs.Customs.Endpoints.Customs.Endpoints.Customers.Get.All;
 public sealed record GetCustomsRequest(
 	bool? ForDelivery = null,
 	CustomStatus? Status = null,
+	int? CategoryId = null,
 	string? Name = null,
 	CustomSortingType SortingType = CustomSortingType.OrderedAt,
 	SortingDirection SortingDirection = SortingDirection.Descending,

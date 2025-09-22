@@ -11,4 +11,10 @@ public class ReportedCustomState : BaseCustomState
 		custom.ClearAcceptInfo();
 		custom.SetState(new PendingCustomState());
 	}
+
+	public override void Remove(Custom custom)
+	{
+		custom.ClearAcceptInfo();
+		custom.SetState(new RemovedCustomState());
+	}
 }

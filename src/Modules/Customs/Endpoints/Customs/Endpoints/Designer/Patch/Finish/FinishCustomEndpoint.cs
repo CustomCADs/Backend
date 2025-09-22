@@ -12,7 +12,7 @@ public sealed class FinishCustomEndpoint(IRequestSender sender)
 		Group<DesignerGroup>();
 		Description(x => x
 			.WithSummary("Finish")
-			.WithDescription("Set an Custom's Status to Finished")
+			.WithDescription("Set a Custom's Status to Finished")
 		);
 	}
 

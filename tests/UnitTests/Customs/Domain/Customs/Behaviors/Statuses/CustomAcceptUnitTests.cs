@@ -87,4 +87,17 @@ public class CustomAcceptUnitTests : CustomsBaseUnitTests
 			custom.Accept(ValidDesignerId);
 		});
 	}
+
+	[Fact]
+	public void Accept_ShouldFail_WhenRemoved()
+	{
+		expectValidationException(() =>
+		{
+			Custom custom = CreateCustom();
+			custom.Report();
+			custom.Remove();
+
+			custom.Accept(ValidDesignerId);
+		});
+	}
 }

@@ -18,6 +18,7 @@ public static class EndpointsConstants
 		public const string CustomsCustomer = "customs/customer";
 		public const string ProductsCreator = "products/creator";
 		public const string CustomsDesigner = "customs/designer";
+		public const string CustomsAdmin = "customs/admin";
 		public const string ProductsDesigner = "products/designer";
 		public const string Accounts = "accounts";
 		public const string Roles = "roles";
@@ -60,5 +61,6 @@ public static class EndpointsConstants
 		[Paths.Categories] = "4.3. Categories Dashboard",
 		[Paths.Materials] = "4.4. Materials Dashboard",
 		[Paths.Tags] = "4.5. Tags Dashboard",
+		[Paths.CustomsAdmin] = "4.6. Customs Dashboard",
 	};
 }

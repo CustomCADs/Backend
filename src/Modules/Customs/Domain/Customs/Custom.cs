@@ -2,13 +2,17 @@
 using CustomCADs.Customs.Domain.Customs.States;
 using CustomCADs.Customs.Domain.Customs.States.Entities;
 using CustomCADs.Customs.Domain.Customs.States.Implementations;
+using CustomCADs.Customs.Domain.Customs.ValueObjects;
 using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Customs.Domain.Customs;
+
+using CategoryParam = (CategoryId Id, CustomCategorySetter Setter);
 
 public class Custom : BaseAggregateRoot
 {
@@ -16,7 +20,7 @@ public class Custom : BaseAggregateRoot
 	private ICustomState State => state ??= RestoreState();
 
 	private Custom() { }
-	private Custom(string name, string description, bool delivery, AccountId buyerId) : this()
+	private Custom(string name, string description, bool delivery, AccountId buyerId, CategoryParam? category) : this()
 	{
 		Name = name;
 		Description = description;
@@ -24,6 +28,11 @@ public class Custom : BaseAggregateRoot
 		CustomStatus = CustomStatus.Pending;
 		BuyerId = buyerId;
 		ForDelivery = delivery;
+
+		if (category.HasValue)
+		{
+			Category = new(category.Value.Id, this.Id, this.OrderedAt, category.Value.Setter);
+		}
 	}
 
 	public CustomId Id { get; init; }
@@ -33,6 +42,7 @@ public class Custom : BaseAggregateRoot
 	public CustomStatus CustomStatus { get; set; }
 	public DateTimeOffset OrderedAt { get; }
 	public AccountId BuyerId { get; private set; }
+	public CustomCategory? Category { get; private set; }
 	public AcceptedCustom? AcceptedCustom { get; private set; }
 	public FinishedCustom? FinishedCustom { get; private set; }
 	public CompletedCustom? CompletedCustom { get; private set; }
@@ -41,8 +51,9 @@ public class Custom : BaseAggregateRoot
 		string name,
 		string description,
 		bool forDelivery,
-		AccountId buyerId
-	) => new Custom(name, description, forDelivery, buyerId)
+		AccountId buyerId,
+		CategoryParam? category
+	) => new Custom(name, description, forDelivery, buyerId, category)
 			.ValidateName()
 			.ValidateDescription();
 
@@ -51,8 +62,9 @@ public class Custom : BaseAggregateRoot
 		string name,
 		string description,
 		bool delivery,
-		AccountId buyerId
-	) => new Custom(name, description, delivery, buyerId)
+		AccountId buyerId,
+		CategoryParam? category
+	) => new Custom(name, description, delivery, buyerId, category)
 	{
 		Id = id
 	}
@@ -85,6 +97,38 @@ public class Custom : BaseAggregateRoot
 		return this;
 	}
 
+	public Custom SetCategory(CategoryParam? category)
+	{
+		if (CustomStatus is not (CustomStatus.Pending or CustomStatus.Accepted or CustomStatus.Begun))
+		{
+			throw CustomValidationException<Custom>.Status(CustomStatus);
+		}
+
+		switch (category?.Setter)
+		{
+			case CustomCategorySetter.Customer:
+				if (this.Category?.Setter is not CustomCategorySetter.Customer)
+				{
+					throw CustomValidationException<CustomCategory>.Custom("Customer cannot modify his Category after Designer/Admin has changed it.");
+				}
+				break;
+
+			case CustomCategorySetter.Designer:
+				if (this.Category?.Setter is CustomCategorySetter.Admin)
+				{
+					throw CustomValidationException<CustomCategory>.Custom("Designer cannot modify this Category after Admin has changed it.");
+				}
+				break;
+
+			case null:
+				this.Category = null;
+				return this;
+		}
+
+		this.Category = new(category.Value.Id, this.Id, DateTimeOffset.UtcNow, category.Value.Setter);
+		return this;
+	}
+
 	public Custom SetDelivery(bool value)
 	{
 		if (CustomStatus is not (CustomStatus.Pending or CustomStatus.Accepted or CustomStatus.Begun or CustomStatus.Finished))
@@ -107,7 +151,6 @@ public class Custom : BaseAggregateRoot
 		return this;
 	}
 
-
 	public Custom FinishPayment(bool success = true)
 	{
 		if (CustomStatus is not CustomStatus.Completed)
@@ -125,6 +168,7 @@ public class Custom : BaseAggregateRoot
 	public void Complete(CustomizationId? customizationId) => State.Complete(this, customizationId);
 	public void Cancel() => State.Cancel(this);
 	public void Report() => State.Report(this);
+	public void Remove() => State.Remove(this);
 
 	internal void SetState(ICustomState newState)
 	{

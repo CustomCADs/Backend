@@ -18,7 +18,7 @@ namespace CustomCADs.Customs.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Customs")
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -63,7 +63,7 @@ namespace CustomCADs.Customs.Persistence.Migrations
                     b.ToTable("Customs", "Customs");
                 });
 
-            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.Entities.AcceptedCustom", b =>
+            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.States.Entities.AcceptedCustom", b =>
                 {
                     b.Property<Guid>("CustomId")
                         .HasColumnType("uuid");
@@ -81,7 +81,7 @@ namespace CustomCADs.Customs.Persistence.Migrations
                     b.ToTable("AcceptedCustoms", "Customs");
                 });
 
-            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.Entities.CompletedCustom", b =>
+            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.States.Entities.CompletedCustom", b =>
                 {
                     b.Property<Guid>("CustomId")
                         .HasColumnType("uuid");
@@ -104,7 +104,7 @@ namespace CustomCADs.Customs.Persistence.Migrations
                     b.ToTable("CompletedCustoms", "Customs");
                 });
 
-            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.Entities.FinishedCustom", b =>
+            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.States.Entities.FinishedCustom", b =>
                 {
                     b.Property<Guid>("CustomId")
                         .HasColumnType("uuid");
@@ -127,29 +127,64 @@ namespace CustomCADs.Customs.Persistence.Migrations
                     b.ToTable("FinishedCustoms", "Customs");
                 });
 
-            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.Entities.AcceptedCustom", b =>
+            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.ValueObjects.CustomCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer")
+                        .HasColumnName("Id");
+
+                    b.Property<Guid>("CustomId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("SetAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("SetAt");
+
+                    b.Property<string>("Setter")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("Setter");
+
+                    b.HasKey("Id", "CustomId");
+
+                    b.HasIndex("CustomId")
+                        .IsUnique();
+
+                    b.ToTable("CustomCategory", "Customs");
+                });
+
+            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.States.Entities.AcceptedCustom", b =>
                 {
                     b.HasOne("CustomCADs.Customs.Domain.Customs.Custom", null)
                         .WithOne("AcceptedCustom")
-                        .HasForeignKey("CustomCADs.Customs.Domain.Customs.Entities.AcceptedCustom", "CustomId")
+                        .HasForeignKey("CustomCADs.Customs.Domain.Customs.States.Entities.AcceptedCustom", "CustomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.Entities.CompletedCustom", b =>
+            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.States.Entities.CompletedCustom", b =>
                 {
                     b.HasOne("CustomCADs.Customs.Domain.Customs.Custom", null)
                         .WithOne("CompletedCustom")
-                        .HasForeignKey("CustomCADs.Customs.Domain.Customs.Entities.CompletedCustom", "CustomId")
+                        .HasForeignKey("CustomCADs.Customs.Domain.Customs.States.Entities.CompletedCustom", "CustomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.Entities.FinishedCustom", b =>
+            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.States.Entities.FinishedCustom", b =>
                 {
                     b.HasOne("CustomCADs.Customs.Domain.Customs.Custom", null)
                         .WithOne("FinishedCustom")
-                        .HasForeignKey("CustomCADs.Customs.Domain.Customs.Entities.FinishedCustom", "CustomId")
+                        .HasForeignKey("CustomCADs.Customs.Domain.Customs.States.Entities.FinishedCustom", "CustomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.ValueObjects.CustomCategory", b =>
+                {
+                    b.HasOne("CustomCADs.Customs.Domain.Customs.Custom", null)
+                        .WithOne("Category")
+                        .HasForeignKey("CustomCADs.Customs.Domain.Customs.ValueObjects.CustomCategory", "CustomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -157,6 +192,8 @@ namespace CustomCADs.Customs.Persistence.Migrations
             modelBuilder.Entity("CustomCADs.Customs.Domain.Customs.Custom", b =>
                 {
                     b.Navigation("AcceptedCustom");
+
+                    b.Navigation("Category");
 
                     b.Navigation("CompletedCustom");
 

@@ -16,16 +16,19 @@ namespace CustomCADs.Customs.Endpoints.Customs;
 
 using CustomerGetCustomsRespose = Endpoints.Customers.Get.All.GetCustomsResponse;
 using DesignerGetCustomsRespose = Endpoints.Designer.Get.All.GetCustomsResponse;
+using AdminGetCustomsRespose = Endpoints.Admins.Get.All.GetCustomsResponse;
 
 internal static class Mapper
 {
-	internal static CustomerGetCustomsRespose ToGetResponse(this GetAllCustomsDto custom)
+	internal static CustomerGetCustomsRespose ToCustomerResponse(this GetAllCustomsDto custom)
 		=> new(
 			Id: custom.Id.Value,
 			Name: custom.Name,
 			OrderedAt: custom.OrderedAt,
 			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus.ToString()
+			Status: custom.CustomStatus,
+			DesignerName: custom.DesignerName,
+			CategoryName: custom.CategoryName
 		);
 
 	internal static RecentCustomsResponse ToRecentResponse(this GetAllCustomsDto custom)
@@ -43,7 +46,8 @@ internal static class Mapper
 			Description: custom.Description,
 			OrderedAt: custom.OrderedAt,
 			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus.ToString()
+			Status: custom.CustomStatus,
+			Category: custom.Category?.ToResponse()
 		);
 
 	internal static CalculateCustomShipmentResponse ToResponse(this CalculateShipmentDto calculation)
@@ -62,7 +66,8 @@ internal static class Mapper
 			Description: custom.Description,
 			OrderedAt: custom.OrderedAt,
 			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus.ToString(),
+			Status: custom.CustomStatus,
+			Category: custom.Category?.ToResponse(),
 			AcceptedCustom: custom.AcceptedCustom?.ToResponse(),
 			FinishedCustom: custom.FinishedCustom?.ToResponse(),
 			CompletedCustom: custom.CompletedCustom?.ToResponse()
@@ -75,20 +80,35 @@ internal static class Mapper
 			Description: custom.Description,
 			OrderedAt: custom.OrderedAt,
 			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus.ToString(),
+			Status: custom.CustomStatus,
 			BuyerName: custom.BuyerName,
+			Category: custom.Category?.ToResponse(),
 			AcceptedCustom: custom.AcceptedCustom?.ToResponse(),
 			FinishedCustom: custom.FinishedCustom?.ToResponse(),
 			CompletedCustom: custom.CompletedCustom?.ToResponse()
 		);
 
-	internal static DesignerGetCustomsRespose ToResponse(this GetAllCustomsDto custom)
+	internal static DesignerGetCustomsRespose ToDesignerResponse(this GetAllCustomsDto custom)
 		=> new(
 			Id: custom.Id.Value,
 			Name: custom.Name,
 			OrderedAt: custom.OrderedAt,
+			Status: custom.CustomStatus,
 			ForDelivery: custom.ForDelivery,
-			BuyerName: custom.BuyerName
+			BuyerName: custom.BuyerName,
+			CategoryName: custom.CategoryName
+		);
+
+	internal static AdminGetCustomsRespose ToAdminResponse(this GetAllCustomsDto custom)
+		=> new(
+			Id: custom.Id.Value,
+			Name: custom.Name,
+			ForDelivery: custom.ForDelivery,
+			Status: custom.CustomStatus,
+			OrderedAt: custom.OrderedAt,
+			BuyerName: custom.BuyerName,
+			DesignerName: custom.DesignerName,
+			CategoryName: custom.CategoryName
 		);
 
 	internal static (string Key, string ContentType, decimal Volume) ToTuple(this FinishCustomRequest req)
@@ -98,6 +118,14 @@ internal static class Mapper
 		=> new(
 			ClientSecret: payment.ClientSecret,
 			Message: payment.Message
+		);
+
+	internal static CustomCategoryResponse ToResponse(this CustomCategoryDto category)
+		=> new(
+			Id: category.Id.Value,
+			Name: category.Name,
+			SetAt: category.SetAt,
+			Setter: category.Setter
 		);
 
 	internal static AcceptedCustomResponse ToResponse(this AcceptedCustomDto custom)

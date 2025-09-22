@@ -87,4 +87,17 @@ public class CustomBeginUnitTests : CustomsBaseUnitTests
 			custom.Begin();
 		});
 	}
+
+	[Fact]
+	public void Begin_ShouldFail_WhenRemoved()
+	{
+		expectValidationException(() =>
+		{
+			Custom custom = CreateCustom();
+			custom.Report();
+			custom.Remove();
+
+			custom.Begin();
+		});
+	}
 }

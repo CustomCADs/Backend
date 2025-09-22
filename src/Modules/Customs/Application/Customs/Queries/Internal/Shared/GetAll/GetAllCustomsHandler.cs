@@ -1,8 +1,10 @@
 ﻿using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 
@@ -17,6 +19,7 @@ public sealed class GetAllCustomsHandler(ICustomReads reads, IRequestSender send
 				CustomStatus: req.CustomStatus,
 				CustomerId: req.CustomerId,
 				DesignerId: req.DesignerId,
+				CategoryId: req.CategoryId,
 				Name: req.Name,
 				Sorting: req.Sorting,
 				Pagination: req.Pagination
@@ -40,9 +43,19 @@ public sealed class GetAllCustomsHandler(ICustomReads reads, IRequestSender send
 			ct: ct
 		).ConfigureAwait(false);
 
+		CategoryId[] categoryIds = [.. result.Items
+			.Where(x => x.Category is not null)
+			.Select(x => x.Category!.Id)
+		];
+		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
+			query: new GetCategoryNamesByIdsQuery(categoryIds),
+			ct: ct
+		).ConfigureAwait(false);
+
 		return result.ToNewResult(x => x.ToGetAllDto(
 			buyerName: buyers[x.BuyerId],
-			designerName: x.AcceptedCustom is null ? null : designers[x.AcceptedCustom.DesignerId]
+			designerName: x.AcceptedCustom is null ? null : designers[x.AcceptedCustom.DesignerId],
+			categoryName: x.Category is null ? null : categories[x.Category.Id]
 		));
 	}
 }

@@ -3,6 +3,7 @@ using CustomCADs.Catalog.Domain.Repositories;
 using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;
@@ -22,7 +23,6 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 	private readonly Mock<IEventRaiser> raiser = new();
 
 	private readonly Product product = CreateProductWithId();
-	private readonly AccountId[] receiverIds = [ValidDesignerId, ValidCreatorId];
 
 	public EditProductHandlerUnitTests()
 	{
@@ -38,7 +38,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetAccountsWithProductInCartQuery>(x => x.ProductId == ValidId),
 			ct
-		)).ReturnsAsync(receiverIds);
+		)).ReturnsAsync([ValidDesignerId, ValidCreatorId]);
 	}
 
 	[Fact]
@@ -126,7 +126,7 @@ public class EditProductHandlerUnitTests : ProductsBaseUnitTests
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.ReceiverIds == receiverIds)
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.ProductEdited)
 		), Times.Once());
 	}
 

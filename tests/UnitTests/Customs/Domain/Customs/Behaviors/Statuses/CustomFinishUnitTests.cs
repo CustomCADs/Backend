@@ -105,4 +105,17 @@ public class CustomFinishUnitTests : CustomsBaseUnitTests
 			custom.Finish(ValidCadId, ValidPrice);
 		});
 	}
+
+	[Fact]
+	public void Finish_ShouldFail_WhenRemoved()
+	{
+		expectValidationException(() =>
+		{
+			Custom custom = CreateCustom();
+			custom.Report();
+			custom.Remove();
+
+			custom.Finish(ValidCadId, ValidPrice);
+		});
+	}
 }

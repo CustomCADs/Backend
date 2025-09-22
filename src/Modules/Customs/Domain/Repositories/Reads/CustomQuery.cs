@@ -13,6 +13,7 @@ public record CustomQuery(
 	ProductId? ProductId = null,
 	AccountId? CustomerId = null,
 	AccountId? DesignerId = null,
+	CategoryId? CategoryId = null,
 	string? Name = null,
 	Sorting<CustomSortingType>? Sorting = null
 );
