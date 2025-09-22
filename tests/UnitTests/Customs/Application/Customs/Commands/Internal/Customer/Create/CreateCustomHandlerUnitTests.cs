@@ -37,6 +37,11 @@ public class CreateCustomHandlerUnitTests : CustomsBaseUnitTests
 			It.IsAny<GetAccountExistsByIdQuery>(),
 			ct
 		)).ReturnsAsync(true);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<GetAccountIdsByRoleQuery>(x => x.Role == "Designer"),
+			ct
+		)).ReturnsAsync([]);
 	}
 
 	[Fact]
