@@ -1,6 +1,9 @@
 ﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Create;
 using CustomCADs.Customs.Domain.Repositories;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
@@ -14,10 +17,11 @@ public class CreateCustomHandlerUnitTests : CustomsBaseUnitTests
 	private readonly Mock<IWrites<Custom>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
 	public CreateCustomHandlerUnitTests()
 	{
-		handler = new(writes.Object, uow.Object, sender.Object);
+		handler = new(writes.Object, uow.Object, sender.Object, raiser.Object);
 
 		writes.Setup(x => x.AddAsync(
 			It.Is<Custom>(x =>
@@ -83,7 +87,31 @@ public class CreateCustomHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidBuyerId),
 			ct
 		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetAccountIdsByRoleQuery>(x => x.Role == "Designer"),
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		CreateCustomCommand command = new(
+			Name: MaxValidName,
+			Description: MaxValidDescription,
+			ForDelivery: true,
+			CallerId: ValidBuyerId,
+			CategoryId: ValidCategoryId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomCreated)
+		), Times.Once());
 	}
 
 	[Fact]

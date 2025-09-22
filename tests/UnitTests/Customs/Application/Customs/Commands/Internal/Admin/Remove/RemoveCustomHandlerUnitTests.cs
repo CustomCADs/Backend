@@ -3,6 +3,7 @@ using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
@@ -76,7 +77,7 @@ public class RemoveCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.AuthorId == adminId)
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomRemoved)
 		), Times.Once());
 	}
 

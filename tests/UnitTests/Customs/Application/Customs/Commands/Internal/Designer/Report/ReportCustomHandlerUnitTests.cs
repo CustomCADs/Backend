@@ -4,6 +4,7 @@ using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
@@ -98,7 +99,7 @@ public class ReportCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.AuthorId == ValidDesignerId)
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomReported)
 		), Times.Once());
 	}
 
