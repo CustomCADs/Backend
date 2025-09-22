@@ -7,15 +7,16 @@ using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
 using CustomCADs.Shared.Domain.TypedIds.Customs;
-using CustomCADs.Shared.Endpoints.Attributes;
+using CustomCADs.Shared.API.Attributes;
 using CustomCADs.Shared.Infrastructure.Payment;
 using Microsoft.Extensions.Options;
 using Stripe;
+using CustomCADs.Shared.API;
 
 namespace CustomCADs.Presentation;
 
 using static ApplicationConstants;
-using static Shared.Endpoints.EndpointsConstants;
+using static EndpointsConstants;
 
 public static class StripeWebhook
 {

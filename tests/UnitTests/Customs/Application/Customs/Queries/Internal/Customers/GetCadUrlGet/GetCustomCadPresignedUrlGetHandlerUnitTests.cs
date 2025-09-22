@@ -6,7 +6,7 @@ using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.GetCadUrlGet;
+namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.Internal.Customers.GetCadUrlGet;
 
 using static CustomsData;
 

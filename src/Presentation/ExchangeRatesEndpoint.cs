@@ -1,9 +1,10 @@
+using CustomCADs.Shared.API;
 using CustomCADs.Shared.Application.Abstractions.Cache;
 using CustomCADs.Shared.Application.Currencies;
 
 namespace CustomCADs.Presentation;
 
-using static Shared.Endpoints.EndpointsConstants;
+using static EndpointsConstants;
 
 public static class ExchangeRatesEndpoint
 {
