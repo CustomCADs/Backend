@@ -87,7 +87,7 @@ public class PurchaseCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomFinished)
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomCompleted)
 		), Times.Once());
 	}
 

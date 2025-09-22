@@ -23,7 +23,7 @@ public class RemoveCustomHandler(
 
 		await raiser.RaiseApplicationEventAsync(
 			@event: new NotificationRequestedEvent(
-				Type: NotificationType.CustomReported,
+				Type: NotificationType.CustomRemoved,
 				Description: ApplicationConstants.Notifications.Messages.CustomRemoved,
 				Link: ApplicationConstants.Notifications.Links.CustomRemoved,
 				AuthorId: req.CallerId,
