@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Delivery.Application.Contracts;
 using CustomCADs.Delivery.Application.Contracts.Dtos;
-using CustomCADs.Shared.Abstractions.Delivery.Dtos;
 using SpeedyNET.Abstractions.Contracts.Calculation;
 using SpeedyNET.Abstractions.Contracts.Shipment;
 using SpeedyNET.Abstractions.Contracts.Track;

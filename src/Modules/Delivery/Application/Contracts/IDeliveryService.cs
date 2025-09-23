@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Delivery.Application.Contracts.Dtos;
-using CustomCADs.Shared.Abstractions.Delivery.Dtos;
 
 namespace CustomCADs.Delivery.Application.Contracts;
 

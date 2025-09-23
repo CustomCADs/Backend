@@ -3,14 +3,14 @@
 using static DomainConstants.Roles;
 using static EndpointsConstants;
 
-public class AdminGroup : Group
+public class AdminGroup : SubGroup<CustomsGroup>
 {
 	public AdminGroup()
 	{
-		Configure(Paths.CustomsAdmin, x =>
+		Configure(Paths.Admin, x =>
 		{
 			x.Roles(Admin);
-			x.Description(x => x.WithTags(Tags[Paths.CustomsAdmin]));
+			x.Description(x => x.WithTags(Tags[$"{Paths.Customs}/{Paths.Admin}"]));
 		});
 	}
 }

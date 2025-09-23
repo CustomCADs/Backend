@@ -2,14 +2,14 @@
 
 using static EndpointsConstants;
 
-public class GalleryGroup : Group
+public class GalleryGroup : SubGroup<ProductsGroup>
 {
 	public GalleryGroup()
 	{
-		Configure(Paths.ProductsGallery, x =>
+		Configure(Paths.Gallery, x =>
 		{
 			x.AllowAnonymous();
-			x.Description(x => x.WithTags(Tags[Paths.ProductsGallery]));
+			x.Description(x => x.WithTags(Tags[Paths.Gallery]));
 		});
 	}
 }

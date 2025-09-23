@@ -3,14 +3,14 @@
 using static DomainConstants.Roles;
 using static EndpointsConstants;
 
-public class DesignerGroup : Group
+public class DesignerGroup : SubGroup<CustomsGroup>
 {
 	public DesignerGroup()
 	{
-		Configure(Paths.CustomsDesigner, x =>
+		Configure(Paths.Designer, x =>
 		{
 			x.Roles(Designer);
-			x.Description(x => x.WithTags(Tags[Paths.CustomsDesigner]));
+			x.Description(x => x.WithTags(Tags[$"{Paths.Customs}/{Paths.Designer}"]));
 		});
 	}
 }
