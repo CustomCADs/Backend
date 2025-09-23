@@ -25,9 +25,13 @@ locals {
   production_delivery_username = local.production_delivery["Username"]
   production_delivery_password = local.production_delivery["Password"]
 
-  production_urls           = local.production_env_vars["ClientURLs"]
-  production_urls_all       = local.production_urls["All"]
-  production_urls_preferred = local.production_urls["Preferred"]
+  production_client_urls           = local.production_env_vars["ClientURLs"]
+  production_client_urls_all       = local.production_client_urls["All"]
+  production_client_urls_preferred = local.production_client_urls["Preferred"]
+
+  production_server_urls           = local.production_env_vars["ServerURLs"]
+  production_server_urls_all       = local.production_server_urls["All"]
+  production_server_urls_preferred = local.production_server_urls["Preferred"]
 
   production_cookie        = local.production_env_vars["Cookie"]
   production_cookie_domain = local.production_cookie["Domain"]
@@ -440,13 +444,25 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "ClientURLs__All"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_urls_all
+    value     = local.production_client_urls_all
   }
   setting {
     name      = "ClientURLs__Preferred"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_urls_preferred
+    value     = local.production_client_urls_preferred
+  }
+  setting {
+    name      = "ServerURLs__All"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.production_server_urls_all
+  }
+  setting {
+    name      = "ServerURLs__Preferred"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.production_server_urls_preferred
   }
   setting {
     name      = "Cookie__Domain"
