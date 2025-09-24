@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
+  	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -8,11 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="../Domain/CustomCADs.Shared.Domain.csproj" />
+		<ProjectReference Include="..\Application\CustomCADs.Catalog.Application.csproj" />
+		<ProjectReference Include="..\..\..\Shared\Infrastructure\CustomCADs.Shared.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

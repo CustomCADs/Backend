@@ -5,7 +5,7 @@ using CustomCADs.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Delivery.Domain.Shipments.Enums;
 using Quartz;
 
-namespace CustomCADs.Delivery.Application.Shipments.BackgroundJobs;
+namespace CustomCADs.Delivery.Infrastructure.BackgroundJobs;
 
 public class PollShipmentStatusJob(IShipmentReads reads, IUnitOfWork uow, IDeliveryService delivery) : IJob
 {

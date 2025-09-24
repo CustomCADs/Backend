@@ -5,6 +5,7 @@ using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Currencies;
 using CustomCADs.Shared.Infrastructure;
+using CustomCADs.Shared.Infrastructure.BackgroundJobs.Currencies;
 using CustomCADs.Shared.Infrastructure.Cache;
 using CustomCADs.Shared.Infrastructure.Currencies;
 using CustomCADs.Shared.Infrastructure.Email;
@@ -14,7 +15,9 @@ using CustomCADs.Shared.Infrastructure.Requests;
 using FluentValidation;
 using JasperFx.CodeGeneration;
 using Microsoft.Extensions.Options;
+using Quartz;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Wolverine;
 using Wolverine.FluentValidation;
 
@@ -101,5 +104,30 @@ public static class DependencyInjection
 				)
 			)
 		);
+	}
+
+	public static void AddSharedBackgroundJobs(this IServiceCollectionQuartzConfigurator configurator)
+	{
+		TimeZoneInfo cet = TimeZoneInfo.FindSystemTimeZoneById(
+			id: RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+				? "Central European Standard Time"
+				: "Europe/Berlin"
+		);
+
+		configurator.AddTrigger(opts => opts
+			.ForJob(configurator.AddJobAndReturnKey<UpdateExchangeRatesCacheJob>())
+			.WithSchedule(
+				CronScheduleBuilder
+					.DailyAtHourAndMinute(16, 30)
+					.InTimeZone(cet)
+			));
+	}
+
+	public static JobKey AddJobAndReturnKey<TJob>(this IServiceCollectionQuartzConfigurator q, string? name = null)
+		where TJob : IJob
+	{
+		JobKey key = new(name ?? typeof(TJob).Name);
+		q.AddJob<TJob>(conf => conf.WithIdentity(key));
+		return key;
 	}
 }

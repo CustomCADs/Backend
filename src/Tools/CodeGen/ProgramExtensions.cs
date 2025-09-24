@@ -10,7 +10,7 @@ using CustomCADs.Shared.Infrastructure.Payment;
 using CustomCADs.Shared.Persistence;
 using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.AspNetCore.Identity;
-
+using Quartz;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
@@ -162,11 +162,13 @@ public static class ProgramExtensions
 
 	public static IServiceCollection AddBackgroundJobs(this IServiceCollection services)
 	{
-		services
-			.AddSharedBackgroundJobs()
-			.AddCatalogBackgroundJobs()
-			.AddDeliveryBackgroundJobs()
-			.AddIdempotencyBackgroundJobs();
+		services.AddQuartz(configurator =>
+		{
+			configurator.AddSharedBackgroundJobs();
+			configurator.AddCatalogBackgroundJobs();
+			configurator.AddDeliveryBackgroundJobs();
+			configurator.AddIdempotencyBackgroundJobs();
+		});
 
 		return services;
 	}

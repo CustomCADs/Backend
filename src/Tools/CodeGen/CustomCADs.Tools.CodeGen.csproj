@@ -20,6 +20,7 @@
 		<!-- Catalog -->
 		<ProjectReference Include="..\..\Modules\Catalog\Application\CustomCADs.Catalog.Application.csproj" />
 		<ProjectReference Include="..\..\Modules\Catalog\Persistence\CustomCADs.Catalog.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Catalog\Infrastructure\CustomCADs.Catalog.Infrastructure.csproj" />
 
 		<!-- Customs -->
 		<ProjectReference Include="..\..\Modules\Customs\Application\CustomCADs.Customs.Application.csproj" />
@@ -38,6 +39,7 @@
 		<!-- Idempotency -->
 		<ProjectReference Include="..\..\Modules\Idempotency\Application\CustomCADs.Idempotency.Application.csproj" />
 		<ProjectReference Include="..\..\Modules\Idempotency\Persistence\CustomCADs.Idempotency.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Idempotency\Infrastructure\CustomCADs.Idempotency.Infrastructure.csproj" />
 
 		<!-- Identity -->
 		<ProjectReference Include="..\..\Modules\Identity\Application\CustomCADs.Identity.Application.csproj" />

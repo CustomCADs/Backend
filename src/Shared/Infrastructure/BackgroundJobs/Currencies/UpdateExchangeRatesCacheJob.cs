@@ -2,12 +2,9 @@ using CustomCADs.Shared.Application.Abstractions.Cache;
 using CustomCADs.Shared.Application.Currencies;
 using Quartz;
 
-namespace CustomCADs.Shared.Application.UseCases.Common.Currencies.BackgroundJobs;
+namespace CustomCADs.Shared.Infrastructure.BackgroundJobs.Currencies;
 
-public class UpdateExchangeRatesCacheBackgroundJob(
-	ICurrencyService service,
-	ICacheService cache
-) : IJob
+public class UpdateExchangeRatesCacheJob(ICurrencyService service, ICacheService cache) : IJob
 {
 	public async Task Execute(IJobExecutionContext context)
 	{
