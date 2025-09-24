@@ -1,11 +1,12 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment;
+using CustomCADs.Shared.API.Extensions;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.CalculateShipment;
 
 public class CalculateCustomShipmentEndpoint(IRequestSender sender)
-	: Endpoint<CalculateCustomShipmentRequest, ICollection<CalculateCustomShipmentResponse>>
+	: Endpoint<CalculateCustomShipmentRequest, ICollection<CalculateCustomShipmentResponse>, CalculateCustomShipmentMapper>
 {
 	public override void Configure()
 	{
@@ -29,8 +30,6 @@ public class CalculateCustomShipmentEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		ICollection<CalculateCustomShipmentResponse> response =
-			[.. calculations.Select(x => x.ToResponse())];
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(calculations, Map.FromEntity).ConfigureAwait(false);
 	}
 }

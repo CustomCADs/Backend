@@ -4,7 +4,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.Stats;
 
 public sealed class GetNotificationsStatsEndpoint(IRequestSender sender)
-	: EndpointWithoutRequest<CountNotificationsDto>
+	: EndpointWithoutRequest<GetNotificationsStatsResponse, GetNotificationsStatsMapper>
 {
 	public override void Configure()
 	{
@@ -18,13 +18,13 @@ public sealed class GetNotificationsStatsEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(CancellationToken ct)
 	{
-		CountNotificationsDto response = await sender.SendQueryAsync(
+		CountNotificationsDto counts = await sender.SendQueryAsync(
 			query: new CountNotificationsQuery(
 				CallerId: User.GetAccountId()
 			),
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(counts, Map.FromEntity).ConfigureAwait(false);
 	}
 }

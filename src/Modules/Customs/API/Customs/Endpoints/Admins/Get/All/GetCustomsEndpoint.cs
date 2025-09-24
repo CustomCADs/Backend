@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+using CustomCADs.Shared.API.Extensions;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
@@ -6,7 +7,7 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 namespace CustomCADs.Customs.API.Customs.Endpoints.Admins.Get.All;
 
 public sealed class GetCustomsEndpoint(IRequestSender sender)
-	: Endpoint<GetCustomsRequest, Result<GetCustomsResponse>>
+	: Endpoint<GetCustomsRequest, Result<GetCustomsResponse>, GetCustomsMapper>
 {
 	public override void Configure()
 	{
@@ -34,8 +35,6 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToAdminResponse())
-		).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

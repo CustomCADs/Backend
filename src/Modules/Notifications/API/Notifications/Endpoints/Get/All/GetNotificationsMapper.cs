@@ -1,11 +1,10 @@
 using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
-using CustomCADs.Notifications.API.Notifications.Endpoints.Get.All;
 
-namespace CustomCADs.Notifications.API.Notifications;
+namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.All;
 
-internal static class Mapper
+public class GetNotificationsMapper : ResponseMapper<GetNotificationsResponse, GetAllNotificationsDto>
 {
-	internal static GetNotificationsResponse ToResponse(this GetAllNotificationsDto notification)
+	public override GetNotificationsResponse FromEntity(GetAllNotificationsDto notification)
 		=> new(
 			Id: notification.Id.Value,
 			Type: notification.Type,
@@ -15,4 +14,5 @@ internal static class Mapper
 			Description: notification.Description,
 			Link: notification.Link
 		);
+
 }

@@ -1,11 +1,12 @@
 ﻿using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetAll;
 using CustomCADs.Accounts.API.Accounts.Dtos;
 using CustomCADs.Shared.Domain.Querying;
+using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Accounts.API.Accounts.Endpoints.Get.All;
 
 public sealed class GetAccountsEndpoint(IRequestSender sender)
-	: Endpoint<GetAccountsRequest, Result<AccountResponse>>
+	: Endpoint<GetAccountsRequest, Result<AccountResponse>, GetAccountsMapper>
 {
 	public override void Configure()
 	{
@@ -28,10 +29,6 @@ public sealed class GetAccountsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		Result<AccountResponse> response = new(
-			result.Count,
-			[.. result.Items.Select(a => a.ToResponse())]
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

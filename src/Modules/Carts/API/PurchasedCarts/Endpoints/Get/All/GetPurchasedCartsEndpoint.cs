@@ -5,7 +5,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.All;
 
 public sealed class GetPurchasedCartsEndpoint(IRequestSender sender)
-	: Endpoint<GetPurchasedCartsRequest, Result<GetPurchasedCartsResponse>>
+	: Endpoint<GetPurchasedCartsRequest, Result<GetPurchasedCartsResponse>, GetPurchasedCartsMapper>
 {
 	public override void Configure()
 	{
@@ -29,8 +29,6 @@ public sealed class GetPurchasedCartsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToResponse())
-		).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

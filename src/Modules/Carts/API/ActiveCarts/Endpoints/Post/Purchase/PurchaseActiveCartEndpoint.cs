@@ -19,7 +19,7 @@ public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(PurchaseActiveCartRequest req, CancellationToken ct)
 	{
-		PaymentDto dto = await sender.SendCommandAsync(
+		PaymentDto payment = await sender.SendCommandAsync(
 			command: new PurchaseActiveCartCommand(
 				PaymentMethodId: req.PaymentMethodId,
 				CallerId: User.GetAccountId()
@@ -27,7 +27,6 @@ public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		PaymentResponse response = dto.ToResponse();
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(payment, x => x.ToResponse()).ConfigureAwait(false);
 	}
 }

@@ -4,7 +4,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Stats;
 
 public sealed class ProductsStatsEndpoint(IRequestSender sender)
-	: EndpointWithoutRequest<ProductsStatsResponse>
+	: EndpointWithoutRequest<ProductsStatsResponse, ProductsStatsMapper>
 {
 	public override void Configure()
 	{
@@ -25,12 +25,6 @@ public sealed class ProductsStatsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		ProductsStatsResponse response = new(
-			UncheckedCount: counts.Unchecked,
-			ValidatedCount: counts.Validated,
-			ReportedCount: counts.Reported,
-			BannedCount: counts.Banned
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(counts, Map.FromEntity).ConfigureAwait(false);
 	}
 }

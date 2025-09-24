@@ -7,7 +7,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Get.All;
 
 public sealed class GetCustomsEndpoint(IRequestSender sender)
-	: Endpoint<GetCustomsRequest, Result<GetCustomsResponse>>
+	: Endpoint<GetCustomsRequest, Result<GetCustomsResponse>, GetCustomsMapper>
 {
 	public override void Configure()
 	{
@@ -34,8 +34,6 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToDesignerResponse())
-		).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

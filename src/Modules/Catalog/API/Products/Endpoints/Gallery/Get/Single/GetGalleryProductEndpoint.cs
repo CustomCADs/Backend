@@ -4,7 +4,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Get.Single;
 
 public sealed class GetGalleryProductEndpoint(IRequestSender sender)
-	: Endpoint<GetGalleryProductRequest, GetGalleryProductResponse>
+	: Endpoint<GetGalleryProductRequest, GetGalleryProductResponse, GetGalleryProductMapper>
 {
 	public override void Configure()
 	{
@@ -26,7 +26,6 @@ public sealed class GetGalleryProductEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		GetGalleryProductResponse response = product.ToResponse();
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(product, Map.FromEntity).ConfigureAwait(false);
 	}
 }

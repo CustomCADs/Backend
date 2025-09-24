@@ -5,7 +5,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Delivery.API.Shipments.Endpoints.Get.Shipment;
 
 public class GetShipmentsEndpoint(IRequestSender sender)
-	: Endpoint<GetShipmentsRequest, Result<GetShipmentsResponse>>
+	: Endpoint<GetShipmentsRequest, Result<GetShipmentsResponse>, GetShipmentsMapper>
 {
 	public override void Configure()
 	{
@@ -28,8 +28,6 @@ public class GetShipmentsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToResponse())
-		).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

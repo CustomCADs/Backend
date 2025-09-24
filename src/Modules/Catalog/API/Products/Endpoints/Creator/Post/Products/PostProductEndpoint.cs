@@ -6,7 +6,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Post.Products;
 
 public sealed class PostProductEndpoint(IRequestSender sender)
-	: Endpoint<PostProductRequest, PostProductResponse>
+	: Endpoint<PostProductRequest, PostProductResponse, PostProductMapper>
 {
 	public override void Configure()
 	{
@@ -44,7 +44,9 @@ public sealed class PostProductEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		PostProductResponse response = dto.ToPostResponse();
-		await Send.CreatedAtAsync<GetProductEndpoint>(new { Id = id.Value }, response).ConfigureAwait(false);
+		await Send.CreatedAtAsync<CreatorSingleProductEndpoint>(
+			routeValues: new { Id = id.Value },
+			responseBody: Map.FromEntity(dto)
+		).ConfigureAwait(false);
 	}
 }

@@ -1,9 +1,10 @@
 ﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetTracks;
+using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Delivery.API.Shipments.Endpoints.Get.Track;
 
 public class TrackShipmentEndpoint(IRequestSender sender)
-	: Endpoint<TrackShipmentRequest, Dictionary<DateTimeOffset, TrackShipmentResponse>>
+	: Endpoint<TrackShipmentRequest, Dictionary<DateTimeOffset, TrackShipmentResponse>, TrackShipmentMapper>
 {
 	public override void Configure()
 	{
@@ -24,7 +25,6 @@ public class TrackShipmentEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		Dictionary<DateTimeOffset, TrackShipmentResponse> response = tracks.ToResponse();
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(tracks, Map.FromEntity).ConfigureAwait(false);
 	}
 }

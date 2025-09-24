@@ -3,8 +3,8 @@ using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Single;
 
-public sealed class GetProductEndpoint(IRequestSender sender)
-	: Endpoint<GetProductRequest, GetProductResponse>
+public sealed class CreatorSingleProductEndpoint(IRequestSender sender)
+	: Endpoint<CreatorSingleProductRequest, CreatorSingleProductResponse, CreatorSingleProductMapper>
 {
 	public override void Configure()
 	{
@@ -16,7 +16,7 @@ public sealed class GetProductEndpoint(IRequestSender sender)
 		);
 	}
 
-	public override async Task HandleAsync(GetProductRequest req, CancellationToken ct)
+	public override async Task HandleAsync(CreatorSingleProductRequest req, CancellationToken ct)
 	{
 		CreatorGetProductByIdDto product = await sender.SendQueryAsync(
 			query: new CreatorGetProductByIdQuery(
@@ -26,7 +26,6 @@ public sealed class GetProductEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		GetProductResponse response = product.ToGetResponse();
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(product, Map.FromEntity).ConfigureAwait(false);
 	}
 }

@@ -1,3 +1,3 @@
 ﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Single;
 
-public sealed record GetProductRequest(Guid Id);
+public sealed record CreatorSingleProductRequest(Guid Id);

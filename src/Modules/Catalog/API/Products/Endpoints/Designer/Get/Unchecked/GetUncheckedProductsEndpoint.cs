@@ -6,7 +6,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Unchecked;
 
 public sealed class GetUncheckedProductsEndpoint(IRequestSender sender)
-	: Endpoint<GetUncheckedProductsRequest, Result<GetUncheckedProductsResponse>>
+	: Endpoint<GetUncheckedProductsRequest, Result<GetUncheckedProductsResponse>, GetUncheckedProductsMapper>
 {
 	public override void Configure()
 	{
@@ -32,8 +32,6 @@ public sealed class GetUncheckedProductsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToGetUncheckedDto())
-		).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

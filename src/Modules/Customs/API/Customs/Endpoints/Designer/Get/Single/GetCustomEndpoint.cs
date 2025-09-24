@@ -3,8 +3,8 @@ using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Get.Single;
 
-public sealed class DesignerGetCustomEndpoint(IRequestSender sender)
-	: Endpoint<DesignerGetCustomRequest, DesignerGetCustomResponse>
+public sealed class GetCustomEndpoint(IRequestSender sender)
+	: Endpoint<GetCustomRequest, GetCustomResponse, GetCustomMapper>
 {
 	public override void Configure()
 	{
@@ -16,7 +16,7 @@ public sealed class DesignerGetCustomEndpoint(IRequestSender sender)
 		);
 	}
 
-	public override async Task HandleAsync(DesignerGetCustomRequest req, CancellationToken ct)
+	public override async Task HandleAsync(GetCustomRequest req, CancellationToken ct)
 	{
 		DesignerGetCustomByIdDto custom = await sender.SendQueryAsync(
 			query: new DesignerGetCustomByIdQuery(
@@ -26,7 +26,6 @@ public sealed class DesignerGetCustomEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		DesignerGetCustomResponse response = custom.ToResponse();
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(custom, Map.FromEntity).ConfigureAwait(false);
 	}
 }

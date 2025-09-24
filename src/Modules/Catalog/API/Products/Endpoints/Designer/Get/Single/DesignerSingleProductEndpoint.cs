@@ -4,7 +4,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Single;
 
 public sealed class DesignerSingleProductEndpoint(IRequestSender sender)
-	: Endpoint<DesignerSingleProductRequest, DesignerSingleProductResponse>
+	: Endpoint<DesignerSingleProductRequest, DesignerSingleProductResponse, DesignerSingleProductMapper>
 {
 	public override void Configure()
 	{
@@ -26,7 +26,6 @@ public sealed class DesignerSingleProductEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		DesignerSingleProductResponse response = product.ToResponse();
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(product, Map.FromEntity).ConfigureAwait(false);
 	}
 }

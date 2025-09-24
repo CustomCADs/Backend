@@ -6,7 +6,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Stats;
 
 public sealed class PurchasedCartsStatsEndpoint(IRequestSender sender)
-	: EndpointWithoutRequest<PurchasedCartsStatsResponse>
+	: EndpointWithoutRequest<PurchasedCartsStatsResponse, PurchasedCartsStatsMappper>
 {
 	public override void Configure()
 	{
@@ -34,10 +34,6 @@ public sealed class PurchasedCartsStatsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		PurchasedCartsStatsResponse response = new(
-			Total: totalCartCount,
-			Counts: counts.ToDictionary(kv => kv.Key.Value, kv => kv.Value)
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync((totalCartCount, counts), Map.FromEntity).ConfigureAwait(false);
 	}
 }

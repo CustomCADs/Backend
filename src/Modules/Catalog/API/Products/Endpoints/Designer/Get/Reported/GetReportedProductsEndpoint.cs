@@ -6,7 +6,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Reported;
 
 public sealed class GetReportedProductsEndpoint(IRequestSender sender)
-	: Endpoint<GetReportedProductsRequest, Result<GetReportedProductsResponse>>
+	: Endpoint<GetReportedProductsRequest, Result<GetReportedProductsResponse>, GetReportedProductsMapper>
 {
 	public override void Configure()
 	{
@@ -32,8 +32,6 @@ public sealed class GetReportedProductsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToGetReportedDto())
-		).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

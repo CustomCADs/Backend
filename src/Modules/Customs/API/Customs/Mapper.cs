@@ -1,116 +1,12 @@
 ﻿using CustomCADs.Customs.Application.Customs.Dtos;
-using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.GetById;
-using CustomCADs.Customs.Application.Customs.Queries.Internal.Designer.GetById;
-using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 using CustomCADs.Customs.API.Customs.Dtos;
-using CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.CalculateShipment;
-using CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Recent;
-using CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Single;
-using CustomCADs.Customs.API.Customs.Endpoints.Customers.Post.Create;
-using CustomCADs.Customs.API.Customs.Endpoints.Designer.Get.Single;
 using CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Finish;
 using CustomCADs.Shared.Application.Abstractions.Payment;
-using CustomCADs.Shared.Application.Dtos.Delivery;
 
 namespace CustomCADs.Customs.API.Customs;
 
-using CustomerGetCustomsRespose = Endpoints.Customers.Get.All.GetCustomsResponse;
-using DesignerGetCustomsRespose = Endpoints.Designer.Get.All.GetCustomsResponse;
-using AdminGetCustomsRespose = Endpoints.Admins.Get.All.GetCustomsResponse;
-
 internal static class Mapper
 {
-	internal static CustomerGetCustomsRespose ToCustomerResponse(this GetAllCustomsDto custom)
-		=> new(
-			Id: custom.Id.Value,
-			Name: custom.Name,
-			OrderedAt: custom.OrderedAt,
-			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus,
-			DesignerName: custom.DesignerName,
-			CategoryName: custom.CategoryName
-		);
-
-	internal static RecentCustomsResponse ToRecentResponse(this GetAllCustomsDto custom)
-		=> new(
-			Id: custom.Id.Value,
-			Name: custom.Name,
-			OrderedAt: custom.OrderedAt,
-			DesignerName: custom.DesignerName
-		);
-
-	internal static PostCustomResponse ToPostResponse(this CustomerGetCustomByIdDto custom)
-		=> new(
-			Id: custom.Id.Value,
-			Name: custom.Name,
-			Description: custom.Description,
-			OrderedAt: custom.OrderedAt,
-			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus,
-			Category: custom.Category?.ToResponse()
-		);
-
-	internal static CalculateCustomShipmentResponse ToResponse(this CalculateShipmentDto calculation)
-		=> new(
-			Service: calculation.Service,
-			Total: calculation.Total,
-			Currency: calculation.Currency,
-			PickupDate: calculation.PickupDate,
-			DeliveryDeadline: calculation.DeliveryDeadline
-		);
-
-	internal static GetCustomResponse ToResponse(this CustomerGetCustomByIdDto custom)
-		=> new(
-			Id: custom.Id.Value,
-			Name: custom.Name,
-			Description: custom.Description,
-			OrderedAt: custom.OrderedAt,
-			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus,
-			Category: custom.Category?.ToResponse(),
-			AcceptedCustom: custom.AcceptedCustom?.ToResponse(),
-			FinishedCustom: custom.FinishedCustom?.ToResponse(),
-			CompletedCustom: custom.CompletedCustom?.ToResponse()
-		);
-
-	internal static DesignerGetCustomResponse ToResponse(this DesignerGetCustomByIdDto custom)
-		=> new(
-			Id: custom.Id.Value,
-			Name: custom.Name,
-			Description: custom.Description,
-			OrderedAt: custom.OrderedAt,
-			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus,
-			BuyerName: custom.BuyerName,
-			Category: custom.Category?.ToResponse(),
-			AcceptedCustom: custom.AcceptedCustom?.ToResponse(),
-			FinishedCustom: custom.FinishedCustom?.ToResponse(),
-			CompletedCustom: custom.CompletedCustom?.ToResponse()
-		);
-
-	internal static DesignerGetCustomsRespose ToDesignerResponse(this GetAllCustomsDto custom)
-		=> new(
-			Id: custom.Id.Value,
-			Name: custom.Name,
-			OrderedAt: custom.OrderedAt,
-			Status: custom.CustomStatus,
-			ForDelivery: custom.ForDelivery,
-			BuyerName: custom.BuyerName,
-			CategoryName: custom.CategoryName
-		);
-
-	internal static AdminGetCustomsRespose ToAdminResponse(this GetAllCustomsDto custom)
-		=> new(
-			Id: custom.Id.Value,
-			Name: custom.Name,
-			ForDelivery: custom.ForDelivery,
-			Status: custom.CustomStatus,
-			OrderedAt: custom.OrderedAt,
-			BuyerName: custom.BuyerName,
-			DesignerName: custom.DesignerName,
-			CategoryName: custom.CategoryName
-		);
-
 	internal static (string Key, string ContentType, decimal Volume) ToTuple(this FinishCustomRequest req)
 		=> (Key: req.CadKey, ContentType: req.CadContentType, Volume: req.CadVolume);
 

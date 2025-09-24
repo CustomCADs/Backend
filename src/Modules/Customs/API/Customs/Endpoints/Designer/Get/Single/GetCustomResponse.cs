@@ -3,7 +3,7 @@ using CustomCADs.Customs.API.Customs.Dtos;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Get.Single;
 
-public sealed record DesignerGetCustomResponse(
+public sealed record GetCustomResponse(
 	Guid Id,
 	string Name,
 	string Description,

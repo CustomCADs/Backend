@@ -5,7 +5,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.All;
 
 public class GetNotificationsEndpoint(IRequestSender sender)
-	: Endpoint<GetNotificationsRequest, Result<GetNotificationsResponse>>
+	: Endpoint<GetNotificationsRequest, Result<GetNotificationsResponse>, GetNotificationsMapper>
 {
 	public override void Configure()
 	{
@@ -29,8 +29,6 @@ public class GetNotificationsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToResponse())
-		).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

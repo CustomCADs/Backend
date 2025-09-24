@@ -5,7 +5,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Get.CalculateShipment;
 
 public class CalculateActiveCartShipmentEndpoint(IRequestSender sender)
-	: Endpoint<CalculateActiveCartShipmentRequest, ICollection<CalculateActiveCartShipmentResponse>>
+	: Endpoint<CalculateActiveCartShipmentRequest, ICollection<CalculateActiveCartShipmentResponse>, CalculateActiveCartShipmentMappper>
 {
 	public override void Configure()
 	{
@@ -27,8 +27,6 @@ public class CalculateActiveCartShipmentEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		ICollection<CalculateActiveCartShipmentResponse> response =
-			[.. calculations.Select(c => c.ToResponse())];
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(calculations, Map.FromEntity).ConfigureAwait(false);
 	}
 }

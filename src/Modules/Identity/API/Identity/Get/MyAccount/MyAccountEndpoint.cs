@@ -4,7 +4,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Identity.API.Identity.Get.MyAccount;
 
 public sealed class MyAccountEndpoint(IRequestSender sender)
-	: EndpointWithoutRequest<MyAccountResponse>
+	: EndpointWithoutRequest<MyAccountResponse, MyAccountMapper>
 {
 	public override void Configure()
 	{
@@ -24,16 +24,6 @@ public sealed class MyAccountEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		MyAccountResponse response = new(
-			Id: user.Id.Value,
-			Role: user.Role,
-			Username: user.Username,
-			FirstName: user.FirstName,
-			LastName: user.LastName,
-			Email: user.Email.Value,
-			TrackViewedProducts: user.TrackViewedProducts,
-			CreatedAt: user.CreatedAt
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(user, Map.FromEntity).ConfigureAwait(false);
 	}
 }

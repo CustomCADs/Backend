@@ -6,7 +6,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Validated;
 
 public sealed class GetValidatedProductsEndpoint(IRequestSender sender)
-	: Endpoint<GetValidatedProductsRequest, Result<GetValidatedProductsResponse>>
+	: Endpoint<GetValidatedProductsRequest, Result<GetValidatedProductsResponse>, GetValidatedProductsMapper>
 {
 	public override void Configure()
 	{
@@ -32,8 +32,6 @@ public sealed class GetValidatedProductsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		await Send.OkAsync(
-			response: result.ToNewResult(x => x.ToGetValidatedDto())
-		).ConfigureAwait(false);
+		await Send.MappedAsync(result, Map.FromEntity).ConfigureAwait(false);
 	}
 }

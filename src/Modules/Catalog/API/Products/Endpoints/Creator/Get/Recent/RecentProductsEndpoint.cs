@@ -7,7 +7,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Recent;
 
 public sealed class RecentProductsEndpoint(IRequestSender sender)
-	: Endpoint<RecentProductsRequest, RecentProductsResponse[]>
+	: Endpoint<RecentProductsRequest, RecentProductsResponse[], RecentProductsMapper>
 {
 	public override void Configure()
 	{
@@ -33,7 +33,6 @@ public sealed class RecentProductsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		RecentProductsResponse[] response = [.. result.Items.Select(x => x.ToRecentResponse())];
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync([.. result.Items], Map.FromEntity).ConfigureAwait(false);
 	}
 }

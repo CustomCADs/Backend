@@ -12,6 +12,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FastEndpoints" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="../Domain/CustomCADs.Shared.Domain.csproj" />
 	</ItemGroup>
 

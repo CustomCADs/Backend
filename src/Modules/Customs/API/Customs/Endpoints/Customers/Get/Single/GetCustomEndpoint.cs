@@ -4,7 +4,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Single;
 
 public sealed class GetCustomEndpoint(IRequestSender sender)
-	: Endpoint<GetCustomRequest, GetCustomResponse>
+	: Endpoint<GetCustomRequest, GetCustomResponse, GetCustomsStatsMapper>
 {
 	public override void Configure()
 	{
@@ -26,7 +26,6 @@ public sealed class GetCustomEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		GetCustomResponse response = custom.ToResponse();
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(custom, Map.FromEntity).ConfigureAwait(false);
 	}
 }

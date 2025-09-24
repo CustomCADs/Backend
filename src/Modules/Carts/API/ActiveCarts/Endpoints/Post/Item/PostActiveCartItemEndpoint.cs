@@ -42,7 +42,6 @@ public sealed class PostActiveCartItemEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		ActiveCartItemResponse response = item.ToResponse();
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(item, x => x.ToResponse()).ConfigureAwait(false);
 	}
 }

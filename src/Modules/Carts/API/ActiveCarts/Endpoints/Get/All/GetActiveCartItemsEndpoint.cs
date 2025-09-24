@@ -18,14 +18,13 @@ public sealed class GetActiveCartItemsEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(CancellationToken ct)
 	{
-		ActiveCartItemDto[] cart = await sender.SendQueryAsync(
+		ActiveCartItemDto[] items = await sender.SendQueryAsync(
 			query: new GetActiveCartItemsQuery(
 				CallerId: User.GetAccountId()
 			),
 			ct: ct
 		).ConfigureAwait(false);
 
-		ICollection<ActiveCartItemResponse> response = [.. cart.Select(x => x.ToResponse())];
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(items, x => x.ToResponse()).ConfigureAwait(false);
 	}
 }

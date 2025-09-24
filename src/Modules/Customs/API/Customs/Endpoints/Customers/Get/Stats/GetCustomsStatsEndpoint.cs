@@ -4,7 +4,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Stats;
 
 public sealed class GetCustomsStatsEndpoint(IRequestSender sender)
-	: EndpointWithoutRequest<GetCustomsStatsResponse>
+	: EndpointWithoutRequest<GetCustomsStatsResponse, GetCustomsStatsMapper>
 {
 	public override void Configure()
 	{
@@ -25,14 +25,6 @@ public sealed class GetCustomsStatsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		GetCustomsStatsResponse response = new(
-			PendingCount: counts.Pending,
-			AcceptedCount: counts.Accepted,
-			BegunCount: counts.Begun,
-			FinishedCount: counts.Finished,
-			CompletedCount: counts.Completed,
-			ReportedCount: counts.Reported
-		);
-		await Send.OkAsync(response).ConfigureAwait(false);
+		await Send.MappedAsync(counts, Map.FromEntity).ConfigureAwait(false);
 	}
 }

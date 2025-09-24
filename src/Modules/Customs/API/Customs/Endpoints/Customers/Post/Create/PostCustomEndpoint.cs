@@ -7,7 +7,7 @@ using CustomCADs.Shared.API.Extensions;
 namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Post.Create;
 
 public sealed class PostCustomEndpoint(IRequestSender sender)
-	: Endpoint<PostCustomRequest, PostCustomResponse>
+	: Endpoint<PostCustomRequest, PostCustomResponse, PostCustomMapper>
 {
 	public override void Configure()
 	{
@@ -40,10 +40,9 @@ public sealed class PostCustomEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		PostCustomResponse response = custom.ToPostResponse();
 		await Send.CreatedAtAsync<GetCustomEndpoint>(
 			routeValues: new { Id = id.Value },
-			responseBody: response
+			responseBody: Map.FromEntity(custom)
 		).ConfigureAwait(false);
 	}
 }
