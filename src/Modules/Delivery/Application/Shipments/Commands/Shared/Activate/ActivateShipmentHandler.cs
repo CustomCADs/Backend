@@ -1,7 +1,7 @@
 using CustomCADs.Delivery.Application.Contracts;
+using CustomCADs.Delivery.Application.Contracts.Dtos;
 using CustomCADs.Delivery.Domain.Repositories;
 using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Shared.Abstractions.Delivery.Dtos;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 
 namespace CustomCADs.Delivery.Application.Shipments.Commands.Shared.Activate;

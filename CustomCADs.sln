@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Accounts.Persist
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Accounts.Application", "src\Modules\Accounts\Application\CustomCADs.Accounts.Application.csproj", "{331CC2FC-2FDA-471E-B6ED-A6990C4BF764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Accounts.Endpoints", "src\Modules\Accounts\Endpoints\CustomCADs.Accounts.Endpoints.csproj", "{1F4739F9-E465-4B4F-9389-A3AB00C50C88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Accounts.API", "src\Modules\Accounts\API\CustomCADs.Accounts.API.csproj", "{1F4739F9-E465-4B4F-9389-A3AB00C50C88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Carts", "Carts", "{1B43516D-6E04-4D3D-985E-7C58C539FD43}"
 EndProject
@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Carts.Persistenc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Carts.Application", "src\Modules\Carts\Application\CustomCADs.Carts.Application.csproj", "{125AA0FA-BC2E-4F50-8F56-48E53AB67C33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Carts.Endpoints", "src\Modules\Carts\Endpoints\CustomCADs.Carts.Endpoints.csproj", "{30838EC6-FB31-48AA-818E-2ECB4D08F804}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Carts.API", "src\Modules\Carts\API\CustomCADs.Carts.API.csproj", "{30838EC6-FB31-48AA-818E-2ECB4D08F804}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{EAD49EE4-2D62-4861-90BA-3EE8643EA8A2}"
 EndProject
@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Catalog.Persiste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Catalog.Application", "src\Modules\Catalog\Application\CustomCADs.Catalog.Application.csproj", "{BF63A15E-DF81-4808-99AE-FC2FADF78F86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Catalog.Endpoints", "src\Modules\Catalog\Endpoints\CustomCADs.Catalog.Endpoints.csproj", "{AE1552EC-E287-46A6-AED5-F066C3C86371}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Catalog.API", "src\Modules\Catalog\API\CustomCADs.Catalog.API.csproj", "{AE1552EC-E287-46A6-AED5-F066C3C86371}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customs", "Customs", "{D1102EDC-3CD4-469F-9513-ACB6BD45AB66}"
 EndProject
@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Customs.Persiste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Customs.Application", "src\Modules\Customs\Application\CustomCADs.Customs.Application.csproj", "{B40E19DC-B414-C52A-AD87-F72D3E5F4481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Customs.Endpoints", "src\Modules\Customs\Endpoints\CustomCADs.Customs.Endpoints.csproj", "{AA5CC983-2FBD-650A-DF45-C6F743B13A34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Customs.API", "src\Modules\Customs\API\CustomCADs.Customs.API.csproj", "{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Delivery", "Delivery", "{1513C1BF-03E4-4D56-8A24-56241B6939F1}"
 EndProject
@@ -59,7 +59,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Delivery.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Delivery.Infrastructure", "src\Modules\Delivery\Infrastructure\CustomCADs.Delivery.Infrastructure.csproj", "{D33C0977-9722-421B-AF25-9CEC94AE1562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Delivery.Endpoints", "src\Modules\Delivery\Endpoints\CustomCADs.Delivery.Endpoints.csproj", "{19EA3CA0-C124-454C-9993-B51EF9C808A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Delivery.API", "src\Modules\Delivery\API\CustomCADs.Delivery.API.csproj", "{19EA3CA0-C124-454C-9993-B51EF9C808A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{C554CFC4-74AA-45C8-A62C-C714AE2E6A16}"
 EndProject
@@ -79,7 +79,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Idempotency.Pers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Idempotency.Application", "src\Modules\Idempotency\Application\CustomCADs.Idempotency.Application.csproj", "{F185923D-764D-4DA7-A72B-D0ADE485F3A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Idempotency.Endpoints", "src\Modules\Idempotency\Endpoints\CustomCADs.Idempotency.Endpoints.csproj", "{D3734A53-493D-490A-9281-0E8DF6E8D4D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Idempotency.API", "src\Modules\Idempotency\API\CustomCADs.Idempotency.API.csproj", "{D3734A53-493D-490A-9281-0E8DF6E8D4D5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{B8814A68-C612-4FF5-AE28-FFEC8A225A62}"
 EndProject
@@ -89,7 +89,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Identity.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Identity.Infrastructure", "src\Modules\Identity\Infrastructure\CustomCADs.Identity.Infrastructure.csproj", "{61F88BBB-5E99-4191-8188-9F94ADA4ECDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Identity.Endpoints", "src\Modules\Identity\Endpoints\CustomCADs.Identity.Endpoints.csproj", "{63B548BD-A6B8-467C-B823-A1E8FB87DBA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Identity.API", "src\Modules\Identity\API\CustomCADs.Identity.API.csproj", "{63B548BD-A6B8-467C-B823-A1E8FB87DBA0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{D59CB115-4548-1D88-C145-F0CC2D8E099D}"
 EndProject
@@ -101,7 +101,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Notifications.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Notifications.Infrastructure", "src\Modules\Notifications\Infrastructure\CustomCADs.Notifications.Infrastructure.csproj", "{BC674D3F-4248-422A-B781-99AC19F713EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Notifications.Endpoints", "src\Modules\Notifications\Endpoints\CustomCADs.Notifications.Endpoints.csproj", "{6C856FA6-0FBD-4580-ACF0-A62AB6AE0E52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Notifications.API", "src\Modules\Notifications\API\CustomCADs.Notifications.API.csproj", "{6C856FA6-0FBD-4580-ACF0-A62AB6AE0E52}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Printing", "Printing", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -111,13 +111,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Printing.Persist
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Printing.Application", "src\Modules\Printing\Application\CustomCADs.Printing.Application.csproj", "{108B5FF5-407F-A43F-CD24-E8A87670F98F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Printing.Endpoints", "src\Modules\Printing\Endpoints\CustomCADs.Printing.Endpoints.csproj", "{7D38BD0E-7DA1-F775-452F-2122A63F08C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Printing.API", "src\Modules\Printing\API\CustomCADs.Printing.API.csproj", "{7D38BD0E-7DA1-F775-452F-2122A63F08C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{C1CBD8F6-DA83-433C-91B3-4AE8C9DF8A10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Shared.Application", "src\Shared\Application\CustomCADs.Shared.Application.csproj", "{8D4FDD59-59F3-420D-B1FB-85179A65E010}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Shared.Endpoints", "src\Shared\Endpoints\CustomCADs.Shared.Endpoints.csproj", "{C6D29595-ED6B-4230-8410-7272263B17B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Shared.API", "src\Shared\API\CustomCADs.Shared.API.csproj", "{C6D29595-ED6B-4230-8410-7272263B17B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCADs.Shared.Domain", "src\Shared\Domain\CustomCADs.Shared.Domain.csproj", "{28171FBC-1B4C-4918-BA00-2C727F437B4D}"
 EndProject
@@ -476,18 +476,18 @@ Global
 		{B40E19DC-B414-C52A-AD87-F72D3E5F4481}.Release|x64.Build.0 = Release|Any CPU
 		{B40E19DC-B414-C52A-AD87-F72D3E5F4481}.Release|x86.ActiveCfg = Release|Any CPU
 		{B40E19DC-B414-C52A-AD87-F72D3E5F4481}.Release|x86.Build.0 = Release|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Debug|x64.Build.0 = Debug|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Debug|x86.Build.0 = Debug|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Release|x64.ActiveCfg = Release|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Release|x64.Build.0 = Release|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Release|x86.ActiveCfg = Release|Any CPU
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34}.Release|x86.Build.0 = Release|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Debug|x64.Build.0 = Debug|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Debug|x86.Build.0 = Debug|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Release|x64.ActiveCfg = Release|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Release|x64.Build.0 = Release|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Release|x86.ActiveCfg = Release|Any CPU
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4}.Release|x86.Build.0 = Release|Any CPU
 		{CE75DB89-0B2A-4732-92BE-E23290B2B883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE75DB89-0B2A-4732-92BE-E23290B2B883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE75DB89-0B2A-4732-92BE-E23290B2B883}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -1270,7 +1270,7 @@ Global
 		{3E3BBDEC-41F4-4E94-9855-9138514CB999} = {D1102EDC-3CD4-469F-9513-ACB6BD45AB66}
 		{B61E9090-A648-2FE5-AE29-769E0692573A} = {D1102EDC-3CD4-469F-9513-ACB6BD45AB66}
 		{B40E19DC-B414-C52A-AD87-F72D3E5F4481} = {D1102EDC-3CD4-469F-9513-ACB6BD45AB66}
-		{AA5CC983-2FBD-650A-DF45-C6F743B13A34} = {D1102EDC-3CD4-469F-9513-ACB6BD45AB66}
+		{41F665B0-7B39-DC97-DCA2-4DF9E37372F4} = {D1102EDC-3CD4-469F-9513-ACB6BD45AB66}
 		{1513C1BF-03E4-4D56-8A24-56241B6939F1} = {8CF3001A-FDE9-4E6A-A642-83480DB4B117}
 		{CE75DB89-0B2A-4732-92BE-E23290B2B883} = {1513C1BF-03E4-4D56-8A24-56241B6939F1}
 		{4E365D30-F623-495A-8020-02D457DB6632} = {1513C1BF-03E4-4D56-8A24-56241B6939F1}

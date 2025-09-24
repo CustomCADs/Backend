@@ -1,0 +1,14 @@
+﻿using CustomCADs.Printing.API.Materials.Dtos;
+
+namespace CustomCADs.Printing.API.Materials;
+
+internal static class Mapper
+{
+	internal static MaterialResponse ToResponse(this MaterialDto material)
+		=> new(
+			Id: material.Id.Value,
+			Name: material.Name,
+			Density: material.Density,
+			Cost: material.Cost
+		);
+}

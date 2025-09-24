@@ -3,8 +3,8 @@ using CustomCADs.Identity.Infrastructure.Tokens;
 using CustomCADs.Notifications.Infrastructure.Hubs;
 using CustomCADs.Presentation;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
-using CustomCADs.Shared.Endpoints;
-using CustomCADs.Shared.Endpoints.Extensions;
+using CustomCADs.Shared.API;
+using CustomCADs.Shared.API.Extensions;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +12,7 @@ using Scalar.AspNetCore;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
+using Microsoft.OpenApi.Models;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
@@ -100,7 +101,7 @@ public static class ProgramExtensions
 		});
 	}
 
-	public static void AddApiDocumentation(this IServiceCollection services, string version = "v1")
+	public static void AddApiDocumentation(this IServiceCollection services, IConfiguration config, string version = "v1")
 	{
 		services.AddOpenApi(version, cfg =>
 		{
@@ -124,6 +125,17 @@ public static class ProgramExtensions
 					Version = version
 				};
 				document.Tags = [.. document.Tags.OrderBy(t => t.Name)];
+
+				ServerUrlSettings? settings = config.GetSection("ServerURLs").Get<ServerUrlSettings>();
+				if (settings is not null)
+				{
+					string[] serversUrls = [settings.Preferred, .. settings.All.Split(',')];
+					document.Servers = [..
+						serversUrls
+							.Distinct()
+							.Select(url => new OpenApiServer() { Url = url })
+					];
+				}
 
 				return Task.CompletedTask;
 			});
@@ -198,7 +210,6 @@ public static class ProgramExtensions
 		app.MapOpenApi(apiPattern);
 		app.MapScalarApiReference(uiPattern, options =>
 		{
-			options.Servers?.Clear();
 			ScalarTheme[] themes =
 			[
 				ScalarTheme.BluePlanet,

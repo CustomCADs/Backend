@@ -25,12 +25,16 @@ locals {
   staging_delivery_username = local.staging_delivery["Username"]
   staging_delivery_password = local.staging_delivery["Password"]
 
-  staging_urls           = local.staging_env_vars["ClientURLs"]
-  staging_urls_all       = local.staging_urls["All"]
-  staging_urls_preferred = local.staging_urls["Preferred"]
+  staging_client_urls           = local.staging_env_vars["ClientURLs"]
+  staging_client_urls_all       = local.staging_client_urls["All"]
+  staging_client_urls_preferred = local.staging_client_urls["Preferred"]
+
+  staging_server_urls           = local.staging_env_vars["ClientURLs"]
+  staging_server_urls_all       = local.staging_server_urls["All"]
+  staging_server_urls_preferred = local.staging_server_urls["Preferred"]
 
   staging_cookie        = local.staging_env_vars["Cookie"]
-  staging_cookie_domain = local.staging_urls["Domain"]
+  staging_cookie_domain = local.staging_cookie["Domain"]
 }
 
 # Staging Environment
@@ -441,13 +445,25 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_staging" {
     name      = "ClientURLs__All"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.staging_urls_all
+    value     = local.staging_client_urls_all
   }
   setting {
     name      = "ClientURLs__Preferred"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.staging_urls_preferred
+    value     = local.staging_client_urls_preferred
+  }
+  setting {
+    name      = "ServerURLs__All"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.staging_server_urls_all
+  }
+  setting {
+    name      = "ServerURLs__Preferred"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.staging_server_urls_preferred
   }
   setting {
     name      = "Cookie__Domain"
