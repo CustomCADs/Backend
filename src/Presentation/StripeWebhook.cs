@@ -1,3 +1,5 @@
+using CustomCADs.Shared.API;
+using CustomCADs.Shared.API.Attributes;
 using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
@@ -7,11 +9,9 @@ using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
 using CustomCADs.Shared.Domain.TypedIds.Customs;
-using CustomCADs.Shared.API.Attributes;
 using CustomCADs.Shared.Infrastructure.Payment;
 using Microsoft.Extensions.Options;
 using Stripe;
-using CustomCADs.Shared.API;
 
 namespace CustomCADs.Presentation;
 

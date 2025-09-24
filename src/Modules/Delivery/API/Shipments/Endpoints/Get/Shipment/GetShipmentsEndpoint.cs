@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
 using CustomCADs.Shared.Domain.Querying;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Delivery.API.Shipments.Endpoints.Get.Shipment;
 

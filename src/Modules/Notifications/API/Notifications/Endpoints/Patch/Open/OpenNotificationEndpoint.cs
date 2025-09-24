@@ -1,5 +1,4 @@
 using CustomCADs.Notifications.Application.Notifications.Commands.Internal.Open;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Notifications.API.Notifications.Endpoints.Patch.Open;
 

@@ -2,17 +2,17 @@
 using CustomCADs.Identity.Infrastructure.Tokens;
 using CustomCADs.Notifications.Infrastructure.Hubs;
 using CustomCADs.Presentation;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.API;
 using CustomCADs.Shared.API.Extensions;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
-using Microsoft.OpenApi.Models;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;

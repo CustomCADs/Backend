@@ -2,7 +2,6 @@
 using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Get.All;
 

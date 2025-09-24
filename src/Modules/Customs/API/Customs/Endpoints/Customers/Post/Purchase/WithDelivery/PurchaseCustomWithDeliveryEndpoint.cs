@@ -1,8 +1,7 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
-using CustomCADs.Customs.API.Customs.Dtos;
+﻿using CustomCADs.Customs.API.Customs.Dtos;
+using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Post.Purchase.WithDelivery;
 

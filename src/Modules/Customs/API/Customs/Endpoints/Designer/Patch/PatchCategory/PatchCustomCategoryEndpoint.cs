@@ -1,6 +1,5 @@
 using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.SetCategory;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.PatchCategory;
 

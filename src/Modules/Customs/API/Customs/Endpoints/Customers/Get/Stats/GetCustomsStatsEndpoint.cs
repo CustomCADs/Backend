@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.Count;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Stats;
 

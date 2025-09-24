@@ -1,7 +1,6 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Designer.GetCadUrlPost;
-using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.API.Attributes;
-using CustomCADs.Shared.API.Extensions;
+using CustomCADs.Shared.Application.Dtos.Files;
 using Microsoft.AspNetCore.Builder;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Post;

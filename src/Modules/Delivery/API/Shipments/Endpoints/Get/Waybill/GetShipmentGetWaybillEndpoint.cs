@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Delivery.API.Shipments.Endpoints.Get.Waybill;
 

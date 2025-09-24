@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Identity.Application.Users.Queries.Internal.GetByUsername;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Identity.API.Identity.Get.MyAccount;
 

@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Remove;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Delete;
 

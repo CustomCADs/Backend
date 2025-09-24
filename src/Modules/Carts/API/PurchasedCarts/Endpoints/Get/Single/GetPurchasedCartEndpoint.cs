@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Single;
 

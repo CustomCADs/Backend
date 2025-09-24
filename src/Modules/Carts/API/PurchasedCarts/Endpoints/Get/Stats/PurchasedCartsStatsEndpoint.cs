@@ -1,7 +1,6 @@
 ﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.Count.Carts;
 using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.Count.Items;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Stats;
 

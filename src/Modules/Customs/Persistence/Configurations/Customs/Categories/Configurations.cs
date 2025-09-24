@@ -1,5 +1,4 @@
-﻿using CustomCADs.Customs.Domain.Customs;
-using CustomCADs.Customs.Domain.Customs.ValueObjects;
+﻿using CustomCADs.Customs.Domain.Customs.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

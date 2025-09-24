@@ -3,7 +3,6 @@ using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.GetSingle;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Post.Item;
 

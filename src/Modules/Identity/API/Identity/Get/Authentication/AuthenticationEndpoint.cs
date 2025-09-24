@@ -1,6 +1,4 @@
-﻿using CustomCADs.Shared.API.Extensions;
-
-namespace CustomCADs.Identity.API.Identity.Get.Authentication;
+﻿namespace CustomCADs.Identity.API.Identity.Get.Authentication;
 
 public sealed class AuthenticationEndpoint
 	: EndpointWithoutRequest

@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
 using CustomCADs.Shared.Domain.Querying;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.All;
 

@@ -1,5 +1,5 @@
-﻿using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
-using CustomCADs.Accounts.API.Accounts.Dtos;
+﻿using CustomCADs.Accounts.API.Accounts.Dtos;
+using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Accounts.API.Accounts.Endpoints.Get.Single;

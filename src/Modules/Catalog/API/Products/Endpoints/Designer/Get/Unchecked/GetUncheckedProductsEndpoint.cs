@@ -1,7 +1,6 @@
 ﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
 using CustomCADs.Catalog.Domain.Products.Enums;
 using CustomCADs.Shared.Domain.Querying;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Unchecked;
 

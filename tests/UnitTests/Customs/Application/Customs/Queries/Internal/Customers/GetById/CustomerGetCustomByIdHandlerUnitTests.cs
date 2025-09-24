@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.GetById;
-using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;

@@ -8,7 +8,6 @@ using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Commands.Internal.Creator.Edit;
 

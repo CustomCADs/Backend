@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Edit;
 using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.SetFiles;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Put.Products;
 

@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
-using CustomCADs.Shared.API.Extensions;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;

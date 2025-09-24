@@ -1,7 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Create;
+﻿using CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Single;
+using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Create;
 using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetById;
-using CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Single;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Post.Products;
 

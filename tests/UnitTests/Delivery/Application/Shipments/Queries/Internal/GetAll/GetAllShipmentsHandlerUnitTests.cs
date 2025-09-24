@@ -1,14 +1,9 @@
 ﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
 using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Delivery.Domain.Shipments.ValueObjects;
-using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
-using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.Querying;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.GetAll;
 
-using static ShipmentsData;
 
 public class GetAllShipmentsHandlerUnitTests : ShipmentsBaseUnitTests
 {

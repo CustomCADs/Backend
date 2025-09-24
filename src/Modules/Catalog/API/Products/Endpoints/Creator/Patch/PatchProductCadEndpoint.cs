@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.SetCoords;
-using CustomCADs.Shared.API.Extensions;
 using System.ComponentModel;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Patch;

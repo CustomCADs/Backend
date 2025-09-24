@@ -1,6 +1,5 @@
 using CustomCADs.Identity.Application.Users.Commands.Internal.Delete;
 using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Shared.API.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace CustomCADs.Identity.API.Identity.Delete;

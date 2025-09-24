@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Tags.Dtos;
-using CustomCADs.Catalog.API.Tags.Endpoints.Get.All;
+﻿using CustomCADs.Catalog.API.Tags.Endpoints.Get.All;
 using CustomCADs.Catalog.API.Tags.Endpoints.Get.Single;
 using CustomCADs.Catalog.API.Tags.Endpoints.Post;
+using CustomCADs.Catalog.Application.Tags.Dtos;
 
 namespace CustomCADs.Catalog.API.Tags;
 

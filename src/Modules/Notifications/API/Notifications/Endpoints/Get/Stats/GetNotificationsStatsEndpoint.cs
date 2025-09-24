@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Notifications.Application.Notifications.Queries.Internal.Count;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.Stats;
 

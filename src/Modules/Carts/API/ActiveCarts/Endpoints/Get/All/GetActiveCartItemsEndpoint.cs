@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.GetAll;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Get.All;
 

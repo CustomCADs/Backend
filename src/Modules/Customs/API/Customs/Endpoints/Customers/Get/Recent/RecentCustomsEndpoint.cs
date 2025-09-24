@@ -2,7 +2,6 @@
 using CustomCADs.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Enums;
 using CustomCADs.Shared.Domain.Querying;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Recent;
 

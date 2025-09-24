@@ -1,5 +1,5 @@
-﻿using CustomCADs.Printing.Application.Materials.Queries.Internal.GetAll;
-using CustomCADs.Printing.API.Materials.Dtos;
+﻿using CustomCADs.Printing.API.Materials.Dtos;
+using CustomCADs.Printing.Application.Materials.Queries.Internal.GetAll;
 
 namespace CustomCADs.Printing.API.Materials.Endpoints.Get.All;
 

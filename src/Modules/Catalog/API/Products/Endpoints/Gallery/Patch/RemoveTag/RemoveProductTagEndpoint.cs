@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Patch.RemoveTag;
 

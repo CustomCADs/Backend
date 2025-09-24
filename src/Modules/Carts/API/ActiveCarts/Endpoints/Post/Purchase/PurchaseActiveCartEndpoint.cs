@@ -1,6 +1,5 @@
 ﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
 using CustomCADs.Shared.Application.Abstractions.Payment;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Post.Purchase;
 

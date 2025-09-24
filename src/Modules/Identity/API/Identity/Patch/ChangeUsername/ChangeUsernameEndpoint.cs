@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Identity.Application.Users.Commands.Internal.ChangeUsername;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Identity.API.Identity.Patch.ChangeUsername;
 

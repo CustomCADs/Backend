@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Begin;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Begin;
 

@@ -1,6 +1,5 @@
 using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
 using CustomCADs.Shared.Domain.Querying;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.All;
 

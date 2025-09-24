@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.Count;
-using CustomCADs.Shared.API.Extensions;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Stats;
 
