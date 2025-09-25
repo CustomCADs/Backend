@@ -58,10 +58,3 @@ resource "aws_s3_bucket_cors_configuration" "customcads_production_bucket_cors" 
 resource "aws_s3_bucket" "customcads_versions" {
   bucket = "customcads-versions"
 }
-# Latest ZIP Object
-resource "aws_s3_object" "customcads_zip" {
-  bucket     = aws_s3_bucket.customcads_versions.bucket
-  key        = "app.zip"
-  source     = "../App.zip"
-  depends_on = [aws_s3_bucket.customcads_versions]
-}
