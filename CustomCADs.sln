@@ -233,22 +233,42 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{74AB2A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{685B803F-F417-4640-A3DF-F84D40F62B7C}"
 	ProjectSection(SolutionItems) = preProject
-		.terraform\app.tf = .terraform\app.tf
-		.terraform\database.tf = .terraform\database.tf
-		.terraform\groups.tf = .terraform\groups.tf
-		.terraform\locals.tf = .terraform\locals.tf
-		.terraform\main.tf = .terraform\main.tf
-		.terraform\networking.tf = .terraform\networking.tf
-		.terraform\notifications.tf = .terraform\notifications.tf
-		.terraform\production.tf = .terraform\production.tf
-		.terraform\roles.tf = .terraform\roles.tf
-		.terraform\secrets.tf = .terraform\secrets.tf
-		.terraform\security.tf = .terraform\security.tf
-		.terraform\ssl.tf = .terraform\ssl.tf
-		.terraform\staging.tf = .terraform\staging.tf
-		.terraform\storage.tf = .terraform\storage.tf
-		.terraform\subnets.tf = .terraform\subnets.tf
-		.terraform\variables.tf = .terraform\variables.tf
+		.terraform\common\app.tf = .terraform\common\app.tf
+		.terraform\common\groups.tf = .terraform\common\groups.tf
+		.terraform\common\networking.tf = .terraform\common\networking.tf
+		.terraform\common\notifications.tf = .terraform\common\notifications.tf
+		.terraform\common\roles.tf = .terraform\common\roles.tf
+		.terraform\common\subnets.tf = .terraform\common\subnets.tf
+		.terraform\common\storage.tf = .terraform\common\storage.tf
+		.terraform\common\security.tf = .terraform\common\security.tf
+		.terraform\common\main.tf = .terraform\common\main.tf
+		.terraform\common\variables.tf = .terraform\common\variables.tf
+		.terraform\common\ssl.tf = .terraform\common\ssl.tf
+		.terraform\common\storage.tf = .terraform\common\storage.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "production", "production", "{D4C2FBE7-B7CA-647C-AAA9-9D401885CB2D}"
+	ProjectSection(SolutionItems) = preProject
+		.terraform\production\main.tf = .terraform\production\main.tf
+		.terraform\production\variables.tf = .terraform\production\variables.tf
+		.terraform\production\locals.tf = .terraform\production\locals.tf
+		.terraform\production\secrets.tf = .terraform\production\secrets.tf
+		.terraform\production\environment.tf = .terraform\production\environment.tf
+		.terraform\production\database.tf = .terraform\production\database.tf
+		.terraform\production\cdn.tf = .terraform\production\cdn.tf
+		.terraform\production\storage.tf = .terraform\production\storage.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "staging", "staging", "{2B6BCB56-B0F1-3886-11D0-ACCD3CF08AA1}"
+	ProjectSection(SolutionItems) = preProject
+		.terraform\staging\main.tf = .terraform\staging\main.tf
+		.terraform\staging\variables.tf = .terraform\staging\variables.tf
+		.terraform\staging\locals.tf = .terraform\staging\locals.tf
+		.terraform\staging\secrets.tf = .terraform\staging\secrets.tf
+		.terraform\staging\environment.tf = .terraform\staging\environment.tf
+		.terraform\staging\database.tf = .terraform\staging\database.tf
+		.terraform\staging\cdn.tf = .terraform\staging\cdn.tf
+		.terraform\staging\storage.tf = .terraform\staging\storage.tf
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{14B2B825-936F-46DA-AD13-BC9CF79E81B0}"
@@ -1400,6 +1420,8 @@ Global
 		{B4EF4DC2-FCE8-4EC6-A35B-216D742136C5} = {9005C58F-BFE9-4CCB-BF7A-6F3A04A5D748}
 		{74AB2A6F-1CA3-4DA2-8C33-2295160B9A5C} = {A968E497-9B29-4B86-BF95-ECCF20E02EBA}
 		{685B803F-F417-4640-A3DF-F84D40F62B7C} = {A968E497-9B29-4B86-BF95-ECCF20E02EBA}
+		{D4C2FBE7-B7CA-647C-AAA9-9D401885CB2D} = {685B803F-F417-4640-A3DF-F84D40F62B7C}
+		{2B6BCB56-B0F1-3886-11D0-ACCD3CF08AA1} = {685B803F-F417-4640-A3DF-F84D40F62B7C}
 		{A718EC4D-A7FD-4B3D-971A-0384514FFF54} = {14B2B825-936F-46DA-AD13-BC9CF79E81B0}
 		{EC930E23-E064-4F3F-8A2E-2E04CE84A6F1} = {A968E497-9B29-4B86-BF95-ECCF20E02EBA}
 		{55775E9D-C99F-4B26-97C5-7F7A2F08E47F} = {EC930E23-E064-4F3F-8A2E-2E04CE84A6F1}

@@ -1,44 +1,34 @@
 locals {
-  production_env_vars = jsondecode(data.aws_secretsmanager_secret_version.customcads_production_env_variables_version.secret_string)
+  jwt_issuer     = local.jwt["Issuer"]
+  jwt_audience   = local.jwt["Audience"]
+  jwt_secret_key = local.jwt["SecretKey"]
 
-  production_jwt            = local.production_env_vars["Jwt"]
-  production_jwt_issuer     = local.production_jwt["Issuer"]
-  production_jwt_audience   = local.production_jwt["Audience"]
-  production_jwt_secret_key = local.production_jwt["SecretKey"]
+  payment_secret_key      = local.payment["SecretKey"]
+  payment_publishable_key = local.payment["PublishableKey"]
+  payment_webhook_secret  = local.payment["WebhookSecret"]
 
-  production_payment                 = local.production_env_vars["Payment"]
-  production_payment_secret_key      = local.production_payment["SecretKey"]
-  production_payment_publishable_key = local.production_payment["PublishableKey"]
-  production_payment_webhook_secret  = local.production_payment["WebhookSecret"]
+  email_server   = local.email["Server"]
+  email_port     = local.email["Port"]
+  email_from     = local.email["From"]
+  email_password = local.email["Password"]
 
-  production_email          = local.production_env_vars["Email"]
-  production_email_server   = local.production_email["Server"]
-  production_email_port     = local.production_email["Port"]
-  production_email_from     = local.production_email["From"]
-  production_email_password = local.production_email["Password"]
+  storage_access_key = local.storage["AccessKey"]
+  storage_secret_key = local.storage["SecretKey"]
 
-  production_storage            = local.production_env_vars["Storage"]
-  production_storage_access_key = local.production_storage["AccessKey"]
-  production_storage_secret_key = local.production_storage["SecretKey"]
+  delivery_username = local.delivery["Username"]
+  delivery_password = local.delivery["Password"]
 
-  production_delivery          = local.production_env_vars["Delivery"]
-  production_delivery_username = local.production_delivery["Username"]
-  production_delivery_password = local.production_delivery["Password"]
+  client_urls_all       = local.client_urls["All"]
+  client_urls_preferred = local.client_urls["Preferred"]
 
-  production_client_urls           = local.production_env_vars["ClientURLs"]
-  production_client_urls_all       = local.production_client_urls["All"]
-  production_client_urls_preferred = local.production_client_urls["Preferred"]
+  server_urls_all       = local.server_urls["All"]
+  server_urls_preferred = local.server_urls["Preferred"]
 
-  production_server_urls           = local.production_env_vars["ServerURLs"]
-  production_server_urls_all       = local.production_server_urls["All"]
-  production_server_urls_preferred = local.production_server_urls["Preferred"]
-
-  production_cookie        = local.production_env_vars["Cookie"]
-  production_cookie_domain = local.production_cookie["Domain"]
+  cookie_domain = local.cookie["Domain"]
 }
 
 # Production Environment
-resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
+resource "aws_elastic_beanstalk_environment" "customcads_env" {
   application         = "CustomCADs"
   cname_prefix        = "customcads"
   description         = "CustomCADs Production environment"
@@ -90,7 +80,7 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "ConnectionStrings__ApplicationConnection"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = "Host=${aws_db_instance.customcads_production_database.endpoint};Database=${aws_db_instance.customcads_production_database.db_name};Username=${local.production_db_username};Password=${local.production_db_password}"
+    value     = "Host=${aws_db_instance.customcads_database.endpoint};Database=${aws_db_instance.customcads_database.db_name};Username=${local.db_username};Password=${local.db_password}"
   }
   setting {
     name      = "DefaultSSHPort"
@@ -114,13 +104,13 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "Delivery__Password"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_delivery_password
+    value     = local.delivery_password
   }
   setting {
     name      = "Delivery__Username"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_delivery_username
+    value     = local.delivery_username
   }
   setting {
     name      = "DeploymentPolicy"
@@ -138,7 +128,7 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "EC2KeyName"
     namespace = "aws:autoscaling:launchconfiguration"
     resource  = null
-    value     = aws_key_pair.customcads_key_pair.key_name
+    value     = data.terraform_remote_state.common.outputs.ec2_key_name
   }
   setting {
     name      = "ELBScheme"
@@ -150,31 +140,31 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "ELBSubnets"
     namespace = "aws:ec2:vpc"
     resource  = null
-    value     = aws_subnet.customcads_subnet_public2_b.id
+    value     = data.terraform_remote_state.common.outputs.elb_subnet_id
   }
   setting {
     name      = "Email__Server"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_email_server
+    value     = local.email_server
   }
   setting {
     name      = "Email__Port"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_email_port
+    value     = local.email_port
   }
   setting {
     name      = "Email__From"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_email_from
+    value     = local.email_from
   }
   setting {
     name      = "Email__Password"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_email_password
+    value     = local.email_password
   }
   setting {
     name      = "EnhancedHealthAuthEnabled"
@@ -204,7 +194,7 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "IamInstanceProfile"
     namespace = "aws:autoscaling:launchconfiguration"
     resource  = null
-    value     = aws_iam_instance_profile.customcads_instance_profile.name
+    value     = data.terraform_remote_state.common.outputs.iam_profile_name
   }
   setting {
     name      = "InstanceRefreshEnabled"
@@ -228,19 +218,19 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "Jwt__Audience"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_jwt_audience
+    value     = local.jwt_audience
   }
   setting {
     name      = "Jwt__Issuer"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_jwt_issuer
+    value     = local.jwt_issuer
   }
   setting {
     name      = "Jwt__SecretKey"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_jwt_secret_key
+    value     = local.jwt_secret_key
   }
   setting {
     name      = "LaunchType"
@@ -282,25 +272,25 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "Notification Topic ARN"
     namespace = "aws:elasticbeanstalk:sns:topics"
     resource  = null
-    value     = aws_sns_topic.customcads_notification.arn
+    value     = data.terraform_remote_state.common.outputs.eb_notification_arn
   }
   setting {
     name      = "Payment__PublishableKey"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_payment_publishable_key
+    value     = local.payment_publishable_key
   }
   setting {
     name      = "Payment__WebhookSecret"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_payment_webhook_secret
+    value     = local.payment_webhook_secret
   }
   setting {
     name      = "Payment__SecretKey"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_payment_secret_key
+    value     = local.payment_secret_key
   }
   setting {
     name      = "PreferredStartTime"
@@ -378,31 +368,31 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "SecurityGroups"
     namespace = "aws:autoscaling:launchconfiguration"
     resource  = null
-    value     = aws_security_group.customcads_app_security_group.id
+    value     = data.terraform_remote_state.common.outputs.eb_security_group
   }
   setting {
     name      = "ServiceRole"
     namespace = "aws:elasticbeanstalk:environment"
     resource  = null
-    value     = aws_iam_role.customcads_eb_service_role.arn
+    value     = data.terraform_remote_state.common.outputs.eb_service_role
   }
   setting {
     name      = "ServiceRoleForManagedUpdates"
     namespace = "aws:elasticbeanstalk:managedactions"
     resource  = null
-    value     = aws_iam_role.customcads_eb_service_role.arn
+    value     = data.terraform_remote_state.common.outputs.eb_service_role
   }
   setting {
     name      = "Storage__AccessKey"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_storage_access_key
+    value     = local.storage_access_key
   }
   setting {
     name      = "Storage__BucketName"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = aws_s3_bucket.customcads_production_bucket.bucket
+    value     = aws_s3_bucket.customcads_bucket.bucket
   }
   setting {
     name      = "Storage__Region"
@@ -414,7 +404,7 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "Storage__SecretKey"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_storage_secret_key
+    value     = local.storage_secret_key
   }
   setting {
     name      = "StreamLogs"
@@ -426,7 +416,7 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "Subnets"
     namespace = "aws:ec2:vpc"
     resource  = null
-    value     = aws_subnet.customcads_subnet_public2_b.id
+    value     = data.terraform_remote_state.common.outputs.elb_subnet_id
   }
   setting {
     name      = "SupportedArchitectures"
@@ -444,31 +434,31 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "ClientURLs__All"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_client_urls_all
+    value     = local.client_urls_all
   }
   setting {
     name      = "ClientURLs__Preferred"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_client_urls_preferred
+    value     = local.client_urls_preferred
   }
   setting {
     name      = "ServerURLs__All"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_server_urls_all
+    value     = local.server_urls_all
   }
   setting {
     name      = "ServerURLs__Preferred"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_server_urls_preferred
+    value     = local.server_urls_preferred
   }
   setting {
     name      = "Cookie__Domain"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = local.production_cookie_domain
+    value     = local.cookie_domain
   }
   setting {
     name      = "UpdateLevel"
@@ -480,6 +470,10 @@ resource "aws_elastic_beanstalk_environment" "customcads_env_prod" {
     name      = "VPCId"
     namespace = "aws:ec2:vpc"
     resource  = null
-    value     = aws_vpc.customcads_vpc.id
+    value     = data.terraform_remote_state.common.outputs.vpc_id
+  }
+
+  lifecycle {
+    ignore_changes = [setting]
   }
 }
