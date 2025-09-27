@@ -1,4 +1,5 @@
-﻿using CustomCADs.Customs.Domain.Repositories;
+﻿using CustomCADs.Customs.Domain.Customs.Enums;
+using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
@@ -21,7 +22,8 @@ public sealed class ReportCustomHandler(
 		Custom custom = await reads.SingleByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
-		if (custom.AcceptedCustom?.DesignerId != req.CallerId)
+		if (custom.CustomStatus is not CustomStatus.Pending
+			&& custom.AcceptedCustom?.DesignerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Custom>.ById(req.Id);
 		}

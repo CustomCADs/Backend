@@ -26,7 +26,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 	{
 		handler = new(reads.Object, uow.Object, sender.Object);
 
-		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(cart);
 
 		sender.Setup(x => x.SendQueryAsync(
@@ -57,7 +57,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 		await handler.Handle(de);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
+		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
 	}
 
 	[Fact]
@@ -91,7 +91,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
-		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as PurchasedCart);
 
 		ActiveCartDeliveryRequestedApplicationEvent de = new(

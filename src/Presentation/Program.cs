@@ -31,7 +31,7 @@ builder.Services.AddDomainServices();
 builder.Services.AddGlobalExceptionHandler();
 builder.Services.AddEndpoints();
 builder.Services.AddJsonOptions();
-builder.Services.AddApiDocumentation();
+builder.Services.AddApiDocumentation(builder.Configuration);
 builder.Services.AddRateLimiting();
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();

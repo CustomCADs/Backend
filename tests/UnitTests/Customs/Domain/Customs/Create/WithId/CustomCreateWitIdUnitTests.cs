@@ -17,14 +17,14 @@ public class CustomCreateWitIdUnitTests : CustomsBaseUnitTests
 	[ClassData(typeof(Data.CustomCreateValidData))]
 	public void CreateWithId_ShouldPopulateProperties(string name, string description, bool forDelivery)
 	{
-		var order = CreateCustomWithId(ValidId, name, description, forDelivery, ValidBuyerId);
+		var custom = CreateCustomWithId(ValidId, name, description, forDelivery, ValidBuyerId);
 
 		Assert.Multiple(
-			() => Assert.Equal(ValidId, order.Id),
-			() => Assert.Equal(name, order.Name),
-			() => Assert.Equal(description, order.Description),
-			() => Assert.Equal(forDelivery, order.ForDelivery),
-			() => Assert.Equal(ValidBuyerId, order.BuyerId)
+			() => Assert.Equal(ValidId, custom.Id),
+			() => Assert.Equal(name, custom.Name),
+			() => Assert.Equal(description, custom.Description),
+			() => Assert.Equal(forDelivery, custom.ForDelivery),
+			() => Assert.Equal(ValidBuyerId, custom.BuyerId)
 		);
 	}
 

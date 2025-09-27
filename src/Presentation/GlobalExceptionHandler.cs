@@ -1,6 +1,6 @@
-﻿using CustomCADs.Shared.Application.Exceptions;
+﻿using CustomCADs.Shared.API.Extensions;
+using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.Exceptions;
-using CustomCADs.Shared.Endpoints.Extensions;
 using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 

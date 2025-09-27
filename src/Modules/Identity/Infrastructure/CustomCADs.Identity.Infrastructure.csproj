@@ -19,7 +19,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Application\CustomCADs.Identity.Application.csproj" />
-		<ProjectReference Include="..\..\..\Shared\Infrastructure\CustomCADs.Shared.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -5,10 +5,17 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Carts;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Identity.Queries;
+using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
+using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 
-public class CartPaymentCompletedApplicationEventHandler(IPurchasedCartReads reads, IUnitOfWork uow, IRequestSender sender, IEmailService email)
+public class CartPaymentCompletedApplicationEventHandler(
+	IPurchasedCartReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IEmailService email
+)
 {
 	public async Task Handle(CartPaymentCompletedApplicationEvent ae)
 	{
@@ -28,6 +35,16 @@ public class CartPaymentCompletedApplicationEventHandler(IPurchasedCartReads rea
 			query: new GetClientUrlQuery()
 		).ConfigureAwait(false);
 
-		await email.SendRewardGrantedEmailAsync(to, $"{url}/carts").ConfigureAwait(false);
+		await email.SendRewardGrantedEmailAsync(to, $"{url}/carts/{cart.Id}").ConfigureAwait(false);
+
+		if (cart is { HasDelivery: true, ShipmentId: not null })
+		{
+			ShipmentId shipmentId = cart.ShipmentId.Value;
+
+			await sender.SendCommandAsync(
+				new ActivateShipmentCommand(shipmentId)
+			).ConfigureAwait(false);
+			await email.SendRewardGrantedEmailAsync(to, $"{url}/shipments/{shipmentId}").ConfigureAwait(false);
+		}
 	}
 }

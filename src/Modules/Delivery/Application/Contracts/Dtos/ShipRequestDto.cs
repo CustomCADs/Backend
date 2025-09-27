@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Shared.Abstractions.Delivery.Dtos;
+﻿namespace CustomCADs.Delivery.Application.Contracts.Dtos;
 
 public record ShipRequestDto(
 	string Country,
@@ -10,6 +10,5 @@ public record ShipRequestDto(
 	string Service,
 	string Package,
 	string Contents,
-	int ParcelCount,
 	double TotalWeight
 );

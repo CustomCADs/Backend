@@ -1,0 +1,51 @@
+﻿using CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Single;
+using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Create;
+using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetById;
+
+namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Post.Products;
+
+public sealed class PostProductEndpoint(IRequestSender sender)
+	: Endpoint<PostProductRequest, PostProductResponse, PostProductMapper>
+{
+	public override void Configure()
+	{
+		Post("");
+		Group<CreatorGroup>();
+		Description(x => x
+			.WithSummary("Create")
+			.WithDescription("Create a Product")
+		);
+	}
+
+	public override async Task HandleAsync(PostProductRequest req, CancellationToken ct)
+	{
+		ProductId id = await sender.SendCommandAsync(
+			command: new CreateProductCommand(
+				Name: req.Name,
+				Description: req.Description,
+				CategoryId: CategoryId.New(req.CategoryId),
+				Price: req.Price,
+				ImageKey: req.ImageKey,
+				ImageContentType: req.ImageContentType,
+				CadKey: req.CadKey,
+				CadContentType: req.CadContentType,
+				CadVolume: req.CadVolume,
+				CallerId: User.GetAccountId()
+			),
+			ct: ct
+		).ConfigureAwait(false);
+
+		CreatorGetProductByIdDto dto = await sender.SendQueryAsync(
+			query: new CreatorGetProductByIdQuery(
+				Id: id,
+				CallerId: User.GetAccountId()
+			),
+			ct: ct
+		).ConfigureAwait(false);
+
+		await Send.CreatedAtAsync<CreatorSingleProductEndpoint>(
+			routeValues: new { Id = id.Value },
+			responseBody: Map.FromEntity(dto)
+		).ConfigureAwait(false);
+	}
+}

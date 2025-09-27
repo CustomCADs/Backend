@@ -12,19 +12,19 @@ public class CustomCompleteUnitTests : CustomsBaseUnitTests
 	[Fact]
 	public void Complete_ShouldSucceed_WhenFinished()
 	{
-		Custom custom = CreateCustom(forDelivery: true);
+		Custom custom = CreateCustom();
 		custom.Accept(ValidDesignerId);
 		custom.Begin();
 		custom.Finish(ValidCadId, ValidPrice);
 
-		custom.Complete(ValidCustomizationId);
+		custom.Complete(customizationId: null);
 
 		Assert.Multiple(
 			() => Assert.Equal(CustomStatus.Completed, custom.CustomStatus),
 			() => Assert.NotNull(custom.AcceptedCustom),
 			() => Assert.NotNull(custom.FinishedCustom),
 			() => Assert.NotNull(custom.CompletedCustom),
-			() => Assert.Equal(ValidCustomizationId, custom.CompletedCustom!.CustomizationId)
+			() => Assert.Null(custom.CompletedCustom!.CustomizationId)
 		);
 	}
 
@@ -35,7 +35,7 @@ public class CustomCompleteUnitTests : CustomsBaseUnitTests
 		{
 			Custom custom = CreateCustom();
 
-			custom.Complete(ValidCustomizationId);
+			custom.Complete(customizationId: null);
 		});
 	}
 
@@ -47,7 +47,7 @@ public class CustomCompleteUnitTests : CustomsBaseUnitTests
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
 
-			custom.Complete(ValidCustomizationId);
+			custom.Complete(customizationId: null);
 		});
 	}
 
@@ -60,7 +60,7 @@ public class CustomCompleteUnitTests : CustomsBaseUnitTests
 			custom.Accept(ValidDesignerId);
 			custom.Begin();
 
-			custom.Complete(ValidCustomizationId);
+			custom.Complete(customizationId: null);
 		});
 	}
 
@@ -73,7 +73,7 @@ public class CustomCompleteUnitTests : CustomsBaseUnitTests
 			custom.Accept(ValidDesignerId);
 			custom.Report();
 
-			custom.Complete(ValidCustomizationId);
+			custom.Complete(customizationId: null);
 		});
 	}
 
@@ -86,9 +86,22 @@ public class CustomCompleteUnitTests : CustomsBaseUnitTests
 			custom.Accept(ValidDesignerId);
 			custom.Begin();
 			custom.Finish(ValidCadId, ValidPrice);
-			custom.Complete(ValidCustomizationId);
+			custom.Complete(customizationId: null);
 
-			custom.Complete(ValidCustomizationId);
+			custom.Complete(customizationId: null);
+		});
+	}
+
+	[Fact]
+	public void Complete_ShouldFail_WhenRemoved()
+	{
+		expectValidationException(() =>
+		{
+			Custom custom = CreateCustom();
+			custom.Report();
+			custom.Remove();
+
+			custom.Complete(customizationId: null);
 		});
 	}
 }

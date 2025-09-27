@@ -59,19 +59,13 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 			),
 			ct: ct
 		).ConfigureAwait(false);
-
-		Dictionary<CustomizationId, double> weights = await sender.SendQueryAsync(
-			query: new GetCustomizationsWeightByIdsQuery(
-				Ids: customizationIds
-			),
-			ct: ct
-		).ConfigureAwait(false);
+		Dictionary<CustomizationId, double> weights = await SnapshotWeights(items, customizationIds, ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
 			@event: new ActiveCartDeliveryRequestedApplicationEvent(
 				Id: purchasedCartId,
-				Weight: weights.Sum(x => x.Value) / 1000,
-				Count: items.Count(x => x.ForDelivery),
+				Weight: weights.Sum(x => x.Value),
+				Count: items.Where(x => x.ForDelivery).Sum(x => x.Quantity),
 				ShipmentService: req.ShipmentService,
 				Address: req.Address,
 				Contact: req.Contact
@@ -88,6 +82,27 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 		).ConfigureAwait(false);
 
 		return response;
+	}
+
+	private async Task<Dictionary<CustomizationId, double>> SnapshotWeights(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
+	{
+		Dictionary<CustomizationId, double> weights = await sender.SendQueryAsync(
+			query: new GetCustomizationsWeightByIdsQuery(
+				Ids: customizationIds
+			),
+			ct: ct
+		).ConfigureAwait(false);
+
+		return weights.ToDictionary(
+			x => x.Key,
+			x =>
+			{
+				ActiveCartItem item = items.First(i => i.CustomizationId == x.Key);
+				return
+					x.Value / 1000 // g -> kg
+					* item.Quantity;
+			}
+		);
 	}
 
 	private async Task<Dictionary<CustomizationId, decimal>> SnapshotCosts(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)

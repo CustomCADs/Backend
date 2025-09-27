@@ -70,7 +70,7 @@ public sealed class PurchaseCustomWithDeliveryHandler(
 			@event: new CustomDeliveryRequestedApplicationEvent(
 				Id: req.Id,
 				ShipmentService: req.ShipmentService,
-				Weight: weight / 100 * req.Count,
+				Weight: req.Count * weight / 1000,
 				Count: req.Count,
 				Address: req.Address,
 				Contact: req.Contact

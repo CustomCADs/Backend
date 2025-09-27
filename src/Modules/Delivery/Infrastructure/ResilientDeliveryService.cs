@@ -1,6 +1,5 @@
 using CustomCADs.Delivery.Application.Contracts;
 using CustomCADs.Delivery.Application.Contracts.Dtos;
-using CustomCADs.Shared.Abstractions.Delivery.Dtos;
 
 namespace CustomCADs.Delivery.Infrastructure;
 
@@ -9,6 +8,9 @@ public class ResilientDeliveryService(
 	Polly.IAsyncPolicy policy
 ) : IDeliveryService
 {
+	public Task<bool> ValidateAsync(string country, string city, string street, string? phone, CancellationToken ct = default)
+		=> policy.ExecuteAsync(() => inner.ValidateAsync(country, city, street, phone, ct));
+
 	public Task<CalculationDto[]> CalculateAsync(CalculateRequest req, CancellationToken ct = default)
 		=> policy.ExecuteAsync(() => inner.CalculateAsync(req, ct));
 
@@ -21,6 +23,9 @@ public class ResilientDeliveryService(
 	public Task<ShipmentDto> ShipAsync(ShipRequestDto req, CancellationToken ct = default)
 		=> policy.ExecuteAsync(() => inner.ShipAsync(req, ct));
 
-	public Task<ShipmentStatusDto[]> TrackAsync(string shipmentId, CancellationToken ct = default)
+	public Task<ShipmentTrackDto[]> TrackAsync(string shipmentId, CancellationToken ct = default)
 		=> policy.ExecuteAsync(() => inner.TrackAsync(shipmentId, ct));
+
+	public Task<Dictionary<string, ShipmentTrackDto[]>> TrackAsync(string[] shipmentIds, CancellationToken ct = default)
+		=> policy.ExecuteAsync(() => inner.TrackAsync(shipmentIds, ct));
 }

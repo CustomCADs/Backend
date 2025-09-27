@@ -1,0 +1,480 @@
+locals {
+  jwt_issuer     = local.jwt["Issuer"]
+  jwt_audience   = local.jwt["Audience"]
+  jwt_secret_key = local.jwt["SecretKey"]
+
+  payment_secret_key      = local.payment["SecretKey"]
+  payment_publishable_key = local.payment["PublishableKey"]
+  payment_webhook_secret  = local.payment["WebhookSecret"]
+
+  email_server   = local.email["Server"]
+  email_port     = local.email["Port"]
+  email_from     = local.email["From"]
+  email_password = local.email["Password"]
+
+  storage_access_key = local.storage["AccessKey"]
+  storage_secret_key = local.storage["SecretKey"]
+
+  delivery_username = local.delivery["Username"]
+  delivery_password = local.delivery["Password"]
+
+  client_urls_all       = local.client_urls["All"]
+  client_urls_preferred = local.client_urls["Preferred"]
+
+  server_urls_all       = local.server_urls["All"]
+  server_urls_preferred = local.server_urls["Preferred"]
+
+  cookie_domain = local.cookie["Domain"]
+}
+
+# EB Environment
+resource "aws_elastic_beanstalk_environment" "customcads_env" {
+  application         = "CustomCADs"
+  cname_prefix        = "staging-customcads"
+  description         = "CustomCADs Staging environment"
+  name                = "CustomCADs-stag"
+  solution_stack_name = "64bit Amazon Linux 2023 v4.7.1 running Docker"
+  tier                = "WebServer"
+  version_label       = "staging"
+
+  setting {
+    name      = "HealthCheckPath"
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    resource  = null
+    value     = "/health"
+  }
+  setting {
+    name      = "Automatically Terminate Unhealthy Instances"
+    namespace = "aws:elasticbeanstalk:monitoring"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "ConfigDocument"
+    namespace = "aws:elasticbeanstalk:healthreporting:system"
+    resource  = null
+    value = jsonencode(
+      {
+        CloudWatchMetrics = {
+          Environment = {}
+          Instance    = {}
+        }
+        Rules = {
+          Environment = {
+            Application = {
+              ApplicationRequests4xx = {
+                Enabled = true
+              }
+            }
+            ELB = {
+              ELBRequests4xx = {
+                Enabled = true
+              }
+            }
+          }
+        }
+        Version = 1
+      }
+    )
+  }
+  setting {
+    name      = "ConnectionStrings__ApplicationConnection"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = "Host=${aws_db_instance.customcads_database.endpoint};Database=${aws_db_instance.customcads_database.db_name};Username=${local.db_username};Password=${local.db_password}"
+  }
+  setting {
+    name      = "DefaultSSHPort"
+    namespace = "aws:elasticbeanstalk:control"
+    resource  = null
+    value     = "22"
+  }
+  setting {
+    name      = "DeleteOnTerminate"
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "DeleteOnTerminate"
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs:health"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "Delivery__Password"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.delivery_password
+  }
+  setting {
+    name      = "Delivery__Username"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.delivery_username
+  }
+  setting {
+    name      = "DeploymentPolicy"
+    namespace = "aws:elasticbeanstalk:command"
+    resource  = null
+    value     = "Immutable"
+  }
+  setting {
+    name      = "DisableIMDSv1"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "EC2KeyName"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.ec2_key_name
+  }
+  setting {
+    name      = "ELBScheme"
+    namespace = "aws:ec2:vpc"
+    resource  = null
+    value     = "public"
+  }
+  setting {
+    name      = "ELBSubnets"
+    namespace = "aws:ec2:vpc"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.elb_subnet_id
+  }
+  setting {
+    name      = "Email__Server"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.email_server
+  }
+  setting {
+    name      = "Email__Port"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.email_port
+  }
+  setting {
+    name      = "Email__From"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.email_from
+  }
+  setting {
+    name      = "Email__Password"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.email_password
+  }
+  setting {
+    name      = "EnhancedHealthAuthEnabled"
+    namespace = "aws:elasticbeanstalk:healthreporting:system"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "EnvironmentType"
+    namespace = "aws:elasticbeanstalk:environment"
+    resource  = null
+    value     = "SingleInstance"
+  }
+  setting {
+    name      = "HealthStreamingEnabled"
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs:health"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "HooksPkgUrl"
+    namespace = "aws:cloudformation:template:parameter"
+    resource  = null
+    value     = "https://elasticbeanstalk-platform-assets-us-east-1.s3.amazonaws.com/stalks/eb_docker_amazon_linux_2023_1.0.155.0_20241119035555/lib/hooks.tar.gz"
+  }
+  setting {
+    name      = "IamInstanceProfile"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.iam_profile_name
+  }
+  setting {
+    name      = "InstanceRefreshEnabled"
+    namespace = "aws:elasticbeanstalk:managedactions:platformupdate"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "InstanceType"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = "t3.micro"
+  }
+  setting {
+    name      = "InstanceTypes"
+    namespace = "aws:ec2:instances"
+    resource  = null
+    value     = "t3.micro, t3.small"
+  }
+  setting {
+    name      = "Jwt__Audience"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.jwt_audience
+  }
+  setting {
+    name      = "Jwt__Issuer"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.jwt_issuer
+  }
+  setting {
+    name      = "Jwt__SecretKey"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.jwt_secret_key
+  }
+  setting {
+    name      = "LaunchType"
+    namespace = "aws:elasticbeanstalk:control"
+    resource  = null
+    value     = "Migration"
+  }
+  setting {
+    name      = "ManagedActionsEnabled"
+    namespace = "aws:elasticbeanstalk:managedactions"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "MaxSize"
+    namespace = "aws:autoscaling:asg"
+    resource  = null
+    value     = "1"
+  }
+  setting {
+    name      = "MinSize"
+    namespace = "aws:autoscaling:asg"
+    resource  = null
+    value     = "1"
+  }
+  setting {
+    name      = "Notification Endpoint"
+    namespace = "aws:elasticbeanstalk:sns:topics"
+    resource  = null
+    value     = "customcads414@gmail.com"
+  }
+  setting {
+    name      = "Notification Protocol"
+    namespace = "aws:elasticbeanstalk:sns:topics"
+    resource  = null
+    value     = "email"
+  }
+  setting {
+    name      = "Notification Topic ARN"
+    namespace = "aws:elasticbeanstalk:sns:topics"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.eb_notification_arn
+  }
+  setting {
+    name      = "Payment__PublishableKey"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.payment_publishable_key
+  }
+  setting {
+    name      = "Payment__SecretKey"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.payment_secret_key
+  }
+  setting {
+    name      = "Payment__WebhookSecret"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.payment_webhook_secret
+  }
+  setting {
+    name      = "PreferredStartTime"
+    namespace = "aws:elasticbeanstalk:managedactions"
+    resource  = null
+    value     = "SUN:11:00"
+  }
+  setting {
+    name      = "ProxyServer"
+    namespace = "aws:elasticbeanstalk:environment:proxy"
+    resource  = null
+    value     = "nginx"
+  }
+  setting {
+    name      = "RetentionInDays"
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    resource  = null
+    value     = "3"
+  }
+  setting {
+    name      = "RetentionInDays"
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs:health"
+    resource  = null
+    value     = "3"
+  }
+  setting {
+    name      = "RollbackLaunchOnFailure"
+    namespace = "aws:elasticbeanstalk:control"
+    resource  = null
+    value     = "false"
+  }
+  setting {
+    name      = "RollingUpdateEnabled"
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    resource  = null
+    value     = "false"
+  }
+  setting {
+    name      = "RollingUpdateType"
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    resource  = null
+    value     = "Immutable"
+  }
+  setting {
+    name      = "RootVolumeIOPS"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = "3000"
+  }
+  setting {
+    name      = "RootVolumeSize"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = "10"
+  }
+  setting {
+    name      = "RootVolumeThroughput"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = "125"
+  }
+  setting {
+    name      = "RootVolumeType"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = "gp3"
+  }
+  setting {
+    name      = "SSHSourceRestriction"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = "tcp,22,22,0.0.0.0/0"
+  }
+  setting {
+    name      = "SecurityGroups"
+    namespace = "aws:autoscaling:launchconfiguration"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.eb_security_group
+  }
+  setting {
+    name      = "ServiceRole"
+    namespace = "aws:elasticbeanstalk:environment"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.eb_service_role
+  }
+  setting {
+    name      = "ServiceRoleForManagedUpdates"
+    namespace = "aws:elasticbeanstalk:managedactions"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.eb_service_role
+  }
+  setting {
+    name      = "Storage__AccessKey"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.storage_access_key
+  }
+  setting {
+    name      = "Storage__BucketName"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = aws_s3_bucket.customcads_bucket.bucket
+  }
+  setting {
+    name      = "Storage__Region"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = var.region
+  }
+  setting {
+    name      = "Storage__SecretKey"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.storage_secret_key
+  }
+  setting {
+    name      = "StreamLogs"
+    namespace = "aws:elasticbeanstalk:cloudwatch:logs"
+    resource  = null
+    value     = "true"
+  }
+  setting {
+    name      = "Subnets"
+    namespace = "aws:ec2:vpc"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.elb_subnet_id
+  }
+  setting {
+    name      = "SupportedArchitectures"
+    namespace = "aws:ec2:instances"
+    resource  = null
+    value     = "x86_64"
+  }
+  setting {
+    name      = "SystemType"
+    namespace = "aws:elasticbeanstalk:healthreporting:system"
+    resource  = null
+    value     = "enhanced"
+  }
+  setting {
+    name      = "ClientURLs__All"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.client_urls_all
+  }
+  setting {
+    name      = "ClientURLs__Preferred"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.client_urls_preferred
+  }
+  setting {
+    name      = "ServerURLs__All"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.server_urls_all
+  }
+  setting {
+    name      = "ServerURLs__Preferred"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.server_urls_preferred
+  }
+  setting {
+    name      = "Cookie__Domain"
+    namespace = "aws:elasticbeanstalk:application:environment"
+    resource  = null
+    value     = local.cookie_domain
+  }
+  setting {
+    name      = "UpdateLevel"
+    namespace = "aws:elasticbeanstalk:managedactions:platformupdate"
+    resource  = null
+    value     = "minor"
+  }
+  setting {
+    name      = "VPCId"
+    namespace = "aws:ec2:vpc"
+    resource  = null
+    value     = data.terraform_remote_state.common.outputs.vpc_id
+  }
+
+  lifecycle {
+    ignore_changes = [setting]
+  }
+}

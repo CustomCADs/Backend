@@ -25,6 +25,13 @@ public sealed class Reads(AccountsContext context) : IAccountReads
 		return new(count, accounts);
 	}
 
+	public async Task<ICollection<AccountId>> AllIdsByRoleAsync(string role, CancellationToken ct = default)
+		=> await context.Accounts
+			.Where(x => x.RoleName == role)
+			.Select(x => x.Id)
+			.ToArrayAsync(ct)
+			.ConfigureAwait(false);
+
 	public async Task<Account?> SingleByIdAsync(AccountId id, bool track = true, CancellationToken ct = default)
 		=> await context.Accounts
 			.WithTracking(track)

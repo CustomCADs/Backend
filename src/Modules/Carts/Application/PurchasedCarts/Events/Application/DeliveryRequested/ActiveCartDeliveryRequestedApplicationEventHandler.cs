@@ -8,30 +8,34 @@ using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
 
-public class ActiveCartDeliveryRequestedApplicationEventHandler(IPurchasedCartReads reads, IUnitOfWork uow, IRequestSender sender)
+public class ActiveCartDeliveryRequestedApplicationEventHandler(
+	IPurchasedCartReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender
+)
 {
-	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent de)
+	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent ae)
 	{
-		PurchasedCart cart = await reads.SingleByIdAsync(de.Id, track: false).ConfigureAwait(false)
-			?? throw CustomNotFoundException<PurchasedCart>.ById(de.Id);
+		PurchasedCart cart = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
+			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.Id);
 
 		string buyer = await sender.SendQueryAsync(
 			query: new GetUsernameByIdQuery(cart.BuyerId)
 		).ConfigureAwait(false);
-		double weight = de.Weight;
-		int count = de.Count;
+		double weight = ae.Weight;
+		int count = ae.Count;
 
 		ShipmentId shipmentId = await sender.SendCommandAsync(
 			command: new CreateShipmentCommand(
 				Info: new(count, weight, buyer),
-				Service: de.ShipmentService,
-				Address: de.Address,
-				Contact: de.Contact,
+				Service: ae.ShipmentService,
+				Address: ae.Address,
+				Contact: ae.Contact,
 				BuyerId: cart.BuyerId
 			)
 		).ConfigureAwait(false);
-		cart.SetShipmentId(shipmentId);
 
+		cart.SetShipmentId(shipmentId);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 	}
 }
