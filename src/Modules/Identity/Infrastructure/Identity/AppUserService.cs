@@ -17,9 +17,20 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 	{
 		AppUser appUser = await manager.Users
 			.Include(x => x.RefreshTokens)
-			.FirstOrDefaultAsync(x => x.UserName == username)
+			.FirstOrDefaultAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
 			.ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
+
+		return await appUser.ToUserWithRoleAsync(manager).ConfigureAwait(false);
+	}
+
+	public async Task<User> GetByEmailAsync(string email)
+	{
+		AppUser appUser = await manager.Users
+			.Include(x => x.RefreshTokens)
+			.FirstOrDefaultAsync(x => x.Email == email)
+			.ConfigureAwait(false)
+			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(email), email);
 
 		return await appUser.ToUserWithRoleAsync(manager).ConfigureAwait(false);
 	}
@@ -37,10 +48,20 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 	#endregion
 
 	#region GetPropertyX
+	public async Task<bool> GetExistsByUsernameAsync(string username)
+		=> await manager.Users
+			.AnyAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
+			.ConfigureAwait(false);
+
+	public async Task<bool> GetExistsByEmailAsync(string email)
+		=> await manager.Users
+			.AnyAsync(x => x.Email == email)
+			.ConfigureAwait(false);
+
 	public async Task<AccountId> GetAccountIdAsync(string username)
 	{
 		AccountId accountId = await manager.Users
-			.Where(x => x.UserName == username)
+			.Where(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
 			.Select(x => x.AccountId)
 			.FirstOrDefaultAsync()
 			.ConfigureAwait(false);
@@ -56,7 +77,7 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 	public async Task<DateTimeOffset?> GetIsLockedOutAsync(string username)
 	{
 		AppUser appUser = await manager.Users
-			.FirstOrDefaultAsync(x => x.UserName == username)
+			.FirstOrDefaultAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
 			.ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
 
@@ -75,6 +96,18 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 	{
 		AppUser appUser = user.ToAppUser();
 		await manager.CreateAsync(appUser, password).ConfigureAwait(false);
+
+		IdentityResult result = await manager.AddToRoleAsync(appUser, user.Role).ConfigureAwait(false);
+		if (!result.Succeeded)
+		{
+			throw new CustomException($"Couldn't create an account for: {user.Username}.");
+		}
+	}
+
+	public async Task CreateSSOAsync(User user, string provider)
+	{
+		AppUser appUser = user.ToAppUser(provider);
+		await manager.CreateAsync(appUser).ConfigureAwait(false);
 
 		IdentityResult result = await manager.AddToRoleAsync(appUser, user.Role).ConfigureAwait(false);
 		if (!result.Succeeded)
@@ -116,7 +149,7 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 		AppUser appUser = await manager.FindByIdAsync(id.ToString()).ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(id), id);
 
-		appUser.UserName = username;
+		appUser.Username = username;
 		await manager.UpdateAsync(appUser).ConfigureAwait(false);
 	}
 

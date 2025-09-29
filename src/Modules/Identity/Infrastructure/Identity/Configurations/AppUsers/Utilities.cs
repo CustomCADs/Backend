@@ -38,6 +38,12 @@ public static class Utilities
 			.IsRequired()
 			.HasColumnName(nameof(AppUser.AccountId));
 
+		builder.Property(x => x.Provider)
+			.IsRequired(false)
+			.HasColumnName(nameof(AppUser.Provider));
+
+		builder.Ignore(x => x.Username);
+
 		return builder;
 	}
 
@@ -92,6 +98,8 @@ public static class Utilities
 			NormalizedUserName = username.ToUpperInvariant(),
 			NormalizedEmail = email.ToUpperInvariant(),
 			PasswordHash = passHash,
+			IsSSO = false,
+			Provider = null,
 			AccessFailedCount = 0,
 			EmailConfirmed = true,
 			LockoutEnabled = true,
@@ -99,6 +107,6 @@ public static class Utilities
 			TwoFactorEnabled = false,
 			ConcurrencyStamp = concStamp,
 			SecurityStamp = secStamp,
-			LockoutEnd = null
+			LockoutEnd = null,
 		};
 }

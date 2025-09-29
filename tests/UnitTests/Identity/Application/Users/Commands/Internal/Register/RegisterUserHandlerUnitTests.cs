@@ -51,7 +51,7 @@ public class RegisterUserHandlerUnitTests : UsersBaseUnitTests
 	}
 
 	[Fact]
-	public async Task Handle_ShouldRaiseEvents()
+	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
 		RegisterUserCommand command = new(

@@ -16,5 +16,29 @@ public static class ClaimsPrincipalExtensions
 
 	public static string? GetAuthorization(this ClaimsPrincipal user)
 		=> user.FindFirstValue(ClaimTypes.Role);
+
+	public static void ExtractUserFromSSO(this ClaimsPrincipal? user, out string email, out string username)
+	{
+		if (user is null)
+		{
+			throw new Exception("Claims required");
+		}
+
+		email = user.Claims?.FirstOrDefault(c => c.Type switch
+		{
+			ClaimTypes.Email => true,
+			"email" => true,
+			"r_emailaddress" => true,
+			_ => false
+		})?.Value ?? throw new Exception("Email required");
+
+		username = user.Claims?.FirstOrDefault(c => c.Type switch
+		{
+			ClaimTypes.Name => true,
+			"preferred_username" => true,
+			"name" => true,
+			_ => false,
+		})?.Value ?? email.Split('@').First();
+	}
 }
 
