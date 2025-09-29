@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints;
 
 using static DomainConstants.Roles;
-using static EndpointsConstants;
+using static APIConstants;
 
 public class PurchasedCartsGroup : Group
 {

@@ -1,6 +1,6 @@
 namespace CustomCADs.Shared.API;
 
-public static class EndpointsConstants
+public static class APIConstants
 {
 	public const string RateLimitPolicy = "user-based";
 

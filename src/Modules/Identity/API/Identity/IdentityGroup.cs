@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Identity.API.Identity;
 
-using static EndpointsConstants;
+using static APIConstants;
 
 public class IdentityGroup : Group
 {

@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Printing.API.Customizations.Endpoints;
 
-using static EndpointsConstants;
+using static APIConstants;
 
 public class CustomizationsGroup : Group
 {

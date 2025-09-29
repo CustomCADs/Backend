@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Accounts.API.Accounts.Endpoints;
 
 using static DomainConstants.Roles;
-using static EndpointsConstants;
+using static APIConstants;
 
 public class AccountsGroup : Group
 {

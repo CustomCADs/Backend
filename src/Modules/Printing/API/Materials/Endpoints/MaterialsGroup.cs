@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Printing.API.Materials.Endpoints;
 
 using static DomainConstants.Roles;
-using static EndpointsConstants;
+using static APIConstants;
 
 public class MaterialsGroup : Group
 {
