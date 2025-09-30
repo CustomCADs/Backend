@@ -7,7 +7,7 @@ using CustomCADs.Shared.Application.Events.Catalog;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
-namespace CustomCADs.UnitTests.Catalog.Application.Products.Events.Domain;
+namespace CustomCADs.UnitTests.Catalog.Application.Products.Events.Application;
 
 using static DomainConstants;
 using static ProductsData;
@@ -56,10 +56,10 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ProductViewedApplicationEvent de = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(de);
+		await handler.Handle(ae);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -69,10 +69,10 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductViewedApplicationEvent de = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(de);
+		await handler.Handle(ae);
 
 		// Assert
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
@@ -82,10 +82,10 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		ProductViewedApplicationEvent de = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(de);
+		await handler.Handle(ae);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -106,10 +106,10 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		ProductViewedApplicationEvent de = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(de);
+		await handler.Handle(ae);
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
@@ -121,10 +121,10 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
-		ProductViewedApplicationEvent de = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(de);
+		await handler.Handle(ae);
 
 		// Assert
 		Assert.Equal(1, product.Counts.Views);
@@ -138,10 +138,10 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == Username),
 			ct
 		)).ReturnsAsync(info with { TrackViewedProducts = false });
-		ProductViewedApplicationEvent de = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(de);
+		await handler.Handle(ae);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -158,10 +158,10 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 			It.Is<GetAccountViewedProductQuery>(x => x.Id == ValidCreatorId && x.ProductId == ValidId),
 			ct
 		)).ReturnsAsync(true);
-		ProductViewedApplicationEvent de = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(de);
+		await handler.Handle(ae);
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
@@ -177,12 +177,12 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Product);
 
-		ProductViewedApplicationEvent de = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			async () => await handler.Handle(de)
+			async () => await handler.Handle(ae)
 		);
 	}
 }

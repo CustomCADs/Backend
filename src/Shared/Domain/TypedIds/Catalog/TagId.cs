@@ -18,6 +18,8 @@ public readonly struct TagId
 	public static TagId[]? New(Guid[]? ids) => ids is null ? null : [.. ids.Select(New)];
 	public static Guid Unwrap(TagId id) => id.Value;
 	public static Guid? Unwrap(TagId? id) => id?.Value;
+	public static TagId[] Filter(Dictionary<TagId, bool> tags)
+		=> [.. tags.Where(x => x.Value).Select(x => x.Key)];
 
 	public override bool Equals([NotNullWhen(true)] object? obj)
 		=> obj is TagId TagId && this == TagId;
