@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Creator;
 
 using static DomainConstants.Roles;
-using static EndpointsConstants;
+using static APIConstants;
 
 public class CreatorGroup : SubGroup<ProductsGroup>
 {

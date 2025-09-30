@@ -1,8 +1,14 @@
 namespace CustomCADs.Shared.API;
 
-public static class EndpointsConstants
+public static class APIConstants
 {
 	public const string RateLimitPolicy = "user-based";
+
+	public static class SSO
+	{
+		public static readonly string[] Providers = [Google];
+		public const string Google = "Google";
+	}
 
 	public static class Paths
 	{

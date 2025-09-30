@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Catalog.API.Tags.Endpoints;
 
 using static DomainConstants.Roles;
-using static EndpointsConstants;
+using static APIConstants;
 
 public class TagGroup : Group
 {

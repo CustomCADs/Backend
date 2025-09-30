@@ -1,6 +1,6 @@
 namespace CustomCADs.Customs.API.Customs.Endpoints;
 
-using static EndpointsConstants;
+using static APIConstants;
 
 public class CustomsGroup : Group
 {

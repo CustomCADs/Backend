@@ -6,10 +6,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-#pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class DependencyInjection
+public static partial class DependencyInjection
 {
 	private const string AuthScheme = JwtBearerDefaults.AuthenticationScheme;
 
