@@ -4,7 +4,7 @@ namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.SetF
 
 public sealed record SetProductFilesCommand(
 	ProductId Id,
-	(string? Key, string? ContentType, decimal? Volume) Cad,
-	(string? Key, string? ContentType) Image,
+	CadDto? Cad,
+	ImageDto? Image,
 	AccountId CallerId
 ) : ICommand;

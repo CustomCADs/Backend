@@ -120,7 +120,7 @@ public class Product : BaseAggregateRoot
 		return this;
 	}
 
-	public Product SetUncheckedStatus()
+	public Product Uncheck()
 	{
 		ProductStatus newStatus = ProductStatus.Unchecked;
 
@@ -133,7 +133,7 @@ public class Product : BaseAggregateRoot
 		return this;
 	}
 
-	public Product SetValidatedStatus()
+	public Product Validate()
 	{
 		ProductStatus newStatus = ProductStatus.Validated;
 
@@ -146,7 +146,7 @@ public class Product : BaseAggregateRoot
 		return this;
 	}
 
-	public Product SetReportedStatus()
+	public Product Report()
 	{
 		ProductStatus newStatus = ProductStatus.Reported;
 
@@ -159,7 +159,7 @@ public class Product : BaseAggregateRoot
 		return this;
 	}
 
-	public Product SetRemovedStatus()
+	public Product Remove()
 	{
 		ProductStatus newStatus = ProductStatus.Removed;
 

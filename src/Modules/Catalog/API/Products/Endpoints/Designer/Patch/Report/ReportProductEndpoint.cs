@@ -1,5 +1,4 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.SetStatus;
-using CustomCADs.Catalog.Domain.Products.Enums;
+﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.Report;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Patch.Report;
 
@@ -19,9 +18,8 @@ public sealed class ReportProductEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ReportProductRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			command: new SetProductStatusCommand(
+			command: new ReportProductCommand(
 				Id: ProductId.New(req.Id),
-				Status: ProductStatus.Reported,
 				CallerId: User.GetAccountId()
 			),
 			ct: ct

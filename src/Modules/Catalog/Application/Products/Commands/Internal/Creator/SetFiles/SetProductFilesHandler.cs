@@ -20,39 +20,33 @@ public sealed class SetProductFilesHandler(
 			throw CustomAuthorizationException<Product>.ById(req.Id);
 		}
 
-		if (req.Image.Key is not null)
+		if (req.Image is not null)
 		{
 			await sender.SendCommandAsync(
 				new SetImageKeyCommand(product.ImageId, req.Image.Key),
 				ct: ct
 			).ConfigureAwait(false);
-		}
-		if (req.Image.ContentType is not null)
-		{
+
 			await sender.SendCommandAsync(
 				new SetImageContentTypeCommand(product.ImageId, req.Image.ContentType),
 				ct: ct
 			).ConfigureAwait(false);
 		}
 
-		if (req.Cad.Key is not null)
+		if (req.Cad is not null)
 		{
 			await sender.SendCommandAsync(
 				new SetCadKeyCommand(product.CadId, req.Cad.Key),
 				ct: ct
 			).ConfigureAwait(false);
-		}
-		if (req.Cad.ContentType is not null)
-		{
+
 			await sender.SendCommandAsync(
 				new SetCadContentTypeCommand(product.CadId, req.Cad.ContentType),
 				ct: ct
 			).ConfigureAwait(false);
-		}
-		if (req.Cad.Volume is not null)
-		{
+
 			await sender.SendCommandAsync(
-				new SetCadVolumeCommand(product.CadId, req.Cad.Volume.Value),
+				new SetCadVolumeCommand(product.CadId, req.Cad.Volume),
 				ct: ct
 			).ConfigureAwait(false);
 		}

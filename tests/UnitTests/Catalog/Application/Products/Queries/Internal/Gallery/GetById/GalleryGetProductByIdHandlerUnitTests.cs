@@ -27,7 +27,7 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	{
 		handler = new(reads.Object, sender.Object, raiser.Object);
 
-		product.SetValidatedStatus();
+		product.Validate();
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(product);
 
@@ -132,7 +132,7 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenStatusIsNotValid()
 	{
 		// Arrange
-		product.SetReportedStatus();
+		product.Report();
 		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Assert
