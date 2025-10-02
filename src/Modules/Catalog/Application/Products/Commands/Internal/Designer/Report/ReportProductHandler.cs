@@ -30,10 +30,7 @@ public sealed class ReportProductHandler(
 			throw CustomNotFoundException<Product>.ById(req.CallerId, "User");
 		}
 
-		product
-			.SetDesignerId(req.CallerId)
-			.Report();
-
+		product.Report(req.CallerId);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		string designerName = await sender.SendQueryAsync(new GetUsernameByIdQuery(req.CallerId), ct).ConfigureAwait(false);

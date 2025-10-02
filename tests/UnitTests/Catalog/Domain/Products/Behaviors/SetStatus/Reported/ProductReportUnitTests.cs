@@ -2,14 +2,16 @@
 
 namespace CustomCADs.UnitTests.Catalog.Domain.Products.Behaviors.SetStatus.Reported;
 
+using static ProductsData;
+
 public class ProductReportUnitTests : ProductsBaseUnitTests
 {
 	[Fact]
 	public void Report_ShouldNotThrowException_WhenStatusIsValid()
 	{
 		Assert.Multiple(
-			() => CreateProduct().Report(),
-			() => CreateProduct().Validate().Report()
+			() => CreateProduct().Report(ValidDesignerId),
+			() => CreateProduct().Validate(ValidDesignerId).Report(ValidDesignerId)
 		);
 	}
 
@@ -17,8 +19,8 @@ public class ProductReportUnitTests : ProductsBaseUnitTests
 	public void Report_ShouldThrowException_WhenStatusIsNotValid()
 	{
 		Assert.Multiple(
-			() => Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().Report().Report()),
-			() => Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().Report().Remove().Report())
+			() => Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().Report(ValidDesignerId).Report(ValidDesignerId)),
+			() => Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().Report(ValidDesignerId).Remove().Report(ValidDesignerId))
 		);
 	}
 }

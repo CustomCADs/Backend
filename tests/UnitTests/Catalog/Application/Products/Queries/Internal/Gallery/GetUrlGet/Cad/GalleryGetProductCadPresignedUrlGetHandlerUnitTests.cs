@@ -16,7 +16,7 @@ public class GalleryGetProductCadPresignedUrlGetHandlerUnitTests : ProductsBaseU
 	private readonly Mock<IRequestSender> sender = new();
 
 	private readonly DownloadFileResponse cad = new("presigned-url", "application/png");
-	private readonly Product product = CreateProduct().Validate();
+	private readonly Product product = CreateProduct().Validate(ValidDesignerId);
 
 	public GalleryGetProductCadPresignedUrlGetHandlerUnitTests()
 	{

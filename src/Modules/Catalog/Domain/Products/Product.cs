@@ -114,14 +114,9 @@ public class Product : BaseAggregateRoot
 		return this;
 	}
 
-	public Product SetDesignerId(AccountId designerId)
-	{
-		DesignerId = designerId;
-		return this;
-	}
-
 	public Product Uncheck()
 	{
+		DesignerId = null;
 		ProductStatus newStatus = ProductStatus.Unchecked;
 
 		if (Status is not (ProductStatus.Validated or ProductStatus.Reported))
@@ -133,8 +128,9 @@ public class Product : BaseAggregateRoot
 		return this;
 	}
 
-	public Product Validate()
+	public Product Validate(AccountId designerId)
 	{
+		DesignerId = designerId;
 		ProductStatus newStatus = ProductStatus.Validated;
 
 		if (Status is not ProductStatus.Unchecked)
@@ -146,8 +142,9 @@ public class Product : BaseAggregateRoot
 		return this;
 	}
 
-	public Product Report()
+	public Product Report(AccountId designerId)
 	{
+		DesignerId = designerId;
 		ProductStatus newStatus = ProductStatus.Reported;
 
 		if (Status is not (ProductStatus.Unchecked or ProductStatus.Validated))

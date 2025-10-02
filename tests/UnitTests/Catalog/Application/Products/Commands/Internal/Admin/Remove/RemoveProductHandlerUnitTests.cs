@@ -28,7 +28,7 @@ public class RemoveProductHandlerUnitTests : ProductsBaseUnitTests
 		handler = new(reads.Object, uow.Object, sender.Object, raiser.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
-			.ReturnsAsync(CreateProduct().Report());
+			.ReturnsAsync(CreateProduct().Report(ValidDesignerId));
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetAccountExistsByIdQuery>(x => x.Id == AdminId),

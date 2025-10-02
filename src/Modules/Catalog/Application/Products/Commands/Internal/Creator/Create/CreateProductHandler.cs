@@ -71,7 +71,7 @@ public sealed class CreateProductHandler(
 
 		if (role is Roles.Designer)
 		{
-			product.Validate();
+			product.Validate(req.CallerId);
 		}
 
 		await raiser.RaiseApplicationEventAsync(

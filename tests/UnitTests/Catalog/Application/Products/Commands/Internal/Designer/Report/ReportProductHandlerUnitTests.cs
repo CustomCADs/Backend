@@ -103,7 +103,7 @@ public class ReportProductHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
-		product.SetDesignerId(ValidDesignerId);
+		product.Report(ValidDesignerId);
 		ReportProductCommand command = new(ValidId, ValidDesignerId);
 
 		// Assert

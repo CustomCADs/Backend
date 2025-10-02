@@ -80,7 +80,7 @@ public class DesignerGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAndChecked()
 	{
 		// Arrange
-		product.Validate();
+		product.Validate(ValidDesignerId);
 		DesignerGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Assert
