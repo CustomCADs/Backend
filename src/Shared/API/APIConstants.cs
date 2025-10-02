@@ -69,5 +69,6 @@ public static class APIConstants
 		[Paths.Materials] = "4.4. Materials Dashboard",
 		[Paths.Tags] = "4.5. Tags Dashboard",
 		[$"{Paths.Customs}/{Paths.Admin}"] = "4.6. Customs Dashboard",
+		[$"{Paths.Products}/{Paths.Admin}"] = "4.7. Products Dashboard",
 	};
 }

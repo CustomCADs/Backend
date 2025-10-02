@@ -1,5 +1,4 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.SetStatus;
-using CustomCADs.Catalog.Domain.Products.Enums;
+﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.Validate;
 
 namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Patch.Validate;
 
@@ -19,9 +18,8 @@ public sealed class ValidateProductEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(ValidateProductRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			command: new SetProductStatusCommand(
+			command: new ValidateProductCommand(
 				Id: ProductId.New(req.Id),
-				Status: ProductStatus.Validated,
 				CallerId: User.GetAccountId()
 			),
 			ct: ct

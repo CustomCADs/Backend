@@ -77,6 +77,20 @@ public class DesignerGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	}
 
 	[Fact]
+	public async Task Handle_ShouldThrowException_WhenUnauthorizedAndChecked()
+	{
+		// Arrange
+		product.Validate(ValidDesignerId);
+		DesignerGetProductByIdQuery query = new(ValidId, ValidCreatorId);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(
+			// Act
+			async () => await handler.Handle(query, ct)
+		);
+	}
+
+	[Fact]
 	public async Task Handle_ShouldThrowException_WhenProductNotFound()
 	{
 		// Arrange

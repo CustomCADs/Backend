@@ -1,5 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Repositories;
+﻿using CustomCADs.Catalog.Application.Products.Events.Application.ProductCreated;
+using CustomCADs.Catalog.Domain.Repositories;
 using CustomCADs.Catalog.Domain.Repositories.Writes;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Cads.Commands;
@@ -15,7 +17,8 @@ using static DomainConstants;
 public sealed class CreateProductHandler(
 	IProductWrites writes,
 	IUnitOfWork uow,
-	IRequestSender sender
+	IRequestSender sender,
+	IEventRaiser raiser
 ) : ICommandHandler<CreateProductCommand, ProductId>
 {
 	public async Task<ProductId> Handle(CreateProductCommand req, CancellationToken ct)
@@ -68,17 +71,20 @@ public sealed class CreateProductHandler(
 
 		if (role is Roles.Designer)
 		{
-			product.SetValidatedStatus();
-			await writes.AddTagAsync(product.Id, Tags.ProfessionalId, ct).ConfigureAwait(false);
+			product.Validate(req.CallerId);
 		}
 
-		if (Cads.PrintableContentTypes.Contains(req.CadContentType))
-		{
-			await writes.AddTagAsync(product.Id, Tags.PrintableId, ct).ConfigureAwait(false);
-		}
-
-		await writes.AddTagAsync(product.Id, Tags.NewId, ct).ConfigureAwait(false);
-		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+		await raiser.RaiseApplicationEventAsync(
+			@event: new ProductCreatedApplicationEvent(
+				Id: product.Id,
+				TagIds: TagId.Filter(new()
+				{
+					[Tags.NewId] = true,
+					[Tags.ProfessionalId] = role is Roles.Designer,
+					[Tags.PrintableId] = Cads.PrintableContentTypes.Contains(req.CadContentType),
+				})
+			)
+		).ConfigureAwait(false);
 
 		return product.Id;
 	}

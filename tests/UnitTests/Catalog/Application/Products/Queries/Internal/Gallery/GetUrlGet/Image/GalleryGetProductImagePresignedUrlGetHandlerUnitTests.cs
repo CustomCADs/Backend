@@ -16,7 +16,7 @@ public class GalleryGetProductImagePresignedUrlGetHandlerUnitTests : ProductsBas
 	private readonly Mock<IRequestSender> sender = new();
 
 	private readonly DownloadFileResponse image = new("presigned-url", "application/png");
-	private readonly Product product = CreateProduct().SetValidatedStatus();
+	private readonly Product product = CreateProduct().Validate(ValidDesignerId);
 
 	public GalleryGetProductImagePresignedUrlGetHandlerUnitTests()
 	{
@@ -77,7 +77,7 @@ public class GalleryGetProductImagePresignedUrlGetHandlerUnitTests : ProductsBas
 	public async Task Handle_ShouldThrowException_WhenProductNotValidated()
 	{
 		// Arrange
-		product.SetUncheckedStatus();
+		product.Uncheck();
 		GalleryGetProductImagePresignedUrlGetQuery query = new(ValidId);
 
 		// Assert

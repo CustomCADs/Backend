@@ -34,8 +34,8 @@ public sealed class PutProductEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new SetProductFilesCommand(
 				Id: id,
-				Cad: (req.CadKey, req.CadContentType, req.CadVolume),
-				Image: (req.ImageKey, req.ImageContentType),
+				Cad: req.Cad,
+				Image: req.Image,
 				CallerId: User.GetAccountId()
 			),
 			ct: ct

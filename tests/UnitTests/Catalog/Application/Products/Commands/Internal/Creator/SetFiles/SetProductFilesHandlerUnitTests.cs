@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.SetFiles;
+using CustomCADs.Catalog.Application.Products.Dtos;
 using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
@@ -31,8 +32,8 @@ public class SetProductFilesHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		SetProductFilesCommand command = new(
 			Id: ValidId,
-			Cad: (null, null, null),
-			Image: (null, null),
+			Cad: null,
+			Image: null,
 			CallerId: ValidCreatorId
 		);
 
@@ -47,8 +48,8 @@ public class SetProductFilesHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		(string? Key, string? ContentType, decimal? Volume) cad = new("a", "b", 0);
-		(string? Key, string? ContentType) image = new("c", "d");
+		CadDto cad = new("a", "b", 0);
+		ImageDto image = new("c", "d");
 
 		SetProductFilesCommand command = new(
 			Id: ValidId,
@@ -90,8 +91,8 @@ public class SetProductFilesHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		SetProductFilesCommand command = new(
 			Id: ValidId,
-			Cad: (null, null, null),
-			Image: (null, null),
+			Cad: null,
+			Image: null,
 			CallerId: ValidDesignerId
 		);
 
@@ -111,8 +112,8 @@ public class SetProductFilesHandlerUnitTests : ProductsBaseUnitTests
 
 		SetProductFilesCommand command = new(
 			Id: ValidId,
-			Cad: (null, null, null),
-			Image: (null, null),
+			Cad: null,
+			Image: null,
 			CallerId: ValidCreatorId
 		);
 
