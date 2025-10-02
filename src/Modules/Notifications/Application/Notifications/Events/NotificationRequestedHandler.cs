@@ -26,18 +26,16 @@ public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfW
 
 			notifications.Add(notification);
 		}
-		else
-		{
-			var entities = await uow.InsertNotificationsAsync(
+		else notifications = [..
+			await uow.InsertNotificationsAsync(
 				notifications: Notification.CreateBulk(
 					type: ae.Type.ToString(),
 					content: new(ae.Description, ae.Link),
 					authorId: ae.AuthorId,
-					receiverIds: ae.ReceiverIds
+					receiverIds: [.. ae.ReceiverIds.Distinct()]
 				)
-			).ConfigureAwait(false);
-			notifications = [.. entities];
-		}
+			).ConfigureAwait(false)
+		];
 
 		string author = await sender.SendQueryAsync(new GetUsernameByIdQuery(ae.AuthorId)).ConfigureAwait(false);
 		await notifier.NotifyUsersAsync(

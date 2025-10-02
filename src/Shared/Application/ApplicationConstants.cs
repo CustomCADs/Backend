@@ -37,6 +37,7 @@ public static class ApplicationConstants
 			public const string ProductDeleted = "Product '{0}', which you've added to your Cart, has been deleted!";
 			public const string ProductValidated = "Your Product has been validated by {0}!";
 			public const string ProductReported = "Your Product has been reported by {0}!";
+			public const string ProductRemoved = "Product '{0}' has been removed!";
 			public const string ProductTagAdded = "Your Product has been assigned a new Tag!";
 			public const string ProductTagRemoved = "Your Product has had a Tag revoked!";
 			public const string CustomCreated = "A new Custom 3D Model has been requested!";
@@ -60,6 +61,7 @@ public static class ApplicationConstants
 			public const string ProductDeleted = "/cart";
 			public const string? ProductValidated = null;
 			public const string? ProductReported = null;
+			public const string? ProductRemoved = null;
 			public const string? ProductTagAdded = null;
 			public const string? ProductTagRemoved = null;
 			public const string? CustomToggledDelivery = null;
