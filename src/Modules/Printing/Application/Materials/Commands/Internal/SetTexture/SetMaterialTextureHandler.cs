@@ -15,19 +15,12 @@ public sealed class SetMaterialTextureHandler(IMaterialReads reads, BaseCachingS
 				?? throw CustomNotFoundException<Material>.ById(req.Id)
 		).ConfigureAwait(false);
 
-		if (req.Key is not null)
-		{
-			await sender.SendCommandAsync(
-				new SetImageKeyCommand(material.TextureId, req.Key),
-				ct: ct
-			).ConfigureAwait(false);
-		}
-		if (req.ContentType is not null)
-		{
-			await sender.SendCommandAsync(
-				new SetImageContentTypeCommand(material.TextureId, req.ContentType),
-				ct: ct
-			).ConfigureAwait(false);
-		}
+		await sender.SendCommandAsync(
+			command: new EditImageCommand(
+				Id: material.TextureId,
+				ContentType: req.ContentType
+			),
+			ct: ct
+		).ConfigureAwait(false);
 	}
 }

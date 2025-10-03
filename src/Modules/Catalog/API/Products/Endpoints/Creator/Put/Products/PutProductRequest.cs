@@ -5,7 +5,5 @@ public sealed record PutProductRequest(
 	string Name,
 	string Description,
 	int CategoryId,
-	decimal Price,
-	CadDto? Cad,
-	ImageDto? Image
+	decimal Price
 );

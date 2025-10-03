@@ -2,6 +2,5 @@
 
 public sealed record SetMaterialTextureCommand(
 	MaterialId Id,
-	string? Key,
-	string? ContentType
+	string ContentType
 ) : ICommand;

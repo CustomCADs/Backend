@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Printing.Application.Materials.Commands.Internal.Edit;
-using CustomCADs.Printing.Application.Materials.Commands.Internal.SetTexture;
 
 namespace CustomCADs.Printing.API.Materials.Endpoints.Put.Materials;
 
@@ -24,15 +23,6 @@ public sealed class PutMaterialEndpoint(IRequestSender sender)
 				Name: req.Name,
 				Density: req.Density,
 				Cost: req.Cost
-			),
-			ct: ct
-		).ConfigureAwait(false);
-
-		await sender.SendCommandAsync(
-			command: new SetMaterialTextureCommand(
-				Id: MaterialId.New(req.Id),
-				Key: req.TextureKey,
-				ContentType: req.TextureContentType
 			),
 			ct: ct
 		).ConfigureAwait(false);

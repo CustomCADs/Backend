@@ -16,8 +16,7 @@ public class SetMaterialTextureHandlerUnitTests : MaterialsBaseUnitTests
 	private readonly Mock<BaseCachingService<MaterialId, Material>> cache = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private const string? Key = "generated-key";
-	private const string? ContentType = "content-type";
+	private const string ContentType = "content-type";
 
 	public SetMaterialTextureHandlerUnitTests()
 	{
@@ -33,11 +32,7 @@ public class SetMaterialTextureHandlerUnitTests : MaterialsBaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		SetMaterialTextureCommand command = new(
-			Id: ValidId,
-			Key: Key,
-			ContentType: ContentType
-		);
+		SetMaterialTextureCommand command = new(ValidId, ContentType);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -49,37 +44,19 @@ public class SetMaterialTextureHandlerUnitTests : MaterialsBaseUnitTests
 		), Times.Once());
 	}
 
-	[Theory]
-	[InlineData(Key, ContentType)]
-	[InlineData(Key, null)]
-	[InlineData(null, ContentType)]
-	[InlineData(null, null)]
-	public async Task Handle_ShouldSendRequests(string? key, string? contentType)
+	[Fact]
+	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		SetMaterialTextureCommand command = new(
-			Id: ValidId,
-			Key: key,
-			ContentType: contentType
-		);
+		SetMaterialTextureCommand command = new(ValidId, ContentType);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		if (key is not null)
-		{
-			sender.Verify(x => x.SendCommandAsync(
-				It.Is<SetImageKeyCommand>(x => x.Id == ValidTextureId && x.Key == key),
-				ct
-			), Times.Once());
-		}
-		if (contentType is not null)
-		{
-			sender.Verify(x => x.SendCommandAsync(
-				It.Is<SetImageContentTypeCommand>(x => x.Id == ValidTextureId && x.ContentType == contentType),
-				ct
-			), Times.Once());
-		}
+		sender.Verify(x => x.SendCommandAsync(
+			It.Is<EditImageCommand>(x => x.Id == ValidTextureId),
+			ct
+		), Times.Once());
 	}
 }

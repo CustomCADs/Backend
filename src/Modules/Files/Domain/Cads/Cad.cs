@@ -58,14 +58,6 @@ public class Cad : BaseAggregateRoot
 	.ValidateCamCoordinates()
 	.ValidatePanCoordinates();
 
-	public Cad SetKey(string key)
-	{
-		Key = key;
-		this.ValidateKey();
-
-		return this;
-	}
-
 	public Cad SetContentType(string contentType)
 	{
 		ContentType = contentType;

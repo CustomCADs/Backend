@@ -31,14 +31,6 @@ public class Image : BaseAggregateRoot
 	.ValidateKey()
 	.ValidateContentType();
 
-	public Image SetKey(string key)
-	{
-		Key = key;
-		this.ValidateKey();
-
-		return this;
-	}
-
 	public Image SetContentType(string contentType)
 	{
 		ContentType = contentType;
