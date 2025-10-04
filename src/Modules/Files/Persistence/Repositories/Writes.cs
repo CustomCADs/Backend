@@ -9,6 +9,9 @@ public class Writes<TEntity>(FilesContext context) : IWrites<TEntity>
 	public async Task<TEntity> AddAsync(TEntity entity, CancellationToken ct = default)
 		=> (await context.Set<TEntity>().AddAsync(entity, ct).ConfigureAwait(false)).Entity;
 
+	public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ct = default)
+		=> await context.Set<TEntity>().AddRangeAsync(entities, ct).ConfigureAwait(false);
+
 	public void Remove(TEntity entity)
 		=> context.Set<TEntity>().Remove(entity);
 }

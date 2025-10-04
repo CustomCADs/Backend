@@ -8,6 +8,7 @@ namespace CustomCADs.Files.Application.Cads.Commands.Shared.DuplicateByIds;
 
 public sealed class DuplicateCadsByIdsHandler(
 	ICadReads reads,
+	IWrites<Cad> writes,
 	IUnitOfWork uow,
 	BaseCachingService<CadId, Cad> cache
 ) : ICommandHandler<DuplicateCadsByIdsCommand, Dictionary<CadId, CadId>>
@@ -23,28 +24,27 @@ public sealed class DuplicateCadsByIdsHandler(
 			ct: ct
 		).ConfigureAwait(false);
 
-		ICollection<Cad> cads = await uow.BulkInsertCadsAsync(
-			cads: [..
-				result.Items.Select(x => Cad.CreateWithId(
-					id: CadId.New(),
-					key: x.Key,
-					contentType: x.ContentType,
-					volume: x.Volume,
-					camCoordinates: x.CamCoordinates,
-					panCoordinates: x.PanCoordinates
-				))
-			],
-			ct: ct
-		).ConfigureAwait(false);
+		Dictionary<CadId, Cad> cads = result.Items.ToDictionary(
+			x => x.Id,
+			x => Cad.Create(
+				key: x.Key,
+				contentType: x.ContentType,
+				volume: x.Volume,
+				camCoordinates: x.CamCoordinates,
+				panCoordinates: x.PanCoordinates
+			)
+		);
+		await writes.AddRangeAsync(cads.Values, ct).ConfigureAwait(false);
+		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
-		foreach (Cad cad in cads)
+		foreach (Cad cad in cads.Values)
 		{
 			await cache.UpdateAsync(cad.Id, cad).ConfigureAwait(false);
 		}
 
 		return cads.ToDictionary(
-			x => result.Items.First(x => x.Key == x.Key).Id,
-			x => x.Id
+			x => x.Key,
+			x => x.Value.Id
 		);
 	}
 }
