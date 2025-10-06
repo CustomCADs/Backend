@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Printing;
 
-public readonly struct MaterialId
+public readonly struct MaterialId : IEntityId<int>
 {
 	public MaterialId() : this(0) { }
 	private MaterialId(int value)

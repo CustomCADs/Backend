@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-public readonly struct RoleId
+public readonly struct RoleId : IEntityId<int>
 {
 	public RoleId() : this(0) { }
 	private RoleId(int value)
