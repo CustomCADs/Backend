@@ -18,7 +18,8 @@ public static class DependencyInjection
 
 			AmazonS3Config config = new()
 			{
-				RegionEndpoint = RegionEndpoint.GetBySystemName(settings.Region),
+				ServiceURL = settings.Endpoint,
+				ForcePathStyle = true,
 			};
 
 			BasicAWSCredentials credentials = new(settings.AccessKey, settings.SecretKey);

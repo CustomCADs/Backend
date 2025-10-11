@@ -392,13 +392,13 @@ resource "aws_elastic_beanstalk_environment" "customcads_env" {
     name      = "Storage__BucketName"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = aws_s3_bucket.customcads_bucket.bucket
+    value     = cloudflare_r2_bucket.customcads_bucket.name
   }
   setting {
-    name      = "Storage__Region"
+    name      = "Storage__Endpoint"
     namespace = "aws:elasticbeanstalk:application:environment"
     resource  = null
-    value     = var.region
+    value     = "https://${var.cloudflare_account_id}.r2.cloudflarestorage.com"
   }
   setting {
     name      = "Storage__SecretKey"
