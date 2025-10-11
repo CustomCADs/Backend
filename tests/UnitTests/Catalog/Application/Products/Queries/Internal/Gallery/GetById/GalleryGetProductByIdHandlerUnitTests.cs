@@ -32,10 +32,6 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 			.ReturnsAsync(product);
 
 		CoordinatesDto coords = new(0, 0, 0);
-		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCadCoordsByIdQuery>(x => x.Id == product.CadId),
-			ct
-		)).ReturnsAsync(new GetCadCoordsByIdDto(coords, coords));
 	}
 
 	[Fact]
@@ -62,19 +58,11 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCadVolumeByIdQuery>(x => x.Id == product.CadId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
 			It.Is<GetUsernameByIdQuery>(x => x.Id == product.CreatorId),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
 			It.Is<GetCategoryNameByIdQuery>(x => x.Id == product.CategoryId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCadCoordsByIdQuery>(x => x.Id == product.CadId),
 			ct
 		), Times.Once());
 	}

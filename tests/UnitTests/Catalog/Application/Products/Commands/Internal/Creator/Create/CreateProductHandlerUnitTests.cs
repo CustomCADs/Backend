@@ -3,14 +3,13 @@ using CustomCADs.Catalog.Application.Products.Events.Application.ProductCreated;
 using CustomCADs.Catalog.Domain.Products.Enums;
 using CustomCADs.Catalog.Domain.Repositories;
 using CustomCADs.Catalog.Domain.Repositories.Writes;
-using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Application.UseCases.Cads.Commands;
+using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
-using CustomCADs.Shared.Application.UseCases.Images.Commands;
+using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Commands.Internal.Creator.Create;
 
@@ -45,28 +44,32 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			ct
 		)).ReturnsAsync(product);
 
-		sender.Setup(x => x.SendCommandAsync(
-			It.IsAny<CreateCadCommand>(),
-			ct
-		)).ReturnsAsync(ValidCadId);
-
-		sender.Setup(x => x.SendCommandAsync(
-			It.IsAny<CreateImageCommand>(),
-			ct
-		)).ReturnsAsync(ValidImageId);
-
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserRoleByIdQuery>(x => x.Id == ValidCreatorId),
 			ct
 		)).ReturnsAsync(DomainConstants.Roles.Contributor);
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<IsCadPrintableByIdQuery>(x => x.Id == ValidCadId),
+			ct
+		)).ReturnsAsync(false);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCategoryExistsByIdQuery>(x => x.Id == ValidCategoryId),
+			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidCreatorId),
 			ct
 		)).ReturnsAsync(true);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidCreatorId),
+			It.Is<ImageExistsByIdQuery>(x => x.Id == ValidImageId),
+			ct
+		)).ReturnsAsync(true);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<CadExistsByIdQuery>(x => x.Id == ValidCadId),
+			ct
+		)).ReturnsAsync(true);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<GetCategoryExistsByIdQuery>(x => x.Id == ValidCategoryId),
 			ct
 		)).ReturnsAsync(true);
 	}
@@ -79,12 +82,9 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: string.Empty,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 
@@ -116,12 +116,9 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: string.Empty,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 
@@ -137,16 +134,21 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidCreatorId),
 			ct
 		), Times.Once());
-		sender.Verify(x => x.SendCommandAsync(
-			It.IsAny<CreateCadCommand>(),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendCommandAsync(
-			It.IsAny<CreateImageCommand>(),
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<ImageExistsByIdQuery>(x => x.Id == ValidImageId),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
+			It.Is<CadExistsByIdQuery>(x => x.Id == ValidCadId),
+			ct
+		), Times.Once());
+
+		sender.Verify(x => x.SendQueryAsync(
 			It.Is<GetUserRoleByIdQuery>(x => x.Id == ValidCreatorId),
+			ct
+		), Times.Once());
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<IsCadPrintableByIdQuery>(x => x.Id == ValidCadId),
 			ct
 		), Times.Once());
 	}
@@ -159,12 +161,9 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: string.Empty,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 
@@ -193,12 +192,9 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: string.Empty,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 
@@ -222,12 +218,9 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: string.Empty,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 
@@ -240,21 +233,22 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		), Times.Once());
 	}
 
-	[Theory]
-	[InlineData(ApplicationConstants.Cads.StlContentType)]
-	public async Task Handle_ShouldTagPrintable_WhenAppropriateContentType(string cadContentType)
+	[Fact]
+	public async Task Handle_ShouldTagPrintable_WhenAppropriateContentType()
 	{
 		// Arrange
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<IsCadPrintableByIdQuery>(x => x.Id == ValidCadId),
+			ct
+		)).ReturnsAsync(true);
+
 		CreateProductCommand command = new(
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: cadContentType,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 
@@ -275,12 +269,9 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: string.Empty,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 
@@ -304,12 +295,9 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: string.Empty,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 
@@ -333,12 +321,9 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 			Name: MinValidName,
 			Description: MinValidDescription,
 			Price: MinValidPrice,
-			ImageKey: string.Empty,
-			ImageContentType: string.Empty,
-			CadKey: string.Empty,
-			CadContentType: string.Empty,
-			CadVolume: Volume,
 			CategoryId: ValidCategoryId,
+			ImageId: ValidImageId,
+			CadId: ValidCadId,
 			CallerId: ValidCreatorId
 		);
 

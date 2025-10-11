@@ -30,14 +30,14 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
+		ProductDeletedApplicationEvent ae = new(
 			Id: default,
 			CadId: ValidId,
 			ImageId: default
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.Handle(ae);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -47,14 +47,14 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
+		ProductDeletedApplicationEvent ae = new(
 			Id: default,
 			CadId: ValidId,
 			ImageId: default
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.Handle(ae);
 
 		// Assert
 		writes.Verify(x => x.Remove(cad), Times.Once());
@@ -65,14 +65,14 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
+		ProductDeletedApplicationEvent ae = new(
 			Id: default,
-			ImageId: default,
-			CadId: ValidId
+			CadId: ValidId,
+			ImageId: default
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.Handle(ae);
 
 		// Assert
 		cache.Verify(
@@ -85,14 +85,14 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
+		ProductDeletedApplicationEvent ae = new(
 			Id: default,
 			CadId: ValidId,
 			ImageId: default
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.Handle(ae);
 
 		// Assert
 		storage.Verify(x => x.DeleteFileAsync(cad.Key, ct), Times.Once());
@@ -105,7 +105,7 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Cad);
 
-		ProductDeletedApplicationEvent ie = new(
+		ProductDeletedApplicationEvent ae = new(
 			Id: default,
 			CadId: ValidId,
 			ImageId: default
@@ -114,7 +114,7 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
 			// Act
-			async () => await handler.Handle(ie)
+			async () => await handler.Handle(ae)
 		);
 	}
 }

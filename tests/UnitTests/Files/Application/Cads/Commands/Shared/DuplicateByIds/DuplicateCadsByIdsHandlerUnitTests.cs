@@ -17,9 +17,9 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
 	private readonly Cad[] cads = [
-		CreateCadWithId(ValidId),
+		CreateCadWithId(),
 	];
-	private readonly CadId[] ids = [ValidId];
+	private readonly CadId[] Ids = [ValidId];
 	private readonly CadQuery query;
 	private readonly Result<Cad> result;
 
@@ -27,7 +27,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	{
 		handler = new(reads.Object, writes.Object, uow.Object, cache.Object);
 
-		query = new(new(1, ids.Length), ids);
+		query = new(new(1, Ids.Length), null, Ids);
 		result = new Result<Cad>(cads.Length, cads);
 
 		reads.Setup(x => x.AllAsync(query, false, ct))
@@ -38,7 +38,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DuplicateCadsByIdsCommand command = new(ids);
+		DuplicateCadsByIdsCommand command = new(Ids, ValidOwnerId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -51,7 +51,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DuplicateCadsByIdsCommand command = new(ids);
+		DuplicateCadsByIdsCommand command = new(Ids, ValidOwnerId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -65,7 +65,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		DuplicateCadsByIdsCommand command = new(ids);
+		DuplicateCadsByIdsCommand command = new(Ids, ValidOwnerId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -73,7 +73,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 		// Assert
 		cache.Verify(
 			x => x.UpdateAsync(
-				ValidId,
+				CadId.New(Guid.Empty),
 				It.Is<Cad>(x => cads.Any(c => x.Key == c.Key))
 			),
 			Times.Exactly(cads.Length)
@@ -84,7 +84,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		DuplicateCadsByIdsCommand command = new(ids);
+		DuplicateCadsByIdsCommand command = new(Ids, ValidOwnerId);
 
 		// Act
 		var result = await handler.Handle(command, ct);

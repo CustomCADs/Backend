@@ -51,11 +51,6 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 		)).ReturnsAsync(0m);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCadExistsByIdQuery>(x => x.Id == ValidCadId),
-			ct
-		)).ReturnsAsync(true);
-
-		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == ValidCustomizationId),
 			ct
 		)).ReturnsAsync(true);

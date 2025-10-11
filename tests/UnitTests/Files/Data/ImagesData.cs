@@ -1,4 +1,5 @@
-﻿using CustomCADs.Shared.Domain.TypedIds.Files;
+﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.UnitTests.Files.Data;
 
@@ -11,4 +12,5 @@ public class ImagesData
 	public const string InvalidContentType = "";
 
 	public static readonly ImageId ValidId = ImageId.New();
+	public static readonly AccountId ValidOwnerId = AccountId.New();
 }

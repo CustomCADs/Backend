@@ -3,7 +3,7 @@ using CustomCADs.Printing.Domain.Materials;
 using CustomCADs.Printing.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Cache;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
-using CustomCADs.Shared.Application.UseCases.Images.Commands;
+using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
 namespace CustomCADs.UnitTests.Printing.Application.Materials.Commands.Internal.Create;
 
@@ -17,8 +17,6 @@ public class CreateMaterialHandlerUnitTests : MaterialsBaseUnitTests
 	private readonly Mock<BaseCachingService<MaterialId, Material>> cache = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private const string Key = "generated-key";
-	private const string ContentType = "content-type";
 	private readonly Material material = CreateMaterialWithId();
 
 	public CreateMaterialHandlerUnitTests()
@@ -27,6 +25,11 @@ public class CreateMaterialHandlerUnitTests : MaterialsBaseUnitTests
 
 		writes.Setup(x => x.AddAsync(It.Is<Material>(x => x.Id == material.Id), ct))
 			.ReturnsAsync(CreateMaterialWithId(id: ValidId));
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<ImageExistsByIdQuery>(x => x.Id == ValidTextureId),
+			ct
+		)).ReturnsAsync(true);
 	}
 
 	[Fact]
@@ -37,16 +40,15 @@ public class CreateMaterialHandlerUnitTests : MaterialsBaseUnitTests
 			Name: MaxValidName,
 			Density: MaxValidDensity,
 			Cost: MaxValidCost,
-			TextureKey: Key,
-			TextureContentType: ContentType
+			TextureId: ValidTextureId
 		);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendCommandAsync(
-			It.Is<CreateImageCommand>(x => x.Key == Key && x.ContentType == ContentType),
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<ImageExistsByIdQuery>(x => x.Id == ValidTextureId),
 			ct
 		), Times.Once());
 	}
@@ -59,8 +61,7 @@ public class CreateMaterialHandlerUnitTests : MaterialsBaseUnitTests
 			Name: MaxValidName,
 			Density: MaxValidDensity,
 			Cost: MaxValidCost,
-			TextureKey: Key,
-			TextureContentType: ContentType
+			TextureId: ValidTextureId
 		);
 
 		// Act
@@ -79,8 +80,7 @@ public class CreateMaterialHandlerUnitTests : MaterialsBaseUnitTests
 			Name: MaxValidName,
 			Density: MaxValidDensity,
 			Cost: MaxValidCost,
-			TextureKey: Key,
-			TextureContentType: ContentType
+			TextureId: ValidTextureId
 		);
 
 		// Act
@@ -98,8 +98,7 @@ public class CreateMaterialHandlerUnitTests : MaterialsBaseUnitTests
 			Name: MaxValidName,
 			Density: MaxValidDensity,
 			Cost: MaxValidCost,
-			TextureKey: Key,
-			TextureContentType: ContentType
+			TextureId: ValidTextureId
 		);
 
 		// Act
