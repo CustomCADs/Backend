@@ -7,12 +7,11 @@ public sealed record GetGalleryProductResponse(
 	string Name,
 	string Description,
 	decimal Price,
-	decimal Volume,
 	string[] Tags,
 	DateTimeOffset UploadedAt,
 	string CreatorName,
-	CoordinatesDto CamCoordinates,
-	CoordinatesDto PanCoordinates,
 	CountsDto Counts,
-	CategoryDtoResponse Category
+	CategoryDtoResponse Category,
+	Guid ImageId,
+	Guid CadId
 );

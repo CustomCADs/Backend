@@ -2,6 +2,7 @@
 using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Persistence.Extensions;
 
 namespace CustomCADs.Catalog.Persistence.Repositories.Products;
@@ -52,6 +53,12 @@ public sealed class Reads(CatalogContext context) : IProductReads
 		=> await context.Products
 			.WithTracking(track)
 			.FirstOrDefaultAsync(x => x.Id == id, ct)
+			.ConfigureAwait(false);
+
+	public async Task<Product?> SingleByCadIdAsync(CadId cadId, bool track = true, CancellationToken ct = default)
+		=> await context.Products
+			.WithTracking(track)
+			.FirstOrDefaultAsync(x => x.CadId == cadId, ct)
 			.ConfigureAwait(false);
 
 	public async Task<string[]> TagsByIdAsync(ProductId id, CancellationToken ct = default)

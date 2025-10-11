@@ -57,6 +57,9 @@ public static partial class DependencyInjection
 				IServiceProvider sp = ctx.Request.HttpContext.RequestServices;
 				ctx.Principal.ExtractUserFromSSO(out string email, out string username);
 
+				string? role = null;
+				ctx.Properties?.Items.TryGetValue("role", out role);
+
 				IRequestSender sender = sp.GetRequiredService<IRequestSender>();
 				CookieSettings cookie = sp.GetRequiredService<IOptions<CookieSettings>>().Value;
 
@@ -65,7 +68,7 @@ public static partial class DependencyInjection
 					username: username,
 					tokens: await sender.SendCommandAsync(
 						command: new SingleSignOnUserCommand(
-							Role: ctx.Properties?.Items["role"],
+							Role: role,
 							Username: username,
 							Email: email,
 							Provider: provider

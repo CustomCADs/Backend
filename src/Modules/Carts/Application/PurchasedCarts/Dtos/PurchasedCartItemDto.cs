@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Catalog;
+using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.Carts.Application.PurchasedCarts.Dtos;
@@ -11,5 +12,6 @@ public record PurchasedCartItemDto(
 	DateTimeOffset AddedAt,
 	ProductId ProductId,
 	PurchasedCartId CartId,
+	CadId CadId,
 	CustomizationId? CustomizationId
 );

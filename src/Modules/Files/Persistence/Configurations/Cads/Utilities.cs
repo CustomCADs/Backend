@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Files.Domain.Cads;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -21,6 +22,13 @@ public static class Utilities
 			.HasConversion(
 				x => x.Value,
 				x => CadId.New(x)
+			);
+
+		builder.Property(x => x.OwnerId)
+			.ValueGeneratedOnAdd()
+			.HasConversion(
+				x => x.Value,
+				x => AccountId.New(x)
 			);
 
 		return builder;
@@ -58,6 +66,10 @@ public static class Utilities
 		builder.Property(x => x.Volume)
 			.IsRequired()
 			.HasColumnName(nameof(Cad.Volume));
+
+		builder.Property(x => x.OwnerId)
+			.IsRequired()
+			.HasColumnName(nameof(Cad.OwnerId));
 
 		return builder;
 	}

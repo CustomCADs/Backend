@@ -5,5 +5,6 @@ public sealed record GetAllGalleryProductsResponse(
 	string Name,
 	string[] Tags,
 	string Category,
-	int Views
+	int Views,
+	Guid ImageId
 );

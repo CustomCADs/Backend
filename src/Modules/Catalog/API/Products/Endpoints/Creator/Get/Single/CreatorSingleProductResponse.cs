@@ -7,5 +7,7 @@ public sealed record CreatorSingleProductResponse(
 	decimal Price,
 	DateTimeOffset UploadedAt,
 	CountsDto Counts,
-	CategoryDtoResponse Category
+	CategoryDtoResponse Category,
+	Guid CadId,
+	Guid ImageId
 );

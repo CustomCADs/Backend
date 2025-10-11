@@ -5,12 +5,16 @@ namespace CustomCADs.Files.Application.Cads;
 
 internal static class Mapper
 {
-	internal static (string Key, string ContentType, CoordinatesDto CamCoordinates, CoordinatesDto PanCoordinates) ToTuple(this Cad cad)
-		=> (
+	internal static CadDto ToDto(this Cad cad, string ownerName)
+		=> new(
+			Id: cad.Id,
 			Key: cad.Key,
 			ContentType: cad.ContentType,
+			Volume: cad.Volume,
 			CamCoordinates: cad.CamCoordinates.ToDto(),
-			PanCoordinates: cad.PanCoordinates.ToDto()
+			PanCoordinates: cad.PanCoordinates.ToDto(),
+			OwnerId: cad.OwnerId,
+			OwnerName: ownerName
 		);
 
 	internal static Coordinates ToValueObject(this CoordinatesDto coordinates)

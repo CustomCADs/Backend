@@ -172,4 +172,14 @@ public static class ProgramExtensions
 
 		return services;
 	}
+
+	public static IServiceCollection AddAccessPolicies(this IServiceCollection services)
+	{
+		services.AddPurchasedCartsAccessPolicies();
+		services.AddProductsAccessPolicies();
+		services.AddCustomsAccessPolicies();
+		services.AddMaterialsAccessPolicies();
+
+		return services;
+	}
 }

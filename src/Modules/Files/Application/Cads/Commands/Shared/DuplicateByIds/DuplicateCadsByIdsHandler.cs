@@ -31,7 +31,8 @@ public sealed class DuplicateCadsByIdsHandler(
 				contentType: x.ContentType,
 				volume: x.Volume,
 				camCoordinates: x.CamCoordinates,
-				panCoordinates: x.PanCoordinates
+				panCoordinates: x.PanCoordinates,
+				ownerId: req.CallerId
 			)
 		);
 		await writes.AddRangeAsync(cads.Values, ct).ConfigureAwait(false);

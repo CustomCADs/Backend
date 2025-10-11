@@ -1,7 +1,6 @@
 ﻿using CustomCADs.Printing.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
-using CustomCADs.Shared.Application.UseCases.Images.Commands;
-using CustomCADs.Shared.Domain.TypedIds.Files;
+using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
 namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Create;
 
@@ -14,20 +13,17 @@ public sealed class CreateMaterialHandler(
 {
 	public async Task<MaterialId> Handle(CreateMaterialCommand req, CancellationToken ct)
 	{
-		ImageId textureId = await sender.SendCommandAsync(
-			command: new CreateImageCommand(
-				Key: req.TextureKey,
-				ContentType: req.TextureContentType
-			),
-			ct: ct
-		).ConfigureAwait(false);
+		if (!await sender.SendQueryAsync(new ImageExistsByIdQuery(req.TextureId), ct).ConfigureAwait(false))
+		{
+			throw CustomNotFoundException<Material>.ById(req.TextureId, "Texture");
+		}
 
 		Material material = await writes.AddAsync(
 			entity: Material.Create(
 				name: req.Name,
 				density: req.Density,
 				cost: req.Cost,
-				textureId: textureId
+				textureId: req.TextureId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -4,14 +4,12 @@ using CustomCADs.Catalog.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Application.UseCases.Cads.Commands;
+using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
-using CustomCADs.Shared.Application.UseCases.Images.Commands;
-using CustomCADs.Shared.Domain.TypedIds.Files;
+using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
 namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Create;
 
-using static ApplicationConstants;
 using static DomainConstants;
 
 public sealed class CreateProductHandler(
@@ -23,32 +21,25 @@ public sealed class CreateProductHandler(
 {
 	public async Task<ProductId> Handle(CreateProductCommand req, CancellationToken ct)
 	{
-		if (!await sender.SendQueryAsync(new GetCategoryExistsByIdQuery(req.CategoryId), ct).ConfigureAwait(false))
-		{
-			throw CustomNotFoundException<Product>.ById(req.CategoryId, "Category");
-		}
-
 		if (!await sender.SendQueryAsync(new GetAccountExistsByIdQuery(req.CallerId), ct).ConfigureAwait(false))
 		{
 			throw CustomNotFoundException<Product>.ById(req.CallerId, "User");
 		}
 
-		CadId cadId = await sender.SendCommandAsync(
-			command: new CreateCadCommand(
-				Key: req.CadKey,
-				ContentType: req.CadContentType,
-				Volume: req.CadVolume
-			),
-			ct: ct
-		).ConfigureAwait(false);
+		if (!await sender.SendQueryAsync(new CadExistsByIdQuery(req.CadId), ct).ConfigureAwait(false))
+		{
+			throw CustomNotFoundException<Product>.ById(req.CadId, "Cad");
+		}
 
-		ImageId imageId = await sender.SendCommandAsync(
-			command: new CreateImageCommand(
-				Key: req.ImageKey,
-				ContentType: req.ImageContentType
-			),
-			ct: ct
-		).ConfigureAwait(false);
+		if (!await sender.SendQueryAsync(new ImageExistsByIdQuery(req.ImageId), ct).ConfigureAwait(false))
+		{
+			throw CustomNotFoundException<Product>.ById(req.ImageId, "Image");
+		}
+
+		if (!await sender.SendQueryAsync(new GetCategoryExistsByIdQuery(req.CategoryId), ct).ConfigureAwait(false))
+		{
+			throw CustomNotFoundException<Product>.ById(req.CategoryId, "Category");
+		}
 
 		Product product = await writes.AddAsync(
 			product: Product.Create(
@@ -57,8 +48,8 @@ public sealed class CreateProductHandler(
 				price: req.Price,
 				categoryId: req.CategoryId,
 				creatorId: req.CallerId,
-				imageId: imageId,
-				cadId: cadId
+				imageId: req.ImageId,
+				cadId: req.CadId
 			),
 			ct: ct
 		).ConfigureAwait(false);
@@ -81,7 +72,10 @@ public sealed class CreateProductHandler(
 				{
 					[Tags.NewId] = true,
 					[Tags.ProfessionalId] = role is Roles.Designer,
-					[Tags.PrintableId] = Cads.PrintableContentTypes.Contains(req.CadContentType),
+					[Tags.PrintableId] = await sender.SendQueryAsync(
+						query: new IsCadPrintableByIdQuery(req.CadId),
+						ct: ct
+					).ConfigureAwait(false),
 				})
 			)
 		).ConfigureAwait(false);

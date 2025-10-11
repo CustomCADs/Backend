@@ -1,9 +1,10 @@
-﻿namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Create;
+﻿using CustomCADs.Shared.Domain.TypedIds.Files;
+
+namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Create;
 
 public sealed record CreateMaterialCommand(
 	string Name,
 	decimal Density,
 	decimal Cost,
-	string TextureKey,
-	string TextureContentType
+	ImageId TextureId
 ) : ICommand<MaterialId>;

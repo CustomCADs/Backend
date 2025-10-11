@@ -14,6 +14,7 @@ builder.Services.AddAuthZ(Customer, Contributor, Designer, Admin);
 builder.Services.AddUseCases(builder.Environment);
 builder.Services.AddCache();
 builder.Services.AddBackgroundJobs();
+builder.Services.AddAccessPolicies();
 
 // External Services
 builder.Services.AddEmailService(builder.Configuration);

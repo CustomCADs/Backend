@@ -9,6 +9,7 @@ public class GetProductsMapper : ResponseMapper<GetProductsResponse, CreatorGetA
 			Id: product.Id.Value,
 			Name: product.Name,
 			UploadedAt: product.UploadedAt,
-			Category: product.Category.ToResponse()
+			Category: product.Category.ToResponse(),
+			ImageId: product.ImageId.Value
 		);
 }

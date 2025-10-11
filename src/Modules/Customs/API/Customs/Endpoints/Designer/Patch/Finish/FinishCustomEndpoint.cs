@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Finish;
+using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Finish;
 
@@ -21,7 +22,7 @@ public sealed class FinishCustomEndpoint(IRequestSender sender)
 			command: new FinishCustomCommand(
 				Id: CustomId.New(req.Id),
 				Price: req.Price,
-				Cad: req.ToTuple(),
+				CadId: CadId.New(req.CadId),
 				CallerId: User.GetAccountId()
 			),
 			ct: ct

@@ -10,13 +10,12 @@ public class GetGalleryProductMapper : ResponseMapper<GetGalleryProductResponse,
 			Name: product.Name,
 			Description: product.Description,
 			Price: product.Price,
-			Volume: product.Volume,
 			Tags: product.Tags,
 			CreatorName: product.CreatorName,
 			UploadedAt: product.UploadedAt,
-			CamCoordinates: product.CamCoordinates,
-			PanCoordinates: product.PanCoordinates,
 			Counts: product.Counts,
-			Category: product.Category.ToResponse()
+			Category: product.Category.ToResponse(),
+			CadId: product.CadId.Value,
+			ImageId: product.ImageId.Value
 		);
 }

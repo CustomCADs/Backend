@@ -1,4 +1,6 @@
-﻿namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetById;
+﻿using CustomCADs.Shared.Domain.TypedIds.Files;
+
+namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetById;
 
 public sealed record CreatorGetProductByIdDto(
 	ProductId Id,
@@ -9,6 +11,8 @@ public sealed record CreatorGetProductByIdDto(
 	DateTimeOffset UploadedAt,
 	CountsDto Counts,
 	string CreatorName,
-	CategoryDto Category
+	CategoryDto Category,
+	CadId CadId,
+	ImageId ImageId
 );
 
