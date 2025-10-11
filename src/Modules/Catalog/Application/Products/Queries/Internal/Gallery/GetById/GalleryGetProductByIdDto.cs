@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Shared.Application.Abstractions.Requests.Attributes;
 using CustomCADs.Shared.Application.Dtos.Files;
+using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 
@@ -9,12 +10,11 @@ public sealed record GalleryGetProductByIdDto(
 	string Name,
 	string Description,
 	decimal Price,
-	decimal Volume,
 	string CreatorName,
 	string[] Tags,
 	DateTimeOffset UploadedAt,
-	CoordinatesDto CamCoordinates,
-	CoordinatesDto PanCoordinates,
 	CountsDto Counts,
-	CategoryDto Category
+	CategoryDto Category,
+	CadId CadId,
+	ImageId ImageId
 );

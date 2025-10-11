@@ -9,7 +9,6 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
 
-
 public sealed class PurchaseCustomHandler(
 	ICustomReads reads,
 	IUnitOfWork uow,

@@ -8,5 +8,6 @@ public sealed record PurchasedCartItemResponse(
 	DateTimeOffset AddedAt,
 	Guid ProductId,
 	Guid CartId,
+	Guid CadId,
 	Guid? CustomizationId
 );

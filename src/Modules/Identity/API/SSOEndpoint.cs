@@ -10,7 +10,7 @@ public static class SSOEndpoint
 {
 	public static void MapSSOLoginEndpoint(this IEndpointRouteBuilder app)
 	{
-		app.MapGet($"api/v1/{Paths.Identity}/sso", async (string provider, string role, string? redirectUrl, HttpContext context, CancellationToken ct = default) =>
+		app.MapGet($"api/v1/{Paths.Identity}/sso", async (string provider, string? role, string? redirectUrl, HttpContext context, CancellationToken ct = default) =>
 		{
 			AuthenticationProperties props = new()
 			{

@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Files;
 
-public readonly struct ImageId
+public readonly struct ImageId : IEntityId<Guid>
 {
 	public ImageId() : this(Guid.Empty) { }
 	private ImageId(Guid value)
@@ -10,7 +11,7 @@ public readonly struct ImageId
 		Value = value;
 	}
 
-	public Guid Value { get; }
+	public Guid Value { get; init; }
 
 	public static ImageId New() => new(Guid.NewGuid());
 	public static ImageId New(Guid id) => new(id);

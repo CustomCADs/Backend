@@ -7,6 +7,7 @@ internal static class Mapper
 			Id: material.Id,
 			Name: material.Name,
 			Density: material.Density,
-			Cost: material.Cost
+			Cost: material.Cost,
+			TextureId: material.TextureId
 		);
 }

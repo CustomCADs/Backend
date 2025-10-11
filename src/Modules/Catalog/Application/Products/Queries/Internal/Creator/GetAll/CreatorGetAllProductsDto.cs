@@ -1,4 +1,6 @@
-﻿namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
+﻿using CustomCADs.Shared.Domain.TypedIds.Files;
+
+namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
 
 public sealed record CreatorGetAllProductsDto(
 	ProductId Id,
@@ -6,5 +8,6 @@ public sealed record CreatorGetAllProductsDto(
 	string Status,
 	int Views,
 	DateTimeOffset UploadedAt,
-	CategoryDto Category
+	CategoryDto Category,
+	ImageId ImageId
 );

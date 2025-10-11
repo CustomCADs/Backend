@@ -4,5 +4,6 @@ public sealed record GetProductsResponse(
 	Guid Id,
 	string Name,
 	DateTimeOffset UploadedAt,
-	CategoryDtoResponse Category
+	CategoryDtoResponse Category,
+	Guid ImageId
 );

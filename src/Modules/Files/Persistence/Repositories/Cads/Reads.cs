@@ -12,7 +12,7 @@ public sealed class Reads(FilesContext context) : ICadReads
 	public async Task<Result<Cad>> AllAsync(CadQuery query, bool track = true, CancellationToken ct = default)
 	{
 		IQueryable<Cad> queryable = context.Cads
-			.WithFilter(query.Ids);
+			.WithFilter(query.Ids, query.OwnerId);
 
 		int count = await queryable.CountAsync(ct).ConfigureAwait(false);
 		Cad[] cads = await queryable

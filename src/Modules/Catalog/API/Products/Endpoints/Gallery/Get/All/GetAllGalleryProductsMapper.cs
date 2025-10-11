@@ -10,6 +10,7 @@ public class GetAllGalleryProductsMapper : ResponseMapper<GetAllGalleryProductsR
 			Name: product.Name,
 			Tags: product.Tags,
 			Category: product.Category.Name,
-			Views: product.Views
+			Views: product.Views,
+			ImageId: product.ImageId.Value
 		);
 }

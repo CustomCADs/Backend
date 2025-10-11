@@ -4,21 +4,26 @@ namespace CustomCADs.UnitTests.Files.Domain.Cads.Create.Data;
 
 using static CadsData;
 
-public class CadCreateInvalidData : TheoryData<string, string, decimal, Coordinates>
+public class CadCreateInvalidData : TheoryData<string, string, decimal, Coordinates, Coordinates>
 {
 	public CadCreateInvalidData()
 	{
+
 		// Key
-		Add(InvalidKey, ValidContentType, ValidVolume, new(MinValidCoord, MinValidCoord, MinValidCoord));
+		Add(InvalidKey, ValidContentType, ValidVolume, ValidCoords, ValidCoords);
 
 		// Content Type
-		Add(ValidKey, InvalidContentType, ValidVolume, new(MinValidCoord, MinValidCoord, MinValidCoord));
+		Add(ValidKey, InvalidContentType, ValidVolume, ValidCoords, ValidCoords);
 
 		// Volume
-		Add(ValidKey, ValidContentType, InvalidVolume, new(MinValidCoord, MinValidCoord, MinValidCoord));
+		Add(ValidKey, ValidContentType, InvalidVolume, ValidCoords, ValidCoords);
 
-		// Coordinates
-		Add(ValidKey, ValidContentType, ValidVolume, new(MaxInvalidCoord, MaxInvalidCoord, MaxInvalidCoord));
-		Add(ValidKey, ValidContentType, ValidVolume, new(MinInvalidCoord, MinInvalidCoord, MinInvalidCoord));
+		// CamCoordinates
+		Add(ValidKey, ValidContentType, ValidVolume, MaxInvalidCoords, ValidCoords);
+		Add(ValidKey, ValidContentType, ValidVolume, MinInvalidCoords, ValidCoords);
+
+		// CamCoordinates
+		Add(ValidKey, ValidContentType, ValidVolume, ValidCoords, MaxInvalidCoords);
+		Add(ValidKey, ValidContentType, ValidVolume, ValidCoords, MinInvalidCoords);
 	}
 }

@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-public readonly struct TagId
+public readonly struct TagId : IEntityId<Guid>
 {
 	public TagId() : this(Guid.Empty) { }
 	private TagId(Guid value)

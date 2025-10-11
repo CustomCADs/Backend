@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-public readonly struct AccountId
+public readonly struct AccountId : IEntityId<Guid>
 {
 	public AccountId() : this(Guid.Empty) { }
 	private AccountId(Guid value)

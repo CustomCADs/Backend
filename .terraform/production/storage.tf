@@ -1,15 +1,21 @@
 # User Files Bucket
-resource "aws_s3_bucket" "customcads_bucket" {
-  bucket = "customcads-production-bucket"
+resource "cloudflare_r2_bucket" "customcads_bucket" {
+  account_id    = var.cloudflare_account_id
+  name          = "customcads-production-bucket"
+  location      = "EEUR"
+  storage_class = "Standard"
 }
-resource "aws_s3_bucket_cors_configuration" "customcads_bucket_cors" {
-  bucket = aws_s3_bucket.customcads_bucket.id
-
-  cors_rule {
-    allowed_headers = ["*"]
-    allowed_methods = ["HEAD", "GET", "PUT", "POST", "DELETE"]
-    allowed_origins = ["https://main.d1apebjda2nmov.amplifyapp.com", "https://customcads.com", "https://www.customcads.com"]
+resource "cloudflare_r2_bucket_cors" "customcads_bucket_cors" {
+  account_id  = var.cloudflare_account_id
+  bucket_name = cloudflare_r2_bucket.customcads_bucket.name
+  rules = [{
+    allowed = {
+      headers = ["*"]
+      methods = ["HEAD", "GET", "PUT", "POST", "DELETE"]
+      origins = ["https://main.d1apebjda2nmov.amplifyapp.com", "https://customcads.com", "https://www.customcads.com"]
+    }
     expose_headers  = ["ETag", "x-amz-id-2", "x-amz-request-id", "x-amz-meta-file-name"]
     max_age_seconds = 3000
-  }
+    id              = "CustomCADs Production Bucket CORS rule"
+  }]
 }

@@ -3,9 +3,7 @@ using CustomCADs.Catalog.Domain.Products.Enums;
 using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
-using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
 namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
@@ -33,16 +31,7 @@ public sealed class GalleryGetProductByIdHandler(IProductReads reads, IRequestSe
 			).ConfigureAwait(false);
 		}
 
-		(CoordinatesDto Cam, CoordinatesDto Pan) = await sender.SendQueryAsync(
-			query: new GetCadCoordsByIdQuery(product.CadId),
-			ct: ct
-		).ConfigureAwait(false);
-
 		return product.ToGalleryGetByIdDto(
-			volume: await sender.SendQueryAsync(
-				query: new GetCadVolumeByIdQuery(product.CadId),
-				ct: ct
-			).ConfigureAwait(false),
 			username: await sender.SendQueryAsync(
 				query: new GetUsernameByIdQuery(product.CreatorId),
 				ct: ct
@@ -51,8 +40,7 @@ public sealed class GalleryGetProductByIdHandler(IProductReads reads, IRequestSe
 				query: new GetCategoryNameByIdQuery(product.CategoryId),
 				ct: ct
 			).ConfigureAwait(false),
-			tags: await reads.TagsByIdAsync(req.Id, ct).ConfigureAwait(false),
-			coords: (Cam, Pan)
+			tags: await reads.TagsByIdAsync(req.Id, ct).ConfigureAwait(false)
 		);
 	}
 }

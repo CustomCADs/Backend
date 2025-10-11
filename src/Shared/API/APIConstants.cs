@@ -22,6 +22,9 @@ public static class APIConstants
 		public const string Customizations = "customizations";
 		public const string PurchasedCarts = "carts/purchased";
 		public const string Shipments = "shipments";
+		public const string Cads = "cads";
+		public const string Images = "images";
+		public const string Presigned = "presigned";
 		public const string Customs = "customs";
 		public const string Accounts = "accounts";
 		public const string Roles = "roles";
@@ -46,14 +49,16 @@ public static class APIConstants
 		// AllowAnonymous
 		[Paths.Identity] = "0.1. Identity",
 		[Paths.Gallery] = "0.2. Product Gallery",
-		[Paths.ActiveCarts] = "0.3. Active Carts",
+		[Paths.ActiveCarts] = "0.3. Active Cart Items",
 		[Paths.Customizations] = "0.4. Customizations",
 		[Paths.Notifications] = "0.5 Notifications",
 
 		// Customers
-		[Paths.PurchasedCarts] = "1.1. Purchased Carts",
-		[Paths.Shipments] = "1.2. Shipments",
+		[Paths.PurchasedCarts] = "1.1. Purchased Carts Collection",
+		[Paths.Shipments] = "1.2. Shipments Collection",
 		[$"{Paths.Customs}/{Paths.Customer}"] = "1.3. Customs Collection",
+		[Paths.Cads] = "1.4. CADs Collection",
+		[Paths.Images] = "1.5. Images Collection",
 
 		// Contributors
 		[$"{Paths.Products}/{Paths.Creator}"] = "2.1. Product Collection",

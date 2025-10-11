@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Customs.API.Customs.Dtos;
-using CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Finish;
 using CustomCADs.Customs.Application.Customs.Dtos;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 
@@ -7,9 +6,6 @@ namespace CustomCADs.Customs.API.Customs;
 
 internal static class Mapper
 {
-	internal static (string Key, string ContentType, decimal Volume) ToTuple(this FinishCustomRequest req)
-		=> (Key: req.CadKey, ContentType: req.CadContentType, Volume: req.CadVolume);
-
 	internal static PaymentResponse ToResponse(this PaymentDto payment)
 		=> new(
 			ClientSecret: payment.ClientSecret,

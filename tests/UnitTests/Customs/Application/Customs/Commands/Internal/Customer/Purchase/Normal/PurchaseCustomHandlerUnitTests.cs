@@ -40,11 +40,6 @@ public class PurchaseCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(custom);
-
-		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCadExistsByIdQuery>(x => x.Id == ValidCadId),
-			ct
-		)).ReturnsAsync(true);
 	}
 
 	[Fact]

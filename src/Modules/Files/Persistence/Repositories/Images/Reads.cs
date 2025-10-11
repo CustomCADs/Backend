@@ -13,4 +13,10 @@ public sealed class Reads(FilesContext context) : IImageReads
 			.WithTracking(track)
 			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
+
+	public async Task<bool> ExistsByIdAsync(ImageId id, CancellationToken ct = default)
+		=> await context.Images
+			.WithTracking(false)
+			.AnyAsync(x => x.Id == id, ct)
+			.ConfigureAwait(false);
 }

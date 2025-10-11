@@ -12,6 +12,8 @@ public class CreatorSingleProductMapper : ResponseMapper<CreatorSingleProductRes
 			Description: product.Description,
 			UploadedAt: product.UploadedAt,
 			Counts: product.Counts,
-			Category: product.Category.ToResponse()
+			Category: product.Category.ToResponse(),
+			CadId: product.CadId.Value,
+			ImageId: product.ImageId.Value
 		);
 }
