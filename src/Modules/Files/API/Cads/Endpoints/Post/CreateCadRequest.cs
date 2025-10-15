@@ -1,7 +1,7 @@
 namespace CustomCADs.Files.API.Cads.Endpoints.Post;
 
 public record CreateCadRequest(
-	string Key,
+	string GeneratedKey,
 	string ContentType,
 	decimal Volume
 );

@@ -53,7 +53,6 @@ public sealed class CreateProductHandler(
 			),
 			ct: ct
 		).ConfigureAwait(false);
-		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		string role = await sender.SendQueryAsync(
 			query: new GetUserRoleByIdQuery(req.CallerId),
@@ -64,6 +63,7 @@ public sealed class CreateProductHandler(
 		{
 			product.Validate(req.CallerId);
 		}
+		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
 			@event: new ProductCreatedApplicationEvent(

@@ -246,7 +246,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{
 		.terraform\common\main.tf = .terraform\common\main.tf
 		.terraform\common\variables.tf = .terraform\common\variables.tf
 		.terraform\common\ssl.tf = .terraform\common\ssl.tf
-		.terraform\common\storage.tf = .terraform\common\storage.tf
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "production", "production", "{D4C2FBE7-B7CA-647C-AAA9-9D401885CB2D}"

@@ -75,7 +75,7 @@ public static class ApplicationConstants
 			public const string? CustomCanceled = null;
 			public const string? CustomFinished = null;
 			public const string? CustomCompleted = null;
-			public const string PaymentCompleted = "{0}/{1}";
+			public const string PaymentCompleted = null;
 			public const string? PaymentFailed = null;
 		}
 	}

@@ -2,6 +2,8 @@
 using CustomCADs.Files.Application.Images.Commands.Internal.Create;
 using CustomCADs.Files.Application.Images.Dtos;
 using CustomCADs.Files.Application.Images.Queries.Internal.GetById;
+using CustomCADs.Shared.API.Attributes;
+using Microsoft.AspNetCore.Builder;
 
 namespace CustomCADs.Files.API.Images.Endpoints.Post;
 
@@ -14,6 +16,7 @@ public class CreateImageEndpoint(IRequestSender sender) : Endpoint<CreateImageRe
 		Description(x => x
 			.WithSummary("Create")
 			.WithDescription("Create a Image")
+			.WithMetadata(new SkipIdempotencyAttribute())
 		);
 	}
 

@@ -5,7 +5,7 @@ namespace CustomCADs.Printing.Domain.Customizations;
 public static partial class CustomizationConstants
 {
 	public const decimal ScaleMin = 1m;
-	public const decimal ScaleMax = 10m;
+	public const decimal ScaleMax = 100m;
 
 	public const decimal InfillMin = 0.2m;
 	public const decimal InfillMax = 1m;
