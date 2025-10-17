@@ -30,6 +30,7 @@ internal static class Mapper
 			nameof(NotificationType.CustomCompleted) => NotificationType.CustomCompleted,
 			nameof(NotificationType.CustomReported) => NotificationType.CustomReported,
 			nameof(NotificationType.CustomRemoved) => NotificationType.CustomRemoved,
+			nameof(NotificationType.CartPurchased) => NotificationType.CartPurchased,
 			nameof(NotificationType.ProductEdited) => NotificationType.ProductEdited,
 			nameof(NotificationType.ProductDeleted) => NotificationType.ProductDeleted,
 			nameof(NotificationType.ProductValidated) => NotificationType.ProductValidated,

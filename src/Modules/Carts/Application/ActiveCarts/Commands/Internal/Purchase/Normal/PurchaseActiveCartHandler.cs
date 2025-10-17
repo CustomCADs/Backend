@@ -1,7 +1,12 @@
-﻿using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
+﻿using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
+using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 using CustomCADs.Carts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
@@ -11,7 +16,8 @@ namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.No
 public sealed class PurchaseActiveCartHandler(
 	IActiveCartReads reads,
 	IRequestSender sender,
-	IPaymentService payment
+	IPaymentService payment,
+	IEventRaiser raiser
 ) : ICommandHandler<PurchaseActiveCartCommand, PaymentDto>
 {
 	public async Task<PaymentDto> Handle(PurchaseActiveCartCommand req, CancellationToken ct)
@@ -51,6 +57,16 @@ public sealed class PurchaseActiveCartHandler(
 			ct: ct
 		).ConfigureAwait(false);
 
+		await raiser.RaiseApplicationEventAsync(
+			@event: new NotificationRequestedEvent(
+				Type: NotificationType.CartPurchased,
+				Description: ApplicationConstants.Notifications.Messages.CartPurchased,
+				Link: ApplicationConstants.Notifications.Links.CartPurchased,
+				AuthorId: req.CallerId,
+				ReceiverIds: [req.CallerId]
+			)
+		).ConfigureAwait(false);
+
 		PaymentDto response = await payment.InitializeCartPayment(
 			paymentMethodId: req.PaymentMethodId,
 			buyerId: req.CallerId,
@@ -58,6 +74,10 @@ public sealed class PurchaseActiveCartHandler(
 			total: totalSum,
 			description: (buyer, items.Length),
 			ct: ct
+		).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			@event: new CartPaymentStartedApplicationEvent(purchasedCartId.Value)
 		).ConfigureAwait(false);
 
 		return response;

@@ -1,11 +1,14 @@
 ﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 using CustomCADs.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
 using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 using CustomCADs.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Delivery;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
@@ -172,7 +175,13 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CartPurchased)
+		), Times.Once());
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
 			It.IsAny<ActiveCartDeliveryRequestedApplicationEvent>()
+		), Times.Once());
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.IsAny<CartPaymentStartedApplicationEvent>()
 		), Times.Once());
 	}
 

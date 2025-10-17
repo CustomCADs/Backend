@@ -13,6 +13,7 @@ public enum NotificationType
 	CustomCompleted,
 	CustomReported,
 	CustomRemoved,
+	CartPurchased,
 	ProductEdited,
 	ProductDeleted,
 	ProductValidated,

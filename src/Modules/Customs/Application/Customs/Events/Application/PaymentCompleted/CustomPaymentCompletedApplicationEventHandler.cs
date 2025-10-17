@@ -20,8 +20,8 @@ public class CustomPaymentCompletedApplicationEventHandler(
 {
 	public async Task Handle(CustomPaymentCompletedApplicationEvent ae)
 	{
-		Custom custom = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Custom>.ById(ae.Id);
+		Custom custom = await reads.SingleByIdAsync(ae.CustomId).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Custom>.ById(ae.CustomId);
 
 		custom.FinishPayment(success: true);
 		await uow.SaveChangesAsync().ConfigureAwait(false);

@@ -53,7 +53,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	{
 		// Arrange
 		CustomDeliveryRequestedApplicationEvent de = new(
-			Id: ValidId,
+			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
 			Count: Count,
@@ -73,7 +73,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	{
 		// Arrange
 		CustomDeliveryRequestedApplicationEvent de = new(
-			Id: ValidId,
+			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
 			Count: Count,
@@ -93,7 +93,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	{
 		// Arrange
 		CustomDeliveryRequestedApplicationEvent de = new(
-			Id: ValidId,
+			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
 			Count: Count,
@@ -120,7 +120,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	{
 		// Arrange
 		CustomDeliveryRequestedApplicationEvent de = new(
-			Id: ValidId,
+			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
 			Count: Count,
@@ -143,7 +143,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 			.ReturnsAsync(null as Custom);
 
 		CustomDeliveryRequestedApplicationEvent de = new(
-			Id: ValidId,
+			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
 			Count: Count,

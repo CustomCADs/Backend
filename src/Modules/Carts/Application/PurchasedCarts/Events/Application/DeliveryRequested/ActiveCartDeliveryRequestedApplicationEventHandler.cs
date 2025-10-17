@@ -16,8 +16,8 @@ public class ActiveCartDeliveryRequestedApplicationEventHandler(
 {
 	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent ae)
 	{
-		PurchasedCart cart = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
-			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.Id);
+		PurchasedCart cart = await reads.SingleByIdAsync(ae.PurchasedCartId).ConfigureAwait(false)
+			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.PurchasedCartId);
 
 		string buyer = await sender.SendQueryAsync(
 			query: new GetUsernameByIdQuery(cart.BuyerId)

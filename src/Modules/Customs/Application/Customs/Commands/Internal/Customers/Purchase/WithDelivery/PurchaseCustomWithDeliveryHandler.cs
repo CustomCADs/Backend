@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Customs.Application.Customs.Events.Application.DeliveryRequested;
+using CustomCADs.Customs.Application.Customs.Events.Application.PaymentStarted;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
@@ -66,17 +67,6 @@ public sealed class PurchaseCustomWithDeliveryHandler(
 			)
 		).ConfigureAwait(false);
 
-		await raiser.RaiseApplicationEventAsync(
-			@event: new CustomDeliveryRequestedApplicationEvent(
-				Id: req.Id,
-				ShipmentService: req.ShipmentService,
-				Weight: req.Count * weight / 1000,
-				Count: req.Count,
-				Address: req.Address,
-				Contact: req.Contact
-			)
-		).ConfigureAwait(false);
-
 		PaymentDto response = await payment.InitializeCustomPayment(
 			paymentMethodId: req.PaymentMethodId,
 			buyerId: req.CallerId,
@@ -84,6 +74,21 @@ public sealed class PurchaseCustomWithDeliveryHandler(
 			total: total,
 			description: (buyer, custom.Name, seller),
 			ct: ct
+		).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			@event: new CustomPaymentStartedApplicationEvent(req.Id.Value)
+		).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			@event: new CustomDeliveryRequestedApplicationEvent(
+				CustomId: req.Id,
+				ShipmentService: req.ShipmentService,
+				Weight: req.Count * weight / 1000,
+				Count: req.Count,
+				Address: req.Address,
+				Contact: req.Contact
+			)
 		).ConfigureAwait(false);
 
 		return response;
