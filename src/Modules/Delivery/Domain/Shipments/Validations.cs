@@ -47,8 +47,7 @@ public static class Validations
 		=> shipment
 			.ThrowIfInvalidRange(
 				expression: x => x.Info.Count,
-				range: (MinCount, MaxCount),
-				inclusive: true
+				range: (MinCount, MaxCount)
 			);
 
 	public static Shipment ValidateWeight(this Shipment shipment)

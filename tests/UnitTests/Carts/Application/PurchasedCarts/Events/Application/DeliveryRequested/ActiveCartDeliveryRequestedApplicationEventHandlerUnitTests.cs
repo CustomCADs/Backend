@@ -45,7 +45,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 	{
 		// Arrange
 		ActiveCartDeliveryRequestedApplicationEvent de = new(
-			Id: ValidId,
+			PurchasedCartId: ValidId,
 			ShipmentService: string.Empty,
 			Weight: default,
 			Count: default,
@@ -65,7 +65,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 	{
 		// Arrange
 		ActiveCartDeliveryRequestedApplicationEvent de = new(
-			Id: ValidId,
+			PurchasedCartId: ValidId,
 			ShipmentService: string.Empty,
 			Weight: default,
 			Count: default,
@@ -95,7 +95,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 			.ReturnsAsync(null as PurchasedCart);
 
 		ActiveCartDeliveryRequestedApplicationEvent de = new(
-			Id: ValidId,
+			PurchasedCartId: ValidId,
 			ShipmentService: string.Empty,
 			Weight: default,
 			Count: default,

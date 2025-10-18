@@ -51,6 +51,7 @@ public static class ApplicationConstants
 			public const string CustomCanceled = "Your Custom 3D Model Request has been canceled!";
 			public const string CustomFinished = "Your Custom 3D Model Request has been finished!";
 			public const string CustomCompleted = "The Custom 3D Model Request: {0} from: {1} has been completed!";
+			public const string CartPurchased = "Your Cart has been purchased!";
 			public const string PaymentCompleted = "Your Payment has been completed successfully!";
 			public const string PaymentFailed = "Your Payment has failed!";
 		}
@@ -75,7 +76,8 @@ public static class ApplicationConstants
 			public const string? CustomCanceled = null;
 			public const string? CustomFinished = null;
 			public const string? CustomCompleted = null;
-			public const string PaymentCompleted = "{0}/{1}";
+			public const string? CartPurchased = null;
+			public const string PaymentCompleted = null;
 			public const string? PaymentFailed = null;
 		}
 	}

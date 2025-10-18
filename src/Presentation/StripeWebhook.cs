@@ -66,7 +66,7 @@ public static class StripeWebhook
 						{
 							await raiser.RaiseApplicationEventAsync(
 								@event: new CartPaymentCompletedApplicationEvent(
-									Id: PurchasedCartId.New(rewardId),
+									CartId: PurchasedCartId.New(rewardId),
 									BuyerId: buyerId
 								)
 							).ConfigureAwait(false);
@@ -77,7 +77,7 @@ public static class StripeWebhook
 						{
 							await raiser.RaiseApplicationEventAsync(
 								@event: new CustomPaymentCompletedApplicationEvent(
-									Id: CustomId.New(intent.Metadata["rewardId"]),
+									CustomId: CustomId.New(intent.Metadata["rewardId"]),
 									BuyerId: buyerId
 								)
 							).ConfigureAwait(false);

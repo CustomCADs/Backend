@@ -2,6 +2,8 @@
 using CustomCADs.Files.Application.Cads.Commands.Internal.Create;
 using CustomCADs.Files.Application.Cads.Dtos;
 using CustomCADs.Files.Application.Cads.Queries.Internal.GetById;
+using CustomCADs.Shared.API.Attributes;
+using Microsoft.AspNetCore.Builder;
 
 namespace CustomCADs.Files.API.Cads.Endpoints.Post;
 
@@ -14,6 +16,7 @@ public class CreateCadEndpoint(IRequestSender sender) : Endpoint<CreateCadReques
 		Description(x => x
 			.WithSummary("Create")
 			.WithDescription("Create a CAD")
+			.WithMetadata(new SkipIdempotencyAttribute())
 		);
 	}
 
@@ -21,7 +24,7 @@ public class CreateCadEndpoint(IRequestSender sender) : Endpoint<CreateCadReques
 	{
 		CadId id = await sender.SendCommandAsync(
 			command: new CreateCadCommand(
-				Key: req.Key,
+				Key: req.GeneratedKey,
 				ContentType: req.ContentType,
 				Volume: req.Volume,
 				CallerId: User.GetAccountId()

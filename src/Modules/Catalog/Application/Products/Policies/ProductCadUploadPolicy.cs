@@ -15,7 +15,7 @@ public class ProductCadUploadPolicy(IRequestSender sender) : IFileUploadPolicy<C
 			query: new GetUserRoleByIdQuery(context.CallerId)
 		).ConfigureAwait(false);
 
-		if (role is not DomainConstants.Roles.Contributor or DomainConstants.Roles.Designer)
+		if (role is not (DomainConstants.Roles.Contributor or DomainConstants.Roles.Designer))
 		{
 			throw CustomAuthorizationException<Product>.Custom("Must be a Contributor/Designer to upload Product CADs");
 		}

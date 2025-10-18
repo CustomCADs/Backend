@@ -1,8 +1,12 @@
 ﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
+using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
 using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 using CustomCADs.Carts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
@@ -20,12 +24,13 @@ public class PurchaseActiveCartHandlerUnitTests : ActiveCartsBaseUnitTests
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IPaymentService> payment = new();
+	private readonly Mock<IEventRaiser> raiser = new();
 
 	private static readonly string paymentMethodId = string.Empty;
 
 	public PurchaseActiveCartHandlerUnitTests()
 	{
-		handler = new(reads.Object, sender.Object, payment.Object);
+		handler = new(reads.Object, sender.Object, payment.Object, raiser.Object);
 
 		reads.Setup(x => x.ExistsAsync(ValidBuyerId, ct))
 			.ReturnsAsync(true);
@@ -79,6 +84,24 @@ public class PurchaseActiveCartHandlerUnitTests : ActiveCartsBaseUnitTests
 		sender.Verify(x => x.SendCommandAsync(
 			It.Is<CreatePurchasedCartCommand>(x => x.BuyerId == ValidBuyerId),
 			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		PurchaseActiveCartCommand command = new(paymentMethodId, ValidBuyerId);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CartPurchased)
+		), Times.Once());
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.IsAny<CartPaymentStartedApplicationEvent>()
 		), Times.Once());
 	}
 

@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
+using CustomCADs.Customs.Application.Customs.Events.Application.PaymentStarted;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
@@ -8,7 +9,6 @@ using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Purchase.Normal;
@@ -83,6 +83,9 @@ public class PurchaseCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
 			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomCompleted)
+		), Times.Once());
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.IsAny<CustomPaymentStartedApplicationEvent>()
 		), Times.Once());
 	}
 

@@ -42,7 +42,7 @@ public sealed class CreateCustomHandler(
 			@event: new NotificationRequestedEvent(
 				Type: NotificationType.CustomCreated,
 				Description: Notifications.Messages.CustomCreated,
-				Link: Notifications.Messages.CustomCreated,
+				Link: Notifications.Links.CustomCreated,
 				AuthorId: custom.BuyerId,
 				ReceiverIds: [.. await sender.SendQueryAsync(
 					query: new GetAccountIdsByRoleQuery(DomainConstants.Roles.Designer),

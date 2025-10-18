@@ -31,8 +31,10 @@ public static class ProgramExtensions
 			assemblies: [
 				CustomCADs.Accounts.Application.AccountApplicationReference.Assembly,
 				CustomCADs.Carts.Application.CartsApplicationReference.Assembly,
+				CustomCADs.Carts.Infrastructure.CartsInfrastructureReference.Assembly,
 				CustomCADs.Catalog.Application.CatalogApplicationReference.Assembly,
 				CustomCADs.Customs.Application.CustomsApplicationReference.Assembly,
+				CustomCADs.Customs.Infrastructure.CustomsInfrastructureReference.Assembly,
 				CustomCADs.Delivery.Application.DeliveryApplicationReference.Assembly,
 				CustomCADs.Files.Application.FilesApplicationReference.Assembly,
 				CustomCADs.Idempotency.Application.IdempotencyApplicationReference.Assembly,
@@ -41,6 +43,7 @@ public static class ProgramExtensions
 				CustomCADs.Identity.Application.IdentityApplicationReference.Assembly,
 			]
 		);
+		services.AddSagas();
 
 		return services;
 	}
@@ -162,12 +165,14 @@ public static class ProgramExtensions
 
 	public static IServiceCollection AddBackgroundJobs(this IServiceCollection services)
 	{
+		services.AddQuartzHostedService(opts => opts.WaitForJobsToComplete = true);
 		services.AddQuartz(configurator =>
 		{
 			configurator.AddSharedBackgroundJobs();
 			configurator.AddCatalogBackgroundJobs();
 			configurator.AddDeliveryBackgroundJobs();
 			configurator.AddIdempotencyBackgroundJobs();
+			configurator.AddIdentityBackgroundJobs();
 		});
 
 		return services;
@@ -179,6 +184,15 @@ public static class ProgramExtensions
 		services.AddProductsAccessPolicies();
 		services.AddCustomsAccessPolicies();
 		services.AddMaterialsAccessPolicies();
+
+		return services;
+	}
+
+
+	private static IServiceCollection AddSagas(this IServiceCollection services)
+	{
+		services.AddCartDeliveryPaymentSagaDependencies();
+		services.AddCustomDeliveryPaymentSagaDependencies();
 
 		return services;
 	}

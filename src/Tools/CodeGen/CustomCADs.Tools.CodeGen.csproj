@@ -16,6 +16,7 @@
 		<!-- Carts -->
 		<ProjectReference Include="..\..\Modules\Carts\Application\CustomCADs.Carts.Application.csproj" />
 		<ProjectReference Include="..\..\Modules\Carts\Persistence\CustomCADs.Carts.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Carts\Infrastructure\CustomCADs.Carts.Infrastructure.csproj" />
 
 		<!-- Catalog -->
 		<ProjectReference Include="..\..\Modules\Catalog\Application\CustomCADs.Catalog.Application.csproj" />
@@ -25,6 +26,7 @@
 		<!-- Customs -->
 		<ProjectReference Include="..\..\Modules\Customs\Application\CustomCADs.Customs.Application.csproj" />
 		<ProjectReference Include="..\..\Modules\Customs\Persistence\CustomCADs.Customs.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Customs\Infrastructure\CustomCADs.Customs.Infrastructure.csproj" />
 
 		<!-- Delivery -->
 		<ProjectReference Include="..\..\Modules\Delivery\Application\CustomCADs.Delivery.Application.csproj" />

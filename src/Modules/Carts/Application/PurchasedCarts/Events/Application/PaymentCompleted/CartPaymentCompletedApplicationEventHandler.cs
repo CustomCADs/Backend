@@ -19,8 +19,8 @@ public class CartPaymentCompletedApplicationEventHandler(
 {
 	public async Task Handle(CartPaymentCompletedApplicationEvent ae)
 	{
-		PurchasedCart cart = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
-			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.Id);
+		PurchasedCart cart = await reads.SingleByIdAsync(ae.CartId).ConfigureAwait(false)
+			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.CartId);
 
 		cart.FinishPayment(success: true);
 		await uow.SaveChangesAsync().ConfigureAwait(false);

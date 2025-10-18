@@ -1,9 +1,13 @@
 ﻿using CustomCADs.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
 using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 using CustomCADs.Carts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
@@ -62,13 +66,12 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 		Dictionary<CustomizationId, double> weights = await SnapshotWeights(items, customizationIds, ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			@event: new ActiveCartDeliveryRequestedApplicationEvent(
-				Id: purchasedCartId,
-				Weight: weights.Sum(x => x.Value),
-				Count: items.Where(x => x.ForDelivery).Sum(x => x.Quantity),
-				ShipmentService: req.ShipmentService,
-				Address: req.Address,
-				Contact: req.Contact
+			@event: new NotificationRequestedEvent(
+				Type: NotificationType.CartPurchased,
+				Description: ApplicationConstants.Notifications.Messages.CartPurchased,
+				Link: ApplicationConstants.Notifications.Links.CartPurchased,
+				AuthorId: req.CallerId,
+				ReceiverIds: [req.CallerId]
 			)
 		).ConfigureAwait(false);
 
@@ -79,6 +82,21 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 			total: totalSum,
 			description: (buyer, items.Length),
 			ct: ct
+		).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			@event: new CartPaymentStartedApplicationEvent(purchasedCartId.Value)
+		).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			@event: new ActiveCartDeliveryRequestedApplicationEvent(
+				PurchasedCartId: purchasedCartId,
+				Weight: weights.Sum(x => x.Value),
+				Count: items.Where(x => x.ForDelivery).Sum(x => x.Quantity),
+				ShipmentService: req.ShipmentService,
+				Address: req.Address,
+				Contact: req.Contact
+			)
 		).ConfigureAwait(false);
 
 		return response;
