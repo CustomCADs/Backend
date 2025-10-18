@@ -165,7 +165,12 @@ public static class ProgramExtensions
 
 	public static IServiceCollection AddBackgroundJobs(this IServiceCollection services)
 	{
-		services.AddQuartzHostedService(opts => opts.WaitForJobsToComplete = true);
+		services.AddQuartzHostedService(opts => opts = new()
+		{
+			WaitForJobsToComplete = true,
+			AwaitApplicationStarted = true,
+			StartDelay = TimeSpan.FromMinutes(30),
+		});
 		services.AddQuartz(configurator =>
 		{
 			configurator.AddSharedBackgroundJobs();
