@@ -1,3 +1,4 @@
+using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.Bases.Id;
 
 namespace CustomCADs.Shared.Application.Policies;
@@ -34,7 +35,13 @@ public static class IFileAccessPolicyExtensions
 		FileContextType type
 	) where TTypedId : IEntityId<Guid>
 	{
-		foreach (IFileReplacePolicy<TTypedId> policy in policies.Where(x => x.Type == type))
+		var applicablePolicies = policies.Where(x => x.Type == type);
+		if (!applicablePolicies.Any())
+		{
+			throw new CustomException("No Applicable policies found - operation blocked!");
+		}
+
+		foreach (IFileReplacePolicy<TTypedId> policy in applicablePolicies)
 		{
 			await policy.EnsureReplaceGrantedAsync(context).ConfigureAwait(false);
 		}
