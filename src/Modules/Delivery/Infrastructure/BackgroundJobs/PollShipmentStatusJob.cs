@@ -18,15 +18,16 @@ public class PollShipmentStatusJob(IShipmentReads reads, IUnitOfWork uow, IDeliv
 		string?[] activeShipmentReferenceIds = [..
 			await reads.AllIdsByStatusAsync(ShipmentStatus.Active, ct: ct).ConfigureAwait(false)
 		];
+		if (activeShipmentReferenceIds.Length == 0) return;
 
 		Dictionary<string, ShipmentTrackDto[]> statuses = await delivery.TrackAsync(
 			[.. activeShipmentReferenceIds.Where(x => x is not null).Select(x => x!)]
 		).ConfigureAwait(false);
 
-		await uow.UpdateStatusByReferenceIdAsync(
-			referenceIds: [.. statuses.Where(x => x.Value.Any(x => x.IsDelivered)).Select(x => x.Key)],
-			status: ShipmentStatus.Delivered,
-			ct: ct
-		).ConfigureAwait(false);
+		string[] deliveredRefs = [.. statuses.Where(x => x.Value.Any(x => x.IsDelivered)).Select(x => x.Key)];
+		if (deliveredRefs.Length != 0)
+		{
+			await uow.UpdateStatusByReferenceIdAsync(deliveredRefs, ShipmentStatus.Delivered, ct).ConfigureAwait(false);
+		}
 	}
 }
