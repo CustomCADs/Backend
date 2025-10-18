@@ -165,12 +165,14 @@ public static class ProgramExtensions
 
 	public static IServiceCollection AddBackgroundJobs(this IServiceCollection services)
 	{
+		services.AddQuartzHostedService(opts => opts.WaitForJobsToComplete = true);
 		services.AddQuartz(configurator =>
 		{
 			configurator.AddSharedBackgroundJobs();
 			configurator.AddCatalogBackgroundJobs();
 			configurator.AddDeliveryBackgroundJobs();
 			configurator.AddIdempotencyBackgroundJobs();
+			configurator.AddIdentityBackgroundJobs();
 		});
 
 		return services;
