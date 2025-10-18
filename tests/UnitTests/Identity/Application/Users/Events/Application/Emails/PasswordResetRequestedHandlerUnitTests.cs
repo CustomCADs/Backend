@@ -23,7 +23,7 @@ public class PasswordResetRequestedHandlerUnitTests : UsersBaseUnitTests
 		PasswordResetRequestedApplicationEvent ae = new(Email, Endpoint);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		email.Verify(x => x.SendForgotPasswordEmailAsync(Email, Endpoint, ct), Times.Once());

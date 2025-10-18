@@ -1,4 +1,5 @@
-﻿using CustomCADs.Customs.Domain.Repositories;
+﻿using CustomCADs.Customs.Application.Customs.Events.Application.PaymentStarted;
+using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
@@ -8,7 +9,6 @@ using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
-
 
 public sealed class PurchaseCustomHandler(
 	ICustomReads reads,
@@ -59,6 +59,10 @@ public sealed class PurchaseCustomHandler(
 			total: total,
 			description: (buyer, custom.Name, seller),
 			ct: ct
+		).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			@event: new CustomPaymentStartedApplicationEvent(req.Id.Value)
 		).ConfigureAwait(false);
 
 		return response;

@@ -19,7 +19,7 @@ namespace CustomCADs.Files.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Files")
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -39,6 +39,11 @@ namespace CustomCADs.Files.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Key");
+
+                    b.Property<Guid>("OwnerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("OwnerId");
 
                     b.Property<decimal>("Volume")
                         .HasColumnType("numeric")
@@ -99,6 +104,11 @@ namespace CustomCADs.Files.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("Key");
 
+                    b.Property<Guid>("OwnerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("OwnerId");
+
                     b.HasKey("Id");
 
                     b.ToTable("Images", "Files");
@@ -108,31 +118,36 @@ namespace CustomCADs.Files.Persistence.Migrations
                         {
                             Id = new Guid("9a35cbea-806c-4561-ae71-bb21824f2432"),
                             ContentType = "image/webp",
-                            Key = "textures/pla.webp"
+                            Key = "textures/pla.webp",
+                            OwnerId = new Guid("e995039c-a535-4f20-8288-7aadcb71b252")
                         },
                         new
                         {
                             Id = new Guid("bed27a31-107a-4b3f-a50a-cb9cc6f376f1"),
                             ContentType = "image/webp",
-                            Key = "textures/abs.webp"
+                            Key = "textures/abs.webp",
+                            OwnerId = new Guid("e995039c-a535-4f20-8288-7aadcb71b252")
                         },
                         new
                         {
                             Id = new Guid("190a69a3-1b02-43f0-a4f9-cab22826abf3"),
                             ContentType = "image/webp",
-                            Key = "textures/glow-in-dark.webp"
+                            Key = "textures/glow-in-dark.webp",
+                            OwnerId = new Guid("e995039c-a535-4f20-8288-7aadcb71b252")
                         },
                         new
                         {
                             Id = new Guid("38deab9b-8791-4147-9958-64e9f7ec6d78"),
                             ContentType = "image/webp",
-                            Key = "textures/tuf.webp"
+                            Key = "textures/tuf.webp",
+                            OwnerId = new Guid("e995039c-a535-4f20-8288-7aadcb71b252")
                         },
                         new
                         {
                             Id = new Guid("3fe2472c-d2c6-434c-a013-ef117319bed3"),
                             ContentType = "image/webp",
-                            Key = "textures/wood.webp"
+                            Key = "textures/wood.webp",
+                            OwnerId = new Guid("e995039c-a535-4f20-8288-7aadcb71b252")
                         });
                 });
 #pragma warning restore 612, 618

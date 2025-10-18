@@ -23,7 +23,7 @@ public class UserDeletedHandlerUnitTests : UsersBaseUnitTests
 		AccountDeletedApplicationEvent ae = new(MaxValidUsername);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		service.Verify(x => x.DeleteAsync(MaxValidUsername), Times.Once());

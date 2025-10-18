@@ -33,7 +33,7 @@ public class UserDeletedHandlerUnitTests : AccountsBaseUnitTests
 		UserDeletedApplicationEvent ae = new(ValidId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -46,7 +46,7 @@ public class UserDeletedHandlerUnitTests : AccountsBaseUnitTests
 		UserDeletedApplicationEvent ae = new(ValidId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		writes.Verify(x => x.Remove(account), Times.Once());
@@ -63,7 +63,7 @@ public class UserDeletedHandlerUnitTests : AccountsBaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			async () => await handler.Handle(ae)
+			async () => await handler.HandleAsync(ae)
 		);
 	}
 }

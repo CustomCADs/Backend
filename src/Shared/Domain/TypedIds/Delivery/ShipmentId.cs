@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Delivery;
 
-public readonly struct ShipmentId
+public readonly struct ShipmentId : IEntityId<Guid>
 {
 	public ShipmentId() : this(Guid.Empty) { }
 	private ShipmentId(Guid value)
@@ -10,7 +11,7 @@ public readonly struct ShipmentId
 		Value = value;
 	}
 
-	public Guid Value { get; }
+	public Guid Value { get; init; }
 
 	public static ShipmentId New() => new(Guid.NewGuid());
 	public static ShipmentId New(Guid id) => new(id);

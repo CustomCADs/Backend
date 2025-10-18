@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Catalog.API.Categories.Endpoints;
 
+using static APIConstants;
 using static DomainConstants.Roles;
-using static EndpointsConstants;
 
 public class CategoriesGroup : Group
 {

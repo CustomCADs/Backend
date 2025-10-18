@@ -2,6 +2,7 @@
 using CustomCADs.Catalog.Domain.Products.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Catalog.Domain.Repositories.Reads;
 
@@ -11,6 +12,7 @@ public interface IProductReads
 	Task<ProductId[]> AllAsync(DateTimeOffset? before, DateTimeOffset? after, CancellationToken ct = default);
 	Task<Product?> OldestByTagAsync(string tag, CancellationToken ct = default);
 	Task<Product?> SingleByIdAsync(ProductId id, bool track = true, CancellationToken ct = default);
+	Task<Product?> SingleByCadIdAsync(CadId cadId, bool track = true, CancellationToken ct = default);
 	Task<string[]> TagsByIdAsync(ProductId id, CancellationToken ct = default);
 	Task<Dictionary<ProductId, string[]>> TagsByIdsAsync(ProductId[] ids, CancellationToken ct = default);
 	Task<bool> ExistsByIdAsync(ProductId id, CancellationToken ct = default);

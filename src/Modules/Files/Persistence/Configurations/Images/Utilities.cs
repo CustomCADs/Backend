@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Files.Domain.Images;
 using CustomCADs.Shared.Domain;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,6 +27,13 @@ public static class Utilities
 				x => ImageId.New(x)
 			);
 
+		builder.Property(x => x.OwnerId)
+			.ValueGeneratedOnAdd()
+			.HasConversion(
+				x => x.Value,
+				x => AccountId.New(x)
+			);
+
 		return builder;
 	}
 
@@ -39,17 +47,22 @@ public static class Utilities
 			.IsRequired()
 			.HasColumnName(nameof(Image.ContentType));
 
+		builder.Property(x => x.OwnerId)
+			.IsRequired()
+			.HasColumnName(nameof(Image.OwnerId));
+
 		return builder;
 	}
 
 	public static EntityTypeBuilder<Image> SetSeeding(this EntityTypeBuilder<Image> builder)
 	{
+		AccountId adminId = AccountId.New(Guid.Parse(DomainConstants.Users.AdminAccountId));
 		builder.HasData([
-			Image.CreateWithId(PLA, "textures/pla.webp", "image/webp"),
-			Image.CreateWithId(ABS, "textures/abs.webp", "image/webp"),
-			Image.CreateWithId(GlowInDark, "textures/glow-in-dark.webp", "image/webp"),
-			Image.CreateWithId(TUF, "textures/tuf.webp", "image/webp"),
-			Image.CreateWithId(Wood, "textures/wood.webp", "image/webp"),
+			Image.CreateWithId(PLA, "textures/pla.webp", "image/webp", adminId),
+			Image.CreateWithId(ABS, "textures/abs.webp", "image/webp", adminId),
+			Image.CreateWithId(GlowInDark, "textures/glow-in-dark.webp", "image/webp", adminId),
+			Image.CreateWithId(TUF, "textures/tuf.webp", "image/webp", adminId),
+			Image.CreateWithId(Wood, "textures/wood.webp", "image/webp", adminId),
 		]);
 
 		return builder;

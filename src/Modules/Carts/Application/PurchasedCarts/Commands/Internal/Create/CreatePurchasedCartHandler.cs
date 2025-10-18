@@ -6,6 +6,7 @@ using CustomCADs.Shared.Application.Events.Catalog;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Cads.Commands;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
@@ -24,7 +25,7 @@ public sealed class CreatePurchasedCartHandler(
 		{
 			throw CustomNotFoundException<PurchasedCart>.ById(req.BuyerId, "User");
 		}
-		CartItemDto[] items = await SnapshotItemsAsync(req.Items, ct).ConfigureAwait(false);
+		CartItemDto[] items = await SnapshotItemsAsync(req.Items, req.BuyerId, ct).ConfigureAwait(false);
 
 		PurchasedCart cart = await writes.AddAsync(
 			entity: PurchasedCart.Create(req.BuyerId).AddItems(items),
@@ -41,7 +42,7 @@ public sealed class CreatePurchasedCartHandler(
 		return cart.Id;
 	}
 
-	private async Task<CartItemDto[]> SnapshotItemsAsync(Dictionary<ActiveCartItemDto, decimal> items, CancellationToken ct = default)
+	private async Task<CartItemDto[]> SnapshotItemsAsync(Dictionary<ActiveCartItemDto, decimal> items, AccountId buyerId, CancellationToken ct = default)
 	{
 		ProductId[] productIds = [.. items.Select(x => x.Key.ProductId)];
 
@@ -51,7 +52,10 @@ public sealed class CreatePurchasedCartHandler(
 		).ConfigureAwait(false);
 
 		Dictionary<CadId, CadId> itemCads = await sender.SendCommandAsync(
-			command: new DuplicateCadsByIdsCommand([.. productCads.Select(x => x.Value)]),
+			command: new DuplicateCadsByIdsCommand(
+				Ids: [.. productCads.Select(x => x.Value)],
+				CallerId: buyerId
+			),
 			ct: ct
 		).ConfigureAwait(false);
 

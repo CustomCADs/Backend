@@ -1,4 +1,5 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Catalog.Domain.Products.Enums;
+using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
@@ -15,7 +16,7 @@ public sealed class DesignerGetAllProductsHandler(IProductReads reads, IRequestS
 		Result<Product> result = await reads.AllAsync(
 			query: new(
 				CategoryId: req.CategoryId,
-				DesignerId: null,
+				DesignerId: req.Status is ProductStatus.Unchecked ? null : req.CallerId,
 				Status: req.Status,
 				TagIds: req.TagIds,
 				Name: req.Name,

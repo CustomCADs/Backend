@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5"
+    }
   }
 }
 
@@ -19,4 +23,8 @@ data "terraform_remote_state" "common" {
     key    = "terraform.tfstate"
     region = var.region
   }
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
 }

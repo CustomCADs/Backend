@@ -1,8 +1,9 @@
+using CustomCADs.Shared.Domain.Bases.Id;
 using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Notifications;
 
-public readonly struct NotificationId
+public readonly struct NotificationId : IEntityId<Guid>
 {
 	public NotificationId() : this(Guid.Empty) { }
 	private NotificationId(Guid value)

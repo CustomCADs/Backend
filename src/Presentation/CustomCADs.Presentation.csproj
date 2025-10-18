@@ -20,12 +20,13 @@
 		<ProjectReference Include="../Modules/Catalog/API/CustomCADs.Catalog.API.csproj" />
 		<ProjectReference Include="../Modules/Customs/API/CustomCADs.Customs.API.csproj" />
 		<ProjectReference Include="../Modules/Delivery/API/CustomCADs.Delivery.API.csproj" />
+		<ProjectReference Include="../Modules/Files/API/CustomCADs.Files.API.csproj" />
 		<ProjectReference Include="../Modules/Idempotency/API/CustomCADs.Idempotency.API.csproj" />
 		<ProjectReference Include="../Modules/Identity/API/CustomCADs.Identity.API.csproj" />
 		<ProjectReference Include="../Modules/Notifications/API/CustomCADs.Notifications.API.csproj" />
 		<ProjectReference Include="../Modules/Printing/API/CustomCADs.Printing.API.csproj" />
 		<ProjectReference Include="../Tools/CodeGen/CustomCADs.Tools.CodeGen.csproj" />
-		<ProjectReference Include="../Modules/Files/Application/CustomCADs.Files.Application.csproj" />
+		<ProjectReference Include="../Modules/Files/API/CustomCADs.Files.API.csproj" />
 		<ProjectReference Include="../Shared/Infrastructure/CustomCADs.Shared.Infrastructure.csproj" />
 	</ItemGroup>
 

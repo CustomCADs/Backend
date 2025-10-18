@@ -5,7 +5,6 @@ using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetById;
 using CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
 using CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 using CustomCADs.Catalog.Domain.Products.ValueObjects;
-using CustomCADs.Shared.Application.Dtos.Files;
 
 namespace CustomCADs.Catalog.Application.Products;
 
@@ -19,23 +18,23 @@ internal static class Mapper
 			Tags: tags,
 			UploadedAt: product.UploadedAt,
 			Category: new(product.CategoryId, categoryName),
-			CreatorName: username
+			CreatorName: username,
+			ImageId: product.ImageId
 		);
 
-	internal static GalleryGetProductByIdDto ToGalleryGetByIdDto(this Product product, decimal volume, string username, string categoryName, string[] tags, (CoordinatesDto Cam, CoordinatesDto Pan) coords)
+	internal static GalleryGetProductByIdDto ToGalleryGetByIdDto(this Product product, string username, string categoryName, string[] tags)
 		=> new(
 			Id: product.Id,
 			Name: product.Name,
 			Description: product.Description,
 			Price: product.Price,
-			Volume: volume,
 			CreatorName: username,
 			Tags: tags,
 			UploadedAt: product.UploadedAt,
-			CamCoordinates: coords.Cam,
-			PanCoordinates: coords.Pan,
 			Counts: product.Counts.ToDto(),
-			Category: new(product.CategoryId, categoryName)
+			Category: new(product.CategoryId, categoryName),
+			CadId: product.CadId,
+			ImageId: product.ImageId
 		);
 
 	internal static CreatorGetAllProductsDto ToCreatorGetAllDto(this Product product, string categoryName)
@@ -45,7 +44,8 @@ internal static class Mapper
 			Status: product.Status.ToString(),
 			Views: product.Counts.Views,
 			UploadedAt: product.UploadedAt,
-			Category: new(product.CategoryId, categoryName)
+			Category: new(product.CategoryId, categoryName),
+			ImageId: product.ImageId
 		);
 
 	internal static CreatorGetProductByIdDto ToCreatorGetByIdDto(this Product product, string username, string categoryName)
@@ -58,7 +58,9 @@ internal static class Mapper
 			Status: product.Status.ToString(),
 			Counts: product.Counts.ToDto(),
 			Category: new(product.CategoryId, categoryName),
-			CreatorName: username
+			CreatorName: username,
+			CadId: product.CadId,
+			ImageId: product.ImageId
 		);
 
 	internal static DesignerGetAllProductsDto ToDesignerGetAllDto(this Product product, string username, string categoryName)

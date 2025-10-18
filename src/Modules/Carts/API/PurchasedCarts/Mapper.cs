@@ -11,6 +11,7 @@ internal static class Mapper
 			AddedAt: item.AddedAt,
 			ProductId: item.ProductId.Value,
 			CartId: item.CartId.Value,
+			CadId: item.CadId.Value,
 			CustomizationId: item.CustomizationId?.Value
 		);
 }

@@ -1,17 +1,20 @@
+using CustomCADs.Identity.API;
 using CustomCADs.Presentation;
+using CustomCADs.Shared.API;
 using static CustomCADs.Shared.Domain.DomainConstants.Roles;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Neccessities
 builder.Services.AddCorsForClient(builder.Configuration);
-builder.Services.AddAuthN().AddJwt(builder.Configuration);
+builder.Services.AddAuthN().AddJwt(builder.Configuration).AddSSO(builder.Configuration, APIConstants.SSO.Providers);
 builder.Services.AddAuthZ(Customer, Contributor, Designer, Admin);
 
 // Use Cases
 builder.Services.AddUseCases(builder.Environment);
 builder.Services.AddCache();
 builder.Services.AddBackgroundJobs();
+builder.Services.AddAccessPolicies();
 
 // External Services
 builder.Services.AddEmailService(builder.Configuration);
@@ -64,6 +67,7 @@ app.MapApiDocumentationUi(
 app.MapRealTimeHubs();
 app.MapStripeWebhook();
 app.MapExchangeRatesEndpoint();
+app.MapSSOLoginEndpoint();
 app.MapHealthChecks("/health");
 
 await app.RunAsync().ConfigureAwait(false);

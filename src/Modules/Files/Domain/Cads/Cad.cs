@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Files.Domain.Cads.ValueObjects;
 using CustomCADs.Shared.Domain.Bases.Entities;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Files.Domain.Cads;
 
@@ -11,7 +12,8 @@ public class Cad : BaseAggregateRoot
 		string contentType,
 		decimal volume,
 		Coordinates camCoordinates,
-		Coordinates panCoordinates
+		Coordinates panCoordinates,
+		AccountId ownerId
 	)
 	{
 		Key = key;
@@ -19,6 +21,7 @@ public class Cad : BaseAggregateRoot
 		Volume = volume;
 		CamCoordinates = camCoordinates;
 		PanCoordinates = panCoordinates;
+		OwnerId = ownerId;
 	}
 
 	public CadId Id { get; set; }
@@ -27,14 +30,16 @@ public class Cad : BaseAggregateRoot
 	public decimal Volume { get; private set; }
 	public Coordinates CamCoordinates { get; private set; } = new();
 	public Coordinates PanCoordinates { get; private set; } = new();
+	public AccountId OwnerId { get; private set; }
 
 	public static Cad Create(
 		string key,
 		string contentType,
 		decimal volume,
 		Coordinates camCoordinates,
-		Coordinates panCoordinates
-	) => new Cad(key, contentType, volume, camCoordinates, panCoordinates)
+		Coordinates panCoordinates,
+		AccountId ownerId
+	) => new Cad(key, contentType, volume, camCoordinates, panCoordinates, ownerId)
 		.ValidateKey()
 		.ValidateContentType()
 		.ValidateVolume()
@@ -47,8 +52,9 @@ public class Cad : BaseAggregateRoot
 		string contentType,
 		decimal volume,
 		Coordinates camCoordinates,
-		Coordinates panCoordinates
-	) => new Cad(key, contentType, volume, camCoordinates, panCoordinates)
+		Coordinates panCoordinates,
+		AccountId ownerId
+	) => new Cad(key, contentType, volume, camCoordinates, panCoordinates, ownerId)
 	{
 		Id = id
 	}
@@ -57,14 +63,6 @@ public class Cad : BaseAggregateRoot
 	.ValidateVolume()
 	.ValidateCamCoordinates()
 	.ValidatePanCoordinates();
-
-	public Cad SetKey(string key)
-	{
-		Key = key;
-		this.ValidateKey();
-
-		return this;
-	}
 
 	public Cad SetContentType(string contentType)
 	{

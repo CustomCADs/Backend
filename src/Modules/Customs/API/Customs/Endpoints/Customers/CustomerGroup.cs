@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Customs.API.Customs.Endpoints.Customers;
 
+using static APIConstants;
 using static DomainConstants.Roles;
-using static EndpointsConstants;
 
 public class CustomerGroup : SubGroup<CustomsGroup>
 {

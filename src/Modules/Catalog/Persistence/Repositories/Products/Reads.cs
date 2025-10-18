@@ -2,6 +2,7 @@
 using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Persistence.Extensions;
 
 namespace CustomCADs.Catalog.Persistence.Repositories.Products;
@@ -54,6 +55,12 @@ public sealed class Reads(CatalogContext context) : IProductReads
 			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
+	public async Task<Product?> SingleByCadIdAsync(CadId cadId, bool track = true, CancellationToken ct = default)
+		=> await context.Products
+			.WithTracking(track)
+			.FirstOrDefaultAsync(x => x.CadId == cadId, ct)
+			.ConfigureAwait(false);
+
 	public async Task<string[]> TagsByIdAsync(ProductId id, CancellationToken ct = default)
 		=> await context.ProductTags
 			.Where(x => x.ProductId == id)
@@ -62,9 +69,17 @@ public sealed class Reads(CatalogContext context) : IProductReads
 			.ConfigureAwait(false);
 
 	public async Task<Dictionary<ProductId, string[]>> TagsByIdsAsync(ProductId[] ids, CancellationToken ct = default)
-		=> await context.ProductTags
-			.GroupBy(x => x.ProductId)
-			.Select(x => new { Id = x.Key, Tags = x.Select(x => x.Tag.Name).ToArray() })
+		=> await context.Products
+			.GroupJoin(
+				context.ProductTags,
+				x => x.Id,
+				x => x.ProductId,
+				(product, productTags) => new
+				{
+					Id = product.Id,
+					Tags = productTags.Select(x => x.Tag.Name).ToArray()
+				}
+			)
 			.ToDictionaryAsync(x => x.Id, x => x.Tags, ct)
 			.ConfigureAwait(false);
 

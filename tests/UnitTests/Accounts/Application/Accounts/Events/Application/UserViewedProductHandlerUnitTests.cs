@@ -28,7 +28,7 @@ public class UserViewedProductHandlerUnitTests : AccountsBaseUnitTests
 		UserViewedProductApplicationEvent ie = new(id, productId);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.HandleAsync(ie);
 
 		// Assert
 		writes.Verify(x => x.ViewProductAsync(id, productId, ct), Times.Once());

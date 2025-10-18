@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Customs;
 
-public readonly struct CustomId
+public readonly struct CustomId : IEntityId<Guid>
 {
 	public CustomId() : this(Guid.Empty) { }
 	private CustomId(Guid value)

@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Designer;
 
+using static APIConstants;
 using static DomainConstants.Roles;
-using static EndpointsConstants;
 
 public class DesignerGroup : SubGroup<ProductsGroup>
 {

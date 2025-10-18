@@ -5,5 +5,6 @@ namespace CustomCADs.Files.Domain.Repositories;
 public interface IWrites<TEntity> where TEntity : BaseAggregateRoot
 {
 	Task<TEntity> AddAsync(TEntity entity, CancellationToken ct = default);
+	Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ct = default);
 	void Remove(TEntity entity);
 }

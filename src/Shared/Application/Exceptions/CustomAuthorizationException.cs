@@ -12,6 +12,13 @@ public class CustomAuthorizationException<TEntity> : BaseException where TEntity
 	) where TId : struct
 		=> new($"Cannot access/modify another User's {typeof(TEntity).Name}: {id}.", inner);
 
+	public static CustomAuthorizationException<TEntity> ById<TId>(
+		TId id,
+		string property,
+		Exception? inner = default
+	) where TId : struct
+		=> new($"Cannot access/modify another User's {typeof(TEntity).Name} with {property}: {id}.", inner);
+
 	public static CustomAuthorizationException<TEntity> Custom(string message, Exception? inner = default)
 		=> new(message, inner);
 }

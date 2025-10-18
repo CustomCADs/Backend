@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.Currencies;
 
 namespace CustomCADs.Presentation;
 
-using static EndpointsConstants;
+using static APIConstants;
 
 public static class ExchangeRatesEndpoint
 {

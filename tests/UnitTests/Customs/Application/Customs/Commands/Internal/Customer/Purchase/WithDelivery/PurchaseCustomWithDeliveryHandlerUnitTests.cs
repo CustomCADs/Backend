@@ -1,14 +1,16 @@
 ﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 using CustomCADs.Customs.Application.Customs.Events.Application.DeliveryRequested;
+using CustomCADs.Customs.Application.Customs.Events.Application.PaymentStarted;
 using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Delivery;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
@@ -49,11 +51,6 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 			It.Is<GetCustomizationCostByIdQuery>(x => x.Id == ValidCustomizationId),
 			ct
 		)).ReturnsAsync(0m);
-
-		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCadExistsByIdQuery>(x => x.Id == ValidCadId),
-			ct
-		)).ReturnsAsync(true);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == ValidCustomizationId),
@@ -162,7 +159,13 @@ public class PurchaseCustomWithDeliveryHandlerUnitTests : CustomsBaseUnitTests
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<CustomDeliveryRequestedApplicationEvent>(x => x.Id == custom.Id)
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomCompleted)
+		), Times.Once());
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<CustomDeliveryRequestedApplicationEvent>(x => x.CustomId == custom.Id)
+		), Times.Once());
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.IsAny<CustomPaymentStartedApplicationEvent>()
 		), Times.Once());
 	}
 

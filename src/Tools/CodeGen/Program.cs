@@ -7,6 +7,7 @@ builder.Configuration.AddJsonFile("codegensettings.json");
 builder.Services.AddUseCases(builder.Environment, overrideCodeGenTo: true);
 builder.Services.AddCache();
 builder.Services.AddBackgroundJobs();
+builder.Services.AddAccessPolicies();
 
 // External Services
 builder.Services.AddEmailService(builder.Configuration);

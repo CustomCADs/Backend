@@ -6,7 +6,6 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
@@ -27,15 +26,11 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	{
 		handler = new(reads.Object, sender.Object, raiser.Object);
 
-		product.SetValidatedStatus();
+		product.Validate(ValidDesignerId);
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(product);
 
 		CoordinatesDto coords = new(0, 0, 0);
-		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCadCoordsByIdQuery>(x => x.Id == product.CadId),
-			ct
-		)).ReturnsAsync(new GetCadCoordsByIdDto(coords, coords));
 	}
 
 	[Fact]
@@ -62,19 +57,11 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCadVolumeByIdQuery>(x => x.Id == product.CadId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
 			It.Is<GetUsernameByIdQuery>(x => x.Id == product.CreatorId),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
 			It.Is<GetCategoryNameByIdQuery>(x => x.Id == product.CategoryId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCadCoordsByIdQuery>(x => x.Id == product.CadId),
 			ct
 		), Times.Once());
 	}
@@ -132,7 +119,7 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenStatusIsNotValid()
 	{
 		// Arrange
-		product.SetReportedStatus();
+		product.Report(ValidDesignerId);
 		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Assert

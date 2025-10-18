@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Notifications.API.Notifications.Endpoints;
 
+using static APIConstants;
 using static DomainConstants.Roles;
-using static EndpointsConstants;
 
 public class NotificationsGroup : Group
 {

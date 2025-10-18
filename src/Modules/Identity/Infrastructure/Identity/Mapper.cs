@@ -29,7 +29,7 @@ internal static class Mapper
 		=> User.Create(
 			id: UserId.New(appUser.Id),
 			role: role,
-			username: appUser.UserName ?? string.Empty,
+			username: appUser.Username,
 			email: new(appUser.Email ?? string.Empty, appUser.EmailConfirmed),
 			accountId: appUser.AccountId,
 			refreshTokens: [.. appUser.RefreshTokens.Select(x => Shallow.ToRefreshToken(x))]
@@ -39,9 +39,24 @@ internal static class Mapper
 		=> new AppUser()
 		{
 			Id = user.Id.Value,
+			IsSSO = false,
+			Provider = null,
 			UserName = user.Username,
 			Email = user.Email.Value,
 			EmailConfirmed = user.Email.IsVerified,
+			AccountId = user.AccountId,
+		}.FillRefreshTokens([.. user.RefreshTokens.Select(x => Shallow.ToAppRefreshToken(x))]);
+
+
+	internal static AppUser ToAppUser(this User user, string provider)
+		=> new AppUser()
+		{
+			Id = user.Id.Value,
+			IsSSO = true,
+			Provider = provider,
+			Username = user.Username,
+			Email = user.Email.Value,
+			EmailConfirmed = true,
 			AccountId = user.AccountId,
 		}.FillRefreshTokens([.. user.RefreshTokens.Select(x => Shallow.ToAppRefreshToken(x))]);
 

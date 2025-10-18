@@ -27,7 +27,7 @@ public class ProductDeletedApplicationEventHandlerUnitTests : ActiveCartsBaseUni
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.HandleAsync(ie);
 
 		// Assert
 		uow.Verify(x => x.BulkDeleteItemsByProductIdAsync(ValidProductId, ct), Times.Once());

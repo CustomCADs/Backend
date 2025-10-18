@@ -26,7 +26,7 @@ public class RoleCreatedHandlerUnitTests : UsersBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		service.Verify(x => x.CreateAsync(ValidRole), Times.Once());

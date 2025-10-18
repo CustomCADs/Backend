@@ -1,8 +1,9 @@
+using CustomCADs.Shared.Domain.Bases.Id;
 using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Idempotency;
 
-public readonly struct IdempotencyKeyId
+public readonly struct IdempotencyKeyId : IEntityId<Guid>
 {
 	public IdempotencyKeyId() : this(Guid.Empty) { }
 	private IdempotencyKeyId(Guid value)

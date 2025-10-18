@@ -52,7 +52,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		writes.Verify(x => x.AddAsync(
@@ -80,7 +80,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		uow.Verify(x => x.InsertNotificationsAsync(
@@ -102,7 +102,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -124,7 +124,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		notifier.Verify(x => x.NotifyUsersAsync(

@@ -37,7 +37,7 @@ public class ProductDeletedHandlerUnitTests : ImagesBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.HandleAsync(ie);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -54,7 +54,7 @@ public class ProductDeletedHandlerUnitTests : ImagesBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.HandleAsync(ie);
 
 		// Assert
 		writes.Verify(x => x.Remove(image), Times.Once());
@@ -72,7 +72,7 @@ public class ProductDeletedHandlerUnitTests : ImagesBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.HandleAsync(ie);
 
 		// Assert
 		cache.Verify(
@@ -92,7 +92,7 @@ public class ProductDeletedHandlerUnitTests : ImagesBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ie);
+		await handler.HandleAsync(ie);
 
 		// Assert
 		storage.Verify(x => x.DeleteFileAsync(image.Key, ct), Times.Once());
@@ -114,7 +114,7 @@ public class ProductDeletedHandlerUnitTests : ImagesBaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(
 			// Act
-			async () => await handler.Handle(ie)
+			async () => await handler.HandleAsync(ie)
 		);
 	}
 }

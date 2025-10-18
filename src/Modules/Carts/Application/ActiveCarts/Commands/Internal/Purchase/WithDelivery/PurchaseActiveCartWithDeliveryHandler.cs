@@ -1,9 +1,13 @@
 ﻿using CustomCADs.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
 using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 using CustomCADs.Carts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
@@ -37,9 +41,9 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 				.Where(x => x.ForDelivery && x.CustomizationId is not null)
 				.Select(x => x.CustomizationId!.Value)
 		];
-		Dictionary<CustomizationId, decimal> costs = await SnapshotCosts(items, customizationIds, ct).ConfigureAwait(false);
+		Dictionary<CustomizationId, decimal> costs = await SnapshotCostsAsync(items, customizationIds, ct).ConfigureAwait(false);
 
-		Dictionary<ProductId, decimal> prices = await SnapshotPrices(items, ct).ConfigureAwait(false);
+		Dictionary<ProductId, decimal> prices = await SnapshotPricesAsync(items, ct).ConfigureAwait(false);
 		decimal totalSum = prices.Sum(x => x.Value) + costs.Sum(x => x.Value);
 
 		string buyer = await sender.SendQueryAsync(
@@ -59,16 +63,15 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 			),
 			ct: ct
 		).ConfigureAwait(false);
-		Dictionary<CustomizationId, double> weights = await SnapshotWeights(items, customizationIds, ct).ConfigureAwait(false);
+		Dictionary<CustomizationId, double> weights = await SnapshotWeightsAsync(items, customizationIds, ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			@event: new ActiveCartDeliveryRequestedApplicationEvent(
-				Id: purchasedCartId,
-				Weight: weights.Sum(x => x.Value),
-				Count: items.Where(x => x.ForDelivery).Sum(x => x.Quantity),
-				ShipmentService: req.ShipmentService,
-				Address: req.Address,
-				Contact: req.Contact
+			@event: new NotificationRequestedEvent(
+				Type: NotificationType.CartPurchased,
+				Description: ApplicationConstants.Notifications.Messages.CartPurchased,
+				Link: ApplicationConstants.Notifications.Links.CartPurchased,
+				AuthorId: req.CallerId,
+				ReceiverIds: [req.CallerId]
 			)
 		).ConfigureAwait(false);
 
@@ -81,10 +84,25 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 			ct: ct
 		).ConfigureAwait(false);
 
+		await raiser.RaiseApplicationEventAsync(
+			@event: new CartPaymentStartedApplicationEvent(purchasedCartId.Value)
+		).ConfigureAwait(false);
+
+		await raiser.RaiseApplicationEventAsync(
+			@event: new ActiveCartDeliveryRequestedApplicationEvent(
+				PurchasedCartId: purchasedCartId,
+				Weight: weights.Sum(x => x.Value),
+				Count: items.Where(x => x.ForDelivery).Sum(x => x.Quantity),
+				ShipmentService: req.ShipmentService,
+				Address: req.Address,
+				Contact: req.Contact
+			)
+		).ConfigureAwait(false);
+
 		return response;
 	}
 
-	private async Task<Dictionary<CustomizationId, double>> SnapshotWeights(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
+	private async Task<Dictionary<CustomizationId, double>> SnapshotWeightsAsync(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
 	{
 		Dictionary<CustomizationId, double> weights = await sender.SendQueryAsync(
 			query: new GetCustomizationsWeightByIdsQuery(
@@ -105,7 +123,7 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 		);
 	}
 
-	private async Task<Dictionary<CustomizationId, decimal>> SnapshotCosts(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
+	private async Task<Dictionary<CustomizationId, decimal>> SnapshotCostsAsync(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
 	{
 		Dictionary<CustomizationId, decimal> costs = await sender.SendQueryAsync(
 			query: new GetCustomizationsCostByIdsQuery(
@@ -124,7 +142,7 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 		);
 	}
 
-	private async Task<Dictionary<ProductId, decimal>> SnapshotPrices(ActiveCartItem[] items, CancellationToken ct)
+	private async Task<Dictionary<ProductId, decimal>> SnapshotPricesAsync(ActiveCartItem[] items, CancellationToken ct)
 	{
 		Dictionary<ProductId, decimal> prices = await sender.SendQueryAsync(
 			query: new GetProductPricesByIdsQuery(

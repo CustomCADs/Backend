@@ -4,6 +4,7 @@ using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Customs;
+using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,10 +41,26 @@ public sealed class Reads(CustomsContext context) : ICustomReads
 			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
+	public async Task<Custom?> SingleByCadIdAsync(CadId cadId, bool track = true, CancellationToken ct = default)
+		=> await context.Customs
+			.WithTracking(track)
+			.Include(x => x.Category)
+			.Include(x => x.AcceptedCustom)
+			.Include(x => x.FinishedCustom)
+			.Include(x => x.CompletedCustom)
+			.FirstOrDefaultAsync(x => x.FinishedCustom != null && x.FinishedCustom.CadId == cadId, ct)
+			.ConfigureAwait(false);
+
 	public async Task<bool> ExistsByIdAsync(CustomId id, CancellationToken ct = default)
 		=> await context.Customs
 			.WithTracking(false)
 			.AnyAsync(x => x.Id == id, ct)
+			.ConfigureAwait(false);
+
+	public async Task<bool> ExistsByCadIdAsync(CadId cadId, CancellationToken ct = default)
+		=> await context.Customs
+			.WithTracking(false)
+			.AnyAsync(x => x.FinishedCustom != null && x.FinishedCustom.CadId == cadId, ct)
 			.ConfigureAwait(false);
 
 	public async Task<Dictionary<CustomStatus, int>> CountAsync(AccountId buyerId, CancellationToken ct = default)

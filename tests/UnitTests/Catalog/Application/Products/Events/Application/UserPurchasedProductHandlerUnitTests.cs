@@ -23,7 +23,7 @@ public class UserPurchasedProductHandlerUnitTests : ProductsBaseUnitTests
 		UserPurchasedProductApplicationEvent ae = new(ids);
 
 		// Act
-		await handler.Handle(ae, ct);
+		await handler.HandleAsync(ae, ct);
 
 		// Assert
 		uow.Verify(x => x.AddProductPurchasesAsync(ids, 1, ct), Times.Once());

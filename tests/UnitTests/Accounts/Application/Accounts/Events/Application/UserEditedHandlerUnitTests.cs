@@ -33,7 +33,7 @@ public class UserEditedHandlerUnitTests : AccountsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -50,7 +50,7 @@ public class UserEditedHandlerUnitTests : AccountsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
@@ -70,7 +70,7 @@ public class UserEditedHandlerUnitTests : AccountsBaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			async () => await handler.Handle(ae)
+			async () => await handler.HandleAsync(ae)
 		);
 	}
 }

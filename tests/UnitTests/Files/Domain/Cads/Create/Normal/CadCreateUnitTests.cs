@@ -7,34 +7,32 @@ using static CadsData;
 
 public class CadCreateUnitTests : CadsBaseUnitTests
 {
-	private static readonly Coordinates coords = new(MinValidCoord, MinValidCoord, MinValidCoord);
-
 	[Fact]
 	public void Create_ShouldNotThrowExcepion_WhenCadIsValid()
 	{
-		Cad.Create(ValidKey, ValidContentType, ValidVolume, coords, coords);
+		CreateCad(ValidKey, ValidContentType, ValidVolume, ValidCoords, ValidCoords);
 	}
 
 	[Fact]
 	public void Create_ShouldPopulateProperties_WhenCadIsValid()
 	{
-		var cad = Cad.Create(ValidKey, ValidContentType, ValidVolume, coords, coords);
+		var cad = CreateCad(ValidKey, ValidContentType, ValidVolume, ValidCoords, ValidCoords);
 
 		Assert.Multiple(
 			() => Assert.Equal(ValidKey, cad.Key),
 			() => Assert.Equal(ValidContentType, cad.ContentType),
 			() => Assert.Equal(ValidVolume, cad.Volume),
-			() => Assert.Equal(coords, cad.CamCoordinates),
-			() => Assert.Equal(coords, cad.PanCoordinates)
+			() => Assert.Equal(ValidCoords, cad.CamCoordinates),
+			() => Assert.Equal(ValidCoords, cad.PanCoordinates)
 		);
 	}
 
 	[Theory]
 	[ClassData(typeof(Data.CadCreateInvalidData))]
-	public void Create_ShouldThrowException_WhenKeyIsInvalid(string key, string contentType, decimal volume, Coordinates coords)
+	public void Create_ShouldThrowException_WhenKeyIsInvalid(string key, string contentType, decimal volume, Coordinates camCoords, Coordinates panCoords)
 	{
 		Assert.Throws<CustomValidationException<Cad>>(
-			() => Cad.Create(key, contentType, volume, coords, coords)
+			() => CreateCad(key, contentType, volume, camCoords, panCoords)
 		);
 	}
 }

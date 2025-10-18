@@ -37,6 +37,7 @@ public static class ApplicationConstants
 			public const string ProductDeleted = "Product '{0}', which you've added to your Cart, has been deleted!";
 			public const string ProductValidated = "Your Product has been validated by {0}!";
 			public const string ProductReported = "Your Product has been reported by {0}!";
+			public const string ProductRemoved = "Product '{0}' has been removed!";
 			public const string ProductTagAdded = "Your Product has been assigned a new Tag!";
 			public const string ProductTagRemoved = "Your Product has had a Tag revoked!";
 			public const string CustomCreated = "A new Custom 3D Model has been requested!";
@@ -50,6 +51,7 @@ public static class ApplicationConstants
 			public const string CustomCanceled = "Your Custom 3D Model Request has been canceled!";
 			public const string CustomFinished = "Your Custom 3D Model Request has been finished!";
 			public const string CustomCompleted = "The Custom 3D Model Request: {0} from: {1} has been completed!";
+			public const string CartPurchased = "Your Cart has been purchased!";
 			public const string PaymentCompleted = "Your Payment has been completed successfully!";
 			public const string PaymentFailed = "Your Payment has failed!";
 		}
@@ -60,6 +62,7 @@ public static class ApplicationConstants
 			public const string ProductDeleted = "/cart";
 			public const string? ProductValidated = null;
 			public const string? ProductReported = null;
+			public const string? ProductRemoved = null;
 			public const string? ProductTagAdded = null;
 			public const string? ProductTagRemoved = null;
 			public const string? CustomToggledDelivery = null;
@@ -73,7 +76,8 @@ public static class ApplicationConstants
 			public const string? CustomCanceled = null;
 			public const string? CustomFinished = null;
 			public const string? CustomCompleted = null;
-			public const string PaymentCompleted = "{0}/{1}";
+			public const string? CartPurchased = null;
+			public const string PaymentCompleted = null;
 			public const string? PaymentFailed = null;
 		}
 	}

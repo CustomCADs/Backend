@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-public readonly struct CategoryId
+public readonly struct CategoryId : IEntityId<int>
 {
 	public CategoryId() : this(0) { }
 	private CategoryId(int value)

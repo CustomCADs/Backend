@@ -1,4 +1,3 @@
-using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using CustomCADs.Files.Application.Contracts;
@@ -18,7 +17,8 @@ public static class DependencyInjection
 
 			AmazonS3Config config = new()
 			{
-				RegionEndpoint = RegionEndpoint.GetBySystemName(settings.Region),
+				ServiceURL = settings.Endpoint,
+				ForcePathStyle = true,
 			};
 
 			BasicAWSCredentials credentials = new(settings.AccessKey, settings.SecretKey);

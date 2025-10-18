@@ -5,7 +5,7 @@ namespace CustomCADs.Carts.Application.ActiveCarts.Events.Application.ProductDel
 
 public class ProductDeletedHandler(IUnitOfWork uow)
 {
-	public async Task Handle(ProductDeletedApplicationEvent ae)
+	public async Task HandleAsync(ProductDeletedApplicationEvent ae)
 	{
 		await uow.BulkDeleteItemsByProductIdAsync(ae.Id).ConfigureAwait(false);
 	}

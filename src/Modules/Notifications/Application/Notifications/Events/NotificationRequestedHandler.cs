@@ -9,7 +9,7 @@ namespace CustomCADs.Notifications.Application.Notifications.Events;
 
 public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfWork uow, IRequestSender sender, INotificationsRealTimeNotifier notifier)
 {
-	public async Task Handle(NotificationRequestedEvent ae)
+	public async Task HandleAsync(NotificationRequestedEvent ae)
 	{
 		List<Notification> notifications = [];
 		if (ae.ReceiverIds is [AccountId receiverId])
@@ -26,18 +26,16 @@ public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfW
 
 			notifications.Add(notification);
 		}
-		else
-		{
-			var entities = await uow.InsertNotificationsAsync(
+		else notifications = [..
+			await uow.InsertNotificationsAsync(
 				notifications: Notification.CreateBulk(
 					type: ae.Type.ToString(),
 					content: new(ae.Description, ae.Link),
 					authorId: ae.AuthorId,
-					receiverIds: ae.ReceiverIds
+					receiverIds: [.. ae.ReceiverIds.Distinct()]
 				)
-			).ConfigureAwait(false);
-			notifications = [.. entities];
-		}
+			).ConfigureAwait(false)
+		];
 
 		string author = await sender.SendQueryAsync(new GetUsernameByIdQuery(ae.AuthorId)).ConfigureAwait(false);
 		await notifier.NotifyUsersAsync(

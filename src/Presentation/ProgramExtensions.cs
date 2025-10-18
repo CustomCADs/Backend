@@ -52,7 +52,7 @@ public static class ProgramExtensions
 	public static IServiceCollection AddRateLimiting(this IServiceCollection services)
 		=> services.AddRateLimiter(options =>
 			options.AddPolicy(
-				policyName: EndpointsConstants.RateLimitPolicy,
+				policyName: APIConstants.RateLimitPolicy,
 				partitioner: context =>
 				{
 					AccountId id = context.User.GetAccountId();
@@ -177,7 +177,7 @@ public static class ProgramExtensions
 			cfg.Endpoints.Configurator = (ep) =>
 			{
 				ep.AuthSchemes(AuthScheme);
-				ep.Description(d => d.RequireRateLimiting(EndpointsConstants.RateLimitPolicy));
+				ep.Description(d => d.RequireRateLimiting(APIConstants.RateLimitPolicy));
 			};
 			cfg.Endpoints.RoutePrefix = "api";
 			cfg.Versioning.DefaultVersion = 1;

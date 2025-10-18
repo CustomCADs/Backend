@@ -1,4 +1,5 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Catalog.Domain.Products.Enums;
+using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
@@ -12,6 +13,11 @@ public sealed class DesignerGetProductByIdHandler(IProductReads reads, IRequestS
 	{
 		Product product = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(req.Id);
+
+		if (product.Status != ProductStatus.Unchecked && product.DesignerId != req.CallerId)
+		{
+			throw CustomAuthorizationException<Product>.ById(product.Id);
+		}
 
 		return product.ToDesignerGetByIdDto(
 			username: await sender.SendQueryAsync(

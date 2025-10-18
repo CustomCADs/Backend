@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Carts;
 
-public readonly struct PurchasedCartId
+public readonly struct PurchasedCartId : IEntityId<Guid>
 {
 	public PurchasedCartId() : this(Guid.Empty) { }
 	private PurchasedCartId(Guid value)

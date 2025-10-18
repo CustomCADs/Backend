@@ -43,7 +43,7 @@ public static class ProgramExtensions
 		return services;
 	}
 
-	public static async Task ExecuteDbMigrationUpdater(this IServiceCollection services)
+	public static async Task ExecuteDbMigrationUpdaterAsync(this IServiceCollection services)
 	{
 		using IServiceScope scope = services.BuildServiceProvider().CreateScope();
 		IServiceProvider provider = scope.ServiceProvider;

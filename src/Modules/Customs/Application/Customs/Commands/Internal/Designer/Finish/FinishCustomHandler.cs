@@ -4,11 +4,9 @@ using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
-using CustomCADs.Shared.Application.UseCases.Cads.Commands;
-using CustomCADs.Shared.Domain.TypedIds.Files;
+using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
 namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Finish;
-
 
 public sealed class FinishCustomHandler(
 	ICustomReads reads,
@@ -22,21 +20,17 @@ public sealed class FinishCustomHandler(
 		Custom custom = await reads.SingleByIdAsync(req.Id, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
 
+		if (!await sender.SendQueryAsync(new CadExistsByIdQuery(req.CadId), ct).ConfigureAwait(false))
+		{
+			throw CustomNotFoundException<Custom>.ById(req.CadId, "Cad");
+		}
+
 		if (custom.AcceptedCustom?.DesignerId != req.CallerId)
 		{
 			throw CustomAuthorizationException<Custom>.ById(req.Id);
 		}
 
-		CadId cadId = await sender.SendCommandAsync(
-			command: new CreateCadCommand(
-				Key: req.Cad.Key,
-				ContentType: req.Cad.ContentType,
-				Volume: req.Cad.Volume
-			),
-			ct: ct
-		).ConfigureAwait(false);
-
-		custom.Finish(cadId, req.Price);
+		custom.Finish(req.CadId, req.Price);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(

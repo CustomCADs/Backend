@@ -31,7 +31,7 @@ public class UserCreatedHandlerUnitTests : UsersBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		service.Verify(x => x.CreateAsync(

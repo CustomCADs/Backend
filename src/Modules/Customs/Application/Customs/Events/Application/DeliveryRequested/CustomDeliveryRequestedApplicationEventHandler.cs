@@ -13,10 +13,10 @@ public class CustomDeliveryRequestedApplicationEventHandler(
 	IRequestSender sender
 )
 {
-	public async Task Handle(CustomDeliveryRequestedApplicationEvent ae)
+	public async Task HandleAsync(CustomDeliveryRequestedApplicationEvent ae)
 	{
-		Custom custom = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Custom>.ById(ae.Id);
+		Custom custom = await reads.SingleByIdAsync(ae.CustomId).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Custom>.ById(ae.CustomId);
 
 		string buyer = await sender.SendQueryAsync(
 			query: new GetUsernameByIdQuery(custom.BuyerId)

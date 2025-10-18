@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery;
 
-using static EndpointsConstants;
+using static APIConstants;
 
 public class GalleryGroup : SubGroup<ProductsGroup>
 {

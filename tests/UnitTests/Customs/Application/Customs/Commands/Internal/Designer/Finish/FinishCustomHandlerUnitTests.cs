@@ -7,7 +7,7 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Application.UseCases.Cads.Commands;
+using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Designer.Finish;
@@ -23,7 +23,6 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 	private readonly Mock<IEventRaiser> raiser = new();
 
 	private static readonly AccountId designerId = AccountId.New();
-	private readonly (string Key, string ContentType, decimal Volume) cad = ("generated-key", "model/gltf-binary", 15);
 	private readonly Custom custom = CreateCustom();
 
 	public FinishCustomHandlerUnitTests()
@@ -35,14 +34,10 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 
-		sender.Setup(x => x.SendCommandAsync(
-			It.Is<CreateCadCommand>(x =>
-				x.ContentType == cad.ContentType
-				&& x.Key == x.Key
-				&& x.Volume == cad.Volume
-			),
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<CadExistsByIdQuery>(x => x.Id == ValidCadId),
 			ct
-		)).ReturnsAsync(ValidCadId);
+		)).ReturnsAsync(true);
 	}
 
 	[Fact]
@@ -51,7 +46,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		FinishCustomCommand command = new(
 			Id: ValidId,
-			Cad: cad,
+			CadId: ValidCadId,
 			Price: ValidPrice,
 			CallerId: ValidDesignerId
 		);
@@ -69,7 +64,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		FinishCustomCommand command = new(
 			Id: ValidId,
-			Cad: cad,
+			CadId: ValidCadId,
 			Price: ValidPrice,
 			CallerId: ValidDesignerId
 		);
@@ -82,12 +77,33 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 	}
 
 	[Fact]
+	public async Task Handle_ShouldSendRequests()
+	{
+		// Arrange
+		FinishCustomCommand command = new(
+			Id: ValidId,
+			CadId: ValidCadId,
+			Price: ValidPrice,
+			CallerId: ValidDesignerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<CadExistsByIdQuery>(x => x.Id == ValidCadId),
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
 		FinishCustomCommand command = new(
 			Id: ValidId,
-			Cad: cad,
+			CadId: ValidCadId,
 			Price: ValidPrice,
 			CallerId: ValidDesignerId
 		);
@@ -107,7 +123,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 		// Arrange
 		FinishCustomCommand command = new(
 			Id: ValidId,
-			Cad: cad,
+			CadId: ValidCadId,
 			Price: ValidPrice,
 			CallerId: ValidDesignerId
 		);
@@ -133,7 +149,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		FinishCustomCommand command = new(
 			Id: ValidId,
-			Cad: cad,
+			CadId: ValidCadId,
 			Price: ValidPrice,
 			CallerId: ValidDesignerId
 		);
@@ -154,7 +170,7 @@ public class FinishCustomHandlerUnitTests : CustomsBaseUnitTests
 
 		FinishCustomCommand command = new(
 			Id: ValidId,
-			Cad: cad,
+			CadId: ValidCadId,
 			Price: ValidPrice,
 			CallerId: ValidDesignerId
 		);

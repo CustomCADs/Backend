@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CustomCADs.Shared.Domain.Bases.Id;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-public readonly struct TagId
+public readonly struct TagId : IEntityId<Guid>
 {
 	public TagId() : this(Guid.Empty) { }
 	private TagId(Guid value)
@@ -18,6 +19,8 @@ public readonly struct TagId
 	public static TagId[]? New(Guid[]? ids) => ids is null ? null : [.. ids.Select(New)];
 	public static Guid Unwrap(TagId id) => id.Value;
 	public static Guid? Unwrap(TagId? id) => id?.Value;
+	public static TagId[] Filter(Dictionary<TagId, bool> tags)
+		=> [.. tags.Where(x => x.Value).Select(x => x.Key)];
 
 	public override bool Equals([NotNullWhen(true)] object? obj)
 		=> obj is TagId TagId && this == TagId;

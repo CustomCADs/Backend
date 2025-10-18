@@ -20,7 +20,7 @@ public sealed class ToggleActiveCartItemForDeliveryHandler(
 
 		if (item.ForDelivery)
 		{
-			await TurnDeliveryOff(item, item.CustomizationId, ct).ConfigureAwait(false);
+			await TurnDeliveryOffAsync(item, item.CustomizationId, ct).ConfigureAwait(false);
 			return;
 		}
 
@@ -28,10 +28,10 @@ public sealed class ToggleActiveCartItemForDeliveryHandler(
 		{
 			throw CustomException.Delivery<ActiveCartItem>(markedForDelivery: true);
 		}
-		await TurnDeliveryOn(item, req.CustomizationId.Value, ct).ConfigureAwait(false);
+		await TurnDeliveryOnAsync(item, req.CustomizationId.Value, ct).ConfigureAwait(false);
 	}
 
-	private async Task TurnDeliveryOff(ActiveCartItem item, CustomizationId? customizationId, CancellationToken ct = default)
+	private async Task TurnDeliveryOffAsync(ActiveCartItem item, CustomizationId? customizationId, CancellationToken ct = default)
 	{
 		item.SetNoDelivery();
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
@@ -45,7 +45,7 @@ public sealed class ToggleActiveCartItemForDeliveryHandler(
 		}
 	}
 
-	private async Task TurnDeliveryOn(ActiveCartItem item, CustomizationId customizationId, CancellationToken ct = default)
+	private async Task TurnDeliveryOnAsync(ActiveCartItem item, CustomizationId customizationId, CancellationToken ct = default)
 	{
 		if (!await sender.SendQueryAsync(new GetCustomizationExistsByIdQuery(customizationId), ct).ConfigureAwait(false))
 		{

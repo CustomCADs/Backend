@@ -36,7 +36,7 @@ public sealed class Reads(DeliveryContext context) : IShipmentReads
 
 	public async Task<Shipment?> SingleByIdAsync(ShipmentId id, bool track = true, CancellationToken ct = default)
 		=> await context.Shipments
-			.WithTracking(false)
+			.WithTracking(track)
 			.FirstOrDefaultAsync(x => x.Id == id, ct)
 			.ConfigureAwait(false);
 
