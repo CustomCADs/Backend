@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Carts.API.ActiveCarts.Endpoints;
 
-using static DomainConstants.Roles;
 using static APIConstants;
+using static DomainConstants.Roles;
 
 public class ActiveCartsGroup : Group
 {

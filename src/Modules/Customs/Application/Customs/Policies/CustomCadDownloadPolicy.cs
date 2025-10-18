@@ -22,18 +22,18 @@ public class CustomCadDownloadPolicy(ICustomReads reads, IRequestSender sender) 
 		switch (role)
 		{
 			case DomainConstants.Roles.Customer:
-				await EnsureCustomerDownloadGranted(context).ConfigureAwait(false);
+				await EnsureCustomerDownloadGrantedAsync(context).ConfigureAwait(false);
 				break;
 
 			case DomainConstants.Roles.Designer:
-				await EnsureDesignerDownloadGranted(context).ConfigureAwait(false);
+				await EnsureDesignerDownloadGrantedAsync(context).ConfigureAwait(false);
 				break;
 
 			default: throw CustomAuthorizationException<Custom>.Custom("Your role is not suitable for access to a Custom's CAD");
 		}
 	}
 
-	private async Task EnsureCustomerDownloadGranted(IFileDownloadPolicy<CadId>.FileContext context)
+	private async Task EnsureCustomerDownloadGrantedAsync(IFileDownloadPolicy<CadId>.FileContext context)
 	{
 		Custom custom = await reads.SingleByCadIdAsync(context.FileId, track: false).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ByProp(nameof(Custom.FinishedCustom.CadId), context.FileId);
@@ -54,7 +54,7 @@ public class CustomCadDownloadPolicy(ICustomReads reads, IRequestSender sender) 
 		}
 	}
 
-	private async Task EnsureDesignerDownloadGranted(IFileDownloadPolicy<CadId>.FileContext context)
+	private async Task EnsureDesignerDownloadGrantedAsync(IFileDownloadPolicy<CadId>.FileContext context)
 	{
 		Custom custom = await reads.SingleByCadIdAsync(context.FileId, track: false).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ByProp(nameof(Custom.FinishedCustom.CadId), context.FileId);

@@ -9,7 +9,7 @@ namespace CustomCADs.Catalog.Application.Products.Events.Application.ProductView
 
 public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
 {
-	public async Task Handle(ProductViewedApplicationEvent ae)
+	public async Task HandleAsync(ProductViewedApplicationEvent ae)
 	{
 		Product product = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Product>.ById(ae.Id);

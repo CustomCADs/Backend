@@ -1,6 +1,4 @@
-﻿using CustomCADs.Shared.Application.Dtos.Files;
-
-namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Get.Single;
+﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Get.Single;
 
 public sealed record GetGalleryProductResponse(
 	Guid Id,

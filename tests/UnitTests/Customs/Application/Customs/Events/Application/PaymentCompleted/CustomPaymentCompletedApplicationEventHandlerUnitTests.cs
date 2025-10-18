@@ -52,7 +52,7 @@ public class CustomPaymentCompletedApplicationEventHandlerUnitTests : CustomsBas
 		CustomPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -65,7 +65,7 @@ public class CustomPaymentCompletedApplicationEventHandlerUnitTests : CustomsBas
 		CustomPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
@@ -78,7 +78,7 @@ public class CustomPaymentCompletedApplicationEventHandlerUnitTests : CustomsBas
 		CustomPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -98,7 +98,7 @@ public class CustomPaymentCompletedApplicationEventHandlerUnitTests : CustomsBas
 		CustomPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		email.Verify(x => x.SendRewardGrantedEmailAsync(
@@ -125,7 +125,7 @@ public class CustomPaymentCompletedApplicationEventHandlerUnitTests : CustomsBas
 		CustomPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		sender.Verify(x => x.SendCommandAsync(
@@ -149,7 +149,7 @@ public class CustomPaymentCompletedApplicationEventHandlerUnitTests : CustomsBas
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			async () => await handler.Handle(ae)
+			async () => await handler.HandleAsync(ae)
 		);
 	}
 }

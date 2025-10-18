@@ -7,7 +7,7 @@ namespace CustomCADs.Files.Application.Images.Events.Application;
 
 public class ProductDeletedHandler(IImageReads reads, IWrites<Image> writes, IUnitOfWork uow, IImageStorageService storage, BaseCachingService<ImageId, Image> cache)
 {
-	public async Task Handle(ProductDeletedApplicationEvent ae)
+	public async Task HandleAsync(ProductDeletedApplicationEvent ae)
 	{
 		Image image = await reads.SingleByIdAsync(ae.ImageId, track: true).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Image>.ById(ae.ImageId);

@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Shared.Application.Abstractions.Requests.Attributes;
-using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;

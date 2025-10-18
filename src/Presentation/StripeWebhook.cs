@@ -15,8 +15,8 @@ using Stripe;
 
 namespace CustomCADs.Presentation;
 
-using static ApplicationConstants;
 using static APIConstants;
+using static ApplicationConstants;
 
 public static class StripeWebhook
 {

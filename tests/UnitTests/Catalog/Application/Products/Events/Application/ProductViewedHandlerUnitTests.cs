@@ -59,7 +59,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -72,7 +72,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
@@ -85,7 +85,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -109,7 +109,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
@@ -124,7 +124,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		Assert.Equal(1, product.Counts.Views);
@@ -141,7 +141,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -161,7 +161,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
@@ -182,7 +182,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			async () => await handler.Handle(ae)
+			async () => await handler.HandleAsync(ae)
 		);
 	}
 }

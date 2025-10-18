@@ -6,7 +6,6 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 

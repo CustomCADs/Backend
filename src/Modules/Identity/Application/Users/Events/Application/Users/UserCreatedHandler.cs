@@ -4,7 +4,7 @@ namespace CustomCADs.Identity.Application.Users.Events.Application.Users;
 
 public class UserCreatedHandler(IUserService service)
 {
-	public async Task Handle(AccountCreatedApplicationEvent ae)
+	public async Task HandleAsync(AccountCreatedApplicationEvent ae)
 	{
 		await service.CreateAsync(
 			user: User.Create(

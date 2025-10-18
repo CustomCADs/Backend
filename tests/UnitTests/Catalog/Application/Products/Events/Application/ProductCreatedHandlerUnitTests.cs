@@ -26,7 +26,7 @@ public class ProductCreatedHandlerUnitTests : ProductsBaseUnitTests
 		ProductCreatedApplicationEvent ae = new(ValidId, TagIds);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		writes.Verify(

@@ -5,6 +5,7 @@ using CustomCADs.Shared.Application.Events.Customs;
 using Wolverine;
 using Wolverine.Persistence.Sagas;
 
+#pragma warning disable IDE1006 // Async suffix
 namespace CustomCADs.Customs.Infrastructure.Sagas;
 
 public class CustomDeliveryPaymentSaga : Saga
@@ -17,12 +18,12 @@ public class CustomDeliveryPaymentSaga : Saga
 
 	public async Task Handle(CustomDeliveryRequestedApplicationEvent msg, CustomDeliveryRequestedApplicationEventHandler handler)
 	{
-		await handler.Handle(msg).ConfigureAwait(false);
+		await handler.HandleAsync(msg).ConfigureAwait(false);
 	}
 
 	public async Task Handle(CustomPaymentCompletedApplicationEvent msg, CustomPaymentCompletedApplicationEventHandler handler)
 	{
-		await handler.Handle(msg).ConfigureAwait(false);
+		await handler.HandleAsync(msg).ConfigureAwait(false);
 
 		MarkCompleted();
 	}

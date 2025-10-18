@@ -23,7 +23,7 @@ public class EmailVerificationRequestedHandlerUnitTests : UsersBaseUnitTests
 		EmailVerificationRequestedApplicationEvent ae = new(Email, Endpoint);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		email.Verify(x => x.SendVerificationEmailAsync(Email, Endpoint, ct), Times.Once());

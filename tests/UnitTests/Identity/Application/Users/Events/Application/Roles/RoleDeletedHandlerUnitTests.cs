@@ -23,7 +23,7 @@ public class RoleDeletedHandlerUnitTests : UsersBaseUnitTests
 		RoleDeletedApplicationEvent ae = new(ValidRole);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		service.Verify(x => x.DeleteAsync(ValidRole), Times.Once());

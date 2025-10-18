@@ -45,8 +45,8 @@ internal sealed class SpeedyDeliveryService(ISpeedyClient speedy) : IDeliverySer
 		string street,
 		string? phone,
 		CancellationToken ct = default
-	) => await IsAddressValid(country, city, street, ct).ConfigureAwait(false)
-		&& await IsPhoneValid(phone, ct).ConfigureAwait(false);
+	) => await IsAddressValidAsync(country, city, street, ct).ConfigureAwait(false)
+		&& await IsPhoneValidAsync(phone, ct).ConfigureAwait(false);
 
 	public async Task<ShipmentDto> ShipAsync(
 		ShipRequestDto req,
@@ -115,10 +115,10 @@ internal sealed class SpeedyDeliveryService(ISpeedyClient speedy) : IDeliverySer
 		);
 	}
 
-	private async Task<bool> IsAddressValid(string country, string city, string street, CancellationToken ct = default)
+	private async Task<bool> IsAddressValidAsync(string country, string city, string street, CancellationToken ct = default)
 		=> await speedy.ValidateAddress(country, city, street, ct).ConfigureAwait(false);
 
-	private async Task<bool> IsPhoneValid(string? phone, CancellationToken ct = default)
+	private async Task<bool> IsPhoneValidAsync(string? phone, CancellationToken ct = default)
 		=> phone is null || await speedy.ValidatePhone(phone, ct).ConfigureAwait(false);
 
 	private static ShipmentTrackDto[] ConvertParcelToStatuses(ICollection<TrackedParcelModel> parcels)

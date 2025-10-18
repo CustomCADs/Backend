@@ -13,7 +13,7 @@ public class CustomDeliveryRequestedApplicationEventHandler(
 	IRequestSender sender
 )
 {
-	public async Task Handle(CustomDeliveryRequestedApplicationEvent ae)
+	public async Task HandleAsync(CustomDeliveryRequestedApplicationEvent ae)
 	{
 		Custom custom = await reads.SingleByIdAsync(ae.CustomId).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(ae.CustomId);

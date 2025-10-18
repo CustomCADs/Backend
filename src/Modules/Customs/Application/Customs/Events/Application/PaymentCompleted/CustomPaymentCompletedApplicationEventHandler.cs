@@ -1,5 +1,4 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Repositories;
+﻿using CustomCADs.Customs.Domain.Repositories;
 using CustomCADs.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Email;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
@@ -18,7 +17,7 @@ public class CustomPaymentCompletedApplicationEventHandler(
 	IEmailService email
 )
 {
-	public async Task Handle(CustomPaymentCompletedApplicationEvent ae)
+	public async Task HandleAsync(CustomPaymentCompletedApplicationEvent ae)
 	{
 		Custom custom = await reads.SingleByIdAsync(ae.CustomId).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(ae.CustomId);

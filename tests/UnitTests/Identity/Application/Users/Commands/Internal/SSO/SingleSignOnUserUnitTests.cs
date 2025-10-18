@@ -3,7 +3,6 @@ using CustomCADs.Identity.Application.Users.Commands.Internal.SSO.Register;
 using CustomCADs.Identity.Application.Users.Dtos;
 using CustomCADs.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
-using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Commands;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Commands.Internal.SSO;

@@ -1,5 +1,4 @@
 ﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.Validate;
-using CustomCADs.Catalog.Domain.Products.Enums;
 using CustomCADs.Catalog.Domain.Repositories;
 using CustomCADs.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;

@@ -9,7 +9,7 @@ namespace CustomCADs.Notifications.Application.Notifications.Events;
 
 public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfWork uow, IRequestSender sender, INotificationsRealTimeNotifier notifier)
 {
-	public async Task Handle(NotificationRequestedEvent ae)
+	public async Task HandleAsync(NotificationRequestedEvent ae)
 	{
 		List<Notification> notifications = [];
 		if (ae.ReceiverIds is [AccountId receiverId])

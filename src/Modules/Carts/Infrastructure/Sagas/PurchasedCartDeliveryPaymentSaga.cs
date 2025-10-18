@@ -5,6 +5,7 @@ using CustomCADs.Carts.Application.PurchasedCarts.Events.Application.PaymentComp
 using CustomCADs.Shared.Application.Events.Carts;
 using Wolverine;
 
+#pragma warning disable IDE1006 // Async suffix
 namespace CustomCADs.Carts.Infrastructure.Sagas;
 
 public class CartDeliveryPaymentSaga : Saga
@@ -17,12 +18,12 @@ public class CartDeliveryPaymentSaga : Saga
 
 	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent msg, ActiveCartDeliveryRequestedApplicationEventHandler handler)
 	{
-		await handler.Handle(msg).ConfigureAwait(false);
+		await handler.HandleAsync(msg).ConfigureAwait(false);
 	}
 
 	public async Task Handle(CartPaymentCompletedApplicationEvent msg, CartPaymentCompletedApplicationEventHandler handler)
 	{
-		await handler.Handle(msg).ConfigureAwait(false);
+		await handler.HandleAsync(msg).ConfigureAwait(false);
 
 		MarkCompleted();
 	}

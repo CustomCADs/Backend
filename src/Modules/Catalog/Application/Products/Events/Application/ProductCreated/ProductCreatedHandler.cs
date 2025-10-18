@@ -5,7 +5,7 @@ namespace CustomCADs.Catalog.Application.Products.Events.Application.ProductCrea
 
 public class ProductCreatedHandler(IProductWrites writes, IUnitOfWork uow)
 {
-	public async Task Handle(ProductCreatedApplicationEvent ae)
+	public async Task HandleAsync(ProductCreatedApplicationEvent ae)
 	{
 		foreach (TagId tagId in ae.TagIds)
 		{

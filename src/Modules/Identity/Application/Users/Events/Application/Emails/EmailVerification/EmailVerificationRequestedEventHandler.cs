@@ -4,7 +4,7 @@ namespace CustomCADs.Identity.Application.Users.Events.Application.Emails.EmailV
 
 public class EmailVerificationRequestedEventHandler(IEmailService email)
 {
-	public async Task Handle(EmailVerificationRequestedApplicationEvent ae)
+	public async Task HandleAsync(EmailVerificationRequestedApplicationEvent ae)
 	{
 		await email.SendVerificationEmailAsync(ae.Email, ae.Endpoint).ConfigureAwait(false);
 	}

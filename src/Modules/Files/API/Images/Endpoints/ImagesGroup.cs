@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Files.API.Images.Endpoints;
 
-using static DomainConstants.Roles;
 using static APIConstants;
+using static DomainConstants.Roles;
 
 public class ImagesGroup : Group
 {

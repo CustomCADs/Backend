@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Admin;
 
-using static DomainConstants.Roles;
 using static APIConstants;
+using static DomainConstants.Roles;
 
 public class AdminGroup : SubGroup<ProductsGroup>
 {

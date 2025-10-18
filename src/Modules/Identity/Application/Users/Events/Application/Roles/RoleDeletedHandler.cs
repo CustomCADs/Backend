@@ -4,7 +4,7 @@ namespace CustomCADs.Identity.Application.Users.Events.Application.Roles;
 
 public class RoleDeletedHandler(IRoleService service)
 {
-	public async Task Handle(RoleDeletedApplicationEvent ae)
+	public async Task HandleAsync(RoleDeletedApplicationEvent ae)
 		=> await service.DeleteAsync(
 			name: ae.Name
 		).ConfigureAwait(false);

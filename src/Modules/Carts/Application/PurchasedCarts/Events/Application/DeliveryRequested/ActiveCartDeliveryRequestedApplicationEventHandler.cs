@@ -14,7 +14,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandler(
 	IRequestSender sender
 )
 {
-	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent ae)
+	public async Task HandleAsync(ActiveCartDeliveryRequestedApplicationEvent ae)
 	{
 		PurchasedCart cart = await reads.SingleByIdAsync(ae.PurchasedCartId).ConfigureAwait(false)
 			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.PurchasedCartId);

@@ -37,7 +37,7 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -54,7 +54,7 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		writes.Verify(x => x.Remove(cad), Times.Once());
@@ -72,7 +72,7 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		cache.Verify(
@@ -92,7 +92,7 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 		);
 
 		// Act
-		await handler.Handle(ae);
+		await handler.HandleAsync(ae);
 
 		// Assert
 		storage.Verify(x => x.DeleteFileAsync(cad.Key, ct), Times.Once());
@@ -114,7 +114,7 @@ public class ProductDeletedHandlerUnitTests : CadsBaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
 			// Act
-			async () => await handler.Handle(ae)
+			async () => await handler.HandleAsync(ae)
 		);
 	}
 }

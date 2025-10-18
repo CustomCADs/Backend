@@ -54,7 +54,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 		);
 
 		// Act
-		await handler.Handle(de);
+		await handler.HandleAsync(de);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -74,7 +74,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 		);
 
 		// Act
-		await handler.Handle(de);
+		await handler.HandleAsync(de);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -106,7 +106,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
 			// Act
-			async () => await handler.Handle(de)
+			async () => await handler.HandleAsync(de)
 		);
 	}
 }

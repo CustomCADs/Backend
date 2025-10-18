@@ -4,11 +4,11 @@ builder.Services.AddIdentity(builder.Configuration);
 
 if (args.Contains("--migrate"))
 {
-	await builder.Services.ExecuteDbMigrationUpdater().ConfigureAwait(false);
+	await builder.Services.ExecuteDbMigrationUpdaterAsync().ConfigureAwait(false);
 }
 else if (args.Contains("--migrate-only"))
 {
-	await builder.Services.ExecuteDbMigrationUpdater().ConfigureAwait(false);
+	await builder.Services.ExecuteDbMigrationUpdaterAsync().ConfigureAwait(false);
 	return;
 }
 

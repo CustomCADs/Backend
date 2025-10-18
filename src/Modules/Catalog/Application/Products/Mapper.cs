@@ -5,7 +5,6 @@ using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetById;
 using CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
 using CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 using CustomCADs.Catalog.Domain.Products.ValueObjects;
-using CustomCADs.Shared.Application.Dtos.Files;
 
 namespace CustomCADs.Catalog.Application.Products;
 
