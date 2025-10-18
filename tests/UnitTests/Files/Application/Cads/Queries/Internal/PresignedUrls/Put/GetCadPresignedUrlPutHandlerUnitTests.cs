@@ -22,7 +22,7 @@ public class GetCadPresignedUrlPutHandlerUnitTests : CadsBaseUnitTests
 
 	public GetCadPresignedUrlPutHandlerUnitTests()
 	{
-		handler = new(reads.Object, storage.Object, cache.Object, policies: []);
+		handler = new(reads.Object, storage.Object, cache.Object, policies: [new CadReplacePolicyMock()]);
 
 		cache.Setup(x => x.GetOrCreateAsync(
 			ValidId,
