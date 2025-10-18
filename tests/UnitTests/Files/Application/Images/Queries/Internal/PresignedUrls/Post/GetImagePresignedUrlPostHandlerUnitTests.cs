@@ -20,7 +20,7 @@ public class GetImagePresignedUrlPostHandlerUnitTests : CadsBaseUnitTests
 
 	public GetImagePresignedUrlPostHandlerUnitTests()
 	{
-		handler = new(storage.Object, policies: []);
+		handler = new(storage.Object, policies: [new ImageUploadPolicyMock()]);
 
 		storage.Setup(x => x.GetPresignedPostUrlAsync(Name, req))
 			.ReturnsAsync(res);

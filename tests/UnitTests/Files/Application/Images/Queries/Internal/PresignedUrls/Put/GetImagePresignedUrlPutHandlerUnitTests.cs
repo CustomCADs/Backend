@@ -22,7 +22,7 @@ public class GetImagePresignedUrlPutHandlerUnitTests : ImagesBaseUnitTests
 
 	public GetImagePresignedUrlPutHandlerUnitTests()
 	{
-		handler = new(reads.Object, storage.Object, cache.Object, policies: []);
+		handler = new(reads.Object, storage.Object, cache.Object, policies: [new ImageReplacePolicyMock()]);
 
 		cache.Setup(x => x.GetOrCreateAsync(
 			ValidId,

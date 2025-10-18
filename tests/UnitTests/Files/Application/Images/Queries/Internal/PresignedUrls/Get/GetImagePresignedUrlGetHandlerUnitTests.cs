@@ -20,7 +20,7 @@ public class GetImagePresignedUrlGetHandlerUnitTests : ImagesBaseUnitTests
 
 	public GetImagePresignedUrlGetHandlerUnitTests()
 	{
-		handler = new(reads.Object, storage.Object, cache.Object, policies: []);
+		handler = new(reads.Object, storage.Object, cache.Object, policies: [new ImageDownloadPolicyMock()]);
 
 		cache.Setup(x => x.GetOrCreateAsync(
 			ValidId,

@@ -20,7 +20,7 @@ public class GetCadPresignedUrlGetHandlerUnitTests : CadsBaseUnitTests
 
 	public GetCadPresignedUrlGetHandlerUnitTests()
 	{
-		handler = new(reads.Object, storage.Object, cache.Object, policies: []);
+		handler = new(reads.Object, storage.Object, cache.Object, policies: [new CadDownloadPolicyMock()]);
 
 		cache.Setup(x => x.GetOrCreateAsync(
 			ValidId,

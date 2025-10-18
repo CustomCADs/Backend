@@ -19,7 +19,7 @@ public class GetCadPresignedUrlPostHandlerUnitTests : CadsBaseUnitTests
 
 	public GetCadPresignedUrlPostHandlerUnitTests()
 	{
-		handler = new(storage.Object, policies: []);
+		handler = new(storage.Object, policies: [new CadUploadPolicyMock()]);
 
 		storage.Setup(x => x.GetPresignedPostUrlAsync(Name, req))
 			.ReturnsAsync(res);
