@@ -18,6 +18,7 @@ public static partial class DependencyInjection
 			string path = $"SSO:{provider}";
 			builder.AddOpenIdConnect(provider, opts => opts.Configure(
 				sso: config.GetSection(path).Get<SSOClientSettings>() ?? throw new($"Missing {path} env vars"),
+				domain: config.GetSection("ServerURLs").GetValue<string>("Preferred") ?? throw new($"Missing Preferred Server URL"),
 				provider: provider,
 				authority: provider switch
 				{
@@ -35,7 +36,7 @@ public static partial class DependencyInjection
 		return builder;
 	}
 
-	private static void Configure(this OpenIdConnectOptions opts, SSOClientSettings sso, string provider, string authority, string[] scopes)
+	private static void Configure(this OpenIdConnectOptions opts, SSOClientSettings sso, string domain, string provider, string authority, string[] scopes)
 	{
 		opts.Authority = authority;
 		opts.ClientId = sso.ClientId;
@@ -51,6 +52,11 @@ public static partial class DependencyInjection
 
 		opts.Events = new()
 		{
+			OnRedirectToIdentityProvider = (ctx) =>
+			{
+				ctx.ProtocolMessage.RedirectUri = domain + ctx.Options.CallbackPath;
+				return Task.CompletedTask;
+			},
 			OnTokenValidated = async (ctx) =>
 			{
 				CancellationToken ct = ctx.Request.HttpContext.RequestAborted;
@@ -76,7 +82,7 @@ public static partial class DependencyInjection
 						ct: ct
 					).ConfigureAwait(false)
 				);
-			}
+			},
 		};
 	}
 }
