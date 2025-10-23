@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.app.json",
+  "exclude": ["**/*.test.ts", "vitest.config.*", "vite.config.*", "node_modules", "tests", "src/**/*.test.ts"],
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "outDir": "dist",
+    "emitDeclarationOnly": true,
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+  }
+}
