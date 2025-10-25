@@ -4,6 +4,15 @@ type FileUpload = {
 	fileName: string;
 };
 
+export type DownloadBulkRequest = {
+	ids: string[];
+	relationType: RelationType;
+};
+export type DownloadBulkResponse = {
+	contentType: string;
+	presignedUrl: string;
+}[];
+
 export type DownloadRequest = {
 	id: string;
 	relationType: RelationType;

@@ -1,12 +1,16 @@
 import { axios } from '@/api/axios';
 import { ImageResponse } from '../common';
 import * as presignedUrlsResources from '../presigned';
+import * as allResources from './all';
 import * as singleResources from './single';
 import * as createResources from './create';
 import * as editResources from './edit';
 
 export const single = (req: singleResources.Request) =>
 	axios.get<ImageResponse>(singleResources.url(req));
+
+export const bulkDownloadUrls = (req: allResources.Request) =>
+	axios.post<allResources.Response>(allResources.url(req), req);
 
 export const downloadUrl = (req: presignedUrlsResources.DownloadRequest) =>
 	axios.post<presignedUrlsResources.DownloadResponse>(
