@@ -382,3 +382,7 @@ FodyWeavers.xsd
 
 # LoC counter
 .VSCodeCounter/*
+
+
+# SDK
+sdk/**/dist
