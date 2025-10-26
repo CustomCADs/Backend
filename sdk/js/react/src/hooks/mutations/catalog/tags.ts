@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { tags as api } from '@/api';
+import { tagsApi as api } from '@/api';
 import { Request as Create } from '@/api/catalog/tags/create';
 import { Request as Edit } from '@/api/catalog/tags/edit';
 import { Request as Delete } from '@/api/catalog/tags/delete';

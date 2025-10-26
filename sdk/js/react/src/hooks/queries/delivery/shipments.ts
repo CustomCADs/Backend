@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { shipments as api } from '@/api';
+import { shipmentsApi as api } from '@/api';
 import { Request as All } from '@/api/delivery/shipments/all';
 import { Request as Waybill } from '@/api/delivery/shipments/waybill';
 import { Request as Track } from '@/api/delivery/shipments/track';

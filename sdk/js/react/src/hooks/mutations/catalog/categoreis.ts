@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { categories as api } from '@/api';
+import { categoriesApi as api } from '@/api';
 import { Request as Create } from '@/api/catalog/categories/create';
 import { Request as Edit } from '@/api/catalog/categories/edit';
 import { Request as Delete } from '@/api/catalog/categories/delete';

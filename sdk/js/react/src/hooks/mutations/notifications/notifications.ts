@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { notifications as api } from '@/api';
+import { notificationsApi as api } from '@/api';
 import { Request as Read } from '@/api/notifications/notifications/read';
 import { Request as Open } from '@/api/notifications/notifications/open';
 import { Request as Hide } from '@/api/notifications/notifications/hide';

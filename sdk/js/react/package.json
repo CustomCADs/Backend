@@ -5,10 +5,10 @@
   "files": [
     "dist"
   ],
-  "version": "0.0.0",
+  "version": "0.1.2",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json &&  tsc-alias",
+    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "test": "vitest",
     "format": "prettier --write ."
   },

@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { activeCarts as api } from '@/api';
+import { activeCartsApi as api } from '@/api';
 import { Request as AddItem } from '@/api/carts/active/add-item';
 import { Request as ChangeItemQuantity } from '@/api/carts/active/change-quantity';
 import { Request as ToggleItemDelivery } from '@/api/carts/active/toggle-for-delivery';

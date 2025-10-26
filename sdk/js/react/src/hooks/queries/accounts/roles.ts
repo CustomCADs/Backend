@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { roles as api } from '@/api';
+import { rolesApi as api } from '@/api';
 import { Request as Single } from '@/api/accounts/roles/single';
 
 const BASE_KEY = ['roles'] as const;

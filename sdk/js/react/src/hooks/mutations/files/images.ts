@@ -1,9 +1,8 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { images as api } from '@/api';
+import { imagesApi as api } from '@/api';
 import {
 	UploadRequest,
 	ReplaceRequest,
-	DownloadRequest,
 	DownloadBulkRequest,
 } from '@/api/files/presigned';
 import { Request as Create } from '@/api/files/images/create';
@@ -23,11 +22,6 @@ export const images = {
 		mutationKey: [...BASE_KEY, 'bulk-download'],
 		mutationFn: async (params: DownloadBulkRequest) =>
 			(await api.bulkDownloadUrls(params)).data,
-	}),
-	download: mutationOptions({
-		mutationKey: [...BASE_KEY, 'download'],
-		mutationFn: async (params: DownloadRequest) =>
-			(await api.downloadUrl(params)).data,
 	}),
 	upload: mutationOptions({
 		mutationKey: [...BASE_KEY, 'upload'],

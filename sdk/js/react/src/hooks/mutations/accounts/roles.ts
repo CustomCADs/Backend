@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { roles as api } from '@/api';
+import { rolesApi as api } from '@/api';
 import { Request as Create } from '@/api/accounts/roles/create';
 import { Request as Delete } from '@/api/accounts/roles/delete';
 

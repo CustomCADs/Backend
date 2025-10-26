@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { customs as api } from '@/api';
+import { customsApi as api } from '@/api';
 import { Request as CustomerAll } from '@/api/customs/customs/customer/all';
 import { Request as CustomerSingle } from '@/api/customs/customs/customer/single';
 import { Request as CustomerRecent } from '@/api/customs/customs/customer/recent';

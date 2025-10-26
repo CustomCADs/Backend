@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { accounts as api } from '@/api';
+import { accountsApi as api } from '@/api';
 import { Request as All } from '@/api/accounts/accounts/all';
 import { Request as Single } from '@/api/accounts/accounts/single';
 

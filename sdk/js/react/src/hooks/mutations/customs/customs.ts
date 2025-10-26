@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { customs as api } from '@/api';
+import { customsApi as api } from '@/api';
 import { Request as CustomerCreate } from '@/api/customs/customs/customer/create';
 import { Request as CustomerEdit } from '@/api/customs/customs/customer/edit';
 import { Request as CustomerPurchase } from '@/api/customs/customs/customer/purchase';

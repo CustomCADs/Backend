@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { tags as api } from '@/api';
+import { tagsApi as api } from '@/api';
 import { Request as SingleTag } from '@/api/catalog/tags/single';
 
 const BASE_KEY = ['tags'] as const;

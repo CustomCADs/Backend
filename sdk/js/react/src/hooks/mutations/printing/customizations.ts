@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { customizations as api } from '@/api';
+import { customizationsApi as api } from '@/api';
 import { Request as Create } from '@/api/printing/customizations/create';
 import { Request as Edit } from '@/api/printing/customizations/edit';
 

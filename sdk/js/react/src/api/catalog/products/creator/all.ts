@@ -16,6 +16,7 @@ export type Response = {
 	creatorName: string;
 	uploadedAt: string;
 	category: CategoryDto;
+	imageId: string;
 };
 
 export const url = (req: Request) =>

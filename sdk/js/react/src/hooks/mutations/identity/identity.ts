@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { identity as api } from '@/api';
+import { identityApi as api } from '@/api';
 import { Request as Login } from '@/api/identity/identity/login';
 import { Request as ForgotPassword } from '@/api/identity/identity/forgot-password';
 import { Request as ResetPassword } from '@/api/identity/identity/reset-password';

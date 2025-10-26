@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { products as api } from '@/api';
+import { productsApi as api } from '@/api';
 import { Request as CreatorCreate } from '@/api/catalog/products/creator/create';
 import { Request as CreatorEdit } from '@/api/catalog/products/creator/edit';
 import { Request as CreatorDelete } from '@/api/catalog/products/creator/delete';

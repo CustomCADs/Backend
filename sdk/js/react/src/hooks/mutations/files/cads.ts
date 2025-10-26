@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { cads as api } from '@/api';
+import { cadsApi as api } from '@/api';
 import * as presigned from '@/api/files/presigned';
 import { Request as Create } from '@/api/files/cads/create';
 import { Request as Edit } from '@/api/files/cads/edit';

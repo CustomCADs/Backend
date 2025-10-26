@@ -1,5 +1,5 @@
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
-import { notifications as api } from '@/api';
+import { notificationsApi as api } from '@/api';
 import { Request as All } from '@/api/notifications/notifications/all';
 
 const BASE_KEY = ['notifications'] as const;

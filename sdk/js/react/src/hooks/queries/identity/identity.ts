@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { identity as api } from '@/api';
+import { identityApi as api } from '@/api';
 
 const BASE_KEY = ['identity'] as const;
 export const identity = {

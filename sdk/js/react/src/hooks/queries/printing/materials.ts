@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { materials as api } from '@/api';
+import { materialsApi as api } from '@/api';
 import { Request as Single } from '@/api/printing/materials/single';
 
 const BASE_KEY = ['materials'] as const;

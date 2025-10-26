@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { purchasedCarts as api } from '@/api';
+import { purchasedCartsApi as api } from '@/api';
 import { Request as All } from '@/api/carts/purchased/all';
 import { Request as Single } from '@/api/carts/purchased/single';
 

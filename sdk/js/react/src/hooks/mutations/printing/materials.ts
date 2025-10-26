@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { materials as api } from '@/api';
+import { materialsApi as api } from '@/api';
 import { Request as Create } from '@/api/printing/materials/create';
 import { Request as Edit } from '@/api/printing/materials/edit';
 import { Request as Delete } from '@/api/printing/materials/delete';

@@ -12,6 +12,8 @@ export type Response = {
 	uploadedAt: string;
 	counts: Counts;
 	category: CategoryDto;
+	cadId: string;
+	imageId: string;
 };
 
 export const url = (req: Request) => `${CREATOR_BASE_PATH}/${req.id}`;

@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { categories as api } from '@/api';
+import { categoriesApi as api } from '@/api';
 import { Request as Single } from '@/api/catalog/categories/single';
 
 const BASE_KEY = ['categories'] as const;

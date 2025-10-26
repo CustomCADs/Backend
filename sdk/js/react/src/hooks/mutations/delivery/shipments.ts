@@ -1,5 +1,5 @@
 import { mutationOptions } from '@tanstack/react-query';
-import { shipments as api } from '@/api';
+import { shipmentsApi as api } from '@/api';
 import { Request as Cancel } from '@/api/delivery/shipments/cancel';
 
 const BASE_KEY = ['shipments'] as const;

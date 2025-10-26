@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { activeCarts as api } from '@/api';
+import { activeCartsApi as api } from '@/api';
 import { Request as Calculate } from '@/api/carts/active/calculate-shipment';
 
 const BASE_KEY = ['active-carts'] as const;
