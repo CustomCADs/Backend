@@ -8,23 +8,23 @@ export const purchasedCarts = {
 	all: (params: All) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'all', params],
-			queryFn: async () => (await api.all(params)).data,
+			queryFn: () => api.all(params),
 		}),
 	single: (params: Single) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'single', params],
-			queryFn: async () => (await api.single(params)).data,
+			queryFn: () => api.single(params),
 		}),
 	sortings: queryOptions({
 		queryKey: [...BASE_KEY, 'sortings'],
-		queryFn: async () => (await api.sortings()).data,
+		queryFn: api.sortings,
 	}),
 	paymentStatuses: queryOptions({
 		queryKey: [...BASE_KEY, 'paymentStatuses'],
-		queryFn: async () => (await api.paymentStatuses()).data,
+		queryFn: api.paymentStatuses,
 	}),
 	stats: queryOptions({
 		queryKey: [...BASE_KEY, 'stats'],
-		queryFn: async () => (await api.stats()).data,
+		queryFn: api.stats,
 	}),
 };

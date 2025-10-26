@@ -18,14 +18,14 @@ export const notifications = {
 		}),
 	sortings: queryOptions({
 		queryKey: [...BASE_KEY, 'sortings'],
-		queryFn: async () => (await api.sortings()).data,
+		queryFn: api.sortings,
 	}),
 	statuses: queryOptions({
 		queryKey: [...BASE_KEY, 'statuses'],
-		queryFn: async () => (await api.statuses()).data,
+		queryFn: api.statuses,
 	}),
 	stats: queryOptions({
 		queryKey: [...BASE_KEY, 'stats'],
-		queryFn: async () => (await api.stats()).data,
+		queryFn: api.stats,
 	}),
 };

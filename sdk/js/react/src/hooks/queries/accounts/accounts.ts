@@ -8,15 +8,15 @@ export const accounts = {
 	all: (params: All) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'all', params],
-			queryFn: async () => (await api.all(params)).data,
+			queryFn: () => api.all(params),
 		}),
 	single: (params: Single) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'single', params],
-			queryFn: async () => (await api.single(params)).data,
+			queryFn: () => api.single(params),
 		}),
 	sortings: queryOptions({
 		queryKey: [...BASE_KEY, 'sortings'],
-		queryFn: async () => (await api.sortings()).data,
+		queryFn: api.sortings,
 	}),
 };

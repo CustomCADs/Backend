@@ -6,11 +6,11 @@ const BASE_KEY = ['roles'] as const;
 export const roles = {
 	all: queryOptions({
 		queryKey: [...BASE_KEY, 'all'],
-		queryFn: async () => (await api.all()).data,
+		queryFn: api.all,
 	}),
 	single: (params: Single) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'single', params],
-			queryFn: async () => (await api.single(params)).data,
+			queryFn: () => api.single(params),
 		}),
 };

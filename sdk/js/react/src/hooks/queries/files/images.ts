@@ -8,11 +8,11 @@ export const images = {
 	single: (params: Single) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'single', params],
-			queryFn: async () => (await api.single(params)).data,
+			queryFn: () => api.single(params),
 		}),
 	download: (params: DownloadRequest) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'download', params],
-			queryFn: async () => (await api.downloadUrl(params)).data,
+			queryFn: () => api.downloadUrl(params),
 		}),
 };

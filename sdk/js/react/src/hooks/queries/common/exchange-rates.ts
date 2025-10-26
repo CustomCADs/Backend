@@ -5,6 +5,6 @@ const BASE_KEY = ['common'] as const;
 export const exchangeRates = {
 	all: queryOptions({
 		queryKey: [...BASE_KEY, 'all'],
-		queryFn: async () => (await api.all()).data,
+		queryFn: api.all,
 	}),
 };

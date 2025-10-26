@@ -5,18 +5,18 @@ const BASE_KEY = ['identity'] as const;
 export const identity = {
 	authn: queryOptions({
 		queryKey: [...BASE_KEY, 'authn'],
-		queryFn: async () => (await api.authn()).data,
+		queryFn: api.authn,
 	}),
 	authz: queryOptions({
 		queryKey: [...BASE_KEY, 'authz'],
-		queryFn: async () => (await api.authz()).data,
+		queryFn: api.authz,
 	}),
 	myAccount: queryOptions({
 		queryKey: [...BASE_KEY, 'my-account'],
-		queryFn: async () => (await api.myAccount()).data,
+		queryFn: api.myAccount,
 	}),
 	downloadInfo: queryOptions({
 		queryKey: [...BASE_KEY, 'download-info'],
-		queryFn: async () => (await api.downloadInfo()).data,
+		queryFn: api.downloadInfo,
 	}),
 };

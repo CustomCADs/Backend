@@ -7,6 +7,6 @@ export const customizations = {
 	single: (params: Single) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'single', params],
-			queryFn: async () => (await api.single(params)).data,
+			queryFn: () => api.single(params),
 		}),
 };

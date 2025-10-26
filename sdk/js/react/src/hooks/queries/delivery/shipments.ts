@@ -9,20 +9,20 @@ export const shipments = {
 	all: (params: All) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'all', params],
-			queryFn: async () => (await api.all(params)).data,
+			queryFn: () => api.all(params),
 		}),
 	sortings: queryOptions({
 		queryKey: [...BASE_KEY, 'sortings'],
-		queryFn: async () => (await api.sortings()).data,
+		queryFn: api.sortings,
 	}),
 	waybill: (params: Waybill) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'waybill', params],
-			queryFn: async () => (await api.waybill(params)).data,
+			queryFn: () => api.waybill(params),
 		}),
 	track: (params: Track) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'track', params],
-			queryFn: async () => (await api.track(params)).data,
+			queryFn: () => api.track(params),
 		}),
 };

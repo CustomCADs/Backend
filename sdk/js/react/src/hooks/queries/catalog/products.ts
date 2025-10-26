@@ -13,17 +13,16 @@ export const gallery = {
 	all: (params: GalleryAll) =>
 		queryOptions({
 			queryKey: [...GALLERY_BASE_KEY, 'all', params],
-			queryFn: async () => (await productsApi.gallery.all(params)).data,
+			queryFn: () => productsApi.gallery.all(params),
 		}),
 	single: (params: GallerySingle) =>
 		queryOptions({
 			queryKey: [...GALLERY_BASE_KEY, 'single', params],
-			queryFn: async () =>
-				(await productsApi.gallery.single(params)).data,
+			queryFn: () => productsApi.gallery.single(params),
 		}),
 	sortings: queryOptions({
 		queryKey: [...GALLERY_BASE_KEY, 'sortings'],
-		queryFn: async () => (await productsApi.gallery.sortings()).data,
+		queryFn: productsApi.gallery.sortings,
 	}),
 };
 
@@ -32,23 +31,21 @@ export const creator = {
 	all: (params: CreatorAll) =>
 		queryOptions({
 			queryKey: [...CREATOR_BASE_KEY, 'all', params],
-			queryFn: async () => (await productsApi.creator.all(params)).data,
+			queryFn: () => productsApi.creator.all(params),
 		}),
 	single: (params: CreatorSingle) =>
 		queryOptions({
 			queryKey: [...CREATOR_BASE_KEY, 'single', params],
-			queryFn: async () =>
-				(await productsApi.creator.single(params)).data,
+			queryFn: () => productsApi.creator.single(params),
 		}),
 	recent: (params: CreatorRecent) =>
 		queryOptions({
 			queryKey: [...CREATOR_BASE_KEY, 'recent'],
-			queryFn: async () =>
-				(await productsApi.creator.recent(params)).data,
+			queryFn: () => productsApi.creator.recent(params),
 		}),
 	stats: queryOptions({
 		queryKey: [...CREATOR_BASE_KEY, 'stats'],
-		queryFn: async () => (await productsApi.creator.stats()).data,
+		queryFn: productsApi.creator.stats,
 	}),
 };
 
@@ -57,25 +54,21 @@ export const designer = {
 	unchecked: (params: DesignerAll) =>
 		queryOptions({
 			queryKey: [...DESIGNER_BASE_KEY, 'unchecked', params],
-			queryFn: async () =>
-				(await productsApi.designer.unchecked(params)).data,
+			queryFn: () => productsApi.designer.unchecked(params),
 		}),
 	validated: (params: DesignerAll) =>
 		queryOptions({
 			queryKey: [...DESIGNER_BASE_KEY, 'validated', params],
-			queryFn: async () =>
-				(await productsApi.designer.validated(params)).data,
+			queryFn: () => productsApi.designer.validated(params),
 		}),
 	reported: (params: DesignerAll) =>
 		queryOptions({
 			queryKey: [...DESIGNER_BASE_KEY, 'reported', params],
-			queryFn: async () =>
-				(await productsApi.designer.reported(params)).data,
+			queryFn: () => productsApi.designer.reported(params),
 		}),
 	single: (params: DesignerSingle) =>
 		queryOptions({
 			queryKey: [...DESIGNER_BASE_KEY, 'single', params],
-			queryFn: async () =>
-				(await productsApi.designer.single(params)).data,
+			queryFn: () => productsApi.designer.single(params),
 		}),
 };

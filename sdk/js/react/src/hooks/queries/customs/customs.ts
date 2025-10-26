@@ -13,35 +13,34 @@ export const customer = {
 	all: (params: CustomerAll) =>
 		queryOptions({
 			queryKey: [CUSTOMER_BASE_KEY, 'all', params],
-			queryFn: async () => (await api.customer.all(params)).data,
+			queryFn: () => api.customer.all(params),
 		}),
 	single: (params: CustomerSingle) =>
 		queryOptions({
 			queryKey: [CUSTOMER_BASE_KEY, 'single', params],
-			queryFn: async () => (await api.customer.single(params)).data,
+			queryFn: () => api.customer.single(params),
 		}),
 	recent: (params: CustomerRecent) =>
 		queryOptions({
 			queryKey: [CUSTOMER_BASE_KEY, 'recent', params],
-			queryFn: async () => (await api.customer.recent(params)).data,
+			queryFn: () => api.customer.recent(params),
 		}),
 	stats: queryOptions({
 		queryKey: [CUSTOMER_BASE_KEY, 'stats'],
-		queryFn: async () => (await api.customer.stats()).data,
+		queryFn: api.customer.stats,
 	}),
 	sortings: queryOptions({
 		queryKey: [CUSTOMER_BASE_KEY, 'sortings'],
-		queryFn: async () => (await api.customer.sortings()).data,
+		queryFn: api.customer.sortings,
 	}),
 	paymentStatuses: queryOptions({
 		queryKey: [CUSTOMER_BASE_KEY, 'payment-statuses'],
-		queryFn: async () => (await api.customer.paymentStatuses()).data,
+		queryFn: api.customer.paymentStatuses,
 	}),
 	calculateShipment: (params: CustomerCalculate) =>
 		queryOptions({
 			queryKey: [CUSTOMER_BASE_KEY, 'calculate-shipment', params],
-			queryFn: async () =>
-				(await api.customer.calculateShipment(params)).data,
+			queryFn: () => api.customer.calculateShipment(params),
 		}),
 };
 
@@ -50,12 +49,12 @@ export const designer = {
 	all: (params: DesignerAll) =>
 		queryOptions({
 			queryKey: [DESIGNER_BASE_KEY, 'all', params],
-			queryFn: async () => (await api.designer.all(params)).data,
+			queryFn: () => api.designer.all(params),
 		}),
 	single: (params: DesignerSingle) =>
 		queryOptions({
 			queryKey: [DESIGNER_BASE_KEY, 'single', params],
-			queryFn: async () => (await api.designer.single(params)).data,
+			queryFn: () => api.designer.single(params),
 		}),
 };
 
@@ -64,6 +63,6 @@ export const admin = {
 	all: (params: AdminAll) =>
 		queryOptions({
 			queryKey: [ADMIN_BASE_KEY, 'all', params],
-			queryFn: async () => (await api.admin.all(params)).data,
+			queryFn: () => api.admin.all(params),
 		}),
 };

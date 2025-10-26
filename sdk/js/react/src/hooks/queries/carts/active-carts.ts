@@ -6,15 +6,15 @@ const BASE_KEY = ['active-carts'] as const;
 export const activeCarts = {
 	all: queryOptions({
 		queryKey: [...BASE_KEY, 'all'],
-		queryFn: async () => (await api.all()).data,
+		queryFn: api.all,
 	}),
 	count: queryOptions({
 		queryKey: [...BASE_KEY, 'count'],
-		queryFn: async () => (await api.count()).data,
+		queryFn: api.count,
 	}),
 	calculateShipment: (params: Calculate) =>
 		queryOptions({
 			queryKey: [...BASE_KEY, 'calculate-shipment', params],
-			queryFn: async () => (await api.calculateShipment(params)).data,
+			queryFn: () => api.calculateShipment(params),
 		}),
 };
