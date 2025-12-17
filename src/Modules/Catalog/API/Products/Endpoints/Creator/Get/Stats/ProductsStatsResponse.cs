@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Stats;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Get.Stats;
 
 public sealed record ProductsStatsResponse(
 	int UncheckedCount,

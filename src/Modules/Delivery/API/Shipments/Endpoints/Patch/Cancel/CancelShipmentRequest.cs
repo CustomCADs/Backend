@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Delivery.API.Shipments.Endpoints.Patch.Cancel;
+﻿namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Patch.Cancel;
 
 public record CancelShipmentRequest(
 	Guid Id,

@@ -1,15 +1,14 @@
-﻿using CustomCADs.Notifications.Application.Contracts;
-using CustomCADs.Notifications.Infrastructure.Notifiers;
+﻿using CustomCADs.Modules.Notifications.Application.Contracts;
+using CustomCADs.Modules.Notifications.Infrastructure.Notifiers;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-	public static IServiceCollection AddNotificationsRealTimeNotifier(this IServiceCollection services)
+	extension(IServiceCollection services)
 	{
-		services.AddScoped<INotificationsRealTimeNotifier, SignalRNotificationsRealTimeNotifier>();
-
-		return services;
+		public IServiceCollection AddNotificationsRealTimeNotifier()
+			=> services.AddScoped<INotificationsRealTimeNotifier, SignalRNotificationsRealTimeNotifier>();
 	}
 }

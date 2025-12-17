@@ -1,7 +1,7 @@
-using CustomCADs.Identity.Domain.Users.Entities;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Identity.Application.Contracts;
+namespace CustomCADs.Modules.Identity.Application.Contracts;
 
 public interface IUserService
 {

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Enums;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Enums;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetSortings;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetSortings;
 
 public sealed class GetProductGallerySortingsHandler : IQueryHandler<GetProductGallerySortingsQuery, ProductGallerySortingType[]>
 {

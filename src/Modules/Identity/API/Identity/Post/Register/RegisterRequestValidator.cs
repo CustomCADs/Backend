@@ -2,7 +2,7 @@
 using CustomCADs.Shared.Domain;
 using FluentValidation;
 
-namespace CustomCADs.Identity.API.Identity.Post.Register;
+namespace CustomCADs.Modules.Identity.API.Identity.Post.Register;
 
 using static ApplicationConstants.FluentMessages;
 using static DomainConstants;

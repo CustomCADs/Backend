@@ -1,5 +1,5 @@
-﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;

@@ -1,6 +1,6 @@
-using CustomCADs.Idempotency.Domain.Repositories.Reads;
+using CustomCADs.Modules.Idempotency.Domain.Repositories.Reads;
 
-namespace CustomCADs.Idempotency.Application.IdempotencyKeys.Queries.Internal.Get;
+namespace CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Queries.Internal.Get;
 
 public sealed class GetIdempotencyKeyHandler(IIdempotencyKeyReads reads)
 	: IQueryHandler<GetIdempotencyKeyQuery, GetIdempotencyKeyDto?>

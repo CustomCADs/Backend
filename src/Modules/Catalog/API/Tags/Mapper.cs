@@ -1,27 +1,31 @@
-﻿using CustomCADs.Catalog.API.Tags.Endpoints.Get.All;
-using CustomCADs.Catalog.API.Tags.Endpoints.Get.Single;
-using CustomCADs.Catalog.API.Tags.Endpoints.Post;
-using CustomCADs.Catalog.Application.Tags.Dtos;
+﻿using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Get.All;
+using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Get.Single;
+using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Post;
+using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
 
-namespace CustomCADs.Catalog.API.Tags;
+namespace CustomCADs.Modules.Catalog.API.Tags;
 
 internal static class Mapper
 {
-	internal static CreateTagResponse ToCreateTagResponse(this TagDto tag)
-		=> new(
-			tag.Id.Value,
-			tag.Name
-		);
+	extension(TagDto tag)
+	{
+		internal CreateTagResponse ToCreateTagResponse()
+			=> new(
+				tag.Id.Value,
+				tag.Name
+			);
 
-	internal static GetTagByIdResponse ToGetTagByIdResponse(this TagDto tag)
-		=> new(
-			tag.Id.Value,
-			tag.Name
-		);
+		internal GetTagByIdResponse ToGetTagByIdResponse()
+			=> new(
+				tag.Id.Value,
+				tag.Name
+			);
 
-	internal static GetAllTagsResponse ToGetAllTagsResponse(this TagDto tag)
-		=> new(
-			tag.Id.Value,
-			tag.Name
-		);
+		internal GetAllTagsResponse ToGetAllTagsResponse()
+			=> new(
+				tag.Id.Value,
+				tag.Name
+			);
+	}
+
 }

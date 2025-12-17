@@ -1,7 +1,7 @@
-﻿using CustomCADs.Notifications.Domain.Repositories;
+﻿using CustomCADs.Modules.Notifications.Domain.Repositories;
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Notifications.Persistence.Repositories;
+namespace CustomCADs.Modules.Notifications.Persistence.Repositories;
 
 public class Writes<TEntity>(NotificationsContext context) : IWrites<TEntity>
 	where TEntity : BaseAggregateRoot

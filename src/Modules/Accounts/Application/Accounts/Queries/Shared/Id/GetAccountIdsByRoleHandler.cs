@@ -1,7 +1,7 @@
-using CustomCADs.Accounts.Domain.Repositories.Reads;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
-namespace CustomCADs.Accounts.Application.Accounts.Queries.Shared.Id;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.Id;
 
 public class GetAccountIdsByRoleHandler(IAccountReads reads)
 	: IQueryHandler<GetAccountIdsByRoleQuery, ICollection<AccountId>>

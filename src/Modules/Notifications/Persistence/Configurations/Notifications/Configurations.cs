@@ -1,8 +1,8 @@
-﻿using CustomCADs.Notifications.Domain.Notifications;
+﻿using CustomCADs.Modules.Notifications.Domain.Notifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Notifications.Persistence.Configurations.Notifications;
+namespace CustomCADs.Modules.Notifications.Persistence.Configurations.Notifications;
 
 public class Configurations : IEntityTypeConfiguration<Notification>
 {

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Domain.Products;
+﻿namespace CustomCADs.Modules.Catalog.Domain.Products;
 
 public static class ProductConstants
 {

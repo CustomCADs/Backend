@@ -1,7 +1,7 @@
-using CustomCADs.Identity.Application.Contracts;
-using CustomCADs.Identity.Application.Users.Commands.Internal.Login;
-using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Domain.Users.Entities;
+using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Login;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Commands.Internal.Login;

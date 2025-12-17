@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Application.Abstractions.Requests.Attributes;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 
 [AddRequestCaching(ExpirationType.Absolute, TimeType.Minute, 1)]
 public sealed record GalleryGetProductByIdDto(

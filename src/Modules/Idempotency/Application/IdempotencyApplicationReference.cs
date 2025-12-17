@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Idempotency.Application;
+namespace CustomCADs.Modules.Idempotency.Application;
 
 public class IdempotencyApplicationReference
 {

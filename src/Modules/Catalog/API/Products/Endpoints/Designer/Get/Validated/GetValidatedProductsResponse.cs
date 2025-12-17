@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Validated;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Validated;
 
 public sealed record GetValidatedProductsResponse(
 	Guid Id,

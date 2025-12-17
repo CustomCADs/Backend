@@ -13,7 +13,7 @@ public class GlobalExceptionHandler(IProblemDetailsService service) : IException
 	public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception ex, CancellationToken ct)
 		=> ex switch
 		{
-			_ when ex is FluentValidation.ValidationException || ex.IsType(typeof(CustomValidationException<>))
+			_ when ex is FluentValidation.ValidationException || ex.IsGenericType(typeof(CustomValidationException<>))
 				=> await service.BadRequestResponseAsync(context, ex, "Validation Error").ConfigureAwait(false),
 
 			PaymentFailedException pfex
@@ -22,10 +22,10 @@ public class GlobalExceptionHandler(IProblemDetailsService service) : IException
 			DatabaseException
 				=> await service.BadRequestResponseAsync(context, ex, "Database Error").ConfigureAwait(false),
 
-			_ when ex.IsType(typeof(CustomNotFoundException<>))
+			_ when ex.IsGenericType(typeof(CustomNotFoundException<>))
 				 => await service.NotFoundResponseAsync(context, ex).ConfigureAwait(false),
 
-			_ when ex.IsType(typeof(CustomAuthorizationException<>))
+			_ when ex.IsGenericType(typeof(CustomAuthorizationException<>))
 				 => await service.ForbiddenResponseAsync(context, ex).ConfigureAwait(false),
 
 			DatabaseConflictException

@@ -1,5 +1,5 @@
-﻿using CustomCADs.Identity.Application.Users.Dtos;
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.Refresh;
+﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Refresh;
 
 public sealed record RefreshUserCommand(
 	string? Token

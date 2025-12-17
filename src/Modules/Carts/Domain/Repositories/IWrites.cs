@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Carts.Domain.Repositories;
+namespace CustomCADs.Modules.Carts.Domain.Repositories;
 
 public interface IWrites<TEntity> where TEntity : BaseAggregateRoot
 {

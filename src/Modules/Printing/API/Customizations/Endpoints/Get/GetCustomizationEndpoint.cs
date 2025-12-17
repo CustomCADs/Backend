@@ -1,6 +1,6 @@
-﻿using CustomCADs.Printing.Application.Customizations.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Printing.Application.Customizations.Queries.Internal.GetById;
 
-namespace CustomCADs.Printing.API.Customizations.Endpoints.Get;
+namespace CustomCADs.Modules.Printing.API.Customizations.Endpoints.Get;
 
 public class GetCustomizationEndpoint(IRequestSender sender)
 	: Endpoint<GetCustomizationRequest, CustomizationResponse>

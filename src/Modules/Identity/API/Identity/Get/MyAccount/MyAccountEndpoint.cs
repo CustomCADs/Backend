@@ -1,6 +1,6 @@
-﻿using CustomCADs.Identity.Application.Users.Queries.Internal.GetByUsername;
+﻿using CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 
-namespace CustomCADs.Identity.API.Identity.Get.MyAccount;
+namespace CustomCADs.Modules.Identity.API.Identity.Get.MyAccount;
 
 public sealed class MyAccountEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<MyAccountResponse, MyAccountMapper>
@@ -19,7 +19,7 @@ public sealed class MyAccountEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		GetUserByUsernameDto user = await sender.SendQueryAsync(
-			query: new GetUserByUsernameQuery(User.GetName()),
+			query: new GetUserByUsernameQuery(User.Name),
 			ct: ct
 		).ConfigureAwait(false);
 

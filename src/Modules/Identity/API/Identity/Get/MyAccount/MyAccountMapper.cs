@@ -1,6 +1,6 @@
-using CustomCADs.Identity.Application.Users.Queries.Internal.GetByUsername;
+using CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 
-namespace CustomCADs.Identity.API.Identity.Get.MyAccount;
+namespace CustomCADs.Modules.Identity.API.Identity.Get.MyAccount;
 
 public class MyAccountMapper : ResponseMapper<MyAccountResponse, GetUserByUsernameDto>
 {

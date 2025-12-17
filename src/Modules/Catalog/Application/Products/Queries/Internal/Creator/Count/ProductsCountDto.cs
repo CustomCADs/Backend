@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.Count;
+﻿namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.Count;
 
 public sealed record ProductsCountDto(
 	int Unchecked,

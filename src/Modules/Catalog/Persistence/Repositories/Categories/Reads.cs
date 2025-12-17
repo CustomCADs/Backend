@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Domain.Categories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Categories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Persistence.Extensions;
 
-namespace CustomCADs.Catalog.Persistence.Repositories.Categories;
+namespace CustomCADs.Modules.Catalog.Persistence.Repositories.Categories;
 
 public sealed class Reads(CatalogContext context) : ICategoryReads
 {
@@ -16,6 +16,12 @@ public sealed class Reads(CatalogContext context) : ICategoryReads
 		=> await context.Categories
 			.WithTracking(track)
 			.FirstOrDefaultAsync(x => x.Id == id, ct)
+			.ConfigureAwait(false);
+
+	public async Task<Category?> SingleByNameAsync(string name, bool track = true, CancellationToken ct = default)
+		=> await context.Categories
+			.WithTracking(track)
+			.FirstOrDefaultAsync(x => x.Name == name, ct)
 			.ConfigureAwait(false);
 
 	public async Task<bool> ExistsByIdAsync(CategoryId id, CancellationToken ct = default)

@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<UserSecretsId>a3a749a2-9c16-4aa9-b573-677af839f8a8</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+		<PackageReference Include="Scalar.AspNetCore" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="../Modules/Accounts/API/Modules.Accounts.API.csproj" />
+		<ProjectReference Include="../Modules/Carts/API/Modules.Carts.API.csproj" />
+		<ProjectReference Include="../Modules/Catalog/API/Modules.Catalog.API.csproj" />
+		<ProjectReference Include="../Modules/Customs/API/Modules.Customs.API.csproj" />
+		<ProjectReference Include="../Modules/Delivery/API/Modules.Delivery.API.csproj" />
+		<ProjectReference Include="../Modules/Files/API/Modules.Files.API.csproj" />
+		<ProjectReference Include="../Modules/Idempotency/API/Modules.Idempotency.API.csproj" />
+		<ProjectReference Include="../Modules/Identity/API/Modules.Identity.API.csproj" />
+		<ProjectReference Include="../Modules/Notifications/API/Modules.Notifications.API.csproj" />
+		<ProjectReference Include="../Modules/Printing/API/Modules.Printing.API.csproj" />
+		<ProjectReference Include="../Tools/CodeGen/Tools.CodeGen.csproj" />
+		<ProjectReference Include="../Shared/Infrastructure/Shared.Infrastructure.csproj" />
+	</ItemGroup>
+
+</Project>

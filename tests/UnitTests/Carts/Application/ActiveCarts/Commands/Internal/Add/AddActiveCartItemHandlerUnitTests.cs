@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Add;
-using CustomCADs.Carts.Domain.Repositories;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Add;
+using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Add;

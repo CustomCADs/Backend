@@ -2,6 +2,10 @@
 
 public static class ExceptionsExtensions
 {
-	public static bool IsType(this Exception ex, Type type)
-		=> ex.GetType().IsGenericType && ex.GetType().GetGenericTypeDefinition() == type;
+	extension(Exception ex)
+	{
+		public bool IsType<TType>() => !ex.GetType().IsGenericType && ex.GetType() == typeof(TType);
+		public bool IsGenericType<TType>() => ex.GetType().IsGenericType && ex.GetType().GetGenericTypeDefinition() == typeof(TType);
+		public bool IsGenericType(Type type) => ex.GetType().IsGenericType && ex.GetType().GetGenericTypeDefinition() == type;
+	}
 }

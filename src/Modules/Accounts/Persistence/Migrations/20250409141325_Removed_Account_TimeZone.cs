@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Accounts.Persistence.Migrations;
+namespace CustomCADs.Modules.Accounts.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Removed_Account_TimeZone : Migration

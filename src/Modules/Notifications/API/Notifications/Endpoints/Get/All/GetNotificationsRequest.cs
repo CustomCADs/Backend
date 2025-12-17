@@ -1,7 +1,7 @@
-using CustomCADs.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Domain.Enums;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.All;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Get.All;
 
 public record GetNotificationsRequest(
 	NotificationStatus? Status = null,

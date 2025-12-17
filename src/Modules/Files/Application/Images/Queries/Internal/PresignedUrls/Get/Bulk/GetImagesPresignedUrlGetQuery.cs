@@ -3,7 +3,7 @@ using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Files.Application.Images.Queries.Internal.PresignedUrls.Get.Bulk;
+namespace CustomCADs.Modules.Files.Application.Images.Queries.Internal.PresignedUrls.Get.Bulk;
 
 public record GetImagesPresignedUrlGetQuery(
 	ImageId[] Ids,

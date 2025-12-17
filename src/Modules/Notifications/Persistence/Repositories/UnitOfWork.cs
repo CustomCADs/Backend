@@ -1,10 +1,10 @@
-﻿using CustomCADs.Notifications.Domain.Notifications;
-using CustomCADs.Notifications.Domain.Repositories;
+﻿using CustomCADs.Modules.Notifications.Domain.Notifications;
+using CustomCADs.Modules.Notifications.Domain.Repositories;
 using CustomCADs.Shared.Persistence.Exceptions;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Notifications.Persistence.Repositories;
+namespace CustomCADs.Modules.Notifications.Persistence.Repositories;
 
 public class UnitOfWork(NotificationsContext context) : IUnitOfWork
 {

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Identity.API.Identity.Post.VerifyEmail;
+﻿namespace CustomCADs.Modules.Identity.API.Identity.Post.VerifyEmail;
 
 public sealed record ConfirmEmailRequest(
 	string Username,

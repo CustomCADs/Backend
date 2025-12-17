@@ -1,9 +1,9 @@
-﻿using CustomCADs.Identity.Application.Users.Commands.Internal.Refresh;
-using CustomCADs.Identity.Application.Users.Dtos;
+﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Refresh;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.Extensions.Options;
 
-namespace CustomCADs.Identity.API.Identity.Post.RefreshToken;
+namespace CustomCADs.Modules.Identity.API.Identity.Post.RefreshToken;
 
 public sealed class RefreshTokenEndpoint(IRequestSender sender, IOptions<CookieSettings> settings)
 	: EndpointWithoutRequest
@@ -25,13 +25,16 @@ public sealed class RefreshTokenEndpoint(IRequestSender sender, IOptions<CookieS
 	{
 		TokensDto tokens = await sender.SendCommandAsync(
 			command: new RefreshUserCommand(
-				Token: HttpContext.GetRefreshTokenCookie()
+				Token: HttpContext.RefreshTokenCookie
 			),
 			ct: ct
 		).ConfigureAwait(false);
 
-		HttpContext.SaveAccessTokenCookie(tokens.AccessToken, settings.Value.Domain);
-		HttpContext.SaveCsrfTokenCookie(tokens.CsrfToken, settings.Value.Domain);
+		HttpContext.RefreshCookies(
+			access: tokens.AccessToken,
+			csrf: tokens.CsrfToken,
+			domain: settings.Value.Domain
+		);
 		await Send.OkAsync().ConfigureAwait(false);
 	}
 }

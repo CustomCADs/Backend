@@ -1,7 +1,7 @@
-﻿using CustomCADs.Files.Domain.Repositories;
+﻿using CustomCADs.Modules.Files.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 
-namespace CustomCADs.Files.Application.Images.Commands.Internal.Create;
+namespace CustomCADs.Modules.Files.Application.Images.Commands.Internal.Create;
 
 public sealed class CreateImageHandler(
 	IWrites<Image> writes,

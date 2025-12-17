@@ -1,11 +1,11 @@
-﻿using CustomCADs.Catalog.Domain.Products;
-using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Products;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using Quartz;
 
-namespace CustomCADs.Catalog.Infrastructure.BackgroundJobs;
+namespace CustomCADs.Modules.Catalog.Infrastructure.BackgroundJobs;
 
 using static DomainConstants;
 using static ProductConstants;

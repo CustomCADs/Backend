@@ -1,9 +1,9 @@
-﻿using CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Single;
-using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Create;
-using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.GetById;
+﻿using CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.Single;
+using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Create;
+using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Post.Create;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Post.Create;
 
 public sealed class PostCustomEndpoint(IRequestSender sender)
 	: Endpoint<PostCustomRequest, PostCustomResponse, PostCustomMapper>
@@ -25,7 +25,7 @@ public sealed class PostCustomEndpoint(IRequestSender sender)
 				Name: req.Name,
 				Description: req.Description,
 				ForDelivery: req.ForDelivery,
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				CategoryId: CategoryId.New(req.CategoryId)
 			),
 			ct: ct
@@ -34,7 +34,7 @@ public sealed class PostCustomEndpoint(IRequestSender sender)
 		CustomerGetCustomByIdDto custom = await sender.SendQueryAsync(
 			query: new CustomerGetCustomByIdQuery(
 				Id: id,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

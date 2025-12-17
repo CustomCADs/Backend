@@ -1,7 +1,7 @@
-﻿using CustomCADs.Delivery.Domain.Repositories;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Delivery.Persistence;
-using CustomCADs.Delivery.Persistence.Repositories;
+﻿using CustomCADs.Modules.Delivery.Domain.Repositories;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Modules.Delivery.Persistence;
+using CustomCADs.Modules.Delivery.Persistence.Repositories;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,50 +9,44 @@ using Microsoft.EntityFrameworkCore;
 namespace Microsoft.Extensions.DependencyInjection;
 
 using static PersistenceConstants;
-using ShipmentReads = CustomCADs.Delivery.Persistence.Repositories.Shipments.Reads;
+using ShipmentReads = CustomCADs.Modules.Delivery.Persistence.Repositories.Shipments.Reads;
 
 public static class DependencyInjection
 {
-	public static async Task<IServiceProvider> UpdateDeliveryContextAsync(this IServiceProvider provider)
+	extension(IServiceProvider provider)
 	{
-		DeliveryContext context = provider.GetRequiredService<DeliveryContext>();
-		await context.Database.MigrateAsync().ConfigureAwait(false);
+		public async Task<IServiceProvider> UpdateDeliveryContextAsync()
+		{
+			DeliveryContext context = provider.GetRequiredService<DeliveryContext>();
+			await context.Database.MigrateAsync().ConfigureAwait(false);
 
-		return provider;
+			return provider;
+		}
 	}
 
-	public static IServiceCollection AddDeliveryPersistence(this IServiceCollection services, string connectionString)
-		=> services
-			.AddContext(connectionString)
-			.AddReads()
-			.AddWrites()
-			.AddUnitOfWork();
-
-	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
-		=> services.AddDbContext<DeliveryContext>(options =>
-			options.UseNpgsql(connectionString, opt
-				=> opt.MigrationsHistoryTable(MigrationsTable, Schemes.Delivery)
-			)
-		);
-
-	public static IServiceCollection AddReads(this IServiceCollection services)
+	extension(IServiceCollection services)
 	{
-		services.AddScoped<IShipmentReads, ShipmentReads>();
+		public IServiceCollection AddDeliveryPersistence(string connectionString)
+			=> services
+				.AddContext(connectionString)
+				.AddReads()
+				.AddWrites()
+				.AddUnitOfWork();
 
-		return services;
-	}
+		private IServiceCollection AddContext(string connectionString)
+			=> services.AddDbContext<DeliveryContext>(options =>
+				options.UseNpgsql(connectionString, opt
+					=> opt.MigrationsHistoryTable(MigrationsTable, Schemes.Delivery)
+				)
+			);
 
-	public static IServiceCollection AddWrites(this IServiceCollection services)
-	{
-		services.AddScoped(typeof(IWrites<>), typeof(Writes<>));
+		public IServiceCollection AddReads()
+			=> services.AddScoped<IShipmentReads, ShipmentReads>();
 
-		return services;
-	}
+		public IServiceCollection AddWrites()
+			=> services.AddScoped(typeof(IWrites<>), typeof(Writes<>));
 
-	public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
-	{
-		services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-		return services;
+		public IServiceCollection AddUnitOfWork()
+			=> services.AddScoped<IUnitOfWork, UnitOfWork>();
 	}
 }

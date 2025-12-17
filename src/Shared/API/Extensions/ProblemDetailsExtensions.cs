@@ -6,151 +6,154 @@ using static StatusCodes;
 
 public static class ProblemDetailsExtensions
 {
-	public static async Task<bool> BadRequestResponseAsync(this IProblemDetailsService service, HttpContext context, Exception ex, string message = "Invalid Request Parameters")
+	extension(IProblemDetailsService service)
 	{
-		context.Response.StatusCode = Status400BadRequest;
-
-		return await service.TryWriteAsync(new()
+		public async Task<bool> BadRequestResponseAsync(HttpContext context, Exception ex, string message = "Invalid Request Parameters")
 		{
-			HttpContext = context,
-			Exception = ex,
-			ProblemDetails = new()
-			{
-				Type = ex.GetType().Name,
-				Title = message,
-				Detail = ex.Message,
-				Status = Status400BadRequest,
-			},
-		}).ConfigureAwait(false);
-	}
+			context.Response.StatusCode = Status400BadRequest;
 
-	public static async Task<bool> PaymentFailedResponseAsync(this IProblemDetailsService service, HttpContext context, Exception ex, string? clientSecret, string message = "Payment Failure")
-	{
-		context.Response.StatusCode = Status400BadRequest;
-
-		return await service.TryWriteAsync(new()
-		{
-			HttpContext = context,
-			Exception = ex,
-			ProblemDetails = new()
+			return await service.TryWriteAsync(new()
 			{
-				Type = ex.GetType().Name,
-				Title = message,
-				Detail = ex.Message,
-				Extensions = new Dictionary<string, object?>()
+				HttpContext = context,
+				Exception = ex,
+				ProblemDetails = new()
 				{
-					["clientSecret"] = clientSecret,
+					Type = ex.GetType().Name,
+					Title = message,
+					Detail = ex.Message,
+					Status = Status400BadRequest,
 				},
-				Status = Status400BadRequest,
-			},
-		}).ConfigureAwait(false);
-	}
+			}).ConfigureAwait(false);
+		}
 
-	public static async Task<bool> UnauthorizedResponseAsync(this IProblemDetailsService service, HttpContext context, Exception ex, string message = "Inappropriately Unauthenticated")
-	{
-		context.Response.StatusCode = Status401Unauthorized;
-
-		return await service.TryWriteAsync(new()
+		public async Task<bool> PaymentFailedResponseAsync(HttpContext context, Exception ex, string? clientSecret, string message = "Payment Failure")
 		{
-			HttpContext = context,
-			Exception = ex,
-			ProblemDetails = new()
+			context.Response.StatusCode = Status400BadRequest;
+
+			return await service.TryWriteAsync(new()
 			{
-				Type = ex.GetType().Name,
-				Title = message,
-				Detail = ex.Message,
-				Status = Status401Unauthorized,
-			},
-		}).ConfigureAwait(false);
-	}
+				HttpContext = context,
+				Exception = ex,
+				ProblemDetails = new()
+				{
+					Type = ex.GetType().Name,
+					Title = message,
+					Detail = ex.Message,
+					Extensions = new Dictionary<string, object?>()
+					{
+						["clientSecret"] = clientSecret,
+					},
+					Status = Status400BadRequest,
+				},
+			}).ConfigureAwait(false);
+		}
 
-	public static async Task<bool> ForbiddenResponseAsync(this IProblemDetailsService service, HttpContext context, Exception ex, string message = "Authorization Issue")
-	{
-		context.Response.StatusCode = Status403Forbidden;
-
-		return await service.TryWriteAsync(new()
+		public async Task<bool> UnauthorizedResponseAsync(HttpContext context, Exception ex, string message = "Inappropriately Unauthenticated")
 		{
-			HttpContext = context,
-			Exception = ex,
-			ProblemDetails = new()
+			context.Response.StatusCode = Status401Unauthorized;
+
+			return await service.TryWriteAsync(new()
 			{
-				Type = ex.GetType().Name,
-				Title = message,
-				Detail = ex.Message,
-				Status = Status403Forbidden,
-			},
-		}).ConfigureAwait(false);
-	}
+				HttpContext = context,
+				Exception = ex,
+				ProblemDetails = new()
+				{
+					Type = ex.GetType().Name,
+					Title = message,
+					Detail = ex.Message,
+					Status = Status401Unauthorized,
+				},
+			}).ConfigureAwait(false);
+		}
 
-	public static async Task<bool> NotFoundResponseAsync(this IProblemDetailsService service, HttpContext context, Exception ex, string message = "Resource Not Found")
-	{
-		context.Response.StatusCode = Status404NotFound;
-
-		return await service.TryWriteAsync(new()
+		public async Task<bool> ForbiddenResponseAsync(HttpContext context, Exception ex, string message = "Authorization Issue")
 		{
-			HttpContext = context,
-			Exception = ex,
-			ProblemDetails = new()
+			context.Response.StatusCode = Status403Forbidden;
+
+			return await service.TryWriteAsync(new()
 			{
-				Type = ex.GetType().Name,
-				Title = message,
-				Detail = ex.Message,
-				Status = Status404NotFound,
-			},
-		}).ConfigureAwait(false);
-	}
+				HttpContext = context,
+				Exception = ex,
+				ProblemDetails = new()
+				{
+					Type = ex.GetType().Name,
+					Title = message,
+					Detail = ex.Message,
+					Status = Status403Forbidden,
+				},
+			}).ConfigureAwait(false);
+		}
 
-	public static async Task<bool> InternalServerErrorResponseAsync(this IProblemDetailsService service, HttpContext context, Exception ex, string message = "Internal Error")
-	{
-		context.Response.StatusCode = Status500InternalServerError;
-
-		return await service.TryWriteAsync(new()
+		public async Task<bool> NotFoundResponseAsync(HttpContext context, Exception ex, string message = "Resource Not Found")
 		{
-			HttpContext = context,
-			Exception = ex,
-			ProblemDetails = new()
+			context.Response.StatusCode = Status404NotFound;
+
+			return await service.TryWriteAsync(new()
 			{
-				Type = ex.GetType().Name,
-				Title = message,
-				Detail = ex.Message,
-				Status = Status500InternalServerError,
-			},
-		}).ConfigureAwait(false);
-	}
+				HttpContext = context,
+				Exception = ex,
+				ProblemDetails = new()
+				{
+					Type = ex.GetType().Name,
+					Title = message,
+					Detail = ex.Message,
+					Status = Status404NotFound,
+				},
+			}).ConfigureAwait(false);
+		}
 
-	public static async Task<bool> ConflictResponseAsync(this IProblemDetailsService service, HttpContext context, Exception ex, int status = Status409Conflict, string message = "Conflict occured! Try again")
-	{
-		context.Response.StatusCode = status;
-
-		return await service.TryWriteAsync(new()
+		public async Task<bool> InternalServerErrorResponseAsync(HttpContext context, Exception ex, string message = "Internal Error")
 		{
-			HttpContext = context,
-			Exception = ex,
-			ProblemDetails = new()
+			context.Response.StatusCode = Status500InternalServerError;
+
+			return await service.TryWriteAsync(new()
 			{
-				Type = ex.GetType().Name,
-				Title = message,
-				Detail = ex.Message,
-				Status = status,
-			},
-		}).ConfigureAwait(false);
-	}
+				HttpContext = context,
+				Exception = ex,
+				ProblemDetails = new()
+				{
+					Type = ex.GetType().Name,
+					Title = message,
+					Detail = ex.Message,
+					Status = Status500InternalServerError,
+				},
+			}).ConfigureAwait(false);
+		}
 
-	public static async Task<bool> CustomResponseAsync(this IProblemDetailsService service, HttpContext context, Exception ex, int status = Status400BadRequest, string message = "Error processing request")
-	{
-		context.Response.StatusCode = status;
-
-		return await service.TryWriteAsync(new()
+		public async Task<bool> ConflictResponseAsync(HttpContext context, Exception ex, int status = Status409Conflict, string message = "Conflict occured! Try again")
 		{
-			HttpContext = context,
-			Exception = ex,
-			ProblemDetails = new()
+			context.Response.StatusCode = status;
+
+			return await service.TryWriteAsync(new()
 			{
-				Type = ex.GetType().Name,
-				Title = message,
-				Detail = ex.Message,
-				Status = status,
-			},
-		}).ConfigureAwait(false);
+				HttpContext = context,
+				Exception = ex,
+				ProblemDetails = new()
+				{
+					Type = ex.GetType().Name,
+					Title = message,
+					Detail = ex.Message,
+					Status = status,
+				},
+			}).ConfigureAwait(false);
+		}
+
+		public async Task<bool> CustomResponseAsync(HttpContext context, Exception ex, int status = Status400BadRequest, string message = "Error processing request")
+		{
+			context.Response.StatusCode = status;
+
+			return await service.TryWriteAsync(new()
+			{
+				HttpContext = context,
+				Exception = ex,
+				ProblemDetails = new()
+				{
+					Type = ex.GetType().Name,
+					Title = message,
+					Detail = ex.Message,
+					Status = status,
+				},
+			}).ConfigureAwait(false);
+		}
 	}
 }

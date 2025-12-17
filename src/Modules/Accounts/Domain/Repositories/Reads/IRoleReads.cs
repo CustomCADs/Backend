@@ -1,6 +1,6 @@
-﻿using CustomCADs.Accounts.Domain.Roles;
+﻿using CustomCADs.Modules.Accounts.Domain.Roles;
 
-namespace CustomCADs.Accounts.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 
 public interface IRoleReads
 {

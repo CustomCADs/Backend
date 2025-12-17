@@ -1,7 +1,7 @@
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Policies;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Presigned.Post;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Presigned.Post;
 
 public record CadPresignedUrlPostRequest(
 	string Name,

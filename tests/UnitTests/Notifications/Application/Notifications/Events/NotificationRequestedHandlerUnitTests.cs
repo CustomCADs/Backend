@@ -1,7 +1,7 @@
-using CustomCADs.Notifications.Application.Contracts;
-using CustomCADs.Notifications.Application.Notifications.Events;
-using CustomCADs.Notifications.Domain.Notifications.ValueObjects;
-using CustomCADs.Notifications.Domain.Repositories;
+using CustomCADs.Modules.Notifications.Application.Contracts;
+using CustomCADs.Modules.Notifications.Application.Notifications.Events;
+using CustomCADs.Modules.Notifications.Domain.Notifications.ValueObjects;
+using CustomCADs.Modules.Notifications.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;

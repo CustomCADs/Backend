@@ -1,10 +1,10 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
-namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Designer.GetById;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Designer.GetById;
 
 public sealed class DesignerGetCustomByIdHandler(ICustomReads reads, IRequestSender sender)
 	: IQueryHandler<DesignerGetCustomByIdQuery, DesignerGetCustomByIdDto>

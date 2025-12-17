@@ -1,8 +1,8 @@
-﻿using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
-namespace CustomCADs.Files.Application.Images.Queries.Shared;
+namespace CustomCADs.Modules.Files.Application.Images.Queries.Shared;
 
 public sealed class ImageExistsByIdHandler(IImageReads reads)
 	: IQueryHandler<ImageExistsByIdQuery, bool>

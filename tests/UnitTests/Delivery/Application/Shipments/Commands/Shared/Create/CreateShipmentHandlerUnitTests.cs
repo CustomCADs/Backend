@@ -1,6 +1,6 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Shipments.Commands.Shared.Create;
-using CustomCADs.Delivery.Domain.Repositories;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Shipments.Commands.Shared.Create;
+using CustomCADs.Modules.Delivery.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;

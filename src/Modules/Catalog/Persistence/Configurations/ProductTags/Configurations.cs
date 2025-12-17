@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Persistence.ShadowEntities;
+﻿using CustomCADs.Modules.Catalog.Persistence.ShadowEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Catalog.Persistence.Configurations.ProductTags;
+namespace CustomCADs.Modules.Catalog.Persistence.Configurations.ProductTags;
 
 public class Configurations : IEntityTypeConfiguration<ProductTag>
 {

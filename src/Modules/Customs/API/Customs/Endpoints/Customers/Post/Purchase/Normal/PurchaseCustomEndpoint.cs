@@ -1,8 +1,8 @@
-﻿using CustomCADs.Customs.API.Customs.Dtos;
-using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
+﻿using CustomCADs.Modules.Customs.API.Customs.Dtos;
+using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase.Normal;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Post.Purchase.Normal;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Post.Purchase.Normal;
 
 public sealed class PurchaseCustomEndpoint(IRequestSender sender)
 	: Endpoint<PurchaseCustomRequest, PaymentResponse>
@@ -23,7 +23,7 @@ public sealed class PurchaseCustomEndpoint(IRequestSender sender)
 			command: new PurchaseCustomCommand(
 				Id: CustomId.New(req.Id),
 				PaymentMethodId: req.PaymentMethodId,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,4 +1,4 @@
-using CustomCADs.Catalog.Application.Products.Policies;
+using CustomCADs.Modules.Catalog.Application.Products.Policies;
 using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
@@ -6,10 +6,12 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static partial class DependencyInjection
 {
-	public static void AddProductsAccessPolicies(this IServiceCollection services)
+	extension(IServiceCollection services)
 	{
-		services.AddScoped<IFileDownloadPolicy<CadId>, ProductCadDownloadPolicy>();
-		services.AddScoped<IFileUploadPolicy<CadId>, ProductCadUploadPolicy>();
-		services.AddScoped<IFileReplacePolicy<CadId>, ProductCadReplacePolicy>();
+		public void AddProductsAccessPolicies()
+			=> services
+				.AddScoped<IFileDownloadPolicy<CadId>, ProductCadDownloadPolicy>()
+				.AddScoped<IFileUploadPolicy<CadId>, ProductCadUploadPolicy>()
+				.AddScoped<IFileReplacePolicy<CadId>, ProductCadReplacePolicy>();
 	}
 }

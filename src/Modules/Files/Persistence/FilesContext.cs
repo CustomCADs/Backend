@@ -1,9 +1,9 @@
-﻿using CustomCADs.Files.Domain.Cads;
-using CustomCADs.Files.Domain.Images;
+﻿using CustomCADs.Modules.Files.Domain.Cads;
+using CustomCADs.Modules.Files.Domain.Images;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Files.Persistence;
+namespace CustomCADs.Modules.Files.Persistence;
 
 using static PersistenceConstants;
 

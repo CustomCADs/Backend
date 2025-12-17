@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Repositories;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories;
 using CustomCADs.Shared.Persistence.Exceptions;
 
-namespace CustomCADs.Catalog.Persistence.Repositories;
+namespace CustomCADs.Modules.Catalog.Persistence.Repositories;
 
 public class UnitOfWork(CatalogContext context) : IUnitOfWork
 {

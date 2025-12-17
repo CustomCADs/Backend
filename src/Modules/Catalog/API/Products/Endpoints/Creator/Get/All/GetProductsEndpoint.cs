@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.All;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Get.All;
 
 public sealed class GetProductsEndpoint(IRequestSender sender)
 	: Endpoint<GetProductsRequest, Result<GetProductsResponse>, GetProductsMapper>
@@ -20,7 +20,7 @@ public sealed class GetProductsEndpoint(IRequestSender sender)
 	{
 		Result<CreatorGetAllProductsDto> result = await sender.SendQueryAsync(
 			query: new CreatorGetAllProductsQuery(
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				CategoryId: CategoryId.New(req.CategoryId),
 				Name: req.Name,
 				Sorting: new(req.SortingType.ToBase(), req.SortingDirection),

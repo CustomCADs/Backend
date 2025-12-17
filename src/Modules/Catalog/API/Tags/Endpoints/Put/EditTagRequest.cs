@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Tags.Endpoints.Put;
+﻿namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Put;
 
 public record EditTagRequest(
 	Guid Id,

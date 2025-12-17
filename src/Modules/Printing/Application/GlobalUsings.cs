@@ -1,7 +1,7 @@
-﻿global using CustomCADs.Printing.Application.Customizations.Dtos;
-global using CustomCADs.Printing.Application.Materials.Dtos;
-global using CustomCADs.Printing.Domain.Customizations;
-global using CustomCADs.Printing.Domain.Materials;
+﻿global using CustomCADs.Modules.Printing.Application.Customizations.Dtos;
+global using CustomCADs.Modules.Printing.Application.Materials.Dtos;
+global using CustomCADs.Modules.Printing.Domain.Customizations;
+global using CustomCADs.Modules.Printing.Domain.Materials;
 global using CustomCADs.Shared.Application.Abstractions.Cache;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Queries;

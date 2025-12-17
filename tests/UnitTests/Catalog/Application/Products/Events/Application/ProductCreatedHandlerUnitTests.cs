@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Events.Application.ProductCreated;
-using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductCreated;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Events.Application;
 

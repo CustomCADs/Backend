@@ -1,10 +1,10 @@
-﻿using CustomCADs.Accounts.API.Accounts.Dtos;
-using CustomCADs.Accounts.API.Accounts.Endpoints.Get.Single;
-using CustomCADs.Accounts.Application.Accounts.Commands.Internal.Create;
-using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Accounts.API.Accounts.Dtos;
+using CustomCADs.Modules.Accounts.API.Accounts.Endpoints.Get.Single;
+using CustomCADs.Modules.Accounts.Application.Accounts.Commands.Internal.Create;
+using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Accounts.API.Accounts.Endpoints.Post;
+namespace CustomCADs.Modules.Accounts.API.Accounts.Endpoints.Post;
 
 public sealed class PostAccountEndpoint(IRequestSender sender)
 	: Endpoint<PostAccountRequest, AccountResponse>

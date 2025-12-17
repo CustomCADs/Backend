@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.API.Materials.Endpoints.Put;
+﻿namespace CustomCADs.Modules.Printing.API.Materials.Endpoints.Put;
 
 public sealed record PutMaterialRequest(
 	int Id,

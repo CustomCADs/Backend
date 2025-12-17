@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Tags.Commands.Internal.Edit;
+﻿namespace CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Edit;
 
 public sealed record EditTagCommand(
 	TagId Id,

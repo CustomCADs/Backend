@@ -1,7 +1,7 @@
-﻿global using CustomCADs.Carts.API.ActiveCarts.Dtos;
-global using CustomCADs.Carts.API.PurchasedCarts.Dtos;
-global using CustomCADs.Carts.Application.ActiveCarts.Dtos;
-global using CustomCADs.Carts.Application.PurchasedCarts.Dtos;
+﻿global using CustomCADs.Modules.Carts.API.ActiveCarts.Dtos;
+global using CustomCADs.Modules.Carts.API.PurchasedCarts.Dtos;
+global using CustomCADs.Modules.Carts.Application.ActiveCarts.Dtos;
+global using CustomCADs.Modules.Carts.Application.PurchasedCarts.Dtos;
 global using CustomCADs.Shared.API;
 global using CustomCADs.Shared.API.Extensions;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Sender;

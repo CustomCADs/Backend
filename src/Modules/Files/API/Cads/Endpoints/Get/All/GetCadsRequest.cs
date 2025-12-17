@@ -1,4 +1,4 @@
-namespace CustomCADs.Files.API.Cads.Endpoints.Get.All;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Get.All;
 
 public record GetCadsRequest(
 	int Page = 1,

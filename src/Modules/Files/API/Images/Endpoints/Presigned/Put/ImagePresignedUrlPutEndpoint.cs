@@ -1,8 +1,8 @@
-using CustomCADs.Files.Application.Images.Queries.Internal.PresignedUrls.Put;
+using CustomCADs.Modules.Files.Application.Images.Queries.Internal.PresignedUrls.Put;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.AspNetCore.Builder;
 
-namespace CustomCADs.Files.API.Images.Endpoints.Presigned.Put;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Presigned.Put;
 
 public class ImagePresignedUrlPutEndpoint(IRequestSender sender) : Endpoint<ImagePresignedUrlPutRequest, string>
 {
@@ -24,7 +24,7 @@ public class ImagePresignedUrlPutEndpoint(IRequestSender sender) : Endpoint<Imag
 				Id: ImageId.New(req.Id),
 				File: req.File,
 				RelationType: req.RelationType,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

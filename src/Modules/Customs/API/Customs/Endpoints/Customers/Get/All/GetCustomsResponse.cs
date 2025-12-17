@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.All;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.All;
 
 public sealed record GetCustomsResponse(
 	Guid Id,

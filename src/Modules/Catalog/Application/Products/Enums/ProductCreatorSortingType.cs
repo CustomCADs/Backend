@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Products.Enums;
+﻿namespace CustomCADs.Modules.Catalog.Application.Products.Enums;
 
 public enum ProductCreatorSortingType
 {

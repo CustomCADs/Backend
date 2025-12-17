@@ -1,6 +1,6 @@
-using CustomCADs.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;
-using CustomCADs.Idempotency.Domain.Repositories;
-using CustomCADs.Idempotency.Domain.Repositories.Reads;
+using CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;
+using CustomCADs.Modules.Idempotency.Domain.Repositories;
+using CustomCADs.Modules.Idempotency.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;

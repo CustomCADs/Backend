@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Accounts.Application;
+namespace CustomCADs.Modules.Accounts.Application;
 
 public class AccountApplicationReference
 {

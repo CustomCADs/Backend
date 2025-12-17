@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Application.Dtos.Files;
 
-namespace CustomCADs.Files.Application.Cads.Storage;
+namespace CustomCADs.Modules.Files.Application.Cads.Storage;
 
 public interface ICadStorageService
 {

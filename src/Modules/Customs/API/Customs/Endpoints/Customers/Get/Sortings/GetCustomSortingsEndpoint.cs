@@ -1,7 +1,7 @@
-﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetSortings;
-using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetSortings;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Sortings;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.Sortings;
 
 public sealed class GetCustomSortingsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<CustomSortingType[]>

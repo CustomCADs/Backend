@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Application.Dtos.Delivery;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Get.CalculateShipment;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Get.CalculateShipment;
 
 public class CalculateActiveCartShipmentMappper : ResponseMapper<CalculateActiveCartShipmentResponse, CalculateShipmentDto>
 {

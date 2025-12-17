@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Report;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Report;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Report;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Patch.Report;
 
 public sealed class ReportCustomEndpoint(IRequestSender sender)
 	: Endpoint<ReportCustomRequest>
@@ -20,7 +20,7 @@ public sealed class ReportCustomEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new ReportCustomCommand(
 				Id: CustomId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,6 +1,6 @@
-using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
+using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetAll;
 
-namespace CustomCADs.Delivery.API.Shipments.Endpoints.Get.Shipment;
+namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Get.Shipment;
 
 public class GetShipmentsMapper : ResponseMapper<GetShipmentsResponse, GetAllShipmentsDto>
 {

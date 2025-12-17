@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
 
-namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Single;
+namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.Single;
 
 public sealed class GetPurchasedCartEndpoint(IRequestSender sender)
 	: Endpoint<GetPurchasedCartRequest, GetPurchasedCartResponse, GetPurchasedCartMappper>
@@ -21,7 +21,7 @@ public sealed class GetPurchasedCartEndpoint(IRequestSender sender)
 		GetPurchasedCartByIdDto cart = await sender.SendQueryAsync(
 			query: new GetPurchasedCartByIdQuery(
 				Id: PurchasedCartId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

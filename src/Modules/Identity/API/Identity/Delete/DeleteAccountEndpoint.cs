@@ -1,8 +1,8 @@
-using CustomCADs.Identity.Application.Users.Commands.Internal.Delete;
-using CustomCADs.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Delete;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using Microsoft.Extensions.Options;
 
-namespace CustomCADs.Identity.API.Identity.Delete;
+namespace CustomCADs.Modules.Identity.API.Identity.Delete;
 
 public sealed class DeleteAccountEndpoint(IRequestSender sender, IOptions<CookieSettings> settings)
 	: EndpointWithoutRequest
@@ -21,7 +21,7 @@ public sealed class DeleteAccountEndpoint(IRequestSender sender, IOptions<Cookie
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
-			command: new DeleteUserCommand(Username: User.GetName()),
+			command: new DeleteUserCommand(Username: User.Name),
 			ct: ct
 		).ConfigureAwait(false);
 

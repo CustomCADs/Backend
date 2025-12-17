@@ -1,9 +1,10 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
+using CustomCADs.Shared.Domain.Extensions;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
 
 public sealed class CreatorGetAllProductsHandler(IProductReads reads, IRequestSender sender)
 	: IQueryHandler<CreatorGetAllProductsQuery, Result<CreatorGetAllProductsDto>>

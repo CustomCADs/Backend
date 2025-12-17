@@ -1,4 +1,4 @@
-﻿using CustomCADs.Carts.Domain.PurchasedCarts.Entities;
+﻿using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Files;
@@ -6,92 +6,95 @@ using CustomCADs.Shared.Domain.TypedIds.Printing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Carts.Persistence.Configurations.PurchasedCarts.Items;
+namespace CustomCADs.Modules.Carts.Persistence.Configurations.PurchasedCarts.Items;
 
-public static class Utilities
+internal static class Utilities
 {
-	public static EntityTypeBuilder<PurchasedCartItem> SetPrimaryKey(this EntityTypeBuilder<PurchasedCartItem> builder)
+	extension(EntityTypeBuilder<PurchasedCartItem> builder)
 	{
-		builder.HasKey(x => new { x.ProductId, x.CartId });
+		internal EntityTypeBuilder<PurchasedCartItem> SetPrimaryKey()
+		{
+			builder.HasKey(x => new { x.ProductId, x.CartId });
 
-		return builder;
-	}
+			return builder;
+		}
 
-	public static EntityTypeBuilder<PurchasedCartItem> SetForeignKeys(this EntityTypeBuilder<PurchasedCartItem> builder)
-	{
-		builder
-			.HasOne(x => x.Cart)
-			.WithMany(x => x.Items)
-			.HasForeignKey(x => x.CartId)
-			.OnDelete(DeleteBehavior.Cascade);
+		internal EntityTypeBuilder<PurchasedCartItem> SetForeignKeys()
+		{
+			builder
+				.HasOne(x => x.Cart)
+				.WithMany(x => x.Items)
+				.HasForeignKey(x => x.CartId)
+				.OnDelete(DeleteBehavior.Cascade);
 
-		return builder;
-	}
+			return builder;
+		}
 
-	public static EntityTypeBuilder<PurchasedCartItem> SetStronglyTypedIds(this EntityTypeBuilder<PurchasedCartItem> builder)
-	{
-		builder.Property(x => x.CartId)
-			.HasConversion(
-				x => x.Value,
-				x => PurchasedCartId.New(x)
-			);
+		internal EntityTypeBuilder<PurchasedCartItem> SetStronglyTypedIds()
+		{
+			builder.Property(x => x.CartId)
+				.HasConversion(
+					x => x.Value,
+					x => PurchasedCartId.New(x)
+				);
 
-		builder.Property(x => x.ProductId)
-			.HasConversion(
-				x => x.Value,
-				x => ProductId.New(x)
-			);
+			builder.Property(x => x.ProductId)
+				.HasConversion(
+					x => x.Value,
+					x => ProductId.New(x)
+				);
 
-		builder.Property(x => x.CadId)
-			.HasConversion(
-				x => x.Value,
-				x => CadId.New(x)
-			);
+			builder.Property(x => x.CadId)
+				.HasConversion(
+					x => x.Value,
+					x => CadId.New(x)
+				);
 
-		builder.Property(x => x.CustomizationId)
-			.HasConversion(
-				x => CustomizationId.Unwrap(x),
-				x => CustomizationId.New(x)
-			);
+			builder.Property(x => x.CustomizationId)
+				.HasConversion(
+					x => CustomizationId.Unwrap(x),
+					x => CustomizationId.New(x)
+				);
 
-		return builder;
-	}
+			return builder;
+		}
 
-	public static EntityTypeBuilder<PurchasedCartItem> SetValidations(this EntityTypeBuilder<PurchasedCartItem> builder)
-	{
-		builder.Property(x => x.Quantity)
-			.IsRequired()
-			.HasColumnName(nameof(PurchasedCartItem.Quantity));
+		internal EntityTypeBuilder<PurchasedCartItem> SetValidations()
+		{
+			builder.Property(x => x.Quantity)
+				.IsRequired()
+				.HasColumnName(nameof(PurchasedCartItem.Quantity));
 
-		builder.Property(x => x.Price)
-			.IsRequired()
-			.HasPrecision(10, 2)
-			.HasColumnName(nameof(PurchasedCartItem.Price));
+			builder.Property(x => x.Price)
+				.IsRequired()
+				.HasPrecision(10, 2)
+				.HasColumnName(nameof(PurchasedCartItem.Price));
 
-		builder.Property(x => x.ForDelivery)
-			.IsRequired()
-			.HasColumnName(nameof(PurchasedCartItem.ForDelivery));
+			builder.Property(x => x.ForDelivery)
+				.IsRequired()
+				.HasColumnName(nameof(PurchasedCartItem.ForDelivery));
 
-		builder.Property(x => x.AddedAt)
-			.IsRequired()
-			.HasColumnName(nameof(PurchasedCartItem.AddedAt));
+			builder.Property(x => x.AddedAt)
+				.IsRequired()
+				.HasColumnName(nameof(PurchasedCartItem.AddedAt));
 
-		builder.Property(x => x.ProductId)
-			.IsRequired()
-			.HasColumnName(nameof(PurchasedCartItem.ProductId));
+			builder.Property(x => x.ProductId)
+				.IsRequired()
+				.HasColumnName(nameof(PurchasedCartItem.ProductId));
 
-		builder.Property(x => x.CartId)
-			.IsRequired()
-			.HasColumnName(nameof(PurchasedCartItem.CartId));
+			builder.Property(x => x.CartId)
+				.IsRequired()
+				.HasColumnName(nameof(PurchasedCartItem.CartId));
 
-		builder.Property(x => x.CadId)
-			.IsRequired()
-			.HasColumnName(nameof(PurchasedCartItem.CadId));
+			builder.Property(x => x.CadId)
+				.IsRequired()
+				.HasColumnName(nameof(PurchasedCartItem.CadId));
 
-		builder.Property(x => x.CustomizationId)
-			.IsRequired(false)
-			.HasColumnName(nameof(PurchasedCartItem.CustomizationId));
+			builder.Property(x => x.CustomizationId)
+				.IsRequired(false)
+				.HasColumnName(nameof(PurchasedCartItem.CustomizationId));
 
-		return builder;
+			return builder;
+		}
 	}
 }

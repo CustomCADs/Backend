@@ -1,9 +1,9 @@
-﻿using CustomCADs.Delivery.Domain.Shipments.Enums;
-using CustomCADs.Delivery.Domain.Shipments.ValueObjects;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
+using CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Delivery.Domain.Shipments;
+namespace CustomCADs.Modules.Delivery.Domain.Shipments;
 
 public class Shipment : BaseAggregateRoot
 {

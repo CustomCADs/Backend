@@ -1,7 +1,7 @@
-﻿using CustomCADs.Accounts.Domain.Accounts.Enums;
+﻿using CustomCADs.Modules.Accounts.Domain.Accounts.Enums;
 using CustomCADs.Shared.Domain.Enums;
 
-namespace CustomCADs.Accounts.API.Accounts.Endpoints.Get.All;
+namespace CustomCADs.Modules.Accounts.API.Accounts.Endpoints.Get.All;
 
 public sealed record GetAccountsRequest(
 	string? Name = default,

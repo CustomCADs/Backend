@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Tags.Endpoints.Post;
+﻿namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Post;
 
 public record CreateTagResponse(
 	Guid Id,

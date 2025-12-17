@@ -1,4 +1,4 @@
-﻿using CustomCADs.Catalog.Domain.Products;
+﻿using CustomCADs.Modules.Catalog.Domain.Products;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Files;

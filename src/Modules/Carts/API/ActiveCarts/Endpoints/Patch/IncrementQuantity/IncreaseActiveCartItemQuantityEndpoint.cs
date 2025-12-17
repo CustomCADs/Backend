@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Quantity.Increment;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Quantity.Increment;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Patch.IncrementQuantity;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Patch.IncrementQuantity;
 
 public class IncreaseActiveCartItemQuantityEndpoint(IRequestSender sender)
 	: Endpoint<IncreaseActiveCartItemQuantityRequest>
@@ -20,7 +20,7 @@ public class IncreaseActiveCartItemQuantityEndpoint(IRequestSender sender)
 	{
 		await sender.SendCommandAsync(
 			command: new IncreaseActiveCartItemQuantityCommand(
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				ProductId: ProductId.New(req.ProductId),
 				Amount: req.Amount
 			),

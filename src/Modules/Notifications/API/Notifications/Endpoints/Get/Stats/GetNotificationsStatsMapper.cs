@@ -1,6 +1,6 @@
-using CustomCADs.Notifications.Application.Notifications.Queries.Internal.Count;
+using CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.Count;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.Stats;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Get.Stats;
 
 public class GetNotificationsStatsMapper : ResponseMapper<GetNotificationsStatsResponse, CountNotificationsDto>
 {

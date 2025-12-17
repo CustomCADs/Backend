@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetPaymentStatuses;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetPaymentStatuses;
 
 public sealed class GetCustomPaymentStatusesHandler : IQueryHandler<GetCustomPaymentStatusesQuery, PaymentStatus[]>
 {

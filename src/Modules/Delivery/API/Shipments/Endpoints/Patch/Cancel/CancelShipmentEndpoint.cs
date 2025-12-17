@@ -1,6 +1,6 @@
-﻿using CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
+﻿using CustomCADs.Modules.Delivery.Application.Shipments.Commands.Internal.Cancel;
 
-namespace CustomCADs.Delivery.API.Shipments.Endpoints.Patch.Cancel;
+namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Patch.Cancel;
 
 public class CancelShipmentEndpoint(IRequestSender sender)
 	: Endpoint<CancelShipmentRequest>
@@ -11,7 +11,7 @@ public class CancelShipmentEndpoint(IRequestSender sender)
 		Group<ShipmentsGroup>();
 		Description(x => x
 			.WithSummary("Cancel")
-			.WithDescription("Cancel a Shipment (this doesn't delete the shipment, it simply cancels the requested delivery)")
+			.WithDescription("Cancel a Shipment")
 		);
 	}
 

@@ -1,16 +1,20 @@
-﻿namespace CustomCADs.Catalog.Domain.Tags;
+﻿namespace CustomCADs.Modules.Catalog.Domain.Tags;
 
 using static TagConstants;
 
-public static class Validations
+internal static class Validations
 {
-	public static Tag ValidateName(this Tag tag)
-		=> tag
-			.ThrowIfNull(
-				expression: x => x.Name,
-				predicate: string.IsNullOrWhiteSpace
-			).ThrowIfInvalidLength(
-				expression: x => x.Name,
-				length: (NameMinLength, NameMaxLength)
-			);
+	extension(Tag tag)
+	{
+		internal Tag ValidateName()
+			=> tag
+				.ThrowIfNull(
+					expression: x => x.Name,
+					predicate: string.IsNullOrWhiteSpace
+				).ThrowIfInvalidLength(
+					expression: x => x.Name,
+					length: (NameMinLength, NameMaxLength)
+				);
+	}
+
 }

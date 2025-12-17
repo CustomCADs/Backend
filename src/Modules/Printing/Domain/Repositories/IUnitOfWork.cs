@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.Domain.Repositories;
+﻿namespace CustomCADs.Modules.Printing.Domain.Repositories;
 
 public interface IUnitOfWork
 {

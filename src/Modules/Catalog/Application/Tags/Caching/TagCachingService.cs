@@ -1,7 +1,7 @@
-using CustomCADs.Catalog.Domain.Tags;
+using CustomCADs.Modules.Catalog.Domain.Tags;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Catalog.Application.Tags.Caching;
+namespace CustomCADs.Modules.Catalog.Application.Tags.Caching;
 
 public class TagCachingService(ICacheService service) : BaseCachingService<TagId, Tag>
 {

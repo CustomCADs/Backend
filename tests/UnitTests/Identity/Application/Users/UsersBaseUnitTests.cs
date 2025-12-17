@@ -1,5 +1,5 @@
-using CustomCADs.Identity.Domain.Users.Entities;
-using CustomCADs.Identity.Domain.Users.ValueObjects;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
+using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users;

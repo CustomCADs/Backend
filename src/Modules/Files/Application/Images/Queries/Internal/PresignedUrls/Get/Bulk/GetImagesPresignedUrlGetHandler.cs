@@ -1,10 +1,10 @@
-﻿using CustomCADs.Files.Application.Images.Storage;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Application.Images.Storage;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Policies;
 
-namespace CustomCADs.Files.Application.Images.Queries.Internal.PresignedUrls.Get.Bulk;
+namespace CustomCADs.Modules.Files.Application.Images.Queries.Internal.PresignedUrls.Get.Bulk;
 
 public sealed class GetImagesPresignedUrlGetHandler(
 	IImageReads reads,

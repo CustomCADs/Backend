@@ -1,9 +1,9 @@
-﻿using CustomCADs.Identity.Application.Users.Commands.Internal.Login;
-using CustomCADs.Identity.Application.Users.Dtos;
+﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Login;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.Extensions.Options;
 
-namespace CustomCADs.Identity.API.Identity.Post.Login;
+namespace CustomCADs.Modules.Identity.API.Identity.Post.Login;
 
 public sealed class LoginEndpoint(IRequestSender sender, IOptions<CookieSettings> settings)
 	: Endpoint<LoginRequest>

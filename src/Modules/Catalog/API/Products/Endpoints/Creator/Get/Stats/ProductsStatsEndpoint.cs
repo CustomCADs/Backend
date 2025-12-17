@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.Count;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.Count;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Stats;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Get.Stats;
 
 public sealed class ProductsStatsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<ProductsStatsResponse, ProductsStatsMapper>
@@ -19,7 +19,7 @@ public sealed class ProductsStatsEndpoint(IRequestSender sender)
 	{
 		ProductsCountDto counts = await sender.SendQueryAsync(
 			query: new ProductsCountQuery(
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

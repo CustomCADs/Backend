@@ -1,6 +1,6 @@
-using CustomCADs.Notifications.Application.Notifications.Commands.Internal.Hide;
+using CustomCADs.Modules.Notifications.Application.Notifications.Commands.Internal.Hide;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Patch.Hide;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Patch.Hide;
 
 public class HideNotificationEndpoint(IRequestSender sender)
 	: Endpoint<HideNotificationRequest>
@@ -20,7 +20,7 @@ public class HideNotificationEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new HideNotificationCommand(
 				Id: NotificationId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

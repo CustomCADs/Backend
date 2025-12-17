@@ -1,13 +1,13 @@
-﻿using CustomCADs.Notifications.Domain.Notifications;
-using CustomCADs.Notifications.Domain.Notifications.Enums;
-using CustomCADs.Notifications.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Notifications.Domain.Notifications;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Notifications;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Notifications.Persistence.Repositories.Notifications;
+namespace CustomCADs.Modules.Notifications.Persistence.Repositories.Notifications;
 
 public sealed class Reads(NotificationsContext context) : INotificationReads
 {

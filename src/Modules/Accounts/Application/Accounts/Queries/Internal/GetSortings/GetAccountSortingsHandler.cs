@@ -1,6 +1,6 @@
-﻿using CustomCADs.Accounts.Domain.Accounts.Enums;
+﻿using CustomCADs.Modules.Accounts.Domain.Accounts.Enums;
 
-namespace CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetSortings;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetSortings;
 
 public sealed class GetAccountSortingsHandler : IQueryHandler<GetAccountSortingsQuery, AccountSortingType[]>
 {

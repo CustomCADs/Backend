@@ -1,7 +1,7 @@
-﻿using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Domain.Users.Entities;
+﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
 
-namespace CustomCADs.Identity.Application.Contracts;
+namespace CustomCADs.Modules.Identity.Application.Contracts;
 
 public interface ITokenService
 {

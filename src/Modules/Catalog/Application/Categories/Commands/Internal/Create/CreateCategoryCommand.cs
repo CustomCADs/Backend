@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Categories.Commands.Internal.Create;
+﻿namespace CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Create;
 
 public sealed record CreateCategoryCommand(
 	CategoryWriteDto Dto

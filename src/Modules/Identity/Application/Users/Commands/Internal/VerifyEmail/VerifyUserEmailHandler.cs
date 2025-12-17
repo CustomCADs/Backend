@@ -1,8 +1,8 @@
-﻿using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Domain.Users.Entities;
+﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.VerifyEmail;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerifyEmail;
 
 public sealed class VerifyUserEmailHandler(
 	IUserService service,

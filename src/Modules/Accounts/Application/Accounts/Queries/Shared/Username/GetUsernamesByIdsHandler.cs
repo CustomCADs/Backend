@@ -1,8 +1,8 @@
-﻿using CustomCADs.Accounts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Accounts.Application.Accounts.Queries.Shared.Username;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.Username;
 
 public sealed class GetUsernamesByIdsHandler(IAccountReads reads)
 	: IQueryHandler<GetUsernamesByIdsQuery, Dictionary<AccountId, string>>

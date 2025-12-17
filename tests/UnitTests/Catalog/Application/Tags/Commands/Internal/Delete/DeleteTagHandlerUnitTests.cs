@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Tags.Commands.Internal.Delete;
-using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Delete;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Tags.Commands.Internal.Delete;

@@ -1,7 +1,7 @@
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Policies;
 
-namespace CustomCADs.Files.API.Images.Endpoints.Presigned.Put;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Presigned.Put;
 
 public record ImagePresignedUrlPutRequest(
 	Guid Id,

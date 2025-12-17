@@ -12,34 +12,38 @@ const CUSTOMER_BASE_KEY = ['customs', 'customer'] as const;
 export const customer = {
 	all: (params: CustomerAll) =>
 		queryOptions({
-			queryKey: [CUSTOMER_BASE_KEY, 'all', params],
+			queryKey: [CUSTOMER_BASE_KEY, 'all', params] as const,
 			queryFn: () => api.customer.all(params),
 		}),
 	single: (params: CustomerSingle) =>
 		queryOptions({
-			queryKey: [CUSTOMER_BASE_KEY, 'single', params],
+			queryKey: [CUSTOMER_BASE_KEY, 'single', params] as const,
 			queryFn: () => api.customer.single(params),
 		}),
 	recent: (params: CustomerRecent) =>
 		queryOptions({
-			queryKey: [CUSTOMER_BASE_KEY, 'recent', params],
+			queryKey: [CUSTOMER_BASE_KEY, 'recent', params] as const,
 			queryFn: () => api.customer.recent(params),
 		}),
 	stats: queryOptions({
-		queryKey: [CUSTOMER_BASE_KEY, 'stats'],
+		queryKey: [CUSTOMER_BASE_KEY, 'stats'] as const,
 		queryFn: api.customer.stats,
 	}),
 	sortings: queryOptions({
-		queryKey: [CUSTOMER_BASE_KEY, 'sortings'],
+		queryKey: [CUSTOMER_BASE_KEY, 'sortings'] as const,
 		queryFn: api.customer.sortings,
 	}),
 	paymentStatuses: queryOptions({
-		queryKey: [CUSTOMER_BASE_KEY, 'payment-statuses'],
+		queryKey: [CUSTOMER_BASE_KEY, 'payment-statuses'] as const,
 		queryFn: api.customer.paymentStatuses,
 	}),
 	calculateShipment: (params: CustomerCalculate) =>
 		queryOptions({
-			queryKey: [CUSTOMER_BASE_KEY, 'calculate-shipment', params],
+			queryKey: [
+				CUSTOMER_BASE_KEY,
+				'calculate-shipment',
+				params,
+			] as const,
 			queryFn: () => api.customer.calculateShipment(params),
 		}),
 };
@@ -48,12 +52,12 @@ const DESIGNER_BASE_KEY = ['customs', 'designer'] as const;
 export const designer = {
 	all: (params: DesignerAll) =>
 		queryOptions({
-			queryKey: [DESIGNER_BASE_KEY, 'all', params],
+			queryKey: [DESIGNER_BASE_KEY, 'all', params] as const,
 			queryFn: () => api.designer.all(params),
 		}),
 	single: (params: DesignerSingle) =>
 		queryOptions({
-			queryKey: [DESIGNER_BASE_KEY, 'single', params],
+			queryKey: [DESIGNER_BASE_KEY, 'single', params] as const,
 			queryFn: () => api.designer.single(params),
 		}),
 };
@@ -62,7 +66,7 @@ const ADMIN_BASE_KEY = ['customs', 'admin'] as const;
 export const admin = {
 	all: (params: AdminAll) =>
 		queryOptions({
-			queryKey: [ADMIN_BASE_KEY, 'all', params],
+			queryKey: [ADMIN_BASE_KEY, 'all', params] as const,
 			queryFn: () => api.admin.all(params),
 		}),
 };

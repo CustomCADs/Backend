@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Categories.Endpoints.Put;
+﻿namespace CustomCADs.Modules.Catalog.API.Categories.Endpoints.Put;
 
 public sealed record PutCategoryRequest(
 	int Id,

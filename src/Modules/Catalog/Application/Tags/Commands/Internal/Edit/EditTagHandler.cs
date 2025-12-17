@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
-using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Modules.Catalog.Domain.Tags;
 
-namespace CustomCADs.Catalog.Application.Tags.Commands.Internal.Edit;
+namespace CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Edit;
 
 public sealed class EditTagHandler(
 	ITagReads reads,

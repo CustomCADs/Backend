@@ -1,5 +1,5 @@
-﻿using CustomCADs.Accounts.Application.Accounts.Queries.Shared.Username;
-using CustomCADs.Accounts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.Username;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;

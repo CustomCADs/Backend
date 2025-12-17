@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 
-namespace CustomCADs.Catalog.Application.Categories.Commands.Internal.Create;
+namespace CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Create;
 
 public sealed class CreateCategoryHandler(
 	ICategoryWrites writes,

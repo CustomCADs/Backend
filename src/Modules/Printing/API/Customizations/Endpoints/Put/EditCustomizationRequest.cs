@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.API.Customizations.Endpoints.Put;
+﻿namespace CustomCADs.Modules.Printing.API.Customizations.Endpoints.Put;
 
 public record EditCustomizationRequest(
 	Guid Id,

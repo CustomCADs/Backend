@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Accounts.Domain.Accounts.Enums;
+﻿namespace CustomCADs.Modules.Accounts.Domain.Accounts.Enums;
 
 public enum AccountSortingType
 {

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Accounts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 
-namespace CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetById;
 
 public sealed class GetAccountByIdHandler(IAccountReads reads)
 	: IQueryHandler<GetAccountByIdQuery, GetAccountByIdDto>

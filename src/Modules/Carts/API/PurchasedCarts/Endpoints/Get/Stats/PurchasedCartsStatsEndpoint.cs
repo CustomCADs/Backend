@@ -1,8 +1,8 @@
-﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.Count.Carts;
-using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.Count.Items;
+﻿using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.Count.Carts;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.Count.Items;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
 
-namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Stats;
+namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.Stats;
 
 public sealed class PurchasedCartsStatsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<PurchasedCartsStatsResponse, PurchasedCartsStatsMappper>
@@ -21,14 +21,14 @@ public sealed class PurchasedCartsStatsEndpoint(IRequestSender sender)
 	{
 		int totalCartCount = await sender.SendQueryAsync(
 			query: new CountPurchasedCartsQuery(
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);
 
 		Dictionary<PurchasedCartId, int> counts = await sender.SendQueryAsync(
 			query: new CountPurchasedCartItemsQuery(
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

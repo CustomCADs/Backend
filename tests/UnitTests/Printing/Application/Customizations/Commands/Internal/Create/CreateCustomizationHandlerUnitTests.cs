@@ -1,6 +1,6 @@
-using CustomCADs.Printing.Application.Customizations.Commands.Internal.Create;
-using CustomCADs.Printing.Domain.Customizations;
-using CustomCADs.Printing.Domain.Repositories;
+using CustomCADs.Modules.Printing.Application.Customizations.Commands.Internal.Create;
+using CustomCADs.Modules.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Repositories;
 
 namespace CustomCADs.UnitTests.Printing.Application.Customizations.Commands.Internal.Create;
 

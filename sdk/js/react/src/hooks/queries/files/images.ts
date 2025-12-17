@@ -7,12 +7,12 @@ const BASE_KEY = ['images'] as const;
 export const images = {
 	single: (params: Single) =>
 		queryOptions({
-			queryKey: [...BASE_KEY, 'single', params],
+			queryKey: [...BASE_KEY, 'single', params] as const,
 			queryFn: () => api.single(params),
 		}),
 	download: (params: DownloadRequest) =>
 		queryOptions({
-			queryKey: [...BASE_KEY, 'download', params],
+			queryKey: [...BASE_KEY, 'download', params] as const,
 			queryFn: () => api.downloadUrl(params),
 		}),
 };

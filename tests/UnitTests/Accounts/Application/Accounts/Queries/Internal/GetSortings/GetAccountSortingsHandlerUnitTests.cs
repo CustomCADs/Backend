@@ -1,5 +1,5 @@
-﻿using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetSortings;
-using CustomCADs.Accounts.Domain.Accounts.Enums;
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetSortings;
+using CustomCADs.Modules.Accounts.Domain.Accounts.Enums;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Internal.GetSortings;
 

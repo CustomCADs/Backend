@@ -1,7 +1,7 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
-using CustomCADs.Delivery.Domain.Repositories;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Shipments.Commands.Internal.Cancel;
+using CustomCADs.Modules.Delivery.Domain.Repositories;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Commands.Internal.Cancel;

@@ -1,10 +1,10 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.ValueObjects;
 
-namespace CustomCADs.Customs.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 
 public record CustomQuery(
 	Pagination Pagination,

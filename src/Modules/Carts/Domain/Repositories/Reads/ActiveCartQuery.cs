@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Carts.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 
 public record ActiveCartQuery(
 	Pagination Pagination,

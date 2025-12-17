@@ -1,37 +1,41 @@
 ﻿using CustomCADs.Shared.Domain;
 
-namespace CustomCADs.Identity.Domain.Users;
+namespace CustomCADs.Modules.Identity.Domain.Users;
 
 using static DomainConstants;
 using static UserConstants;
 
-public static class Validations
+internal static class Validations
 {
-	public static User ValidateRole(this User user)
-		=> user
-			.ThrowIfNull(
-				expression: (x) => x.Role,
-				predicate: string.IsNullOrWhiteSpace
-			);
+	extension(User user)
+	{
+		internal User ValidateRole()
+			=> user
+				.ThrowIfNull(
+					expression: (x) => x.Role,
+					predicate: string.IsNullOrWhiteSpace
+				);
 
-	public static User ValidateUsername(this User user)
-		=> user
-			.ThrowIfNull(
-				expression: (x) => x.Username,
-				predicate: string.IsNullOrWhiteSpace
-			).ThrowIfInvalidLength(
-				expression: (x) => x.Username,
-				length: (UsernameMinLength, UsernameMaxLength)
-			);
+		internal User ValidateUsername()
+			=> user
+				.ThrowIfNull(
+					expression: (x) => x.Username,
+					predicate: string.IsNullOrWhiteSpace
+				).ThrowIfInvalidLength(
+					expression: (x) => x.Username,
+					length: (UsernameMinLength, UsernameMaxLength)
+				);
 
-	public static User ValidateEmail(this User user)
-		=> user
-			.ThrowIfNull(
-				expression: (x) => x.Email.Value,
-				predicate: string.IsNullOrWhiteSpace
-			).ThrowIfPredicateIsFalse(
-				expression: (x) => x.Email.Value,
-				predicate: Regexes.Email.IsMatch,
-				message: "A {0} must have a proper {1}."
-			);
+		internal User ValidateEmail()
+			=> user
+				.ThrowIfNull(
+					expression: (x) => x.Email.Value,
+					predicate: string.IsNullOrWhiteSpace
+				).ThrowIfPredicateIsFalse(
+					expression: (x) => x.Email.Value,
+					predicate: Regexes.Email.IsMatch,
+					message: "A {0} must have a proper {1}."
+				);
+	}
+
 }

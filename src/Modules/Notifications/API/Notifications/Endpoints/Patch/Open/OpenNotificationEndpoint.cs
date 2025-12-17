@@ -1,6 +1,6 @@
-using CustomCADs.Notifications.Application.Notifications.Commands.Internal.Open;
+using CustomCADs.Modules.Notifications.Application.Notifications.Commands.Internal.Open;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Patch.Open;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Patch.Open;
 
 public class OpenNotificationEndpoint(IRequestSender sender)
 	: Endpoint<OpenNotificationRequest>
@@ -20,7 +20,7 @@ public class OpenNotificationEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new OpenNotificationCommand(
 				Id: NotificationId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

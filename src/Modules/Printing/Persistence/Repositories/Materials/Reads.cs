@@ -1,9 +1,9 @@
-﻿using CustomCADs.Printing.Domain.Materials;
-using CustomCADs.Printing.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Printing.Domain.Materials;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 using CustomCADs.Shared.Persistence.Extensions;
 
-namespace CustomCADs.Printing.Persistence.Repositories.Materials;
+namespace CustomCADs.Modules.Printing.Persistence.Repositories.Materials;
 
 public class Reads(PrintingContext context) : IMaterialReads
 {

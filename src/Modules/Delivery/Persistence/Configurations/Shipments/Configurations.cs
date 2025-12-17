@@ -1,8 +1,8 @@
-﻿using CustomCADs.Delivery.Domain.Shipments;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Delivery.Persistence.Configurations.Shipments;
+namespace CustomCADs.Modules.Delivery.Persistence.Configurations.Shipments;
 
 public class Configurations : IEntityTypeConfiguration<Shipment>
 {

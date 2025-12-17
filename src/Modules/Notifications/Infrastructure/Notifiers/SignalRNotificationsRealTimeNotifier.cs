@@ -1,9 +1,9 @@
-using CustomCADs.Notifications.Application.Contracts;
-using CustomCADs.Notifications.Infrastructure.Hubs;
+using CustomCADs.Modules.Notifications.Application.Contracts;
+using CustomCADs.Modules.Notifications.Infrastructure.Hubs;
 using CustomCADs.Shared.Infrastructure.RealTime;
 using Microsoft.AspNetCore.SignalR;
 
-namespace CustomCADs.Notifications.Infrastructure.Notifiers;
+namespace CustomCADs.Modules.Notifications.Infrastructure.Notifiers;
 
 public class SignalRNotificationsRealTimeNotifier(
 	IHubContext<SignalRNotificationsHub> hub

@@ -1,10 +1,10 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Domain.Repositories;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 
-namespace CustomCADs.Delivery.Application.Shipments.Commands.Shared.Create;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Commands.Shared.Create;
 
 public sealed class CreateShipmentHandler(
 	IWrites<Shipment> writes,

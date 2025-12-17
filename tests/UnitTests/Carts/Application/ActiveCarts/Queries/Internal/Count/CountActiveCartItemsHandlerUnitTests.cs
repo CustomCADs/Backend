@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.Count;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.Count;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Queries.Internal.Count;
 

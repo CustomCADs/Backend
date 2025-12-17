@@ -1,10 +1,10 @@
-﻿using CustomCADs.Carts.Domain.Repositories;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Carts.Persistence.Repositories;
+namespace CustomCADs.Modules.Carts.Persistence.Repositories;
 
 public class UnitOfWork(CartsContext context) : IUnitOfWork
 {

@@ -7,12 +7,12 @@ const BASE_KEY = ['cads'] as const;
 export const cads = {
 	all: (params: All) =>
 		queryOptions({
-			queryKey: [...BASE_KEY, 'all', params],
+			queryKey: [...BASE_KEY, 'all', params] as const,
 			queryFn: () => api.all(params),
 		}),
 	single: (params: Single) =>
 		queryOptions({
-			queryKey: [...BASE_KEY, 'single', params],
+			queryKey: [...BASE_KEY, 'single', params] as const,
 			queryFn: () => api.single(params),
 		}),
 };

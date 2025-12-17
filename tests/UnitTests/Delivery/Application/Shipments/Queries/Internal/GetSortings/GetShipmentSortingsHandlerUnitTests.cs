@@ -1,5 +1,5 @@
-﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetSortings;
-using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetSortings;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.GetSortings;
 

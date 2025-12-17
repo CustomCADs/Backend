@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Categories.Queries.Internal.GetAll;
+﻿using CustomCADs.Modules.Catalog.Application.Categories.Queries.Internal.GetAll;
 
-namespace CustomCADs.Catalog.API.Categories.Endpoints.Get.All;
+namespace CustomCADs.Modules.Catalog.API.Categories.Endpoints.Get.All;
 
 public sealed class GetCategoriesEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<CategoryResponse[]>

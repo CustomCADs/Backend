@@ -1,5 +1,5 @@
-﻿using CustomCADs.Catalog.Application.Categories.Queries.Internal.GetById;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Application.Categories.Queries.Internal.GetById;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Categories.Queries.Internal.GetById;
 

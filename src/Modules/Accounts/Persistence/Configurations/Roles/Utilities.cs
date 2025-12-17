@@ -1,57 +1,60 @@
-﻿using CustomCADs.Accounts.Domain.Roles;
+﻿using CustomCADs.Modules.Accounts.Domain.Roles;
 using CustomCADs.Shared.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Accounts.Persistence.Configurations.Roles;
+namespace CustomCADs.Modules.Accounts.Persistence.Configurations.Roles;
 
 using static DomainConstants.Roles;
 using static RoleConstants;
 
-static class Utilities
+internal static class Utilities
 {
-	public static EntityTypeBuilder<Role> SetPrimaryKey(this EntityTypeBuilder<Role> builder)
+	extension(EntityTypeBuilder<Role> builder)
 	{
-		builder.HasKey(x => x.Id);
+		internal EntityTypeBuilder<Role> SetPrimaryKey()
+		{
+			builder.HasKey(x => x.Id);
 
-		return builder;
-	}
+			return builder;
+		}
 
-	public static EntityTypeBuilder<Role> SetStronglyTypedIds(this EntityTypeBuilder<Role> builder)
-	{
-		builder.Property(x => x.Id)
-			.HasConversion(
-				x => x.Value,
-				x => RoleId.New(x)
-			).UseIdentityColumn();
+		internal EntityTypeBuilder<Role> SetStronglyTypedIds()
+		{
+			builder.Property(x => x.Id)
+				.HasConversion(
+					x => x.Value,
+					x => RoleId.New(x)
+				)
+				.UseIdentityColumn();
 
-		return builder;
-	}
+			return builder;
+		}
 
-	public static EntityTypeBuilder<Role> SetValidations(this EntityTypeBuilder<Role> builder)
-	{
-		builder.Property(x => x.Name)
-			.IsRequired()
-			.HasMaxLength(NameMaxLength)
-			.HasColumnName(nameof(Role.Name));
+		internal EntityTypeBuilder<Role> SetValidations()
+		{
+			builder.Property(x => x.Name)
+				.IsRequired()
+				.HasMaxLength(NameMaxLength)
+				.HasColumnName(nameof(Role.Name));
 
-		builder.Property(x => x.Description)
-			.IsRequired()
-			.HasMaxLength(DescriptionMaxLength)
-			.HasColumnName(nameof(Role.Description));
+			builder.Property(x => x.Description)
+				.IsRequired()
+				.HasMaxLength(DescriptionMaxLength)
+				.HasColumnName(nameof(Role.Description));
 
-		return builder;
-	}
+			return builder;
+		}
 
-	public static EntityTypeBuilder<Role> SetSeeding(this EntityTypeBuilder<Role> builder)
-	{
-		Role[] roles = [
-			Role.CreateWithId(RoleId.New(1), Customer, CustomerDescription),
-			Role.CreateWithId(RoleId.New(2), Contributor, ContributorDescription),
-			Role.CreateWithId(RoleId.New(3), Designer, DesignerDescription),
-			Role.CreateWithId(RoleId.New(4), Admin, AdminDescription),
-		];
-		builder.HasData(roles);
+		internal EntityTypeBuilder<Role> SetSeeding()
+		{
+			builder.HasData([
+				Role.CreateWithId(RoleId.New(1), Customer, CustomerDescription),
+				Role.CreateWithId(RoleId.New(2), Contributor, ContributorDescription),
+				Role.CreateWithId(RoleId.New(3), Designer, DesignerDescription),
+				Role.CreateWithId(RoleId.New(4), Admin, AdminDescription),
+			]);
 
-		return builder;
+			return builder;
+		}
 	}
 }

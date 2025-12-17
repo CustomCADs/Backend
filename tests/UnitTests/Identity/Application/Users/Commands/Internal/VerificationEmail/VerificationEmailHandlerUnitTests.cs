@@ -1,7 +1,7 @@
-using CustomCADs.Identity.Application.Contracts;
-using CustomCADs.Identity.Application.Users.Commands.Internal.VerificationEmail;
-using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Application.Users.Events.Application.Emails.EmailVerification;
+using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerificationEmail;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Application.Users.Events.Application.Emails.EmailVerification;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using Microsoft.Extensions.Options;
 

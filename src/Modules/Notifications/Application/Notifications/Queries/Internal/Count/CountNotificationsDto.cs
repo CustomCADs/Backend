@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Notifications.Application.Notifications.Queries.Internal.Count;
+﻿namespace CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.Count;
 
 public sealed record CountNotificationsDto(
 	int Unread,

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Customs.Persistence.Migrations;
+namespace CustomCADs.Modules.Customs.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Initial_Migration : Migration

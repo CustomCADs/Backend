@@ -1,7 +1,7 @@
-﻿using CustomCADs.Delivery.Domain.Repositories;
+﻿using CustomCADs.Modules.Delivery.Domain.Repositories;
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Delivery.Persistence.Repositories;
+namespace CustomCADs.Modules.Delivery.Persistence.Repositories;
 
 public class Writes<TEntity>(DeliveryContext context) : IWrites<TEntity>
 	where TEntity : BaseAggregateRoot

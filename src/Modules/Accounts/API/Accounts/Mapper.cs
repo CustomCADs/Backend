@@ -1,17 +1,21 @@
-﻿using CustomCADs.Accounts.API.Accounts.Dtos;
-using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Accounts.API.Accounts.Dtos;
+using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetById;
 
-namespace CustomCADs.Accounts.API.Accounts;
+namespace CustomCADs.Modules.Accounts.API.Accounts;
 
 internal static class Mapper
 {
-	internal static AccountResponse ToResponse(this GetAccountByIdDto account)
-		=> new(
-			Role: account.Role,
-			Username: account.Username,
-			Email: account.Email,
-			FirstName: account.FirstName,
-			LastName: account.LastName,
-			CreatedAt: account.CreatedAt
-		);
+	extension(GetAccountByIdDto account)
+	{
+		internal AccountResponse ToResponse()
+			=> new(
+				Role: account.Role,
+				Username: account.Username,
+				Email: account.Email,
+				FirstName: account.FirstName,
+				LastName: account.LastName,
+				CreatedAt: account.CreatedAt
+			);
+	}
+
 }

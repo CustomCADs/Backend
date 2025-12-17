@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Shared;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Shared;
 
 public sealed class GetProductExistsByIdHandler(IProductReads reads)
 	: IQueryHandler<GetProductExistsByIdQuery, bool>

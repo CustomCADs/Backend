@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Delivery.Domain.Shipments.ValueObjects;
+﻿namespace CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 
 public record ShipmentAddress(string Country, string City, string Street)
 {

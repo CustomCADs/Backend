@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Categories;
+﻿using CustomCADs.Modules.Catalog.Domain.Categories;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Catalog.Persistence.Configurations.Categories;
+namespace CustomCADs.Modules.Catalog.Persistence.Configurations.Categories;
 
 public class Configurations : IEntityTypeConfiguration<Category>
 {

@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Application.Dtos.Delivery;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.CalculateShipment;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.CalculateShipment;
 
 public class CalculateCustomShipmentMapper : ResponseMapper<CalculateCustomShipmentResponse, CalculateShipmentDto>
 {

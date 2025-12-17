@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Idempotency.Persistence.Migrations;
+namespace CustomCADs.Modules.Idempotency.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Made_ResponseBody_And_StatusCode_Nullable : Migration

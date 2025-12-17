@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Single;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Single;
 
 public sealed record DesignerSingleProductResponse(
 	Guid Id,

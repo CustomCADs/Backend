@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Accounts.API.Roles.Dtos;
+﻿namespace CustomCADs.Modules.Accounts.API.Roles.Dtos;
 
 public sealed record RoleResponse(
 	string Name,

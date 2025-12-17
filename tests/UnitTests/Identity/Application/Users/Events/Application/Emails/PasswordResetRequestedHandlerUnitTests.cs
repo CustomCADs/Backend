@@ -1,4 +1,4 @@
-using CustomCADs.Identity.Application.Users.Events.Application.Emails.PasswordReset;
+using CustomCADs.Modules.Identity.Application.Users.Events.Application.Emails.PasswordReset;
 using CustomCADs.Shared.Application.Abstractions.Email;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Events.Application.Emails;

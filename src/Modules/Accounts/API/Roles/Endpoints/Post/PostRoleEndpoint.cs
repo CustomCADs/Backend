@@ -1,9 +1,9 @@
-﻿using CustomCADs.Accounts.API.Roles.Endpoints.Get.Single;
-using CustomCADs.Accounts.Application.Roles.Commands.Internal.Create;
-using CustomCADs.Accounts.Application.Roles.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Accounts.API.Roles.Endpoints.Get.Single;
+using CustomCADs.Modules.Accounts.Application.Roles.Commands.Internal.Create;
+using CustomCADs.Modules.Accounts.Application.Roles.Queries.Internal.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Accounts.API.Roles.Endpoints.Post;
+namespace CustomCADs.Modules.Accounts.API.Roles.Endpoints.Post;
 
 public sealed class PostRoleEndpoint(IRequestSender sender)
 	: Endpoint<PostRoleRequest, RoleResponse>

@@ -1,7 +1,7 @@
-﻿using CustomCADs.Identity.Application.Users.Commands.Internal.ResetPasswordEmail;
+﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ResetPasswordEmail;
 using CustomCADs.Shared.API.Attributes;
 
-namespace CustomCADs.Identity.API.Identity.Post.ForgotPassword;
+namespace CustomCADs.Modules.Identity.API.Identity.Post.ForgotPassword;
 
 public sealed class ForgotPasswordEndpoint(IRequestSender sender)
 	: Endpoint<ForgotPasswordRequest>

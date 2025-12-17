@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.Application.Customizations.Commands.Internal.Edit;
+﻿namespace CustomCADs.Modules.Printing.Application.Customizations.Commands.Internal.Edit;
 
 public sealed record EditCustomizationCommand(
 	CustomizationId Id,

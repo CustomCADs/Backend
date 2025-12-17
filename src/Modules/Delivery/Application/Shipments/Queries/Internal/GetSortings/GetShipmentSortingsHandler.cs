@@ -1,6 +1,6 @@
-﻿using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 
-namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetSortings;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetSortings;
 
 public sealed class GetShipmentSortingsHandler : IQueryHandler<GetShipmentSortingsQuery, ShipmentSortingType[]>
 {

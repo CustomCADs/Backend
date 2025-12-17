@@ -1,7 +1,7 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Finish;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Finish;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Finish;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Patch.Finish;
 
 public sealed class FinishCustomEndpoint(IRequestSender sender)
 	: Endpoint<FinishCustomRequest>
@@ -23,7 +23,7 @@ public sealed class FinishCustomEndpoint(IRequestSender sender)
 				Id: CustomId.New(req.Id),
 				Price: req.Price,
 				CadId: CadId.New(req.CadId),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

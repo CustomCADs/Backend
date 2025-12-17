@@ -1,8 +1,8 @@
-﻿using CustomCADs.Notifications.Domain.Notifications;
+﻿using CustomCADs.Modules.Notifications.Domain.Notifications;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Notifications.Persistence;
+namespace CustomCADs.Modules.Notifications.Persistence;
 
 using static PersistenceConstants;
 

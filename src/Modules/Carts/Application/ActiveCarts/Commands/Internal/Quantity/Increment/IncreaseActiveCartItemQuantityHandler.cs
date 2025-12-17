@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Domain.Repositories;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Quantity.Increment;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Quantity.Increment;
 
 public sealed class IncreaseActiveCartItemQuantityHandler(
 	IActiveCartReads reads,

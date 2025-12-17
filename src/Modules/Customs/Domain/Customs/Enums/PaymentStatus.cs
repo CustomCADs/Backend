@@ -1,4 +1,4 @@
-namespace CustomCADs.Customs.Domain.Customs.Enums;
+namespace CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
 public enum PaymentStatus
 {

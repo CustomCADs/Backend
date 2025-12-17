@@ -1,8 +1,8 @@
-﻿using CustomCADs.Accounts.API.Accounts.Dtos;
-using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Accounts.API.Accounts.Dtos;
+using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Accounts.API.Accounts.Endpoints.Get.Single;
+namespace CustomCADs.Modules.Accounts.API.Accounts.Endpoints.Get.Single;
 
 public sealed class GetAccountEndpoint(IRequestSender sender)
 	: Endpoint<GetAccountRequest, AccountResponse>

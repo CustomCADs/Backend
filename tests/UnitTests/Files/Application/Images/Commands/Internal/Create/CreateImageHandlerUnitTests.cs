@@ -1,5 +1,5 @@
-﻿using CustomCADs.Files.Application.Images.Commands.Internal.Create;
-using CustomCADs.Files.Domain.Repositories;
+﻿using CustomCADs.Modules.Files.Application.Images.Commands.Internal.Create;
+using CustomCADs.Modules.Files.Domain.Repositories;
 
 namespace CustomCADs.UnitTests.Files.Application.Images.Commands.Internal.Create;
 

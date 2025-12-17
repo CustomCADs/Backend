@@ -1,6 +1,6 @@
-﻿using CustomCADs.Identity.Application.Users.Dtos;
+﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.VerifyEmail;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerifyEmail;
 
 public sealed record VerifyUserEmailCommand(
 	string Username,

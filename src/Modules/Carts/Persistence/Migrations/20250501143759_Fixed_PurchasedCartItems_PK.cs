@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Carts.Persistence.Migrations;
+namespace CustomCADs.Modules.Carts.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Fixed_PurchasedCartItems_PK : Migration

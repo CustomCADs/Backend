@@ -1,4 +1,4 @@
-namespace CustomCADs.Notifications.Domain.Notifications.Enums;
+namespace CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
 
 public enum NotificationStatus
 {

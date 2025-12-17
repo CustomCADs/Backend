@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Printing.Persistence.Migrations;
+namespace CustomCADs.Modules.Printing.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Added_Clarification_Comments : Migration

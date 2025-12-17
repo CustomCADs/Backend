@@ -1,4 +1,4 @@
-namespace CustomCADs.Notifications.Domain.Notifications.ValueObjects;
+namespace CustomCADs.Modules.Notifications.Domain.Notifications.ValueObjects;
 
 public record NotificationContent(
 	string Description,

@@ -1,12 +1,12 @@
-﻿using CustomCADs.Catalog.Application.Products.Events.Application.ProductViewed;
-using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductViewed;
+using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 
 public sealed class GalleryGetProductByIdHandler(IProductReads reads, IRequestSender sender, IEventRaiser raiser)
 	: IQueryHandler<GalleryGetProductByIdQuery, GalleryGetProductByIdDto>

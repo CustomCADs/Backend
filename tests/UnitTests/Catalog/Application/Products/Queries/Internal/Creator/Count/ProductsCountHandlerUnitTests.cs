@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.Count;
-using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.Count;
+using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Queries.Internal.Creator.Count;
 

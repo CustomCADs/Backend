@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Domain.PurchasedCarts.Enums;
+﻿using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Enums;
 
-namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Single;
+namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.Single;
 
 public sealed record GetPurchasedCartResponse(
 	Guid Id,

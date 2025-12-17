@@ -1,8 +1,8 @@
-using CustomCADs.Idempotency.Domain.IdempotencyKeys;
+using CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Idempotency.Persistence;
+namespace CustomCADs.Modules.Idempotency.Persistence;
 
 using static PersistenceConstants;
 

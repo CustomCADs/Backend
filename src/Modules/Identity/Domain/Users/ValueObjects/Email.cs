@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Identity.Domain.Users.ValueObjects;
+﻿namespace CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 
 public record Email(
 	string Value = "",

@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="$(SolutionDir)\src\Modules\Notifications\Domain\Modules.Notifications.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

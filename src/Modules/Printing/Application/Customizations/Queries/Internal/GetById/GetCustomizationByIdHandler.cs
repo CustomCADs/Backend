@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.Domain.Repositories.Reads;
-using CustomCADs.Printing.Domain.Services;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
+using CustomCADs.Modules.Printing.Domain.Services;
 
-namespace CustomCADs.Printing.Application.Customizations.Queries.Internal.GetById;
+namespace CustomCADs.Modules.Printing.Application.Customizations.Queries.Internal.GetById;
 
 public sealed class GetCustomizationByIdHandler(
 	ICustomizationReads customizationReads,

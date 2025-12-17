@@ -1,8 +1,8 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Customs.States;
-using CustomCADs.Customs.Domain.Customs.States.Entities;
-using CustomCADs.Customs.Domain.Customs.States.Implementations;
-using CustomCADs.Customs.Domain.Customs.ValueObjects;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Customs.States;
+using CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
+using CustomCADs.Modules.Customs.Domain.Customs.States.Implementations;
+using CustomCADs.Modules.Customs.Domain.Customs.ValueObjects;
 using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
@@ -10,14 +10,13 @@ using CustomCADs.Shared.Domain.TypedIds.Delivery;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Customs.Domain.Customs;
+namespace CustomCADs.Modules.Customs.Domain.Customs;
 
 using CategoryParam = (CategoryId Id, CustomCategorySetter Setter);
 
 public class Custom : BaseAggregateRoot
 {
-	private ICustomState? state;
-	private ICustomState State => state ??= RestoreState();
+	private ICustomState State { get => field ??= RestoreState(); set; }
 
 	private Custom() { }
 	private Custom(string name, string description, bool delivery, AccountId buyerId, CategoryParam? category) : this()
@@ -173,7 +172,7 @@ public class Custom : BaseAggregateRoot
 	internal void SetState(ICustomState newState)
 	{
 		CustomStatus = newState.Status;
-		state = newState;
+		State = newState;
 	}
 
 	internal Custom ClearAcceptInfo()

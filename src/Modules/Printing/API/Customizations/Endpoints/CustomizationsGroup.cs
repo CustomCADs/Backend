@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.API.Customizations.Endpoints;
+﻿namespace CustomCADs.Modules.Printing.API.Customizations.Endpoints;
 
 using static APIConstants;
 

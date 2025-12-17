@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Accounts.Domain.Accounts;
+﻿namespace CustomCADs.Modules.Accounts.Domain.Accounts;
 
 public static class AccountConstants
 {

@@ -2,7 +2,7 @@
 using CustomCADs.Shared.Application.UseCases.Accounts.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.Register;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Register;
 
 public sealed class RegisterUserHandler(
 	IUserService service,

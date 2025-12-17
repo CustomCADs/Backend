@@ -1,8 +1,8 @@
-﻿using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Domain.Users.Entities;
+﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.Refresh;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Refresh;
 
 public sealed class RefreshUserHandler(
 	IUserService service,

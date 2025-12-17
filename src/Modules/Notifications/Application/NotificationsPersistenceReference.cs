@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Notifications.Application;
+namespace CustomCADs.Modules.Notifications.Application;
 
 public class NotificationsApplicationReference
 {

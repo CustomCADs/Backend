@@ -1,9 +1,9 @@
-using CustomCADs.Files.Application.Images.Queries.Internal.PresignedUrls.Get.Bulk;
+using CustomCADs.Modules.Files.Application.Images.Queries.Internal.PresignedUrls.Get.Bulk;
 using CustomCADs.Shared.API.Attributes;
 using CustomCADs.Shared.Application.Dtos.Files;
 using Microsoft.AspNetCore.Builder;
 
-namespace CustomCADs.Files.API.Images.Endpoints.Presigned.Get.Bulk;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Presigned.Get.Bulk;
 
 public class GetImagesPresignedUrlGetEndpoint(IRequestSender sender)
 	: Endpoint<ImagesPresignedUrlGetRequest, DownloadFileResponse[]>
@@ -12,6 +12,7 @@ public class GetImagesPresignedUrlGetEndpoint(IRequestSender sender)
 	{
 		Post("bulk-download");
 		Group<PresignedGroup>();
+		AllowAnonymous();
 		Description(x => x
 			.WithSummary("Bulk Download")
 			.WithDescription("Get URLs to download your Images")
@@ -25,7 +26,7 @@ public class GetImagesPresignedUrlGetEndpoint(IRequestSender sender)
 			query: new GetImagesPresignedUrlGetQuery(
 				Ids: [.. req.Ids.Select(ImageId.New)],
 				RelationType: req.RelationType,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

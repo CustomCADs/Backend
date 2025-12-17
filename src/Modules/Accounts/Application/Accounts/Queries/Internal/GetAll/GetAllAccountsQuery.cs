@@ -1,8 +1,8 @@
-﻿using CustomCADs.Accounts.Domain.Accounts.Enums;
+﻿using CustomCADs.Modules.Accounts.Domain.Accounts.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.ValueObjects;
 
-namespace CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetAll;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetAll;
 
 public sealed record GetAllAccountsQuery(
 	Pagination Pagination,

@@ -1,4 +1,4 @@
-namespace CustomCADs.Notifications.Domain.Notifications;
+namespace CustomCADs.Modules.Notifications.Domain.Notifications;
 
 public static class NotificationsConstants
 {

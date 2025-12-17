@@ -1,14 +1,14 @@
-using CustomCADs.Identity.Application.Contracts;
-using CustomCADs.Identity.Domain.Users;
-using CustomCADs.Identity.Domain.Users.Entities;
-using CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
+using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Domain.Users;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
+using CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Identity.Infrastructure.Identity;
+namespace CustomCADs.Modules.Identity.Infrastructure.Identity;
 
 public class AppUserService(UserManager<AppUser> manager) : IUserService
 {
@@ -35,15 +35,18 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 		return await appUser.ToUserWithRoleAsync(manager).ConfigureAwait(false);
 	}
 
-	public async Task<(User User, RefreshToken RefreshToken)> GetByRefreshTokenAsync(string refreshToken)
+	public async Task<(User User, RefreshToken RefreshToken)> GetByRefreshTokenAsync(string token)
 	{
 		AppUser appUser = await manager.Users
 			.Include(x => x.RefreshTokens)
-			.FirstOrDefaultAsync(x => x.RefreshTokens.Any(x => x.Value == refreshToken))
+			.FirstOrDefaultAsync(x => x.RefreshTokens.Any(x => x.Value == token))
 			.ConfigureAwait(false)
-			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(refreshToken), refreshToken);
+			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(token), token);
 
-		return await appUser.ToUserWithRoleAsync(manager, refreshToken).ConfigureAwait(false);
+		return (
+			User: await appUser.ToUserWithRoleAsync(manager).ConfigureAwait(false),
+			RefreshToken: appUser.RefreshTokens.First(x => x.Value == token).ToRefreshToken()
+		);
 	}
 	#endregion
 

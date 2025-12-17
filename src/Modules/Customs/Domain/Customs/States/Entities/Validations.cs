@@ -1,15 +1,17 @@
-﻿namespace CustomCADs.Customs.Domain.Customs.States.Entities;
+﻿namespace CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
 
 using static CustomConstants;
 
-public static class Validations
+internal static class Validations
 {
-	public static FinishedCustom ValidatePrice(this FinishedCustom custom)
+	extension(FinishedCustom custom)
 	{
-		custom.ThrowIfInvalidRange(
-			(x) => x.Price,
-			(PriceMin, PriceMax)
-		);
-		return custom;
+		internal FinishedCustom ValidatePrice()
+			=> custom
+				.ThrowIfInvalidRange(
+					(x) => x.Price,
+					(PriceMin, PriceMax)
+				);
 	}
+
 }

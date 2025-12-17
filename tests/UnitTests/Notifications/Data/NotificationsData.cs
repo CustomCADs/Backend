@@ -1,4 +1,4 @@
-using CustomCADs.Notifications.Domain.Notifications;
+using CustomCADs.Modules.Notifications.Domain.Notifications;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Notifications;
 

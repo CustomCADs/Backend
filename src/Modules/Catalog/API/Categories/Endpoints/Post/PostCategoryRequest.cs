@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Categories.Endpoints.Post;
+﻿namespace CustomCADs.Modules.Catalog.API.Categories.Endpoints.Post;
 
 public sealed record PostCategoryRequest(
 	string Name,

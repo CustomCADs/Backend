@@ -1,7 +1,7 @@
-﻿using CustomCADs.Files.Application.Cads.Events.Application;
-using CustomCADs.Files.Application.Cads.Storage;
-using CustomCADs.Files.Domain.Repositories;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Application.Cads.Events.Application;
+using CustomCADs.Modules.Files.Application.Cads.Storage;
+using CustomCADs.Modules.Files.Domain.Repositories;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Events.Files;
 using CustomCADs.Shared.Application.Exceptions;
 

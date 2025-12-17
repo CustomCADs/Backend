@@ -1,3 +1,3 @@
-namespace CustomCADs.Notifications.Infrastructure.Hubs;
+namespace CustomCADs.Modules.Notifications.Infrastructure.Hubs;
 
 public interface INotificationsHub;

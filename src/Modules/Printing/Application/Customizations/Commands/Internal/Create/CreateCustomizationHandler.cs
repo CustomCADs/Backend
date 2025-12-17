@@ -1,6 +1,6 @@
-﻿using CustomCADs.Printing.Domain.Repositories;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories;
 
-namespace CustomCADs.Printing.Application.Customizations.Commands.Internal.Create;
+namespace CustomCADs.Modules.Printing.Application.Customizations.Commands.Internal.Create;
 
 public sealed class CreateCustomizationHandler(
 	IWrites<Customization> writes,

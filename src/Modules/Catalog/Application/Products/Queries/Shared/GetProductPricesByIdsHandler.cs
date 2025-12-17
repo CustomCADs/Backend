@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Shared;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Shared;
 
 public sealed class GetProductPricesByIdsHandler(IProductReads reads)
 	: IQueryHandler<GetProductPricesByIdsQuery, Dictionary<ProductId, decimal>>

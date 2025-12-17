@@ -1,8 +1,8 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.ToggleForDelivery;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.ToggleForDelivery;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Patch.ToggleForDelivery;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Patch.ToggleForDelivery;
 
 public class ToggleActiveCartItemForDeliveryEndpoint(IRequestSender sender)
 	: Endpoint<ToggleActiveCartItemForDeliveryRequest>
@@ -21,7 +21,7 @@ public class ToggleActiveCartItemForDeliveryEndpoint(IRequestSender sender)
 	{
 		await sender.SendCommandAsync(
 			command: new ToggleActiveCartItemForDeliveryCommand(
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				ProductId: ProductId.New(req.ProductId),
 				CustomizationId: CustomizationId.New(req.CustomizationId)
 			),

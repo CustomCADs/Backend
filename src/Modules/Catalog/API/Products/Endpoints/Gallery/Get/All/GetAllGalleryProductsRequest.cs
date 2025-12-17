@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Products.Enums;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Enums;
 using CustomCADs.Shared.Domain.Enums;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Get.All;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Get.All;
 
 public sealed record GetAllGalleryProductsRequest(
 	int? CategoryId = null,

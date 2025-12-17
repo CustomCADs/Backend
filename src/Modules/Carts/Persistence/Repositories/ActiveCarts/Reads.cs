@@ -1,11 +1,11 @@
-﻿using CustomCADs.Carts.Domain.ActiveCarts;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Domain.ActiveCarts;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Carts.Persistence.Repositories.ActiveCarts;
+namespace CustomCADs.Modules.Carts.Persistence.Repositories.ActiveCarts;
 
 public sealed class Reads(CartsContext context) : IActiveCartReads
 {

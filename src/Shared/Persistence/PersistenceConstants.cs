@@ -2,7 +2,7 @@ namespace CustomCADs.Shared.Persistence;
 
 public static class PersistenceConstants
 {
-	public const string ConnectionString = "ApplicationConnection";
+	public const string ConnectionStringKey = "ApplicationConnection";
 	public const string MigrationsTable = "__EFMigrationsHistory";
 
 	public static class Schemes

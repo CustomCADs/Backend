@@ -1,6 +1,6 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;

@@ -1,4 +1,4 @@
-﻿using CustomCADs.Delivery.Domain.Shipments;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;

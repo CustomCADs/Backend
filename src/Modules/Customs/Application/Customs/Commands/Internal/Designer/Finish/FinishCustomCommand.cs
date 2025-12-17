@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Finish;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Finish;
 
 public sealed record FinishCustomCommand(
 	CustomId Id,

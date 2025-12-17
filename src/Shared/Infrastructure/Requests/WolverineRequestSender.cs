@@ -30,7 +30,7 @@ public class WolverineRequestSender(Wolverine.IMessageBus bus, ICacheService cac
 			TResponse? entry = await cache.GetOrCreateAsync(
 				key: query.Hash(QueryGroup),
 				factory: InvokeAsync,
-				expiration: requestCachingAttributes.CaclulateExpiration()
+				expiration: requestCachingAttributes.CacheExpiration
 			).ConfigureAwait(false);
 
 			// entry response can only ever be null

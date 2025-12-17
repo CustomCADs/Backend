@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Application.Policies;
 
-namespace CustomCADs.Files.API.Images.Endpoints.Presigned.Get.Bulk;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Presigned.Get.Bulk;
 
 public record ImagesPresignedUrlGetRequest(
 	Guid[] Ids,

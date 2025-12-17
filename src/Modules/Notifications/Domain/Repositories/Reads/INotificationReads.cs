@@ -1,9 +1,9 @@
-using CustomCADs.Notifications.Domain.Notifications;
-using CustomCADs.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Notifications;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Notifications.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
 
 public interface INotificationReads
 {

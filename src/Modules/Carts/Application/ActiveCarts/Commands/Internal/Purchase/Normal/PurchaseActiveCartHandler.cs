@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
-using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Commands.Internal.Create;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
@@ -11,7 +11,7 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
 
 public sealed class PurchaseActiveCartHandler(
 	IActiveCartReads reads,

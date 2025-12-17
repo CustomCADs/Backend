@@ -1,4 +1,4 @@
-﻿global using CustomCADs.Delivery.API.Shipments.Dtos;
+﻿global using CustomCADs.Modules.Delivery.API.Shipments.Dtos;
 global using CustomCADs.Shared.API;
 global using CustomCADs.Shared.API.Extensions;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Sender;

@@ -1,4 +1,4 @@
-namespace CustomCADs.Idempotency.Application.IdempotencyKeys.Commands.Internal.Complete;
+namespace CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Commands.Internal.Complete;
 
 public sealed record CompleteIdempotencyKeyCommand(
 	IdempotencyKeyId Id,

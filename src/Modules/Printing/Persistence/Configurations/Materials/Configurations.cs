@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.Domain.Materials;
+﻿using CustomCADs.Modules.Printing.Domain.Materials;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Printing.Persistence.Configurations.Materials;
+namespace CustomCADs.Modules.Printing.Persistence.Configurations.Materials;
 
 public class Configurations : IEntityTypeConfiguration<Material>
 {

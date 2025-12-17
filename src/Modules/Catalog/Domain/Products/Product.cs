@@ -1,10 +1,10 @@
-﻿using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Products.ValueObjects;
+﻿using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+using CustomCADs.Modules.Catalog.Domain.Products.ValueObjects;
 using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Domain.Products;
+namespace CustomCADs.Modules.Catalog.Domain.Products;
 
 public class Product : BaseAggregateRoot
 {

@@ -1,8 +1,8 @@
-using CustomCADs.Printing.Application.Customizations.Queries.Shared.Cost;
-using CustomCADs.Printing.Domain.Customizations;
-using CustomCADs.Printing.Domain.Materials;
-using CustomCADs.Printing.Domain.Repositories.Reads;
-using CustomCADs.Printing.Domain.Services;
+using CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Cost;
+using CustomCADs.Modules.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Materials;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
+using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.UnitTests.Printing.Application.Customizations.Queries.Shared.Cost;

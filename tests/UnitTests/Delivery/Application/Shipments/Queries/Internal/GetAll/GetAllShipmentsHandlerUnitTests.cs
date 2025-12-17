@@ -1,5 +1,5 @@
-﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetAll;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.GetAll;

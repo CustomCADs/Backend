@@ -1,6 +1,6 @@
-﻿using CustomCADs.Files.Application.Cads.Commands.Internal.Edit;
+﻿using CustomCADs.Modules.Files.Application.Cads.Commands.Internal.Edit;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Put;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Put;
 
 public sealed class PutCadEndpoint(IRequestSender sender) : Endpoint<PutCadRequest>
 {
@@ -21,7 +21,7 @@ public sealed class PutCadEndpoint(IRequestSender sender) : Endpoint<PutCadReque
 				Id: CadId.New(req.Id),
 				ContentType: req.ContentType,
 				Volume: req.Volume,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

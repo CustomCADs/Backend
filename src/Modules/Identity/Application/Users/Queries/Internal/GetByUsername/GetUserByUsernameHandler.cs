@@ -3,7 +3,7 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Identity.Application.Users.Queries.Internal.GetByUsername;
+namespace CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 
 public sealed class GetUserByUsernameHandler(IUserService service, IRequestSender sender)
 	: IQueryHandler<GetUserByUsernameQuery, GetUserByUsernameDto>

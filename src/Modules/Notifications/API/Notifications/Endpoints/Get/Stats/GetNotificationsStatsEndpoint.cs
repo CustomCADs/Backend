@@ -1,6 +1,6 @@
-﻿using CustomCADs.Notifications.Application.Notifications.Queries.Internal.Count;
+﻿using CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.Count;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.Stats;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Get.Stats;
 
 public sealed class GetNotificationsStatsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<GetNotificationsStatsResponse, GetNotificationsStatsMapper>
@@ -19,7 +19,7 @@ public sealed class GetNotificationsStatsEndpoint(IRequestSender sender)
 	{
 		CountNotificationsDto counts = await sender.SendQueryAsync(
 			query: new CountNotificationsQuery(
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

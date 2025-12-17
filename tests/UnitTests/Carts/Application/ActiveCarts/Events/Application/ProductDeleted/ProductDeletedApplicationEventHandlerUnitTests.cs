@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Events.Application.ProductDeleted;
-using CustomCADs.Carts.Domain.Repositories;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.ProductDeleted;
+using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Shared.Application.Events.Files;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Events.Application.ProductDeleted;

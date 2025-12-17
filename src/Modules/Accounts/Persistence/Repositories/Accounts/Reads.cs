@@ -1,10 +1,10 @@
-﻿using CustomCADs.Accounts.Domain.Accounts;
-using CustomCADs.Accounts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Accounts.Domain.Accounts;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Persistence.Extensions;
 
-namespace CustomCADs.Accounts.Persistence.Repositories.Accounts;
+namespace CustomCADs.Modules.Accounts.Persistence.Repositories.Accounts;
 
 public sealed class Reads(AccountsContext context) : IAccountReads
 {

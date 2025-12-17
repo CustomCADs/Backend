@@ -1,4 +1,4 @@
-namespace CustomCADs.Catalog.API.Products.Endpoints;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints;
 
 using static APIConstants;
 

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Application.Tags.Dtos;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
-using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Modules.Catalog.Domain.Tags;
 
-namespace CustomCADs.Catalog.Application.Tags.Queries.Internal.GetAll;
+namespace CustomCADs.Modules.Catalog.Application.Tags.Queries.Internal.GetAll;
 
 public sealed class GetAllTagsHandler(ITagReads reads, BaseCachingService<TagId, Tag> cache)
 	: IQueryHandler<GetAllTagsQuery, TagDto[]>

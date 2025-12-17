@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Identity.API.Identity.Post.Register;
+﻿namespace CustomCADs.Modules.Identity.API.Identity.Post.Register;
 
 public sealed record RegisterRequest(
 	string Role,

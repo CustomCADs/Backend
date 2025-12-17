@@ -1,7 +1,7 @@
-using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.SetCategory;
+using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.SetCategory;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.PatchCategory;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Patch.PatchCategory;
 
 public class PatchCustomCategoryEndpoint(IRequestSender sender) : Endpoint<PatchCustomCategoryRequest>
 {
@@ -21,7 +21,7 @@ public class PatchCustomCategoryEndpoint(IRequestSender sender) : Endpoint<Patch
 			command: new DesignerSetCustomCategoryCommand(
 				Id: CustomId.New(req.Id),
 				CategoryId: CategoryId.New(req.CategoryId),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Files.Application.Cads.Commands.Internal.SetCoords;
+﻿using CustomCADs.Modules.Files.Application.Cads.Commands.Internal.SetCoords;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Patch;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Patch;
 
 public sealed class PatchCadEndpoint(IRequestSender sender) : Endpoint<PatchCadRequest>
 {
@@ -21,7 +21,7 @@ public sealed class PatchCadEndpoint(IRequestSender sender) : Endpoint<PatchCadR
 				Id: CadId.New(req.Id),
 				CamCoordinates: req.CamCoordinates,
 				PanCoordinates: req.PanCoordinates,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,5 +1,5 @@
-using CustomCADs.Files.Application.Cads.Queries.Internal.PresignedUrls.Post;
-using CustomCADs.Files.Application.Cads.Storage;
+using CustomCADs.Modules.Files.Application.Cads.Queries.Internal.PresignedUrls.Post;
+using CustomCADs.Modules.Files.Application.Cads.Storage;
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Policies;
 

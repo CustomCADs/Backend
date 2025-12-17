@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Get.All;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Get.All;
 
 public sealed class GetAllGalleryProductsEndpoint(IRequestSender sender)
 	: Endpoint<GetAllGalleryProductsRequest, Result<GetAllGalleryProductsResponse>, GetAllGalleryProductsMapper>
@@ -20,7 +20,7 @@ public sealed class GetAllGalleryProductsEndpoint(IRequestSender sender)
 	{
 		Result<GalleryGetAllProductsDto> result = await sender.SendQueryAsync(
 			query: new GalleryGetAllProductsQuery(
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				CategoryId: CategoryId.New(req.CategoryId),
 				TagIds: TagId.New(req.TagIds),
 				Name: req.Name,

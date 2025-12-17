@@ -2,7 +2,7 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Carts.Domain.PurchasedCarts.ValueObjects;
+namespace CustomCADs.Modules.Carts.Domain.PurchasedCarts.ValueObjects;
 
 public record CartItemDto(
 	decimal Price,

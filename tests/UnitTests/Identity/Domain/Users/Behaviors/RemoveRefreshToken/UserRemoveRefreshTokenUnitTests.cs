@@ -1,4 +1,4 @@
-﻿using CustomCADs.Identity.Domain.Users.Entities;
+﻿using CustomCADs.Modules.Identity.Domain.Users.Entities;
 
 namespace CustomCADs.UnitTests.Identity.Domain.Users.Behaviors.RemoveRefreshToken;
 

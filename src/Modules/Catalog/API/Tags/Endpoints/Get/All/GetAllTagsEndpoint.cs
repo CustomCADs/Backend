@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Tags.Dtos;
-using CustomCADs.Catalog.Application.Tags.Queries.Internal.GetAll;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
+using CustomCADs.Modules.Catalog.Application.Tags.Queries.Internal.GetAll;
 
-namespace CustomCADs.Catalog.API.Tags.Endpoints.Get.All;
+namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Get.All;
 
 public class GetAllTagsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<GetAllTagsResponse[]>

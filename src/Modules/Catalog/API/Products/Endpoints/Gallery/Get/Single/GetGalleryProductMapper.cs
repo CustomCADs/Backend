@@ -1,6 +1,6 @@
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Get.Single;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Get.Single;
 
 public class GetGalleryProductMapper : ResponseMapper<GetGalleryProductResponse, GalleryGetProductByIdDto>
 {

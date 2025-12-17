@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetAll;
+﻿using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.All;
+namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.All;
 
 public sealed class GetPurchasedCartsEndpoint(IRequestSender sender)
 	: Endpoint<GetPurchasedCartsRequest, Result<GetPurchasedCartsResponse>, GetPurchasedCartsMapper>
@@ -20,7 +20,7 @@ public sealed class GetPurchasedCartsEndpoint(IRequestSender sender)
 	{
 		Result<GetAllPurchasedCartsDto> result = await sender.SendQueryAsync(
 			query: new GetAllPurchasedCartsQuery(
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				PaymentStatus: req.PaymentStatus,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)

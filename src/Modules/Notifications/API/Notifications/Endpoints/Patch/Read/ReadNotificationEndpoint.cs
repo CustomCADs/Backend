@@ -1,6 +1,6 @@
-using CustomCADs.Notifications.Application.Notifications.Commands.Internal.Read;
+using CustomCADs.Modules.Notifications.Application.Notifications.Commands.Internal.Read;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Patch.Read;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Patch.Read;
 
 public class ReadNotificationEndpoint(IRequestSender sender)
 	: Endpoint<ReadNotificationRequest>
@@ -20,7 +20,7 @@ public class ReadNotificationEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new ReadNotificationCommand(
 				Id: NotificationId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

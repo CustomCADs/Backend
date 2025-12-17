@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Identity.Application.Users.Commands.Internal.Register;
+﻿namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Register;
 
 public sealed record RegisterUserCommand(
 	string Role,

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Infrastructure.Tokens;
-using CustomCADs.Notifications.Infrastructure.Hubs;
+﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Infrastructure.Tokens;
+using CustomCADs.Modules.Notifications.Infrastructure.Hubs;
 using CustomCADs.Presentation;
 using CustomCADs.Shared.API;
 using CustomCADs.Shared.API.Extensions;
@@ -8,7 +8,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
@@ -20,228 +20,214 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class ProgramExtensions
 {
 	private const string AuthScheme = JwtBearerDefaults.AuthenticationScheme;
+	private const string CorsPolicy = "client";
 
-	public static AuthenticationBuilder AddJwt(this AuthenticationBuilder builder, IConfiguration config)
+	extension(AuthenticationBuilder authentication)
 	{
-		JwtSettings settings = config.GetSection("Jwt").Get<JwtSettings>()
-			?? throw new KeyNotFoundException("JwtSettings not provided.");
-
-		builder.AddJwt((
-			SecretKey: settings.SecretKey,
-			Issuer: settings.Issuer,
-			Audience: settings.Audience
-		));
-
-		return builder;
-	}
-
-	public static void AddAuthZ(this IServiceCollection services, params IEnumerable<string> roles)
-	{
-		services.AddAuthorization(options =>
+		public AuthenticationBuilder AddJwt(IConfiguration config)
 		{
-			foreach (string role in roles)
-			{
-				options.AddPolicy(role, policy => policy.RequireRole(role));
-			}
-		});
+			JwtSettings settings = config.GetSection("Jwt").Get<JwtSettings>()
+				?? throw new KeyNotFoundException("JwtSettings not provided.");
+
+			authentication.AddJwt((
+				SecretKey: settings.SecretKey,
+				Issuer: settings.Issuer,
+				Audience: settings.Audience
+			));
+
+			return authentication;
+		}
 	}
 
-	public static IServiceCollection AddGlobalExceptionHandler(this IServiceCollection services)
-		=> services.AddExceptionHandler<GlobalExceptionHandler>();
-
-	public static IServiceCollection AddRateLimiting(this IServiceCollection services)
-		=> services.AddRateLimiter(options =>
-			options.AddPolicy(
-				policyName: APIConstants.RateLimitPolicy,
-				partitioner: context =>
+	extension(IServiceCollection services)
+	{
+		public void AddAuthZ(params IEnumerable<string> roles)
+			=> services.AddAuthorization(options =>
+			{
+				foreach (string role in roles)
 				{
-					AccountId id = context.User.GetAccountId();
+					options.AddPolicy(role, policy => policy.RequireRole(role));
+				}
+			});
 
-					if (id.IsEmpty())
+		public IServiceCollection AddGlobalExceptionHandler()
+			=> services.AddExceptionHandler<GlobalExceptionHandler>();
+
+		public IServiceCollection AddRateLimiting()
+			=> services.AddRateLimiter(options =>
+				options.AddPolicy(
+					policyName: APIConstants.RateLimitPolicy,
+					partitioner: context =>
 					{
-						return RateLimitPartition.GetFixedWindowLimiter(
-							"anonymous",
+						AccountId userId = context.User.AccountId;
+
+						if (userId.IsEmpty())
+						{
+							return RateLimitPartition.GetFixedWindowLimiter(
+								"anonymous",
+								_ => new()
+								{
+									PermitLimit = RateLimitConstants.Anonymous.GlobalLimit,
+									Window = RateLimitConstants.Anonymous.Window,
+									QueueLimit = RateLimitConstants.Anonymous.QueueLimit,
+									QueueProcessingOrder = RateLimitConstants.Anonymous.QueueOrder,
+									AutoReplenishment = RateLimitConstants.Anonymous.AutoReplenish,
+								}
+							);
+						}
+
+						return RateLimitPartition.GetTokenBucketLimiter(
+							userId.Value.ToString(),
 							_ => new()
 							{
-								PermitLimit = RateLimitConstants.Anonymous.GlobalLimit,
-								Window = RateLimitConstants.Anonymous.Window,
-								QueueLimit = RateLimitConstants.Anonymous.QueueLimit,
-								QueueProcessingOrder = RateLimitConstants.Anonymous.QueueOrder,
-								AutoReplenishment = RateLimitConstants.Anonymous.AutoReplenish,
+								TokenLimit = RateLimitConstants.Authenticated.BurstLimit,
+								ReplenishmentPeriod = RateLimitConstants.Authenticated.Period,
+								TokensPerPeriod = RateLimitConstants.Authenticated.ReplenishedTokens,
+								QueueLimit = RateLimitConstants.Authenticated.QueueLimit,
+								QueueProcessingOrder = RateLimitConstants.Authenticated.QueueOrder,
+								AutoReplenishment = RateLimitConstants.Authenticated.AutoReplenish,
 							}
 						);
-					}
+					})
+			);
 
-					return RateLimitPartition.GetTokenBucketLimiter(
-						id.Value.ToString(),
-						_ => new()
-						{
-							TokenLimit = RateLimitConstants.Authenticated.BurstLimit,
-							ReplenishmentPeriod = RateLimitConstants.Authenticated.Period,
-							TokensPerPeriod = RateLimitConstants.Authenticated.ReplenishedTokens,
-							QueueLimit = RateLimitConstants.Authenticated.QueueLimit,
-							QueueProcessingOrder = RateLimitConstants.Authenticated.QueueOrder,
-							AutoReplenishment = RateLimitConstants.Authenticated.AutoReplenish,
-						}
-					);
-				})
-		);
+		public void AddEndpoints() => services.AddFastEndpoints().AddEndpointsApiExplorer();
 
-	public static void AddEndpoints(this IServiceCollection services)
-	{
-		services.AddFastEndpoints();
-		services.AddEndpointsApiExplorer();
-	}
-
-	public static void AddJsonOptions(this IServiceCollection services)
-	{
-		services.ConfigureHttpJsonOptions(options =>
-		{
-			options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-		});
-	}
-
-	public static void AddApiDocumentation(this IServiceCollection services, IConfiguration config, string version = "v1")
-	{
-		services.AddOpenApi(version, cfg =>
-		{
-			cfg.AddDocumentTransformer((document, context, ct) =>
+		public void AddJsonOptions() => services
+			.ConfigureHttpJsonOptions(options =>
 			{
-				string description = """
-**The best API to**:
-<ul>
-    <li>Order and Purchase 3D Models</li>
-    <li>Download them and have them Delivered</li>
-    <li>Upload and Sell 3D Models</li>
-</ul>
+				options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+			});
+
+		public void AddApiDocumentation(IConfiguration config, string version = "v1")
+			=> services.AddOpenApi(version, cfg =>
+			{
+				cfg.AddDocumentTransformer((document, context, ct) =>
+				{
+					string description = """
+### The best API to:
+- Order and Purchase 3D Models
+- Download them and have them Printed & Delivered
+- Upload and Sell 3D Models
 """;
 
-				document.Info = new()
-				{
-					Title = "CustomCADs API",
-					Description = description,
-					Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com", },
-					License = new() { Name = "Apache License 2.0", Url = new("https://www.apache.org/licenses/LICENSE-2.0"), },
-					Version = version
-				};
-				document.Tags = [.. document.Tags.OrderBy(t => t.Name)];
+					document.Info = new()
+					{
+						Title = "CustomCADs API",
+						Description = description,
+						Contact = new() { Name = "Ivan", Email = "ivanangelov414@gmail.com", },
+						License = new() { Name = "Apache License 2.0", Url = new("https://www.apache.org/licenses/LICENSE-2.0"), },
+						Version = version
+					};
+					document.Tags = document.Tags?.OrderBy(t => t.Name).ToHashSet();
 
-				ServerUrlSettings? settings = config.GetSection("ServerURLs").Get<ServerUrlSettings>();
-				if (settings is not null)
-				{
-					string[] serversUrls = [settings.Preferred, .. settings.All.Split(',')];
-					document.Servers = [..
+					ServerUrlSettings? settings = config.GetSection("ServerURLs").Get<ServerUrlSettings>();
+					if (settings is not null)
+					{
+						string[] serversUrls = [settings.Preferred, .. settings.All.Split(',')];
+						document.Servers = [..
 						serversUrls
 							.Distinct()
 							.Select(url => new OpenApiServer() { Url = url })
-					];
-				}
+						];
+					}
 
-				return Task.CompletedTask;
+					return Task.CompletedTask;
+				});
 			});
-		});
-	}
 
-	public static void AddCorsForClient(this IServiceCollection services, IConfiguration config)
-	{
-		services.Configure<CookieSettings>(config.GetSection("Cookie"));
-
-		IConfigurationSection section = config.GetSection("ClientURLs");
-		services.Configure<ClientUrlSettings>(section);
-
-		services.AddCors(opt =>
+		public void AddCorsForClient(IConfiguration config)
 		{
-			ClientUrlSettings settings = section.Get<ClientUrlSettings>()
-				?? throw new KeyNotFoundException("URLs not provided.");
+			services.Configure<CookieSettings>(config.GetSection("Cookie"));
 
-			opt.AddDefaultPolicy(builder =>
+			IConfigurationSection section = config.GetSection("ClientURLs");
+			services.Configure<ClientUrlSettings>(section);
+
+			services.AddCors(opt =>
 			{
-				string[] urls = settings.All.Split(',');
-				builder.WithOrigins(urls)
+				ClientUrlSettings urls = section.Get<ClientUrlSettings>()
+					?? throw new KeyNotFoundException("URLs not provided.");
+
+				opt.AddPolicy(CorsPolicy, builder =>
+				{
+					builder.WithOrigins(urls.All.Split(','))
 						.AllowAnyHeader()
 						.AllowAnyMethod()
 						.AllowCredentials();
+				});
 			});
-		});
+		}
 	}
 
-	public static void UseCorsForClient(this IApplicationBuilder app)
+	extension(IApplicationBuilder app)
 	{
-		app.UseCors();
-	}
+		public void UseCorsForClient() => app.UseCors(CorsPolicy);
 
-	public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app)
-	{
-		app.UseFastEndpoints(cfg =>
-		{
-			cfg.Endpoints.Configurator = (ep) =>
+		public IApplicationBuilder UseEndpoints()
+			=> app.UseFastEndpoints(cfg =>
 			{
-				ep.AuthSchemes(AuthScheme);
-				ep.Description(d => d.RequireRateLimiting(APIConstants.RateLimitPolicy));
-			};
-			cfg.Endpoints.RoutePrefix = "api";
-			cfg.Versioning.DefaultVersion = 1;
-			cfg.Versioning.PrependToRoute = true;
-		});
+				cfg.Endpoints.Configurator = (ep) =>
+				{
+					ep.AuthSchemes(AuthScheme);
+					ep.Description(d => d.RequireRateLimiting(APIConstants.RateLimitPolicy));
+				};
+				cfg.Endpoints.RoutePrefix = "api";
+				cfg.Versioning.DefaultVersion = 1;
+				cfg.Versioning.PrependToRoute = true;
+			});
 
-		return app;
-	}
-
-	public static IApplicationBuilder UseDisableBrowserCaching(this IApplicationBuilder app)
-	{
-		app.Use(async (context, next) =>
-		{
-			if (context.Request.Path.StartsWithSegments("/api"))
+		public IApplicationBuilder UseDisableBrowserCaching()
+			=> app.Use(async (context, next) =>
 			{
-				IHeaderDictionary headers = context.Response.Headers;
-				headers.CacheControl = "no-store, no-cache, must-revalidate, proxy-revalidate";
-				headers.Pragma = "no-cache";
-				headers.Expires = "0";
-			}
+				if (context.Request.Path.StartsWithSegments("/api"))
+				{
+					IHeaderDictionary headers = context.Response.Headers;
+					headers.CacheControl = "no-store, no-cache, must-revalidate, proxy-revalidate";
+					headers.Pragma = "no-cache";
+					headers.Expires = "0";
+				}
 
-			await next().ConfigureAwait(false);
-		});
-
-		return app;
+				await next().ConfigureAwait(false);
+			});
 	}
 
-	public static IEndpointRouteBuilder MapApiDocumentationUi(this IEndpointRouteBuilder app, [StringSyntax("Route")] string apiPattern = "/openai/{documentName}.json", [StringSyntax("Route")] string uiPattern = "/scalar/{documentName}")
+	extension(IEndpointRouteBuilder router)
 	{
-		app.MapOpenApi(apiPattern);
-		app.MapScalarApiReference(uiPattern, options =>
+		public IEndpointRouteBuilder MapApiDocumentationUi([StringSyntax("Route")] string apiPattern = "/openai/{documentName}.json", [StringSyntax("Route")] string uiPattern = "/scalar/{documentName}")
 		{
-			ScalarTheme[] themes =
-			[
-				ScalarTheme.BluePlanet,
-				ScalarTheme.Kepler,
-				ScalarTheme.Mars,
-				ScalarTheme.DeepSpace,
-			];
+			router.MapOpenApi(apiPattern);
+			router.MapScalarApiReference(uiPattern, options =>
+			{
+				ScalarTheme[] themes =
+				[
+					ScalarTheme.BluePlanet,
+					ScalarTheme.Kepler,
+					ScalarTheme.Mars,
+					ScalarTheme.DeepSpace,
+				];
 
-			options
-				.WithOpenApiRoutePattern(apiPattern)
-				.WithOperationSorter(OperationSorter.Method)
-				.WithTitle("CustomCADs API")
-				.WithTheme(themes[Random.Shared.Next(0, themes.Length)])
-				.WithFavicon("/favicon.ico")
-				.WithDarkModeToggle(false);
-		});
+				options
+					.WithOpenApiRoutePattern(apiPattern)
+					.SortOperationsByMethod()
+					.SortTagsAlphabetically()
+					.WithTitle("CustomCADs API")
+					.WithTheme(themes[Random.Shared.Next(0, themes.Length)])
+					.WithFavicon("/favicon.ico")
+					.HideDarkModeToggle();
+			});
 
-		return app;
-	}
+			return router;
+		}
 
-	public static IEndpointRouteBuilder MapRealTimeHubs(this IEndpointRouteBuilder app)
-	{
-		app
-			.MapRealTimeHub<SignalRNotificationsHub>("Notifications");
+		public IEndpointRouteBuilder MapRealTimeHubs()
+			=> router
+				.MapRealTimeHub<SignalRNotificationsHub>("Notifications");
 
-		return app;
-	}
+		private IEndpointRouteBuilder MapRealTimeHub<THub>(string pattern) where THub : AspNetCore.SignalR.Hub
+		{
+			router.MapHub<THub>($"{APIConstants.RequestPrefixForSignalR}/{pattern}");
 
-	private static IEndpointRouteBuilder MapRealTimeHub<THub>(this IEndpointRouteBuilder app, string pattern) where THub : AspNetCore.SignalR.Hub
-	{
-		app.MapHub<THub>($"{HttpExtensions.PrefixSignalR}/{pattern}");
-
-		return app;
+			return router;
+		}
 	}
 }

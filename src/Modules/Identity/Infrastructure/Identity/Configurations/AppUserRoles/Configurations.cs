@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Identity.Infrastructure.Identity.Configurations.AppUserRoles;
+namespace CustomCADs.Modules.Identity.Infrastructure.Identity.Configurations.AppUserRoles;
 
 using AppUserRole = Microsoft.AspNetCore.Identity.IdentityUserRole<Guid>;
 

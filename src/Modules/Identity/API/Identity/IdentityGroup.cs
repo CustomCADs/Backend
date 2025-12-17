@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Identity.API.Identity;
+﻿namespace CustomCADs.Modules.Identity.API.Identity;
 
 using static APIConstants;
 

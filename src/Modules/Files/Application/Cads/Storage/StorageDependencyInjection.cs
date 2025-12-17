@@ -1,9 +1,12 @@
-using CustomCADs.Files.Application.Cads.Storage;
+using CustomCADs.Modules.Files.Application.Cads.Storage;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static partial class StorageDependencyInjection
 {
-	public static IServiceCollection AddCadStorageService(this IServiceCollection services)
-		=> services.AddScoped<ICadStorageService, CadStorageService>();
+	extension(IServiceCollection services)
+	{
+		public IServiceCollection AddCadStorageService()
+			=> services.AddScoped<ICadStorageService, CadStorageService>();
+	}
 }

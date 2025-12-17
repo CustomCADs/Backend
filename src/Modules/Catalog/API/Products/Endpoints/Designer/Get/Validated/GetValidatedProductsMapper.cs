@@ -1,6 +1,6 @@
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Validated;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Validated;
 
 public class GetValidatedProductsMapper : ResponseMapper<GetValidatedProductsResponse, DesignerGetAllProductsDto>
 {

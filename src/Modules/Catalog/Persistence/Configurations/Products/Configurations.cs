@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Products;
+﻿using CustomCADs.Modules.Catalog.Domain.Products;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Catalog.Persistence.Configurations.Products;
+namespace CustomCADs.Modules.Catalog.Persistence.Configurations.Products;
 
 public class Configurations : IEntityTypeConfiguration<Product>
 {

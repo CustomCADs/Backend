@@ -3,7 +3,7 @@ using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Files.Application.Cads.Queries.Internal.PresignedUrls.Put;
+namespace CustomCADs.Modules.Files.Application.Cads.Queries.Internal.PresignedUrls.Put;
 
 public sealed record GetCadPresignedUrlPutQuery(
 	CadId Id,

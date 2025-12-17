@@ -1,7 +1,7 @@
-﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetSortings;
-using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetSortings;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 
-namespace CustomCADs.Delivery.API.Shipments.Endpoints.Get.Sortings;
+namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Get.Sortings;
 
 public sealed class GetShipmentSortingsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<ShipmentSortingType[]>
