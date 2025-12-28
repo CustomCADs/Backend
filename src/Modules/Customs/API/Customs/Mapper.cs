@@ -1,42 +1,58 @@
-﻿using CustomCADs.Customs.API.Customs.Dtos;
-using CustomCADs.Customs.Application.Customs.Dtos;
+﻿using CustomCADs.Modules.Customs.API.Customs.Dtos;
+using CustomCADs.Modules.Customs.Application.Customs.Dtos;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 
-namespace CustomCADs.Customs.API.Customs;
+namespace CustomCADs.Modules.Customs.API.Customs;
 
 internal static class Mapper
 {
-	internal static PaymentResponse ToResponse(this PaymentDto payment)
-		=> new(
-			ClientSecret: payment.ClientSecret,
-			Message: payment.Message
-		);
+	extension(PaymentDto payment)
+	{
+		internal PaymentResponse ToResponse()
+			=> new(
+				ClientSecret: payment.ClientSecret,
+				Message: payment.Message
+			);
+	}
 
-	internal static CustomCategoryResponse ToResponse(this CustomCategoryDto category)
-		=> new(
-			Id: category.Id.Value,
-			Name: category.Name,
-			SetAt: category.SetAt,
-			Setter: category.Setter
-		);
+	extension(CustomCategoryDto category)
+	{
+		internal CustomCategoryResponse ToResponse()
+			=> new(
+				Id: category.Id.Value,
+				Name: category.Name,
+				SetAt: category.SetAt,
+				Setter: category.Setter
+			);
+	}
 
-	internal static AcceptedCustomResponse ToResponse(this AcceptedCustomDto custom)
-		=> new(
-			DesignerName: custom.DesignerName,
-			AcceptedAt: custom.AcceptedAt
-		);
+	extension(AcceptedCustomDto custom)
+	{
+		internal AcceptedCustomResponse ToResponse()
+			=> new(
+				DesignerName: custom.DesignerName,
+				AcceptedAt: custom.AcceptedAt
+			);
+	}
 
-	internal static FinishedCustomResponse ToResponse(this FinishedCustomDto custom)
-		=> new(
-			Price: custom.Price,
-			FinishedAt: custom.FinishedAt,
-			CadId: custom.CadId.Value
-		);
+	extension(FinishedCustomDto custom)
+	{
+		internal FinishedCustomResponse ToResponse()
+			=> new(
+				Price: custom.Price,
+				FinishedAt: custom.FinishedAt,
+				CadId: custom.CadId.Value
+			);
+	}
 
-	internal static CompletedCustomResponse ToResponse(this CompletedCustomDto custom)
-		=> new(
-			PaymentStatus: custom.PaymentStatus,
-			CustomizationId: custom.CustomizationId?.Value,
-			ShipmentId: custom.ShipmentId?.Value
-		);
+	extension(CompletedCustomDto custom)
+	{
+		internal CompletedCustomResponse ToResponse()
+			=> new(
+				PaymentStatus: custom.PaymentStatus,
+				CustomizationId: custom.CustomizationId?.Value,
+				ShipmentId: custom.ShipmentId?.Value
+			);
+	}
+
 }

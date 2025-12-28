@@ -1,26 +1,30 @@
-﻿namespace CustomCADs.Customs.Domain.Customs;
+﻿namespace CustomCADs.Modules.Customs.Domain.Customs;
 
 using static CustomConstants;
 
-public static class Validations
+internal static class Validations
 {
-	public static Custom ValidateName(this Custom custom)
-		=> custom
-			.ThrowIfNull(
-				expression: x => x.Name,
-				predicate: string.IsNullOrWhiteSpace
-			).ThrowIfInvalidLength(
-				expression: x => x.Name,
-				length: (NameMinLength, NameMaxLength)
-			);
+	extension(Custom custom)
+	{
+		internal Custom ValidateName()
+			=> custom
+				.ThrowIfNull(
+					expression: x => x.Name,
+					predicate: string.IsNullOrWhiteSpace
+				).ThrowIfInvalidLength(
+					expression: x => x.Name,
+					length: (NameMinLength, NameMaxLength)
+				);
 
-	public static Custom ValidateDescription(this Custom custom)
-		=> custom
-			.ThrowIfNull(
-				expression: x => x.Description,
-				predicate: string.IsNullOrWhiteSpace
-			).ThrowIfInvalidLength(
-				expression: x => x.Description,
-				length: (DescriptionMinLength, DescriptionMaxLength)
-			);
+		internal Custom ValidateDescription()
+			=> custom
+				.ThrowIfNull(
+					expression: x => x.Description,
+					predicate: string.IsNullOrWhiteSpace
+				).ThrowIfInvalidLength(
+					expression: x => x.Description,
+					length: (DescriptionMinLength, DescriptionMaxLength)
+				);
+	}
+
 }

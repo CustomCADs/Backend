@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Application.Dtos.Delivery;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Post.PurchaseWithDelivery;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Post.PurchaseWithDelivery;
 
 public sealed record PurchaseActiveCartRequest(
 	string PaymentMethodId,

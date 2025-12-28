@@ -3,7 +3,7 @@ using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Application.Products.Policies;
+namespace CustomCADs.Modules.Catalog.Application.Products.Policies;
 
 public class ProductCadUploadPolicy(IRequestSender sender) : IFileUploadPolicy<CadId>
 {

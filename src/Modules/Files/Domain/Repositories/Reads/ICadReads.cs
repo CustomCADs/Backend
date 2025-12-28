@@ -1,7 +1,7 @@
-﻿using CustomCADs.Files.Domain.Cads;
+﻿using CustomCADs.Modules.Files.Domain.Cads;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Files.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Files.Domain.Repositories.Reads;
 
 public interface ICadReads
 {

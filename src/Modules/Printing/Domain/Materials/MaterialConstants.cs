@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.Domain.Materials;
+﻿namespace CustomCADs.Modules.Printing.Domain.Materials;
 
 public static class MaterialConstants
 {

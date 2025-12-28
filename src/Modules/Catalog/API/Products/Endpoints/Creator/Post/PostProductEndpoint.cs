@@ -1,9 +1,9 @@
-﻿using CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Single;
-using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Create;
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetById;
+﻿using CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Get.Single;
+using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Creator.Create;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Post;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Post;
 
 public sealed class PostProductEndpoint(IRequestSender sender)
 	: Endpoint<PostProductRequest, PostProductResponse, PostProductMapper>
@@ -28,7 +28,7 @@ public sealed class PostProductEndpoint(IRequestSender sender)
 				CategoryId: CategoryId.New(req.CategoryId),
 				ImageId: ImageId.New(req.ImageId),
 				CadId: CadId.New(req.CadId),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);
@@ -36,7 +36,7 @@ public sealed class PostProductEndpoint(IRequestSender sender)
 		CreatorGetProductByIdDto response = await sender.SendQueryAsync(
 			query: new CreatorGetProductByIdQuery(
 				Id: id,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

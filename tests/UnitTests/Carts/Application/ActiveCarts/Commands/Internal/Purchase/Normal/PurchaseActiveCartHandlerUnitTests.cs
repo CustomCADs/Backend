@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
-using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
-using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
+using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Commands.Internal.Create;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;

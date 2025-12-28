@@ -1,8 +1,8 @@
-﻿using CustomCADs.Customs.Domain.Customs.States.Entities;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Customs.Persistence.Configurations.Customs.States.Finished;
+namespace CustomCADs.Modules.Customs.Persistence.Configurations.Customs.States.Finished;
 
 public class Configurations : IEntityTypeConfiguration<FinishedCustom>
 {

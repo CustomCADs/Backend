@@ -1,14 +1,18 @@
-﻿using CustomCADs.Files.Application.Images.Dtos;
+﻿using CustomCADs.Modules.Files.Application.Images.Dtos;
 
-namespace CustomCADs.Files.API.Images;
+namespace CustomCADs.Modules.Files.API.Images;
 
 internal static class Mapper
 {
-	internal static ImageResponse ToResponse(this ImageDto image)
-		=> new(
-			Id: image.Id.Value,
-			Key: image.Key,
-			ContentType: image.ContentType,
-			OwnerName: image.OwnerName
-		);
+	extension(ImageDto image)
+	{
+		internal ImageResponse ToResponse()
+			=> new(
+				Id: image.Id.Value,
+				Key: image.Key,
+				ContentType: image.ContentType,
+				OwnerName: image.OwnerName
+			);
+	}
+
 }

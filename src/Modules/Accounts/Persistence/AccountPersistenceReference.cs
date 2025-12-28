@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Accounts.Persistence;
+namespace CustomCADs.Modules.Accounts.Persistence;
 
 public class AccountPersistenceReference
 {

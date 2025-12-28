@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Products.Enums;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Enums;
 using CustomCADs.Shared.Domain.Enums;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Validated;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Validated;
 
 public sealed record GetValidatedProductsRequest(
 	int? CategoryId = null,

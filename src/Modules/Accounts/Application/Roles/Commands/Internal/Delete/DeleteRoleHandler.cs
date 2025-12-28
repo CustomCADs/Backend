@@ -1,10 +1,10 @@
-﻿using CustomCADs.Accounts.Domain.Repositories;
-using CustomCADs.Accounts.Domain.Repositories.Reads;
-using CustomCADs.Accounts.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Events.Account.Roles;
 
-namespace CustomCADs.Accounts.Application.Roles.Commands.Internal.Delete;
+namespace CustomCADs.Modules.Accounts.Application.Roles.Commands.Internal.Delete;
 
 public sealed class DeleteRoleHandler(
 	IRoleReads reads,

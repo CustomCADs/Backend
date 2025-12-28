@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.GetById;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.GetById;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Single;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.Single;
 
 public sealed class GetCustomEndpoint(IRequestSender sender)
 	: Endpoint<GetCustomRequest, GetCustomResponse, GetCustomsStatsMapper>
@@ -20,7 +20,7 @@ public sealed class GetCustomEndpoint(IRequestSender sender)
 		CustomerGetCustomByIdDto custom = await sender.SendQueryAsync(
 			query: new CustomerGetCustomByIdQuery(
 				Id: CustomId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

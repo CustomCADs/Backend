@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.Application.Customizations.Queries.Internal.GetById;
+﻿namespace CustomCADs.Modules.Printing.Application.Customizations.Queries.Internal.GetById;
 
 public sealed record GetCustomizationByIdQuery(
 	CustomizationId Id

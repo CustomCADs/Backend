@@ -1,8 +1,8 @@
-using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Repositories;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Repositories;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Admin.SetCategory;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Admin.SetCategory;
 
 public sealed class AdminSetCustomCategoryHandler(ICustomReads reads, IUnitOfWork uow)
 	: ICommandHandler<AdminSetCustomCategoryCommand>

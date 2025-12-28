@@ -1,9 +1,9 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Customs.Domain.Customs.States.Entities;
+namespace CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
 
 public class CompletedCustom : BaseEntity
 {

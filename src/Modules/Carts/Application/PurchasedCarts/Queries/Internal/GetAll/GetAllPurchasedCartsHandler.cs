@@ -1,7 +1,8 @@
-﻿using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Domain.Extensions;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetAll;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetAll;
 
 public sealed class GetAllPurchasedCartsHandler(IPurchasedCartReads reads)
 	: IQueryHandler<GetAllPurchasedCartsQuery, Result<GetAllPurchasedCartsDto>>

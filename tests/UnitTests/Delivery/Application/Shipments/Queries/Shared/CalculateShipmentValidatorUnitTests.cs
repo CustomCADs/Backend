@@ -1,4 +1,4 @@
-using CustomCADs.Delivery.Application.Shipments.Queries.Shared;
+using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Shared;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 using FluentValidation.TestHelper;

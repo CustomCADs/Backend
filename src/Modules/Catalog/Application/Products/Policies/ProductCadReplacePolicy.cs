@@ -1,8 +1,8 @@
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Application.Products.Policies;
+namespace CustomCADs.Modules.Catalog.Application.Products.Policies;
 
 public class ProductCadReplacePolicy(IProductReads reads) : IFileReplacePolicy<CadId>
 {

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Delivery.Domain.Shipments;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Delivery.Persistence;
+namespace CustomCADs.Modules.Delivery.Persistence;
 
 using static PersistenceConstants;
 

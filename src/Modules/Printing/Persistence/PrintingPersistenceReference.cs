@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Printing.Persistence;
+namespace CustomCADs.Modules.Printing.Persistence;
 
 public class PrintingPersistenceReference
 {

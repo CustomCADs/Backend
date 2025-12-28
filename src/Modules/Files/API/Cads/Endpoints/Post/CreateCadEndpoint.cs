@@ -1,11 +1,11 @@
-﻿using CustomCADs.Files.API.Cads.Endpoints.Get.Single;
-using CustomCADs.Files.Application.Cads.Commands.Internal.Create;
-using CustomCADs.Files.Application.Cads.Dtos;
-using CustomCADs.Files.Application.Cads.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Files.API.Cads.Endpoints.Get.Single;
+using CustomCADs.Modules.Files.Application.Cads.Commands.Internal.Create;
+using CustomCADs.Modules.Files.Application.Cads.Dtos;
+using CustomCADs.Modules.Files.Application.Cads.Queries.Internal.GetById;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.AspNetCore.Builder;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Post;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Post;
 
 public class CreateCadEndpoint(IRequestSender sender) : Endpoint<CreateCadRequest, CadResponse>
 {
@@ -27,7 +27,7 @@ public class CreateCadEndpoint(IRequestSender sender) : Endpoint<CreateCadReques
 				Key: req.GeneratedKey,
 				ContentType: req.ContentType,
 				Volume: req.Volume,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,6 +1,6 @@
-using CustomCADs.Idempotency.Domain.Repositories;
+using CustomCADs.Modules.Idempotency.Domain.Repositories;
 
-namespace CustomCADs.Idempotency.Application.IdempotencyKeys.Commands.Internal.Create;
+namespace CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Commands.Internal.Create;
 
 public sealed class CreateIdempotencyKeyHandler(IWrites<IdempotencyKey> writes, IUnitOfWork uow)
 	: ICommandHandler<CreateIdempotencyKeyCommand, IdempotencyKeyId>

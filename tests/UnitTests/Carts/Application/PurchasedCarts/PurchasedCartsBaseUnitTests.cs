@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Domain.PurchasedCarts.Entities;
-using CustomCADs.Carts.Domain.PurchasedCarts.ValueObjects;
+﻿using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Entities;
+using CustomCADs.Modules.Carts.Domain.PurchasedCarts.ValueObjects;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;

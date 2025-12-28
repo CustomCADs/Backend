@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Application.Exceptions;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.Logout;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Logout;
 
 public sealed class LogoutUserHandler(
 	IUserService service

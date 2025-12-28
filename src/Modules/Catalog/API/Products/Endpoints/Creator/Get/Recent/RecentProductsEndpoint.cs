@@ -1,9 +1,9 @@
-﻿using CustomCADs.Catalog.Application.Products.Enums;
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Enums;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
 using CustomCADs.Shared.Domain.Enums;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Recent;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Get.Recent;
 
 public sealed class RecentProductsEndpoint(IRequestSender sender)
 	: Endpoint<RecentProductsRequest, RecentProductsResponse[], RecentProductsMapper>
@@ -22,7 +22,7 @@ public sealed class RecentProductsEndpoint(IRequestSender sender)
 	{
 		Result<CreatorGetAllProductsDto> result = await sender.SendQueryAsync(
 			query: new CreatorGetAllProductsQuery(
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				Sorting: new(
 					ProductCreatorSortingType.UploadedAt.ToBase(),
 					SortingDirection.Descending

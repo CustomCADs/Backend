@@ -1,5 +1,5 @@
-using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Application.Users.Queries.Shared.ClientUrl;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Application.Users.Queries.Shared.ClientUrl;
 using CustomCADs.Shared.Application.UseCases.Identity.Queries;
 using Microsoft.Extensions.Options;
 

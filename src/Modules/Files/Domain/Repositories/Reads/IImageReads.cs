@@ -1,6 +1,6 @@
-﻿using CustomCADs.Files.Domain.Images;
+﻿using CustomCADs.Modules.Files.Domain.Images;
 
-namespace CustomCADs.Files.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Files.Domain.Repositories.Reads;
 
 public interface IImageReads
 {

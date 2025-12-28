@@ -1,6 +1,6 @@
-﻿using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 
-namespace CustomCADs.Delivery.Domain.Repositories;
+namespace CustomCADs.Modules.Delivery.Domain.Repositories;
 
 public interface IUnitOfWork
 {

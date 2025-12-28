@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
-using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;

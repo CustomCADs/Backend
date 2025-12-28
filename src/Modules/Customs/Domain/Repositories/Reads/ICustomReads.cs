@@ -1,10 +1,10 @@
-﻿using CustomCADs.Customs.Domain.Customs;
-using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Customs.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 
 public interface ICustomReads
 {

@@ -1,7 +1,7 @@
-﻿using CustomCADs.Idempotency.Domain.Repositories;
+﻿using CustomCADs.Modules.Idempotency.Domain.Repositories;
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Idempotency.Persistence.Repositories;
+namespace CustomCADs.Modules.Idempotency.Persistence.Repositories;
 
 public class Writes<TEntity>(IdempotencyContext context) : IWrites<TEntity>
 	where TEntity : BaseAggregateRoot

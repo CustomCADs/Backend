@@ -1,8 +1,8 @@
-﻿using CustomCADs.Identity.Application.Users.Commands.Internal.Register;
-using CustomCADs.Identity.Application.Users.Commands.Internal.VerificationEmail;
+﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Register;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerificationEmail;
 using CustomCADs.Shared.API.Attributes;
 
-namespace CustomCADs.Identity.API.Identity.Post.Register;
+namespace CustomCADs.Modules.Identity.API.Identity.Post.Register;
 
 public sealed class RegisterEndpoint(IRequestSender sender)
 	: Endpoint<RegisterRequest>

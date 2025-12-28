@@ -1,0 +1,99 @@
+<Solution>
+    <Configurations>
+        <Platform Name="Any CPU" />
+        <Platform Name="x64" />
+        <Platform Name="x86" />
+    </Configurations>
+
+
+    <!-- Source Code -->
+    <Folder Name="/src/">
+        <Project DisplayName="Presentation" Path="src/Presentation/Presentation.csproj" />
+    </Folder>
+
+    <!-- Tools -->
+    <Folder Name="/src/Tools/">
+        <Project DisplayName="CodeGen" Path="src/Tools/CodeGen/Tools.CodeGen.csproj" />
+        <Project DisplayName="Identity" Path="src/Tools/Identity/Tools.Identity.csproj" />
+        <Project DisplayName="Migrations" Path="src/Tools/Migrations/Tools.Migrations.csproj" />
+    </Folder>
+
+    <!-- Shared -->
+    <Folder Name="/src/Shared/">
+        <Project DisplayName="Domain" Path="src/Shared/Domain/Shared.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Shared/Persistence/Shared.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Shared/Application/Shared.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Shared/Infrastructure/Shared.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Shared/API/Shared.API.csproj" />
+    </Folder>
+
+    <!-- Modules -->
+    <Folder Name="/src/Modules/Accounts/">
+        <Project DisplayName="Domain" Path="src/Modules/Accounts/Domain/Modules.Accounts.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Accounts/Persistence/Modules.Accounts.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Accounts/Application/Modules.Accounts.Application.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Accounts/API/Modules.Accounts.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Carts/">
+        <Project DisplayName="Domain" Path="src/Modules/Carts/Domain/Modules.Carts.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Carts/Persistence/Modules.Carts.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Carts/Application/Modules.Carts.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Modules/Carts/Infrastructure/Modules.Carts.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Carts/API/Modules.Carts.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Catalog/">
+        <Project DisplayName="Domain" Path="src/Modules/Catalog/Domain/Modules.Catalog.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Catalog/Persistence/Modules.Catalog.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Catalog/Application/Modules.Catalog.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Modules/Catalog/Infrastructure/Modules.Catalog.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Catalog/API/Modules.Catalog.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Customs/">
+        <Project DisplayName="Domain" Path="src/Modules/Customs/Domain/Modules.Customs.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Customs/Persistence/Modules.Customs.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Customs/Application/Modules.Customs.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Modules/Customs/Infrastructure/Modules.Customs.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Customs/API/Modules.Customs.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Delivery/">
+        <Project DisplayName="Domain" Path="src/Modules/Delivery/Domain/Modules.Delivery.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Delivery/Persistence/Modules.Delivery.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Delivery/Application/Modules.Delivery.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Modules/Delivery/Infrastructure/Modules.Delivery.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Delivery/API/Modules.Delivery.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Files/">
+        <Project DisplayName="Domain" Path="src/Modules/Files/Domain/Modules.Files.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Files/Persistence/Modules.Files.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Files/Application/Modules.Files.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Modules/Files/Infrastructure/Modules.Files.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Files/API/Modules.Files.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Idempotency/">
+        <Project DisplayName="Domain" Path="src/Modules/Idempotency/Domain/Modules.Idempotency.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Idempotency/Persistence/Modules.Idempotency.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Idempotency/Application/Modules.Idempotency.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Modules/Idempotency/Infrastructure/Modules.Idempotency.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Idempotency/API/Modules.Idempotency.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Identity/">
+        <Project DisplayName="Domain" Path="src/Modules/Identity/Domain/Modules.Identity.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Identity/Application/Modules.Identity.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Modules/Identity/Infrastructure/Modules.Identity.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Identity/API/Modules.Identity.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Notifications/">
+        <Project DisplayName="Domain" Path="src/Modules/Notifications/Domain/Modules.Notifications.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Notifications/Persistence/Modules.Notifications.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Notifications/Application/Modules.Notifications.Application.csproj" />
+        <Project DisplayName="Infrastructure" Path="src/Modules/Notifications/Infrastructure/Modules.Notifications.Infrastructure.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Notifications/API/Modules.Notifications.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Printing/">
+        <Project DisplayName="Domain" Path="src/Modules/Printing/Domain/Modules.Printing.Domain.csproj" />
+        <Project DisplayName="Persistence" Path="src/Modules/Printing/Persistence/Modules.Printing.Persistence.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Printing/Application/Modules.Printing.Application.csproj" />
+        <Project DisplayName="API" Path="src/Modules/Printing/API/Modules.Printing.API.csproj" />
+    </Folder>
+
+</Solution>

@@ -1,6 +1,6 @@
-using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.Count;
+using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.Count;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Stats;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.Stats;
 
 public class GetCustomsStatsMapper : ResponseMapper<GetCustomsStatsResponse, CountCustomsDto>
 {

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Identity.Domain.Users;
+﻿namespace CustomCADs.Modules.Identity.Domain.Users;
 
 public static class UserConstants
 {

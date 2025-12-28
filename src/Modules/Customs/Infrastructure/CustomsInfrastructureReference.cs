@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CustomCADs.Customs.Infrastructure;
+namespace CustomCADs.Modules.Customs.Infrastructure;
 
 public class CustomsInfrastructureReference
 {

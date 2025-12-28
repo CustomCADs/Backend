@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.GetAll;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.GetAll;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Get.All;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Get.All;
 
 public sealed class GetActiveCartItemsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<ICollection<ActiveCartItemResponse>>
@@ -19,7 +19,7 @@ public sealed class GetActiveCartItemsEndpoint(IRequestSender sender)
 	{
 		ActiveCartItemDto[] items = await sender.SendQueryAsync(
 			query: new GetActiveCartItemsQuery(
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Customs.Domain.Repositories;
+﻿using CustomCADs.Modules.Customs.Domain.Repositories;
 using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Customs.Persistence.Repositories;
+namespace CustomCADs.Modules.Customs.Persistence.Repositories;
 
 public class UnitOfWork(CustomsContext context) : IUnitOfWork
 {

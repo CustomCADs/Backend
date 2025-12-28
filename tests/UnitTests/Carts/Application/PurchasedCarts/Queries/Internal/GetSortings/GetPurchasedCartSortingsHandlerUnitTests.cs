@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetSortings;
-using CustomCADs.Carts.Domain.PurchasedCarts.Enums;
+﻿using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetSortings;
+using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Enums;
 
 namespace CustomCADs.UnitTests.Carts.Application.PurchasedCarts.Queries.Internal.GetSortings;
 

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Admin.Remove;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Admin.Remove;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Admin.Remove;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Admin.Remove;
 
 public sealed class RemoveProductEndpoint(IRequestSender sender)
 	: Endpoint<RemoveProductRequest>
@@ -20,7 +20,7 @@ public sealed class RemoveProductEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new RemoveProductCommand(
 				Id: ProductId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,4 +1,4 @@
-namespace CustomCADs.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;
+namespace CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;
 
 public sealed record DeleteIdempotencyKeyCommand(
 	Guid IdempotencyKey,

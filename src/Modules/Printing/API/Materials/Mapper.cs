@@ -1,15 +1,19 @@
-﻿using CustomCADs.Printing.API.Materials.Dtos;
+﻿using CustomCADs.Modules.Printing.API.Materials.Dtos;
 
-namespace CustomCADs.Printing.API.Materials;
+namespace CustomCADs.Modules.Printing.API.Materials;
 
 internal static class Mapper
 {
-	internal static MaterialResponse ToResponse(this MaterialDto material)
-		=> new(
-			Id: material.Id.Value,
-			Name: material.Name,
-			Density: material.Density,
-			Cost: material.Cost,
-			TextureId: material.TextureId.Value
-		);
+	extension(MaterialDto material)
+	{
+		internal MaterialResponse ToResponse()
+			=> new(
+				Id: material.Id.Value,
+				Name: material.Name,
+				Density: material.Density,
+				Cost: material.Cost,
+				TextureId: material.TextureId.Value
+			);
+	}
+
 }

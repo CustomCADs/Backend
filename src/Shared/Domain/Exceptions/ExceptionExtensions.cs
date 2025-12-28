@@ -9,116 +9,115 @@ public static class ExceptionExtensions
 		message: "Expression Body must be MemberExpression"
 	);
 
-	public static TEntity ThrowIfPredicateIsTrue<TEntity, TProperty>(
-		this TEntity entity,
-		Expression<Func<TEntity, TProperty>> expression,
-		Predicate<TProperty> predicate,
-		string message,
-		string? property = null
-	) where TEntity : BaseEntity
+	extension<TEntity>(TEntity entity) where TEntity : BaseEntity
 	{
-		TProperty? value = expression.Compile()(entity);
-		property ??= expression.Body is MemberExpression memberExpression
-			? memberExpression.Member.Name
-			: throw propertyNotComputableException;
-
-		if (predicate(value))
+		public TEntity ThrowIfPredicateIsTrue<TProperty>(
+			Expression<Func<TEntity, TProperty>> expression,
+			Predicate<TProperty> predicate,
+			string message,
+			string? property = null
+		)
 		{
-			throw CustomValidationException<TEntity>.Custom(
-				string.Format(message, typeof(TEntity).Name, property)
+			TProperty? value = expression.Compile().Invoke(entity);
+			property ??= expression.Body is MemberExpression memberExpression
+				? memberExpression.Member.Name
+				: throw propertyNotComputableException;
+
+			if (predicate(value))
+			{
+				throw CustomValidationException<TEntity>.Custom(
+					string.Format(message, typeof(TEntity).Name, property)
+				);
+			}
+			return entity;
+		}
+
+		public TEntity ThrowIfPredicateIsFalse<TProperty>(
+			Expression<Func<TEntity, TProperty>> expression,
+			Predicate<TProperty> predicate,
+			string message,
+			string? property = null
+		) => entity.ThrowIfPredicateIsTrue(
+				expression: expression,
+				predicate: (entity) => !predicate(entity),
+				message: message,
+				property: property
 			);
-		}
-		return entity;
-	}
 
-	public static TEntity ThrowIfPredicateIsFalse<TEntity, TProperty>(
-		this TEntity entity,
-		Expression<Func<TEntity, TProperty>> expression,
-		Predicate<TProperty> predicate,
-		string message,
-		string? property = null
-	) where TEntity : BaseEntity
-		=> entity.ThrowIfPredicateIsTrue(
-			expression: expression,
-			predicate: (entity) => !predicate(entity),
-			message: message,
-			property: property
-		);
+		public TEntity ThrowIfNull<TProperty>(
+			Expression<Func<TEntity, TProperty>> expression,
+			Predicate<TProperty> predicate,
+			string? property = null
+		) => entity.ThrowIfPredicateIsTrue(
+				expression: expression,
+				predicate: predicate,
+				message: "{0} requires property: {1} to not be null.",
+				property: property
+			);
 
-	public static TEntity ThrowIfNull<TEntity, TProperty>(
-		this TEntity entity,
-		Expression<Func<TEntity, TProperty>> expression,
-		Predicate<TProperty> predicate,
-		string? property = null
-	) where TEntity : BaseEntity
-		=> entity.ThrowIfPredicateIsTrue(
-			expression: expression,
-			predicate: predicate,
-			message: "{0} requires property: {1} to not be null.",
-			property: property
-		);
-
-	public static TEntity ThrowIfInvalidLength<TEntity>(
-		this TEntity entity,
-		Expression<Func<TEntity, string>> expression,
-		(int Min, int Max) length,
-		bool inclusive = false,
-		string? property = null
-	) where TEntity : BaseEntity
-	{
-		string value = expression.Compile()(entity);
-		property ??= expression.Body is MemberExpression memberExpression
-			? memberExpression.Member.Name
-			: throw propertyNotComputableException;
-
-		if (ComputeCondition(value.Length, length, inclusive))
+		public TEntity ThrowIfInvalidLength(
+			Expression<Func<TEntity, string?>> expression,
+			(int Min, int Max) length,
+			bool inclusive = false,
+			string? property = null
+		)
 		{
-			throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} length must be more than {length.Min} and less than {length.Max}.");
+			string? value = expression.Compile().Invoke(entity);
+			property ??= expression.Body is MemberExpression memberExpression
+				? memberExpression.Member.Name
+				: throw propertyNotComputableException;
+
+			if (value?.Length.IsOutOfRange(length, inclusive) ?? false)
+			{
+				throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} length must be more than {length.Min} and less than {length.Max}.");
+			}
+			return entity;
 		}
-		return entity;
-	}
 
-	public static TEntity ThrowIfInvalidRange<TEntity, TProperty>(
-		this TEntity entity,
-		Expression<Func<TEntity, TProperty>> expression,
-		(TProperty Min, TProperty Max) range,
-		bool inclusive = false,
-		string? property = null
-	) where TEntity : BaseEntity where TProperty : struct, IComparable<TProperty>
-	{
-		TProperty value = expression.Compile()(entity);
-		property ??= expression.Body is MemberExpression memberExpression
-			? memberExpression.Member.Name
-			: throw propertyNotComputableException;
-
-		if (ComputeCondition(value, range, inclusive))
+		public TEntity ThrowIfInvalidRange<TProperty>(
+			Expression<Func<TEntity, TProperty>> expression,
+			(TProperty Min, TProperty Max) range,
+			bool inclusive = false,
+			string? property = null
+		) where TProperty : struct, IComparable<TProperty>
 		{
-			throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} must be more than {range.Min} and less than {range.Max}.");
+			TProperty value = expression.Compile().Invoke(entity);
+			property ??= expression.Body is MemberExpression memberExpression
+				? memberExpression.Member.Name
+				: throw propertyNotComputableException;
+
+			if (value.IsOutOfRange(range, inclusive))
+			{
+				throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} must be more than {range.Min} and less than {range.Max}.");
+			}
+			return entity;
 		}
-		return entity;
-	}
 
-	public static TEntity ThrowIfInvalidSize<TEntity, TProperty>(
-		this TEntity entity,
-		Expression<Func<TEntity, TProperty[]>> expression,
-		(int Min, int Max) size,
-		bool inclusive = false,
-		string? property = null
-	) where TEntity : BaseEntity
-	{
-		TProperty[] value = expression.Compile()(entity);
-		property ??= expression.Body is MemberExpression memberExpression
-			? memberExpression.Member.Name
-			: throw propertyNotComputableException;
-
-		if (ComputeCondition(value.Length, size, inclusive))
+		public TEntity ThrowIfInvalidSize<TProperty>(
+			Expression<Func<TEntity, TProperty[]>> expression,
+			(int Min, int Max) size,
+			bool inclusive = false,
+			string? property = null
+		)
 		{
-			throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} length must be more than {size.Min} and less than {size.Max}.");
+			TProperty[] value = expression.Compile().Invoke(entity);
+			property ??= expression.Body is MemberExpression memberExpression
+				? memberExpression.Member.Name
+				: throw propertyNotComputableException;
+
+			if (value.Length.IsOutOfRange(size, inclusive))
+			{
+				throw CustomValidationException<TEntity>.Custom($"A/An {typeof(TEntity).Name}'s {property} length must be more than {size.Min} and less than {size.Max}.");
+			}
+			return entity;
 		}
-		return entity;
 	}
 
-	private static bool ComputeCondition<TProperty>(TProperty value, (TProperty Min, TProperty Max) range, bool inclusive) where TProperty : struct, IComparable<TProperty> => inclusive
-		? value.CompareTo(range.Max) >= 0 || value.CompareTo(range.Min) <= 0
-		: value.CompareTo(range.Max) > 0 || value.CompareTo(range.Min) < 0;
+	extension<TValue>(TValue value) where TValue : struct, IComparable<TValue>
+	{
+		private bool IsOutOfRange((TValue Min, TValue Max) range, bool inclusive)
+			=> inclusive
+				? value.CompareTo(range.Max) >= 0 || value.CompareTo(range.Min) <= 0
+				: value.CompareTo(range.Max) > 0 || value.CompareTo(range.Min) < 0;
+	}
 }

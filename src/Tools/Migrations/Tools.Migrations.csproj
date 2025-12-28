@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<UserSecretsId>bc0981a8-d29d-4f6d-96a0-879a328b74ab</UserSecretsId>
+  	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Modules\Accounts\Persistence\Modules.Accounts.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Carts\Persistence\Modules.Carts.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Catalog\Persistence\Modules.Catalog.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Customs\Persistence\Modules.Customs.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Delivery\Persistence\Modules.Delivery.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Files\Persistence\Modules.Files.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Idempotency\Persistence\Modules.Idempotency.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Notifications\Persistence\Modules.Notifications.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Printing\Persistence\Modules.Printing.Persistence.csproj" />
+	</ItemGroup>
+
+</Project>

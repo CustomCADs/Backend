@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.Count;
-using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.Count;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.Internal.Customers.Count;
 

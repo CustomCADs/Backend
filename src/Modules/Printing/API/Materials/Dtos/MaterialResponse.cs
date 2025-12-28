@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.API.Materials.Dtos;
+﻿namespace CustomCADs.Modules.Printing.API.Materials.Dtos;
 
 public sealed record MaterialResponse(
 	int Id,

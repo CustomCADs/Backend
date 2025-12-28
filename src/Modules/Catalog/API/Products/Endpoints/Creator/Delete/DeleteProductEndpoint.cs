@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Delete;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Creator.Delete;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Delete;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Delete;
 
 public sealed class DeleteProductEndpoint(IRequestSender sender)
 	: Endpoint<DeleteProductRequest>
@@ -20,7 +20,7 @@ public sealed class DeleteProductEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new DeleteProductCommand(
 				Id: ProductId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

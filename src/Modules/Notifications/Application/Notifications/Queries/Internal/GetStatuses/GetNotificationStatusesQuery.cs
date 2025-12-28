@@ -1,5 +1,5 @@
-using CustomCADs.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
 
-namespace CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetStatuses;
+namespace CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.GetStatuses;
 
 public sealed record GetNotificationStatusesQuery : IQuery<NotificationStatus[]>;

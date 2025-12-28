@@ -1,10 +1,10 @@
-﻿using CustomCADs.Printing.API.Materials.Dtos;
-using CustomCADs.Printing.API.Materials.Endpoints.Get.Single;
-using CustomCADs.Printing.Application.Materials.Commands.Internal.Create;
-using CustomCADs.Printing.Application.Materials.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Printing.API.Materials.Dtos;
+using CustomCADs.Modules.Printing.API.Materials.Endpoints.Get.Single;
+using CustomCADs.Modules.Printing.Application.Materials.Commands.Internal.Create;
+using CustomCADs.Modules.Printing.Application.Materials.Queries.Internal.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Printing.API.Materials.Endpoints.Post;
+namespace CustomCADs.Modules.Printing.API.Materials.Endpoints.Post;
 
 public sealed class PostMaterialEndpoint(IRequestSender sender)
 	: Endpoint<PostMaterialRequest, MaterialResponse>

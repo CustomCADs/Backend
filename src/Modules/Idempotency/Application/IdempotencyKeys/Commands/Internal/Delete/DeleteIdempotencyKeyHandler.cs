@@ -1,7 +1,7 @@
-using CustomCADs.Idempotency.Domain.Repositories;
-using CustomCADs.Idempotency.Domain.Repositories.Reads;
+using CustomCADs.Modules.Idempotency.Domain.Repositories;
+using CustomCADs.Modules.Idempotency.Domain.Repositories.Reads;
 
-namespace CustomCADs.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;
+namespace CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;
 
 public sealed class DeleteIdempotencyKeyHandler(
 	IIdempotencyKeyReads reads,

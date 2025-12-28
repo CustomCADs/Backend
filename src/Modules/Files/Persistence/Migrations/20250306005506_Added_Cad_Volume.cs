@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Files.Persistence.Migrations;
+namespace CustomCADs.Modules.Files.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Added_Cad_Volume : Migration

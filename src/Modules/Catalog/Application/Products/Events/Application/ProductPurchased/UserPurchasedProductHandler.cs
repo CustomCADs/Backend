@@ -1,7 +1,7 @@
-using CustomCADs.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
 using CustomCADs.Shared.Application.Events.Catalog;
 
-namespace CustomCADs.Catalog.Application.Products.Events.Application.ProductPurchased;
+namespace CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductPurchased;
 
 public sealed class UserPurchasedProductHandler(IUnitOfWork uow)
 {

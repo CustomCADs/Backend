@@ -1,7 +1,7 @@
-using CustomCADs.Files.Application.Contracts;
+using CustomCADs.Modules.Files.Application.Contracts;
 using CustomCADs.Shared.Application.Dtos.Files;
 
-namespace CustomCADs.Files.Application.Cads.Storage;
+namespace CustomCADs.Modules.Files.Application.Cads.Storage;
 
 public class CadStorageService(IStorageService service) : ICadStorageService
 {

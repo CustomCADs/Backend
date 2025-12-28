@@ -1,5 +1,5 @@
-using CustomCADs.Identity.Application.Contracts;
-using CustomCADs.Identity.Application.Users.Events.Application.Roles;
+using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Events.Application.Roles;
 using CustomCADs.Shared.Application.Events.Account.Roles;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Events.Application.Roles;

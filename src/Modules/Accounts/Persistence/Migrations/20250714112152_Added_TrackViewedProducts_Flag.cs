@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Accounts.Persistence.Migrations;
+namespace CustomCADs.Modules.Accounts.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Added_TrackViewedProducts_Flag : Migration

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Idempotency.Domain.IdempotencyKeys;
-using CustomCADs.Idempotency.Domain.Repositories;
+﻿using CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
+using CustomCADs.Modules.Idempotency.Domain.Repositories;
 using Quartz;
 
-namespace CustomCADs.Idempotency.Infrastructure.BackgroundJobs;
+namespace CustomCADs.Modules.Idempotency.Infrastructure.BackgroundJobs;
 
 using static IdempotencyKeyConstants;
 

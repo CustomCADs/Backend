@@ -1,7 +1,7 @@
-﻿global using CustomCADs.Carts.Application.ActiveCarts.Dtos;
-global using CustomCADs.Carts.Application.PurchasedCarts.Dtos;
-global using CustomCADs.Carts.Domain.ActiveCarts;
-global using CustomCADs.Carts.Domain.PurchasedCarts;
+﻿global using CustomCADs.Modules.Carts.Application.ActiveCarts.Dtos;
+global using CustomCADs.Modules.Carts.Application.PurchasedCarts.Dtos;
+global using CustomCADs.Modules.Carts.Domain.ActiveCarts;
+global using CustomCADs.Modules.Carts.Domain.PurchasedCarts;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 global using CustomCADs.Shared.Application.Exceptions;

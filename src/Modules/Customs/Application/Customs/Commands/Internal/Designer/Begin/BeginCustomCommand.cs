@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Begin;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Begin;
 
 public sealed record BeginCustomCommand(
 	CustomId Id,

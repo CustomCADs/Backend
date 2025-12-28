@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Carts.Application;
+namespace CustomCADs.Modules.Carts.Application;
 
 public class CartsApplicationReference
 {

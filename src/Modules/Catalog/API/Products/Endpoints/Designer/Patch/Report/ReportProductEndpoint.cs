@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.Report;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Designer.Report;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Patch.Report;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Patch.Report;
 
 public sealed class ReportProductEndpoint(IRequestSender sender)
 	: Endpoint<ReportProductRequest>
@@ -20,7 +20,7 @@ public sealed class ReportProductEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new ReportProductCommand(
 				Id: ProductId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

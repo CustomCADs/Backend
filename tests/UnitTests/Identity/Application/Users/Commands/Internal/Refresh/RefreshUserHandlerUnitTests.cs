@@ -1,7 +1,7 @@
-using CustomCADs.Identity.Application.Contracts;
-using CustomCADs.Identity.Application.Users.Commands.Internal.Refresh;
-using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Domain.Users.Entities;
+using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Refresh;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain;
 

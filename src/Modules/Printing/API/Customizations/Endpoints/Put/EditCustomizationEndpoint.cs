@@ -1,6 +1,6 @@
-﻿using CustomCADs.Printing.Application.Customizations.Commands.Internal.Edit;
+﻿using CustomCADs.Modules.Printing.Application.Customizations.Commands.Internal.Edit;
 
-namespace CustomCADs.Printing.API.Customizations.Endpoints.Put;
+namespace CustomCADs.Modules.Printing.API.Customizations.Endpoints.Put;
 
 public class EditCustomizationEndpoint(IRequestSender sender)
 	: Endpoint<EditCustomizationRequest>

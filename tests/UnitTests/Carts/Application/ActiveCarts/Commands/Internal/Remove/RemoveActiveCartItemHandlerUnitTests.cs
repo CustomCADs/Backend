@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Remove;
-using CustomCADs.Carts.Domain.Repositories;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Remove;
+using CustomCADs.Modules.Carts.Domain.Repositories;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Remove;

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Patch.IncrementQuantity;
+﻿namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Patch.IncrementQuantity;
 
 public record IncreaseActiveCartItemQuantityRequest(
 	Guid ProductId,

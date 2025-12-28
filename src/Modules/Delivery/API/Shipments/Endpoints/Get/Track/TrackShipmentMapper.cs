@@ -1,6 +1,6 @@
-using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetTracks;
+using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetTracks;
 
-namespace CustomCADs.Delivery.API.Shipments.Endpoints.Get.Track;
+namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Get.Track;
 
 public class TrackShipmentMapper : ResponseMapper<TrackShipmentResponse, GetShipmentTracksDto>
 {

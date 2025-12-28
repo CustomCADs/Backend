@@ -1,9 +1,9 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Shared;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Shared;
 
 public class GetProductCadIdsByIdsHandler(IProductReads reads)
 	: IQueryHandler<GetProductCadIdsByIdsQuery, Dictionary<ProductId, CadId>>

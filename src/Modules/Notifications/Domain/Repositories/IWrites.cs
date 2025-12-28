@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Notifications.Domain.Repositories;
+namespace CustomCADs.Modules.Notifications.Domain.Repositories;
 
 public interface IWrites<TEntity> where TEntity : BaseAggregateRoot
 {

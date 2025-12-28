@@ -1,8 +1,8 @@
-﻿using CustomCADs.Accounts.Domain.Accounts.Enums;
+﻿using CustomCADs.Modules.Accounts.Domain.Accounts.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.ValueObjects;
 
-namespace CustomCADs.Accounts.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 
 public record AccountQuery(
 	Pagination Pagination,

@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Files.Application.Images.Commands.Internal.Create;
+namespace CustomCADs.Modules.Files.Application.Images.Commands.Internal.Create;
 
 public sealed record CreateImageCommand(
 	string GeneratedKey,

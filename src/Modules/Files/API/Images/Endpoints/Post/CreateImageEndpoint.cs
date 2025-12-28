@@ -1,11 +1,11 @@
-﻿using CustomCADs.Files.API.Images.Endpoints.Get.Single;
-using CustomCADs.Files.Application.Images.Commands.Internal.Create;
-using CustomCADs.Files.Application.Images.Dtos;
-using CustomCADs.Files.Application.Images.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Files.API.Images.Endpoints.Get.Single;
+using CustomCADs.Modules.Files.Application.Images.Commands.Internal.Create;
+using CustomCADs.Modules.Files.Application.Images.Dtos;
+using CustomCADs.Modules.Files.Application.Images.Queries.Internal.GetById;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.AspNetCore.Builder;
 
-namespace CustomCADs.Files.API.Images.Endpoints.Post;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Post;
 
 public class CreateImageEndpoint(IRequestSender sender) : Endpoint<CreateImageRequest, ImageResponse>
 {
@@ -26,7 +26,7 @@ public class CreateImageEndpoint(IRequestSender sender) : Endpoint<CreateImageRe
 			command: new CreateImageCommand(
 				GeneratedKey: req.GeneratedKey,
 				ContentType: req.ContentType,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

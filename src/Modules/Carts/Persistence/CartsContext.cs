@@ -1,10 +1,10 @@
-﻿using CustomCADs.Carts.Domain.ActiveCarts;
-using CustomCADs.Carts.Domain.PurchasedCarts;
-using CustomCADs.Carts.Domain.PurchasedCarts.Entities;
+﻿using CustomCADs.Modules.Carts.Domain.ActiveCarts;
+using CustomCADs.Modules.Carts.Domain.PurchasedCarts;
+using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Entities;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Carts.Persistence;
+namespace CustomCADs.Modules.Carts.Persistence;
 
 using static PersistenceConstants;
 

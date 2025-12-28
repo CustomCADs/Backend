@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Application.Dtos.Files;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Patch;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Patch;
 
 public sealed record PatchCadRequest(
 	Guid Id,

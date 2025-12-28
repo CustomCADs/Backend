@@ -1,7 +1,7 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Contracts.Dtos;
-using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetTracks;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
+using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetTracks;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.GetTrack;

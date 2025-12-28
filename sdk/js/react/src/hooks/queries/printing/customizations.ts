@@ -6,7 +6,7 @@ const BASE_KEY = ['customizations'] as const;
 export const customizations = {
 	single: (params: Single) =>
 		queryOptions({
-			queryKey: [...BASE_KEY, 'single', params],
+			queryKey: [...BASE_KEY, 'single', params] as const,
 			queryFn: () => api.single(params),
 		}),
 };

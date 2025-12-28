@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Files.API.Images.Endpoints.Presigned;
+﻿namespace CustomCADs.Modules.Files.API.Images.Endpoints.Presigned;
 
 using static APIConstants;
 

@@ -1,6 +1,6 @@
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.All;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Get.All;
 
 public class GetProductsMapper : ResponseMapper<GetProductsResponse, CreatorGetAllProductsDto>
 {

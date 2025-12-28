@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Domain.Repositories;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Remove;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Remove;
 
 public sealed class RemoveActiveCartItemHandler(
 	IActiveCartReads reads,

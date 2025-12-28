@@ -1,6 +1,6 @@
-using CustomCADs.Notifications.Application.Notifications.Commands.Internal.Unhide;
+using CustomCADs.Modules.Notifications.Application.Notifications.Commands.Internal.Unhide;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Patch.Unhide;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Patch.Unhide;
 
 public class UnhideNotificationEndpoint(IRequestSender sender)
 	: Endpoint<UnhideNotificationRequest>
@@ -20,7 +20,7 @@ public class UnhideNotificationEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new UnhideNotificationCommand(
 				Id: NotificationId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

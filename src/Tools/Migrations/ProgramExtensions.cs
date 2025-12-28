@@ -1,4 +1,4 @@
-using CustomCADs.Printing.Domain.Services;
+using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Persistence;
 using CustomCADs.Shared.Persistence.Exceptions;
 
@@ -9,43 +9,49 @@ using static PersistenceConstants;
 
 public static class ProgramExtensions
 {
-	private static string GetConnectionString(this IConfiguration config)
-		=> config.GetConnectionString(ConnectionString) ?? throw DatabaseConnectionException.Missing(ConnectionString);
-
-	public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration config)
-		=> services
-			.AddAccountsPersistence(config.GetConnectionString())
-			.AddCartsPersistence(config.GetConnectionString())
-			.AddCatalogPersistence(config.GetConnectionString())
-			.AddCustomsPersistence(config.GetConnectionString())
-			.AddDeliveryPersistence(config.GetConnectionString())
-			.AddFilesPersistence(config.GetConnectionString())
-			.AddIdempotencyPersistence(config.GetConnectionString())
-			.AddNotificationsPersistence(config.GetConnectionString())
-			.AddPrintingPersistence(config.GetConnectionString());
-
-	public static IServiceCollection AddDomainServices(this IServiceCollection services)
+	extension(IConfiguration config)
 	{
-		services.AddScoped<IPrintCalculator, PrintCalculator>();
-
-		return services;
+		internal string ConnectionString => config.GetConnectionString(ConnectionStringKey) ?? throw DatabaseConnectionException.Missing(ConnectionStringKey);
 	}
 
-	public static async Task ExecuteDbMigrationUpdaterAsync(this IServiceCollection services)
+	extension(IServiceCollection services)
 	{
-		using IServiceScope scope = services.BuildServiceProvider().CreateScope();
-		IServiceProvider provider = scope.ServiceProvider;
+		public IServiceCollection AddPersistence(IConfiguration config)
+			=> services
+				.AddAccountsPersistence(config.ConnectionString)
+				.AddCartsPersistence(config.ConnectionString)
+				.AddCatalogPersistence(config.ConnectionString)
+				.AddCustomsPersistence(config.ConnectionString)
+				.AddDeliveryPersistence(config.ConnectionString)
+				.AddFilesPersistence(config.ConnectionString)
+				.AddIdempotencyPersistence(config.ConnectionString)
+				.AddNotificationsPersistence(config.ConnectionString)
+				.AddPrintingPersistence(config.ConnectionString);
 
-		await Task.WhenAll([
-			provider.UpdateAccountsContextAsync(),
-			provider.UpdateCartsContextAsync(),
-			provider.UpdateCatalogContextAsync(),
-			provider.UpdateCustomsContextAsync(),
-			provider.UpdateDeliveryContextAsync(),
-			provider.UpdateFilesContextAsync(),
-			provider.UpdateIdempotencyContextAsync(),
-			provider.UpdateNotificationsContextAsync(),
-			provider.UpdatePrintingContextAsync(),
-		]).ConfigureAwait(false);
+		public IServiceCollection AddDomainServices()
+		{
+			services.AddScoped<IPrintCalculator, PrintCalculator>();
+
+			return services;
+		}
+
+		public async Task ExecuteDbMigrationUpdaterAsync()
+		{
+			using IServiceScope scope = services.BuildServiceProvider().CreateScope();
+			IServiceProvider provider = scope.ServiceProvider;
+
+			await Task.WhenAll([
+				provider.UpdateAccountsContextAsync(),
+				provider.UpdateCartsContextAsync(),
+				provider.UpdateCatalogContextAsync(),
+				provider.UpdateCustomsContextAsync(),
+				provider.UpdateDeliveryContextAsync(),
+				provider.UpdateFilesContextAsync(),
+				provider.UpdateIdempotencyContextAsync(),
+				provider.UpdateNotificationsContextAsync(),
+				provider.UpdatePrintingContextAsync(),
+			]).ConfigureAwait(false);
+		}
 	}
+
 }

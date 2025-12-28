@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Tags.Endpoints.Get.Single;
+﻿namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Get.Single;
 
 public record GetTagByIdRequest(
 	Guid Id

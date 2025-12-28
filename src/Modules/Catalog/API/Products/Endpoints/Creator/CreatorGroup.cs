@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Creator;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator;
 
 using static APIConstants;
 using static DomainConstants.Roles;

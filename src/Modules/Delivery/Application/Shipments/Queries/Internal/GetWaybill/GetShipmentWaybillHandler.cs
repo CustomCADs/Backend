@@ -1,8 +1,8 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 
-namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
 using static DomainConstants.Users;
 

@@ -1,9 +1,9 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Customs.Domain.Customs.States;
+namespace CustomCADs.Modules.Customs.Domain.Customs.States;
 
 public abstract class BaseCustomState : ICustomState
 {

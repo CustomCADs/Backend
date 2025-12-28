@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Domain.Repositories;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Shared.Application.Events.Files;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Events.Application.ProductDeleted;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.ProductDeleted;
 
 public class ProductDeletedHandler(IUnitOfWork uow)
 {

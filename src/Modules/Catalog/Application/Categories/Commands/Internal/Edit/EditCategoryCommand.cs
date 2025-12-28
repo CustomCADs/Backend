@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Categories.Commands.Internal.Edit;
+﻿namespace CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Edit;
 
 public sealed record EditCategoryCommand(
 	CategoryId Id,

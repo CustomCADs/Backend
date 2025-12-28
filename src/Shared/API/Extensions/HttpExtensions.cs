@@ -4,46 +4,53 @@ namespace CustomCADs.Shared.API.Extensions;
 
 public static class HttpExtensions
 {
-	public const string PrefixSignalR = "SignalR";
-	public static bool IsSignalR(this HttpRequest request) =>
-		request.Path.StartsWithSegments($"/{PrefixSignalR}");
-
-	public static bool IsIdempotentBySpec(this HttpRequest request)
-		=> HttpMethods.IsGet(request.Method)
-		|| HttpMethods.IsPut(request.Method)
-		|| HttpMethods.IsDelete(request.Method);
-
-	public static bool IsMutationBySpec(this HttpRequest request) =>
-		HttpMethods.IsPost(request.Method)
-		|| HttpMethods.IsPut(request.Method)
-		|| HttpMethods.IsPatch(request.Method)
-		|| HttpMethods.IsDelete(request.Method);
-
-	public static bool TryGetIdempotencyKey(this HttpRequest request, out Guid idempotencyKey, string idempotencyHeader = "Idempotency-Key")
+	extension(HttpRequest request)
 	{
-		string? header = request.Headers[idempotencyHeader];
-		if (string.IsNullOrWhiteSpace(header))
-		{
-			string? param = request.Query.FirstOrDefault(
-				x => x.Key.Equals("idempotencyKey", StringComparison.OrdinalIgnoreCase)
-			).Value;
+		public bool IsSignalR => request.Path.StartsWithSegments($"/{APIConstants.RequestPrefixForSignalR}");
 
-			if (string.IsNullOrWhiteSpace(param))
+		public bool IsIdempotentBySpec =>
+			HttpMethods.IsGet(request.Method)
+			|| HttpMethods.IsPut(request.Method)
+			|| HttpMethods.IsDelete(request.Method);
+
+		public bool IsMutationBySpec =>
+			HttpMethods.IsPost(request.Method)
+			|| HttpMethods.IsPut(request.Method)
+			|| HttpMethods.IsPatch(request.Method)
+			|| HttpMethods.IsDelete(request.Method);
+
+		public bool TryGetIdempotencyKey(out Guid idempotencyKey, string idempotencyHeader = "Idempotency-Key")
+		{
+			string? header = request.Headers[idempotencyHeader];
+			if (string.IsNullOrWhiteSpace(header))
+			{
+				string? param = request.Query.FirstOrDefault(
+					x => x.Key.Equals("idempotencyKey", StringComparison.OrdinalIgnoreCase)
+				).Value;
+
+				if (string.IsNullOrWhiteSpace(param))
+				{
+					idempotencyKey = Guid.Empty;
+					return false;
+				}
+				header = param;
+			}
+
+			if (!Guid.TryParse(header, out idempotencyKey))
 			{
 				idempotencyKey = Guid.Empty;
 				return false;
 			}
-			header = param;
+			return true;
 		}
-
-		if (!Guid.TryParse(header, out idempotencyKey))
-		{
-			idempotencyKey = Guid.Empty;
-			return false;
-		}
-		return true;
 	}
 
-	public static TAttribute? GetAttribute<TAttribute>(this HttpContext context) where TAttribute : Attribute
-		=> context.GetEndpoint()?.Metadata.GetMetadata<TAttribute>();
+	extension(HttpContext context)
+	{
+		public TAttribute? GetAttribute<TAttribute>() where TAttribute : Attribute
+			=> context.GetEndpoint()?.Metadata.GetMetadata<TAttribute>();
+
+		public bool HasAttribute<TAttribute>() where TAttribute : Attribute
+			=> context.GetEndpoint()?.Metadata.GetMetadata<TAttribute>() is not null;
+	}
 }

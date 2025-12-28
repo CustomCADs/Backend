@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)\src\Modules\Printing\Domain\Modules.Printing.Domain.csproj" />
+		<ProjectReference Include="..\Data\UnitTests.Printing.Data.csproj" />
+	</ItemGroup>
+
+</Project>

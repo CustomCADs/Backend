@@ -1,6 +1,6 @@
-﻿global using CustomCADs.Printing.API.Customizations.Dtos;
-global using CustomCADs.Printing.Application.Customizations.Dtos;
-global using CustomCADs.Printing.Application.Materials.Dtos;
+﻿global using CustomCADs.Modules.Printing.API.Customizations.Dtos;
+global using CustomCADs.Modules.Printing.Application.Customizations.Dtos;
+global using CustomCADs.Modules.Printing.Application.Materials.Dtos;
 global using CustomCADs.Shared.API;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 global using CustomCADs.Shared.Domain;

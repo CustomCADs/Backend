@@ -1,7 +1,7 @@
-﻿using CustomCADs.Customs.Application.Customs.Dtos;
-using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Dtos;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.GetById;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.GetById;
 
 public sealed record CustomerGetCustomByIdDto(
 	CustomId Id,

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Delivery.Persistence.Migrations;
+namespace CustomCADs.Modules.Delivery.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Persisted_More_Data_In_Shipments : Migration

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Accounts.Domain.Accounts;
+﻿using CustomCADs.Modules.Accounts.Domain.Accounts;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Accounts.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 
 public interface IAccountReads
 {

@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Application.Policies;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Presigned.Get;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Presigned.Get;
 
 public record CadPresignedUrlGetRequest(
 	Guid Id,

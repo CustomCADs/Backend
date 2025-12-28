@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.Application.Customizations.Dtos;
+﻿namespace CustomCADs.Modules.Printing.Application.Customizations.Dtos;
 
 public record CustomizationDto(
 	CustomizationId Id,

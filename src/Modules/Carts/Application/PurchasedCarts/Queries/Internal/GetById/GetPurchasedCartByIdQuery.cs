@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
 
 public sealed record GetPurchasedCartByIdQuery(
 	PurchasedCartId Id,

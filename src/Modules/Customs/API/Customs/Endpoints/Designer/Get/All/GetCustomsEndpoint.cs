@@ -1,9 +1,9 @@
-﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
-using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Get.All;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Get.All;
 
 public sealed class GetCustomsEndpoint(IRequestSender sender)
 	: Endpoint<GetCustomsRequest, Result<GetCustomsResponse>, GetCustomsMapper>
@@ -24,7 +24,7 @@ public sealed class GetCustomsEndpoint(IRequestSender sender)
 			query: new GetAllCustomsQuery(
 				CustomStatus: CustomStatus.Finished,
 				ForDelivery: req.ForDelivery,
-				DesignerId: User.GetAccountId(),
+				DesignerId: User.AccountId,
 				CategoryId: CategoryId.New(req.CategoryId),
 				Name: req.Name,
 				Sorting: new(req.SortingType, req.SortingDirection),

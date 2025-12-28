@@ -1,5 +1,5 @@
-﻿global using CustomCADs.Accounts.API.Roles.Dtos;
-global using CustomCADs.Accounts.Application.Roles.Dtos;
+﻿global using CustomCADs.Modules.Accounts.API.Roles.Dtos;
+global using CustomCADs.Modules.Accounts.Application.Roles.Dtos;
 global using CustomCADs.Shared.API;
 global using CustomCADs.Shared.API.Extensions;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Sender;

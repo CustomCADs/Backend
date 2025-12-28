@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Accept;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Accept;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Accept;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Patch.Accept;
 
 public sealed class AcceptCustomEndpoint(IRequestSender sender)
 	: Endpoint<AcceptCustomRequest>
@@ -20,7 +20,7 @@ public sealed class AcceptCustomEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new AcceptCustomCommand(
 				Id: CustomId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

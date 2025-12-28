@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Put;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Put;
 
 public sealed record PutProductRequest(
 	Guid Id,

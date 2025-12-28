@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Files.API.Cads.Endpoints.Put;
+﻿namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Put;
 
 public sealed record PutCadRequest(
 	Guid Id,

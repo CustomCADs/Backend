@@ -1,9 +1,9 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Contracts.Dtos;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
-namespace CustomCADs.Delivery.Application.Shipments.Queries.Shared;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Shared;
 
 public sealed class CalculateShipmentHandler(IDeliveryService delivery)
 	: IQueryHandler<CalculateShipmentQuery, CalculateShipmentDto[]>

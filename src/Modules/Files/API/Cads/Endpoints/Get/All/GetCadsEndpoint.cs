@@ -1,9 +1,9 @@
 
-using CustomCADs.Files.Application.Cads.Dtos;
-using CustomCADs.Files.Application.Cads.Queries.Internal.GetAll;
+using CustomCADs.Modules.Files.Application.Cads.Dtos;
+using CustomCADs.Modules.Files.Application.Cads.Queries.Internal.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Get.All;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Get.All;
 
 public class GetCadsEndpoint(IRequestSender sender) : Endpoint<GetCadsRequest, Result<CadResponse>>
 {
@@ -21,7 +21,7 @@ public class GetCadsEndpoint(IRequestSender sender) : Endpoint<GetCadsRequest, R
 	{
 		Result<CadDto> response = await sender.SendQueryAsync(
 			query: new GetAllCadsQuery(
-				OwnerId: User.GetAccountId(),
+				OwnerId: User.AccountId,
 				Pagination: new(Page: req.Page, Limit: req.Limit)
 			),
 			ct: ct

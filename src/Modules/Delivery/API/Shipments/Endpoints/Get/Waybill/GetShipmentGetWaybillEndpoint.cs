@@ -1,6 +1,6 @@
-﻿using CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
+﻿using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
-namespace CustomCADs.Delivery.API.Shipments.Endpoints.Get.Waybill;
+namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Get.Waybill;
 
 using static DomainConstants.Roles;
 
@@ -23,7 +23,7 @@ public class GetShipmentWaybillEndpoint(IRequestSender sender)
 		byte[] bytes = await sender.SendQueryAsync(
 			query: new GetShipmentWaybillQuery(
 				Id: ShipmentId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,6 +1,6 @@
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetById;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.GetById;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Post;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Post;
 
 public class PostProductMapper : ResponseMapper<PostProductResponse, CreatorGetProductByIdDto>
 {

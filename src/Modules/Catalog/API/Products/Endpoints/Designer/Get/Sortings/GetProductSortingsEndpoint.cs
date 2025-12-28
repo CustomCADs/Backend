@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Products.Enums;
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetSortings;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Enums;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetSortings;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Sortings;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Sortings;
 
 public sealed class GetProductSortingsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<ProductDesignerSortingType[]>

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Accounts.Application.Roles.Queries.Internal.GetAll;
+﻿using CustomCADs.Modules.Accounts.Application.Roles.Queries.Internal.GetAll;
 
-namespace CustomCADs.Accounts.API.Roles.Endpoints.Get.All;
+namespace CustomCADs.Modules.Accounts.API.Roles.Endpoints.Get.All;
 
 public sealed class GetRolesEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<RoleResponse[]>

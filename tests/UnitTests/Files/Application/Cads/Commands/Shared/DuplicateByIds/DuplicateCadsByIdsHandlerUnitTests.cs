@@ -1,6 +1,6 @@
-﻿using CustomCADs.Files.Application.Cads.Commands.Shared.DuplicateByIds;
-using CustomCADs.Files.Domain.Repositories;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Application.Cads.Commands.Shared.DuplicateByIds;
+using CustomCADs.Modules.Files.Domain.Repositories;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Cads.Commands;
 using CustomCADs.Shared.Domain.Querying;
 

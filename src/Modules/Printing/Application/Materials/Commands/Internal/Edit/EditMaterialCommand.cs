@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Edit;
+﻿namespace CustomCADs.Modules.Printing.Application.Materials.Commands.Internal.Edit;
 
 public sealed record EditMaterialCommand(
 	MaterialId Id,

@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Domain.Tags;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Catalog.Persistence.Configurations.Tags;
+namespace CustomCADs.Modules.Catalog.Persistence.Configurations.Tags;
 
 public class Configurations : IEntityTypeConfiguration<Tag>
 {

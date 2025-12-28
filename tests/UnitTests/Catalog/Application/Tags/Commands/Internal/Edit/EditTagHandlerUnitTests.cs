@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Tags.Commands.Internal.Edit;
-using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Edit;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Tags.Commands.Internal.Edit;

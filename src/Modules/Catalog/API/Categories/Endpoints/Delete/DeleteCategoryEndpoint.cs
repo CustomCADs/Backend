@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Categories.Commands.Internal.Delete;
+﻿using CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Delete;
 
-namespace CustomCADs.Catalog.API.Categories.Endpoints.Delete;
+namespace CustomCADs.Modules.Catalog.API.Categories.Endpoints.Delete;
 
 public sealed class DeleteCategoryEndpoint(IRequestSender sender)
 	: Endpoint<DeleteCategoryRequest>

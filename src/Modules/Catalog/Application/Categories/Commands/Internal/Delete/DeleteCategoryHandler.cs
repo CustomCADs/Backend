@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 
-namespace CustomCADs.Catalog.Application.Categories.Commands.Internal.Delete;
+namespace CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Delete;
 
 public sealed class DeleteCategoryHandler(
 	ICategoryReads reads,

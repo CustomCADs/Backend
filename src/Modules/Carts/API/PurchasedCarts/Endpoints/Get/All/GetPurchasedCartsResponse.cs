@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.All;
+﻿namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.All;
 
 public sealed record GetPurchasedCartsResponse(
 	Guid Id,

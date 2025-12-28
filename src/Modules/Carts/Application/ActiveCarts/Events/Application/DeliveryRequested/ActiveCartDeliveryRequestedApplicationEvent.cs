@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Domain.Bases.Events;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
 
 public record ActiveCartDeliveryRequestedApplicationEvent(
 	PurchasedCartId PurchasedCartId,

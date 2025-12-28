@@ -3,7 +3,7 @@ using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
 using FluentValidation;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 
 using static ApplicationConstants.FluentMessages;
 using static DomainConstants;

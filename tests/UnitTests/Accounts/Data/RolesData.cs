@@ -1,4 +1,4 @@
-﻿using CustomCADs.Accounts.Domain.Roles;
+﻿using CustomCADs.Modules.Accounts.Domain.Roles;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 

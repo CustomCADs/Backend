@@ -1,9 +1,9 @@
-﻿using CustomCADs.Customs.Domain.Customs;
-using CustomCADs.Customs.Domain.Customs.States.Entities;
+﻿using CustomCADs.Modules.Customs.Domain.Customs;
+using CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Customs.Persistence;
+namespace CustomCADs.Modules.Customs.Persistence;
 
 using static PersistenceConstants;
 

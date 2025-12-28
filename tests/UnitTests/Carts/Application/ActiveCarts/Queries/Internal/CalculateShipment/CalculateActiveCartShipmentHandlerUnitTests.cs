@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;

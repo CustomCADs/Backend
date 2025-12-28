@@ -1,9 +1,9 @@
-using CustomCADs.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 using CustomCADs.Shared.Application.UseCases.Identity.Queries;
 using Microsoft.Extensions.Options;
 
-namespace CustomCADs.Identity.Application.Users.Queries.Shared.ClientUrl;
+namespace CustomCADs.Modules.Identity.Application.Users.Queries.Shared.ClientUrl;
 
 public sealed class GetClientUrlHandler(IOptions<ClientUrlSettings> settings)
 	: IQueryHandler<GetClientUrlQuery, string>

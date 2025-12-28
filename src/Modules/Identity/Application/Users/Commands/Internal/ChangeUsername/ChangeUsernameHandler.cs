@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Events.Identity;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.ChangeUsername;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ChangeUsername;
 
 public sealed class ChangeUsernameHandler(
 	IUserService service,

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.CalculateShipment;
+﻿namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.CalculateShipment;
 
 public record CalculateCustomShipmentResponse(
 	string Service,

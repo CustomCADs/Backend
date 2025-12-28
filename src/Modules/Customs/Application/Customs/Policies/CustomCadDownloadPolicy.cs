@@ -1,11 +1,11 @@
-using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Customs.Application.Customs.Policies;
+namespace CustomCADs.Modules.Customs.Application.Customs.Policies;
 
 public class CustomCadDownloadPolicy(ICustomReads reads, IRequestSender sender) : IFileDownloadPolicy<CadId>
 {

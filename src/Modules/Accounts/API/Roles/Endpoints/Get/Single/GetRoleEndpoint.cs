@@ -1,7 +1,7 @@
-﻿using CustomCADs.Accounts.Application.Roles.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Accounts.Application.Roles.Queries.Internal.GetById;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Accounts.API.Roles.Endpoints.Get.Single;
+namespace CustomCADs.Modules.Accounts.API.Roles.Endpoints.Get.Single;
 
 public sealed class GetRoleEndpoint(IRequestSender sender)
 	: Endpoint<GetRoleRequest, RoleResponse>

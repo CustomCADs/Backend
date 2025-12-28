@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetAll;
+﻿namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetAll;
 
 public sealed record GetAllPurchasedCartsDto(
 	PurchasedCartId Id,

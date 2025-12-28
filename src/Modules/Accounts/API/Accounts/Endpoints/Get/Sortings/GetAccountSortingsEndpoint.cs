@@ -1,7 +1,7 @@
-﻿using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetSortings;
-using CustomCADs.Accounts.Domain.Accounts.Enums;
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetSortings;
+using CustomCADs.Modules.Accounts.Domain.Accounts.Enums;
 
-namespace CustomCADs.Accounts.API.Accounts.Endpoints.Get.Sortings;
+namespace CustomCADs.Modules.Accounts.API.Accounts.Endpoints.Get.Sortings;
 
 public sealed class GetAccountSortingsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<AccountSortingType[]>

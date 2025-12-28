@@ -1,4 +1,4 @@
-namespace CustomCADs.Identity.Application.Users.Dtos;
+namespace CustomCADs.Modules.Identity.Application.Users.Dtos;
 
 public record CookieSettings(string? Domain)
 {

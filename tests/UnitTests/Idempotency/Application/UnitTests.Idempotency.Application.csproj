@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)\src\Modules\Idempotency\Application\Modules.Idempotency.Application.csproj" />
+		<ProjectReference Include="..\Data\UnitTests.Idempotency.Data.csproj" />
+	</ItemGroup>
+
+</Project>

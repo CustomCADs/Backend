@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Cancel;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Cancel;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Cancel;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Patch.Cancel;
 
 public sealed class CancelCustomEndpoint(IRequestSender sender)
 	: Endpoint<CancelCustomRequest>
@@ -20,7 +20,7 @@ public sealed class CancelCustomEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new CancelCustomCommand(
 				Id: CustomId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

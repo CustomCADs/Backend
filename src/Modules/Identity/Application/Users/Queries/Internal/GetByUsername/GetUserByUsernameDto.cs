@@ -1,7 +1,7 @@
-using CustomCADs.Identity.Domain.Users.ValueObjects;
+using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Identity.Application.Users.Queries.Internal.GetByUsername;
+namespace CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 
 public sealed record GetUserByUsernameDto(
 	UserId Id,

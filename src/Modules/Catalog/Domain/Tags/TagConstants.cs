@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Domain.Tags;
+﻿namespace CustomCADs.Modules.Catalog.Domain.Tags;
 
 public static class TagConstants
 {

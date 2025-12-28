@@ -1,7 +1,7 @@
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Identity.Domain.Users.Entities;
+namespace CustomCADs.Modules.Identity.Domain.Users.Entities;
 
 using static DomainConstants.Tokens;
 

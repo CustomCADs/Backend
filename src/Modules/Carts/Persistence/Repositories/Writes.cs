@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Domain.Repositories;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Carts.Persistence.Repositories;
+namespace CustomCADs.Modules.Carts.Persistence.Repositories;
 
 public class Writes<TEntity>(CartsContext context) : IWrites<TEntity>
 	where TEntity : BaseAggregateRoot

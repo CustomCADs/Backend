@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Carts.Domain.PurchasedCarts.Enums;
+﻿namespace CustomCADs.Modules.Carts.Domain.PurchasedCarts.Enums;
 
 public enum PurchasedCartSortingType
 {

@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
-using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
-using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Commands.Internal.Create;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Payment;
@@ -14,7 +14,7 @@ using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 
 public sealed class PurchaseActiveCartWithDeliveryHandler(
 	IActiveCartReads reads,

@@ -1,11 +1,11 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Contracts.Dtos;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 using SpeedyNET.Abstractions.Contracts.Calculation;
 using SpeedyNET.Abstractions.Contracts.Shipment;
 using SpeedyNET.Abstractions.Contracts.Track;
 using SpeedyNET.Core.Enums;
 
-namespace CustomCADs.Delivery.Infrastructure;
+namespace CustomCADs.Modules.Delivery.Infrastructure;
 
 using ISpeedyClient = SpeedyNET.Sdk.ISpeedyService;
 

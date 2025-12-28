@@ -1,9 +1,9 @@
 import { AxiosResponse } from 'axios';
-import * as customcadsQueries from './';
 import {
 	UseQueryOptions,
 	useQuery as useTanstackQuery,
 } from '@tanstack/react-query';
+import * as customcadsQueries from './';
 
 export const useQuery = <TData, TKey extends readonly unknown[]>(
 	optionsSelector: (

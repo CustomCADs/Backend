@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.GetSingle;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.GetSingle;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;

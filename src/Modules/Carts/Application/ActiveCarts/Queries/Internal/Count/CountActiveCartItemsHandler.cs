@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.Count;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.Count;
 
 public sealed class CountActiveCartItemsHandler(IActiveCartReads reads)
 	: IQueryHandler<CountActiveCartItemsQuery, int>

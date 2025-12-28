@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 
-namespace CustomCADs.Catalog.Application.Categories.Commands.Internal.Edit;
+namespace CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Edit;
 
 public sealed class EditCategoryHandler(
 	ICategoryReads reads,

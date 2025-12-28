@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Printing.Domain.Customizations;
+namespace CustomCADs.Modules.Printing.Domain.Customizations;
 
 public class Customization : BaseAggregateRoot
 {

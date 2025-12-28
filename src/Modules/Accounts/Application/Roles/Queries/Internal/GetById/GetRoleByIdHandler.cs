@@ -1,6 +1,6 @@
-﻿using CustomCADs.Accounts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 
-namespace CustomCADs.Accounts.Application.Roles.Queries.Internal.GetById;
+namespace CustomCADs.Modules.Accounts.Application.Roles.Queries.Internal.GetById;
 
 public sealed class GetRoleByIdHandler(IRoleReads reads, BaseCachingService<RoleId, Role> cache)
 	: IQueryHandler<GetRoleByIdQuery, RoleDto>

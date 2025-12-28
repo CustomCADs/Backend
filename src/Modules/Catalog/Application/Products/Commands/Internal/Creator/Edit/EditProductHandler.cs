@@ -1,5 +1,5 @@
-﻿using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Notifications;
@@ -7,7 +7,7 @@ using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
-namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Edit;
+namespace CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Creator.Edit;
 
 
 public sealed class EditProductHandler(

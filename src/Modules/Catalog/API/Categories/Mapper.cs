@@ -1,7 +1,11 @@
-﻿namespace CustomCADs.Catalog.API.Categories;
+﻿namespace CustomCADs.Modules.Catalog.API.Categories;
 
 internal static class Mapper
 {
-	internal static CategoryResponse ToResponse(this CategoryReadDto category)
-		=> new(category.Id.Value, category.Name, category.Description);
+	extension(CategoryReadDto category)
+	{
+		internal CategoryResponse ToResponse()
+			=> new(category.Id.Value, category.Name, category.Description);
+	}
+
 }

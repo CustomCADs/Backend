@@ -1,7 +1,7 @@
-﻿using CustomCADs.Identity.Application.Users.Queries.Internal.GetByUsername;
+﻿using CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 using System.Text.Json;
 
-namespace CustomCADs.Identity.API.Identity.Get.DownloadInfo;
+namespace CustomCADs.Modules.Identity.API.Identity.Get.DownloadInfo;
 
 public sealed class DownloadInfoEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<byte[]>
@@ -20,7 +20,7 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		GetUserByUsernameDto user = await sender.SendQueryAsync(
-			query: new GetUserByUsernameQuery(User.GetName()),
+			query: new GetUserByUsernameQuery(User.Name),
 			ct: ct
 		).ConfigureAwait(false);
 

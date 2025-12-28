@@ -1,6 +1,6 @@
-using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Admins.Get.All;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Admins.Get.All;
 
 public class GetCustomsMapper : ResponseMapper<GetCustomsResponse, GetAllCustomsDto>
 {

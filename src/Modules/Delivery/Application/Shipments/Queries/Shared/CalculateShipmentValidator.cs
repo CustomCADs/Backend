@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 using FluentValidation;
 
-namespace CustomCADs.Delivery.Application.Shipments.Queries.Shared;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Shared;
 
 using static ApplicationConstants.FluentMessages;
 

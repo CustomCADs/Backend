@@ -1,9 +1,9 @@
-﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Admins.Get.All;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Admins.Get.All;
 
 public sealed class GetCustomsEndpoint(IRequestSender sender)
 	: Endpoint<GetCustomsRequest, Result<GetCustomsResponse>, GetCustomsMapper>

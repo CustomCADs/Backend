@@ -1,7 +1,7 @@
-﻿using CustomCADs.Files.Domain.Repositories;
+﻿using CustomCADs.Modules.Files.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 
-namespace CustomCADs.Files.Application.Cads.Commands.Internal.Create;
+namespace CustomCADs.Modules.Files.Application.Cads.Commands.Internal.Create;
 
 public sealed class CreateCadHandler(IWrites<Cad> writes, IUnitOfWork uow, BaseCachingService<CadId, Cad> cache)
 	: ICommandHandler<CreateCadCommand, CadId>

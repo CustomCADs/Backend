@@ -1,10 +1,10 @@
-using CustomCADs.Carts.Domain.PurchasedCarts.Entities;
-using CustomCADs.Carts.Domain.PurchasedCarts.Enums;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Entities;
+using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Enums;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Policies;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Policies;
 
 public class PurchasedCartCadDownloadPolicy(IPurchasedCartReads reads) : IFileDownloadPolicy<CadId>
 {

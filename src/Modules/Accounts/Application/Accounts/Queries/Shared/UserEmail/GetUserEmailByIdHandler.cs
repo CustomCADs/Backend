@@ -1,7 +1,7 @@
-﻿using CustomCADs.Accounts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
-namespace CustomCADs.Accounts.Application.Accounts.Queries.Shared.UserEmail;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.UserEmail;
 
 public sealed class GetUserEmailByIdHandler(IAccountReads reads)
 	: IQueryHandler<GetUserEmailByIdQuery, string>

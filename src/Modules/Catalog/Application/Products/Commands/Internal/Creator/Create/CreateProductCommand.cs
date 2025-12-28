@@ -1,7 +1,7 @@
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Create;
+namespace CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Creator.Create;
 
 public sealed record CreateProductCommand(
 	string Name,

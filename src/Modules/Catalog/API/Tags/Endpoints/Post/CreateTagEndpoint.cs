@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Application.Tags.Commands.Internal.Create;
-using CustomCADs.Catalog.Application.Tags.Dtos;
-using CustomCADs.Catalog.Application.Tags.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Create;
+using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
+using CustomCADs.Modules.Catalog.Application.Tags.Queries.Internal.GetById;
 
-namespace CustomCADs.Catalog.API.Tags.Endpoints.Post;
+namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Post;
 
 public class CreateTagEndpoint(IRequestSender sender)
 	: Endpoint<CreateTagRequest, CreateTagResponse>

@@ -1,10 +1,10 @@
-using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Contracts.Dtos;
-using CustomCADs.Delivery.Domain.Repositories;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
+using CustomCADs.Modules.Delivery.Domain.Repositories;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 
-namespace CustomCADs.Delivery.Application.Shipments.Commands.Shared.Activate;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Commands.Shared.Activate;
 
 public class ActivateShipmentHandler(
 	IShipmentReads reads,

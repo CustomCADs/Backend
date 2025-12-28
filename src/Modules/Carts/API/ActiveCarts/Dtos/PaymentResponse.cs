@@ -1,4 +1,4 @@
-namespace CustomCADs.Carts.API.ActiveCarts.Dtos;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Dtos;
 
 public record PaymentResponse(
 	string ClientSecret,

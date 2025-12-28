@@ -8,8 +8,8 @@ if [[ -z "$MODULE" || -z "$MIGRATION" ]]; then
   exit 1
 fi
 
-STARTUP_PATH="./src/Tools/Migrations/CustomCADs.Tools.Migrations.csproj"
-PROJECT_PATH="./src/Modules/$MODULE/Persistence/CustomCADs.$MODULE.Persistence.csproj"
+STARTUP_PATH="./src/Tools/Migrations"
+PROJECT_PATH="./src/Modules/$MODULE/Persistence"
 CONTEXT="${MODULE}Context"
 
 dotnet ef migrations add "$MIGRATION" -s "$STARTUP_PATH" -p "$PROJECT_PATH" -c "$CONTEXT"

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Idempotency.Persistence;
+namespace CustomCADs.Modules.Idempotency.Persistence;
 
 public class IdempotencyPersistenceReference
 {

@@ -1,7 +1,8 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Extensions;
 
-namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.Count;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.Count;
 
 public sealed class CountCustomsHandler(ICustomReads reads)
 	: IQueryHandler<CountCustomsQuery, CountCustomsDto>

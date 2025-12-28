@@ -1,10 +1,10 @@
-using CustomCADs.Files.Application.Cads.Storage;
-using CustomCADs.Files.Domain.Repositories.Reads;
+using CustomCADs.Modules.Files.Application.Cads.Storage;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Policies;
 
-namespace CustomCADs.Files.Application.Cads.Queries.Internal.PresignedUrls.Get;
+namespace CustomCADs.Modules.Files.Application.Cads.Queries.Internal.PresignedUrls.Get;
 
 public sealed class GetCadPresignedUrlGetHandler(
 	ICadReads reads,

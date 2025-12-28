@@ -1,10 +1,10 @@
-﻿using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetById;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetById;
 
 public sealed class DesignerGetProductByIdHandler(IProductReads reads, IRequestSender sender)
 	: IQueryHandler<DesignerGetProductByIdQuery, DesignerGetProductByIdDto>

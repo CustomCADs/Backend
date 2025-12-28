@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery;
 
 using static APIConstants;
 

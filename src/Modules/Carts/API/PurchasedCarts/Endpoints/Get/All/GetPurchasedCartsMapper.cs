@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetAll;
+﻿using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetAll;
 
-namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.All;
+namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.All;
 
 public class GetPurchasedCartsMapper : ResponseMapper<GetPurchasedCartsResponse, GetAllPurchasedCartsDto>
 {

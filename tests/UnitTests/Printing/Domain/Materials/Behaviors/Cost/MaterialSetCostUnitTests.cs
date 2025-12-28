@@ -1,4 +1,4 @@
-using CustomCADs.Printing.Domain.Materials;
+using CustomCADs.Modules.Printing.Domain.Materials;
 using CustomCADs.Shared.Domain.Exceptions;
 
 namespace CustomCADs.UnitTests.Printing.Domain.Materials.Behaviors.Cost;

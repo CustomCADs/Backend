@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.API.Customizations.Dtos;
+﻿namespace CustomCADs.Modules.Printing.API.Customizations.Dtos;
 
 public record CustomizationResponse(
 	Guid Id,

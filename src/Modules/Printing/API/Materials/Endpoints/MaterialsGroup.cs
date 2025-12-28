@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.API.Materials.Endpoints;
+﻿namespace CustomCADs.Modules.Printing.API.Materials.Endpoints;
 
 using static APIConstants;
 using static DomainConstants.Roles;

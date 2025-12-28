@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Application.Abstractions.Email;
 
-namespace CustomCADs.Identity.Application.Users.Events.Application.Emails.PasswordReset;
+namespace CustomCADs.Modules.Identity.Application.Users.Events.Application.Emails.PasswordReset;
 
 public class PasswordResetRequestedEventHandler(IEmailService email)
 {

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Tags.Commands.Internal.Delete;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Delete;
 
-namespace CustomCADs.Catalog.API.Tags.Endpoints.Delete;
+namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Delete;
 
 public class DeleteTagEndpoint(IRequestSender sender)
 	: Endpoint<DeleteTagRequest>

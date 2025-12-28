@@ -1,14 +1,18 @@
-﻿namespace CustomCADs.Carts.Domain.PurchasedCarts;
+﻿namespace CustomCADs.Modules.Carts.Domain.PurchasedCarts;
 
 using static PurchasedCartConstants;
 
-public static class Validations
+internal static class Validations
 {
-	public static PurchasedCart ValidateItems(this PurchasedCart cart)
-		=> cart
-			.ThrowIfInvalidSize(
-				expression: x => x.Items.ToArray(),
-				size: (ItemsCountMin, ItemsCountMax),
-				property: nameof(cart.Items)
-			);
+	extension(PurchasedCart cart)
+	{
+		internal PurchasedCart ValidateItems()
+			=> cart
+				.ThrowIfInvalidSize(
+					expression: x => x.Items.ToArray(),
+					size: (ItemsCountMin, ItemsCountMax),
+					property: nameof(cart.Items)
+				);
+	}
+
 }

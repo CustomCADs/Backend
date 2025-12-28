@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Delete;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Delete;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Delete;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Delete;
 
 public sealed class DeleteCustomEndpoint(IRequestSender sender)
 	: Endpoint<DeleteCustomRequest>
@@ -20,7 +20,7 @@ public sealed class DeleteCustomEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new DeleteCustomCommand(
 				Id: CustomId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

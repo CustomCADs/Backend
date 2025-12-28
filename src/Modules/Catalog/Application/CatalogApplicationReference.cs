@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Catalog.Application;
+namespace CustomCADs.Modules.Catalog.Application;
 
 public class CatalogApplicationReference
 {

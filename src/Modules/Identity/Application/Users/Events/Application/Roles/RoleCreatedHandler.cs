@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Application.Events.Account.Roles;
 
-namespace CustomCADs.Identity.Application.Users.Events.Application.Roles;
+namespace CustomCADs.Modules.Identity.Application.Users.Events.Application.Roles;
 
 public class RoleCreatedHandler(IRoleService service)
 {

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Printing.Application.Materials.Commands.Internal.Edit;
+﻿using CustomCADs.Modules.Printing.Application.Materials.Commands.Internal.Edit;
 
-namespace CustomCADs.Printing.API.Materials.Endpoints.Put;
+namespace CustomCADs.Modules.Printing.API.Materials.Endpoints.Put;
 
 public sealed class PutMaterialEndpoint(IRequestSender sender)
 	: Endpoint<PutMaterialRequest>

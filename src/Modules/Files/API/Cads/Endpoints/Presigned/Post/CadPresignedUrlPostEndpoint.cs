@@ -1,9 +1,9 @@
-using CustomCADs.Files.Application.Cads.Queries.Internal.PresignedUrls.Post;
+using CustomCADs.Modules.Files.Application.Cads.Queries.Internal.PresignedUrls.Post;
 using CustomCADs.Shared.API.Attributes;
 using CustomCADs.Shared.Application.Dtos.Files;
 using Microsoft.AspNetCore.Builder;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Presigned.Post;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Presigned.Post;
 
 public class CadPresignedUrlPostEndpoint(IRequestSender sender) : Endpoint<CadPresignedUrlPostRequest, UploadFileResponse>
 {
@@ -25,7 +25,7 @@ public class CadPresignedUrlPostEndpoint(IRequestSender sender) : Endpoint<CadPr
 				Name: req.Name,
 				File: req.File,
 				RelationType: req.RelationType,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Files.Persistence.Migrations;
+namespace CustomCADs.Modules.Files.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Expanded_Cads_and_Images : Migration

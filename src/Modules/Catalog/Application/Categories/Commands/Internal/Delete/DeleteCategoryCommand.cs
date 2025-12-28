@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Categories.Commands.Internal.Delete;
+﻿namespace CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Delete;
 
 public sealed record DeleteCategoryCommand(
 	CategoryId Id

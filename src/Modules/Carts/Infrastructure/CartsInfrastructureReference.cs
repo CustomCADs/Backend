@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CustomCADs.Carts.Infrastructure;
+namespace CustomCADs.Modules.Carts.Infrastructure;
 
 public class CartsInfrastructureReference
 {

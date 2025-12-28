@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Dtos;
-using CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
-using CustomCADs.Carts.Domain.Repositories;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Dtos;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Commands.Internal.Create;
+using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Catalog;

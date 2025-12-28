@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.All;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Get.All;
 
 public sealed record GetProductsResponse(
 	Guid Id,

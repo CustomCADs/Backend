@@ -1,6 +1,6 @@
-﻿using CustomCADs.Files.Application.Images.Queries.Internal.PresignedUrls.Get;
-using CustomCADs.Files.Application.Images.Storage;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Application.Images.Queries.Internal.PresignedUrls.Get;
+using CustomCADs.Modules.Files.Application.Images.Storage;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Policies;
 
 namespace CustomCADs.UnitTests.Files.Application.Images.Queries.Internal.PresignedUrls.Get;

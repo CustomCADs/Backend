@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Accounts.API.Accounts.Dtos;
+﻿namespace CustomCADs.Modules.Accounts.API.Accounts.Dtos;
 
 public sealed record AccountResponse(
 	string Username,

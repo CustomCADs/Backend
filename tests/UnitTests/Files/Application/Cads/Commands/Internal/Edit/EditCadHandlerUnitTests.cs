@@ -1,6 +1,6 @@
-﻿using CustomCADs.Files.Application.Cads.Commands.Internal.Edit;
-using CustomCADs.Files.Domain.Repositories;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Application.Cads.Commands.Internal.Edit;
+using CustomCADs.Modules.Files.Domain.Repositories;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Files.Application.Cads.Commands.Internal.Edit;

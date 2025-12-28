@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
+namespace CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 
 public class AppRefreshToken : BaseEntity
 {

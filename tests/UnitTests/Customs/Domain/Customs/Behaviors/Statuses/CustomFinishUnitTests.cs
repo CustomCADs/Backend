@@ -1,5 +1,5 @@
-using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Customs.States.Entities;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
 using CustomCADs.Shared.Domain.Exceptions;
 
 namespace CustomCADs.UnitTests.Customs.Domain.Customs.Behaviors.Statuses;

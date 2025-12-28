@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
-using CustomCADs.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
-using CustomCADs.Carts.Domain.Repositories;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Domain.Repositories;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;

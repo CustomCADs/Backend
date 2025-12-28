@@ -1,9 +1,9 @@
-﻿using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.ValueObjects;
 
-namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetAll;
 
 public sealed record GetAllShipmentsQuery(
 	Pagination Pagination,

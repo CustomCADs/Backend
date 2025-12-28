@@ -1,12 +1,12 @@
-using CustomCADs.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
-using CustomCADs.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
-using CustomCADs.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
-using CustomCADs.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
+using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 using CustomCADs.Shared.Application.Events.Carts;
 using Wolverine;
 
 #pragma warning disable IDE1006 // Async suffix
-namespace CustomCADs.Carts.Infrastructure.Sagas;
+namespace CustomCADs.Modules.Carts.Infrastructure.Sagas;
 
 public class CartDeliveryPaymentSaga : Saga
 {

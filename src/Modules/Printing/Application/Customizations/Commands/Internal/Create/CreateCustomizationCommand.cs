@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.Application.Customizations.Commands.Internal.Create;
+﻿namespace CustomCADs.Modules.Printing.Application.Customizations.Commands.Internal.Create;
 
 public sealed record CreateCustomizationCommand(
 	decimal Scale,

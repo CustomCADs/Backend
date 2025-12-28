@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Tags.Commands.Internal.Create;
+﻿namespace CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Create;
 
 public sealed record CreateTagCommand(
 	string Name

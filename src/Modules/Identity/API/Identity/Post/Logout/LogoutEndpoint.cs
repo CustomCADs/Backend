@@ -1,9 +1,9 @@
-﻿using CustomCADs.Identity.Application.Users.Commands.Internal.Logout;
-using CustomCADs.Identity.Application.Users.Dtos;
+﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Logout;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.Extensions.Options;
 
-namespace CustomCADs.Identity.API.Identity.Post.Logout;
+namespace CustomCADs.Modules.Identity.API.Identity.Post.Logout;
 
 public sealed class LogoutEndpoint(IRequestSender sender, IOptions<CookieSettings> settings)
 	: EndpointWithoutRequest<string>
@@ -24,7 +24,7 @@ public sealed class LogoutEndpoint(IRequestSender sender, IOptions<CookieSetting
 	{
 		await sender.SendCommandAsync(
 			command: new LogoutUserCommand(
-				RefreshToken: HttpContext.GetRefreshTokenCookie()
+				RefreshToken: HttpContext.RefreshTokenCookie
 			),
 			ct: ct
 		).ConfigureAwait(false);

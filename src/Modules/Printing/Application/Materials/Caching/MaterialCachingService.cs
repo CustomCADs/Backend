@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Printing.Application.Materials.Caching;
+namespace CustomCADs.Modules.Printing.Application.Materials.Caching;
 
 public class MaterialCachingService(ICacheService service) : BaseCachingService<MaterialId, Material>
 {

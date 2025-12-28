@@ -1,10 +1,10 @@
-﻿using CustomCADs.Catalog.Domain.Categories;
-using CustomCADs.Catalog.Domain.Products;
-using CustomCADs.Catalog.Domain.Tags;
-using CustomCADs.Catalog.Persistence.ShadowEntities;
+﻿using CustomCADs.Modules.Catalog.Domain.Categories;
+using CustomCADs.Modules.Catalog.Domain.Products;
+using CustomCADs.Modules.Catalog.Domain.Tags;
+using CustomCADs.Modules.Catalog.Persistence.ShadowEntities;
 using CustomCADs.Shared.Persistence;
 
-namespace CustomCADs.Catalog.Persistence;
+namespace CustomCADs.Modules.Catalog.Persistence;
 
 using static PersistenceConstants;
 

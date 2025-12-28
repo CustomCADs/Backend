@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Identity.Infrastructure.Tokens;
+﻿namespace CustomCADs.Modules.Identity.Infrastructure.Tokens;
 
 public record JwtSettings(
 	string SecretKey,

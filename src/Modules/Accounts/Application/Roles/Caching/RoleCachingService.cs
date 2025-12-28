@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Accounts.Application.Roles.Caching;
+namespace CustomCADs.Modules.Accounts.Application.Roles.Caching;
 
 public class RoleCachingService(ICacheService service) : BaseCachingService<RoleId, Role>
 {

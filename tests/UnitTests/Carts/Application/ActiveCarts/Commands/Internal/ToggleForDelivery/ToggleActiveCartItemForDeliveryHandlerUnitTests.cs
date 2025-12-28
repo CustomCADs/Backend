@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.ToggleForDelivery;
-using CustomCADs.Carts.Domain.Repositories;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.ToggleForDelivery;
+using CustomCADs.Modules.Carts.Domain.Repositories;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Customizations.Commands;

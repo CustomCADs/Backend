@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Reported;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Reported;
 
 public sealed record GetReportedProductsResponse(
 	Guid Id,

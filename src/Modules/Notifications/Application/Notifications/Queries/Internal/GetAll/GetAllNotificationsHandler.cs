@@ -1,11 +1,11 @@
-using CustomCADs.Notifications.Domain.Repositories.Reads;
+using CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Domain;
+using CustomCADs.Shared.Domain.Extensions;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
+namespace CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.GetAll;
 
 public sealed class GetAllNotificationsHandler(INotificationReads reads, IRequestSender sender)
 	: IQueryHandler<GetAllNotificationsQuery, Result<GetAllNotificationsDto>>

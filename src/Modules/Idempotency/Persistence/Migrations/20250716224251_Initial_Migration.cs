@@ -3,7 +3,7 @@
 #nullable disable
 
 
-namespace CustomCADs.Idempotency.Persistence.Migrations;
+namespace CustomCADs.Modules.Idempotency.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Initial_Migration : Migration

@@ -1,6 +1,6 @@
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetById;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetById;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Single;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Single;
 
 public class DesignerSingleProductMapper : ResponseMapper<DesignerSingleProductResponse, DesignerGetProductByIdDto>
 {

@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Printing.Domain.Materials;
+namespace CustomCADs.Modules.Printing.Domain.Materials;
 
 public class Material : BaseAggregateRoot
 {

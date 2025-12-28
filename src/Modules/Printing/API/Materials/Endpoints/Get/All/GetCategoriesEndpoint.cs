@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.API.Materials.Dtos;
-using CustomCADs.Printing.Application.Materials.Queries.Internal.GetAll;
+﻿using CustomCADs.Modules.Printing.API.Materials.Dtos;
+using CustomCADs.Modules.Printing.Application.Materials.Queries.Internal.GetAll;
 
-namespace CustomCADs.Printing.API.Materials.Endpoints.Get.All;
+namespace CustomCADs.Modules.Printing.API.Materials.Endpoints.Get.All;
 
 public sealed class GetCategoriesEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<MaterialResponse[]>

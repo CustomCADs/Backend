@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.GetAll;
 
 public sealed record CreatorGetAllProductsDto(
 	ProductId Id,

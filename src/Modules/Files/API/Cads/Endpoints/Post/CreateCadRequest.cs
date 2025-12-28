@@ -1,4 +1,4 @@
-namespace CustomCADs.Files.API.Cads.Endpoints.Post;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Post;
 
 public record CreateCadRequest(
 	string GeneratedKey,

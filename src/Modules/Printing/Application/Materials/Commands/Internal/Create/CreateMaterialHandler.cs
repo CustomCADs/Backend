@@ -1,8 +1,8 @@
-﻿using CustomCADs.Printing.Domain.Repositories;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
-namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Create;
+namespace CustomCADs.Modules.Printing.Application.Materials.Commands.Internal.Create;
 
 public sealed class CreateMaterialHandler(
 	IWrites<Material> writes,

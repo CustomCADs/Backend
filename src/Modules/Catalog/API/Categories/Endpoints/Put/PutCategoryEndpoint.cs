@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Categories.Commands.Internal.Edit;
+﻿using CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Edit;
 
-namespace CustomCADs.Catalog.API.Categories.Endpoints.Put;
+namespace CustomCADs.Modules.Catalog.API.Categories.Endpoints.Put;
 
 public sealed class PutCategoryEndpoint(IRequestSender sender)
 	: Endpoint<PutCategoryRequest>

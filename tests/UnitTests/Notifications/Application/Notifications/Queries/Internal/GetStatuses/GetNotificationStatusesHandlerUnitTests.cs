@@ -1,5 +1,5 @@
-﻿using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetStatuses;
-using CustomCADs.Notifications.Domain.Notifications.Enums;
+﻿using CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.GetStatuses;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
 
 namespace CustomCADs.UnitTests.Notifications.Application.Notifications.Queries.Internal.GetStatuses;
 

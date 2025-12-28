@@ -1,8 +1,8 @@
-﻿using CustomCADs.Printing.Domain.Customizations;
-using CustomCADs.Printing.Domain.Materials;
+﻿using CustomCADs.Modules.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Materials;
 using CustomCADs.Shared.Persistence;
 
-namespace CustomCADs.Printing.Persistence;
+namespace CustomCADs.Modules.Printing.Persistence;
 
 using static PersistenceConstants;
 

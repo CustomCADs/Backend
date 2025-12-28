@@ -1,6 +1,6 @@
-using CustomCADs.Identity.Domain.Users;
-using CustomCADs.Identity.Infrastructure.Identity.Context;
-using CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
+using CustomCADs.Modules.Identity.Domain.Users;
+using CustomCADs.Modules.Identity.Infrastructure.Identity.Context;
+using CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Shared.Persistence;
 using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.AspNetCore.Identity;
@@ -13,40 +13,43 @@ using static UserConstants;
 
 public static class ProgramExtensions
 {
-	private static string GetConnectionString(this IConfiguration config)
-		=> config.GetConnectionString(ConnectionString) ?? throw DatabaseConnectionException.Missing(ConnectionString);
-
-	public static IServiceCollection AddIdentity(this IServiceCollection services, IConfiguration config)
+	extension(IConfiguration config)
 	{
-		services.AddIdentity<AppUser, AppRole>(options =>
+		internal string ConnectionString => config.GetConnectionString(ConnectionStringKey) ?? throw DatabaseConnectionException.Missing(ConnectionStringKey);
+	}
+
+	extension(IServiceCollection services)
+	{
+		public IServiceCollection AddIdentity(IConfiguration config)
 		{
-			options.SignIn.RequireConfirmedEmail = true;
-			options.SignIn.RequireConfirmedAccount = false;
-			options.Password.RequireDigit = false;
-			options.Password.RequireNonAlphanumeric = false;
-			options.Password.RequireLowercase = false;
-			options.Password.RequireUppercase = false;
-			options.Password.RequiredLength = PasswordMinLength;
-			options.User.RequireUniqueEmail = true;
-			options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+" + ' '; // default + space
-			options.Lockout.MaxFailedAccessAttempts = 5;
-			options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-		})
-		.AddEntityFrameworkStores<IdentityContext>()
-		.AddDefaultTokenProviders();
+			services.AddIdentity<AppUser, AppRole>(options =>
+			{
+				options.SignIn.RequireConfirmedEmail = true;
+				options.SignIn.RequireConfirmedAccount = false;
+				options.Password.RequireDigit = false;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireLowercase = false;
+				options.Password.RequireUppercase = false;
+				options.Password.RequiredLength = PasswordMinLength;
+				options.User.RequireUniqueEmail = true;
+				options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+" + ' '; // default + space
+				options.Lockout.MaxFailedAccessAttempts = 5;
+				options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+			})
+			.AddEntityFrameworkStores<IdentityContext>()
+			.AddDefaultTokenProviders();
 
-		string? connectionString = config.GetConnectionString(ConnectionString)
-			?? throw new KeyNotFoundException($"Could not find connection string '{ConnectionString}'.");
+			services.AddIdentityServices(config.ConnectionString);
 
-		services.AddIdentityServices(config.GetConnectionString());
+			return services;
+		}
 
-		return services;
+		public async Task ExecuteDbMigrationUpdaterAsync()
+		{
+			using IServiceScope scope = services.BuildServiceProvider().CreateScope();
+			IServiceProvider provider = scope.ServiceProvider;
+			await provider.UpdateIdentityContextAsync().ConfigureAwait(false);
+		}
 	}
 
-	public static async Task ExecuteDbMigrationUpdaterAsync(this IServiceCollection services)
-	{
-		using IServiceScope scope = services.BuildServiceProvider().CreateScope();
-		IServiceProvider provider = scope.ServiceProvider;
-		await provider.UpdateIdentityContextAsync().ConfigureAwait(false);
-	}
 }

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
 
 public sealed class GetPurchasedCartByIdHandler(IPurchasedCartReads reads, IRequestSender sender)
 	: IQueryHandler<GetPurchasedCartByIdQuery, GetPurchasedCartByIdDto>

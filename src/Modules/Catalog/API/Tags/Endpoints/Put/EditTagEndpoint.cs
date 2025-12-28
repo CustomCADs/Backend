@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Tags.Commands.Internal.Edit;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Edit;
 
-namespace CustomCADs.Catalog.API.Tags.Endpoints.Put;
+namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Put;
 
 public class EditTagEndpoint(IRequestSender sender)
 	: Endpoint<EditTagRequest>

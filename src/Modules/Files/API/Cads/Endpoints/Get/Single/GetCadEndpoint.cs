@@ -1,8 +1,8 @@
 
-using CustomCADs.Files.Application.Cads.Dtos;
-using CustomCADs.Files.Application.Cads.Queries.Internal.GetById;
+using CustomCADs.Modules.Files.Application.Cads.Dtos;
+using CustomCADs.Modules.Files.Application.Cads.Queries.Internal.GetById;
 
-namespace CustomCADs.Files.API.Cads.Endpoints.Get.Single;
+namespace CustomCADs.Modules.Files.API.Cads.Endpoints.Get.Single;
 
 public class GetCadEndpoint(IRequestSender sender) : Endpoint<GetCadRequest, CadResponse>
 {

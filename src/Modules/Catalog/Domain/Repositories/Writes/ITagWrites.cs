@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Domain.Tags;
 
-namespace CustomCADs.Catalog.Domain.Repositories.Writes;
+namespace CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 
 public interface ITagWrites
 {

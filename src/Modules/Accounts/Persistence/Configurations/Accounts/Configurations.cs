@@ -1,7 +1,8 @@
-﻿using CustomCADs.Accounts.Domain.Accounts;
+﻿using CustomCADs.Modules.Accounts.Domain.Accounts;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Accounts.Persistence.Configurations.Accounts;
+namespace CustomCADs.Modules.Accounts.Persistence.Configurations.Accounts;
+
 public class Configurations : IEntityTypeConfiguration<Account>
 {
 	public void Configure(EntityTypeBuilder<Account> builder)

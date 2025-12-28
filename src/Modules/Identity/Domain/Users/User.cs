@@ -1,9 +1,9 @@
-﻿using CustomCADs.Identity.Domain.Users.Entities;
-using CustomCADs.Identity.Domain.Users.ValueObjects;
+﻿using CustomCADs.Modules.Identity.Domain.Users.Entities;
+using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Identity.Domain.Users;
+namespace CustomCADs.Modules.Identity.Domain.Users;
 
 public class User : BaseAggregateRoot
 {

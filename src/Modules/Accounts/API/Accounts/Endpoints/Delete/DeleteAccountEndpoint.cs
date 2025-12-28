@@ -1,7 +1,7 @@
-﻿using CustomCADs.Accounts.Application.Accounts.Commands.Internal.Delete;
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Commands.Internal.Delete;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Accounts.API.Accounts.Endpoints.Delete;
+namespace CustomCADs.Modules.Accounts.API.Accounts.Endpoints.Delete;
 
 public sealed class DeleteAccountEndpoint(IRequestSender sender)
 	: Endpoint<DeleteAccountRequest>

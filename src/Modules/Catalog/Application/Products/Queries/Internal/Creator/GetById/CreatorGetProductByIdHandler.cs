@@ -1,9 +1,9 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.GetById;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.GetById;
 
 public sealed class CreatorGetProductByIdHandler(IProductReads reads, IRequestSender sender)
 	: IQueryHandler<CreatorGetProductByIdQuery, CreatorGetProductByIdDto>

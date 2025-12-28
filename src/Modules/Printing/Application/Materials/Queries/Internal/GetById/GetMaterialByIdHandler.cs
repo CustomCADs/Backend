@@ -1,6 +1,6 @@
-﻿using CustomCADs.Printing.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 
-namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetById;
+namespace CustomCADs.Modules.Printing.Application.Materials.Queries.Internal.GetById;
 
 public sealed class GetMaterialByIdHandler(IMaterialReads reads, BaseCachingService<MaterialId, Material> cache)
 	: IQueryHandler<GetMaterialByIdQuery, MaterialDto>

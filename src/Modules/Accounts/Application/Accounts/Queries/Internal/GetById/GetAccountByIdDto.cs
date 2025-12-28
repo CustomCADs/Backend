@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
+﻿namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetById;
 
 public sealed record GetAccountByIdDto(
 	AccountId Id,

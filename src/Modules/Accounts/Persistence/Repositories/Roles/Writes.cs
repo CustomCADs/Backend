@@ -1,7 +1,7 @@
-using CustomCADs.Accounts.Domain.Repositories.Writes;
-using CustomCADs.Accounts.Domain.Roles;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
+using CustomCADs.Modules.Accounts.Domain.Roles;
 
-namespace CustomCADs.Accounts.Persistence.Repositories.Roles;
+namespace CustomCADs.Modules.Accounts.Persistence.Repositories.Roles;
 
 public class Writes(AccountsContext context) : IRoleWrites
 {

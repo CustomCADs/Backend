@@ -1,6 +1,6 @@
-using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
+using CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.GetAll;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.All;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Get.All;
 
 public class GetNotificationsMapper : ResponseMapper<GetNotificationsResponse, GetAllNotificationsDto>
 {

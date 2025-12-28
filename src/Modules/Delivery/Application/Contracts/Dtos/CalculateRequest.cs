@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Delivery.Application.Contracts.Dtos;
+﻿namespace CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 
 public record CalculateRequest(
 	double[] Weights,

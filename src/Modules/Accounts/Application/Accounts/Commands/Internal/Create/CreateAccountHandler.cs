@@ -1,9 +1,9 @@
-﻿using CustomCADs.Accounts.Domain.Repositories;
-using CustomCADs.Accounts.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Events.Account.Accounts;
 
-namespace CustomCADs.Accounts.Application.Accounts.Commands.Internal.Create;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Commands.Internal.Create;
 
 public sealed class CreateAccountHandler(
 	IAccountWrites writes,

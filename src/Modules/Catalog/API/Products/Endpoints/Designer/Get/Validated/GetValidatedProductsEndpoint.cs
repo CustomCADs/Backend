@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
-using CustomCADs.Catalog.Domain.Products.Enums;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
+using CustomCADs.Modules.Catalog.Domain.Products.Enums;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Validated;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Validated;
 
 public sealed class GetValidatedProductsEndpoint(IRequestSender sender)
 	: Endpoint<GetValidatedProductsRequest, Result<GetValidatedProductsResponse>, GetValidatedProductsMapper>
@@ -21,7 +21,7 @@ public sealed class GetValidatedProductsEndpoint(IRequestSender sender)
 	{
 		Result<DesignerGetAllProductsDto> result = await sender.SendQueryAsync(
 			query: new DesignerGetAllProductsQuery(
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				Status: ProductStatus.Validated,
 				CategoryId: CategoryId.New(req.CategoryId),
 				Name: req.Name,

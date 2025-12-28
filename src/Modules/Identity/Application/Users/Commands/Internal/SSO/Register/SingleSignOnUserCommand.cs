@@ -1,6 +1,6 @@
-﻿using CustomCADs.Identity.Application.Users.Dtos;
+﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.SSO.Register;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.SSO.Register;
 
 public sealed record SingleSignOnUserCommand(
 	string? Role,

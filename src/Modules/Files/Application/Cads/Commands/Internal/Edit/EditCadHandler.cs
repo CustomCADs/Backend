@@ -1,8 +1,8 @@
-﻿using CustomCADs.Files.Domain.Repositories;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Domain.Repositories;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 
-namespace CustomCADs.Files.Application.Cads.Commands.Internal.Edit;
+namespace CustomCADs.Modules.Files.Application.Cads.Commands.Internal.Edit;
 
 public sealed class EditCadHandler(
 	ICadReads reads,

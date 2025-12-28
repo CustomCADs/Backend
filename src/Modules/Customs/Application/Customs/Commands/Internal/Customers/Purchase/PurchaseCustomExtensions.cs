@@ -1,8 +1,8 @@
-using CustomCADs.Customs.Domain.Customs.States.Entities;
+using CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase;
 
 internal static class PurchaseCustomExtensions
 {

@@ -1,9 +1,9 @@
-﻿using CustomCADs.Delivery.Domain.Repositories;
-using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Domain.Repositories;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Delivery.Persistence.Repositories;
+namespace CustomCADs.Modules.Delivery.Persistence.Repositories;
 
 public class UnitOfWork(DeliveryContext context) : IUnitOfWork
 {

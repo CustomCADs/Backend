@@ -1,6 +1,6 @@
-using CustomCADs.Customs.Application.Customs.Events.Application.PaymentCompleted;
-using CustomCADs.Customs.Domain.Repositories;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+using CustomCADs.Modules.Customs.Application.Customs.Events.Application.PaymentCompleted;
+using CustomCADs.Modules.Customs.Domain.Repositories;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Email;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Customs;

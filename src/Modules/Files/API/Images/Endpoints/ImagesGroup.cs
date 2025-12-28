@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Files.API.Images.Endpoints;
+﻿namespace CustomCADs.Modules.Files.API.Images.Endpoints;
 
 using static APIConstants;
 using static DomainConstants.Roles;

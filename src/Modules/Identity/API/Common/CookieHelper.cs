@@ -1,6 +1,6 @@
-using CustomCADs.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 
-namespace CustomCADs.Identity.API.Common;
+namespace CustomCADs.Modules.Identity.API.Common;
 
 public static class CookieHelper
 {
@@ -10,54 +10,65 @@ public static class CookieHelper
 	private const string RoleCookie = "role";
 	private const string UsernameCookie = "username";
 
-	public static string? GetRefreshTokenCookie(this HttpContext context)
-		=> context.Request.Cookies.FirstOrDefault(x => x.Key == RefreshTokenCookie).Value;
-
-	public static void SaveAccessTokenCookie(this HttpContext context, TokenDto jwt, string? domain)
-		=> context.Response.Cookies.Append(AccessTokenCookie, jwt.Value, CookieOptions(jwt.ExpiresAt, httpOnly: true, domain: domain));
-
-	public static void SaveRefreshTokenCookie(this HttpContext context, TokenDto rt, string? domain)
-		=> context.Response.Cookies.Append(RefreshTokenCookie, rt.Value, CookieOptions(rt.ExpiresAt, httpOnly: true, domain: domain));
-
-	public static void SaveCsrfTokenCookie(this HttpContext context, TokenDto csrf, string? domain)
-		=> context.Response.Cookies.Append(CsrfTokenCookie, csrf.Value, CookieOptions(csrf.ExpiresAt, domain: domain));
-
-	public static void SaveUsernameCookie(this HttpContext context, string username, DateTimeOffset expire, string? domain)
-		=> context.Response.Cookies.Append(UsernameCookie, username, CookieOptions(expire, domain: domain));
-
-	public static void SaveRoleCookie(this HttpContext context, string role, DateTimeOffset expire, string? domain)
-		=> context.Response.Cookies.Append(RoleCookie, role, CookieOptions(expire, domain: domain));
-
-	public static void SaveAllCookies(
-		this HttpContext context,
-		TokensDto tokens,
-		string username,
-		string? domain
-	)
+	extension(HttpContext context)
 	{
-		context.SaveAccessTokenCookie(tokens.AccessToken, domain);
-		context.SaveCsrfTokenCookie(tokens.CsrfToken, domain);
-		context.SaveRefreshTokenCookie(tokens.RefreshToken, domain);
-		context.SaveRoleCookie(tokens.Role, tokens.RefreshToken.ExpiresAt, domain);
-		context.SaveUsernameCookie(username, tokens.RefreshToken.ExpiresAt, domain);
-	}
+		public string? RefreshTokenCookie => context.Request.Cookies.FirstOrDefault(x => x.Key == RefreshTokenCookie).Value;
 
-	public static void DeleteAllCookies(this HttpContext context, string? domain)
-	{
-		void DeleteCookie(string key, bool httpOnly = false, string? domain = null)
+		private void SaveAccessToken(TokenDto jwt, string? domain)
+			=> context.Response.Cookies.Append(AccessTokenCookie, jwt.Value, CookieOptions(jwt.ExpiresAt, httpOnly: true, domain: domain));
+
+		private void SaveRefreshToken(TokenDto rt, string? domain)
+			=> context.Response.Cookies.Append(RefreshTokenCookie, rt.Value, CookieOptions(rt.ExpiresAt, httpOnly: true, domain: domain));
+
+		private void SaveCsrfToken(TokenDto csrf, string? domain)
+			=> context.Response.Cookies.Append(CsrfTokenCookie, csrf.Value, CookieOptions(csrf.ExpiresAt, domain: domain));
+
+		private void SaveUsername(string username, DateTimeOffset expire, string? domain)
+			=> context.Response.Cookies.Append(UsernameCookie, username, CookieOptions(expire, domain: domain));
+
+		private void SaveRole(string role, DateTimeOffset expire, string? domain)
+			=> context.Response.Cookies.Append(RoleCookie, role, CookieOptions(expire, domain: domain));
+
+		public void RefreshCookies(
+			TokenDto access,
+			TokenDto csrf,
+			string? domain
+		)
 		{
-			context.Response.Cookies.Append(
-				key: key,
-				value: string.Empty,
-				options: CookieOptions(DateTimeOffset.UnixEpoch, httpOnly, domain)
-			);
+			context.SaveAccessToken(access, domain);
+			context.SaveCsrfToken(csrf, domain);
 		}
 
-		DeleteCookie(AccessTokenCookie, httpOnly: true, domain: domain);
-		DeleteCookie(RefreshTokenCookie, httpOnly: true, domain: domain);
-		DeleteCookie(CsrfTokenCookie, domain: domain);
-		DeleteCookie(RoleCookie, domain: domain);
-		DeleteCookie(UsernameCookie, domain: domain);
+		public void SaveAllCookies(
+			TokensDto tokens,
+			string username,
+			string? domain
+		)
+		{
+			context.SaveAccessToken(tokens.AccessToken, domain);
+			context.SaveCsrfToken(tokens.CsrfToken, domain);
+			context.SaveRefreshToken(tokens.RefreshToken, domain);
+			context.SaveRole(tokens.Role, tokens.RefreshToken.ExpiresAt, domain);
+			context.SaveUsername(username, tokens.RefreshToken.ExpiresAt, domain);
+		}
+
+		public void DeleteAllCookies(string? domain)
+		{
+			DeleteCookie(AccessTokenCookie, httpOnly: true, domain: domain);
+			DeleteCookie(RefreshTokenCookie, httpOnly: true, domain: domain);
+			DeleteCookie(CsrfTokenCookie, domain: domain);
+			DeleteCookie(RoleCookie, domain: domain);
+			DeleteCookie(UsernameCookie, domain: domain);
+
+			void DeleteCookie(string key, bool httpOnly = false, string? domain = null)
+			{
+				context.Response.Cookies.Append(
+					key: key,
+					value: string.Empty,
+					options: CookieOptions(DateTimeOffset.UnixEpoch, httpOnly, domain)
+				);
+			}
+		}
 	}
 
 	private static CookieOptions CookieOptions(DateTimeOffset expire, bool httpOnly = false, string? domain = null)

@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.Domain.Repositories;
-using CustomCADs.Printing.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 
-namespace CustomCADs.Printing.Application.Materials.Commands.Internal.Delete;
+namespace CustomCADs.Modules.Printing.Application.Materials.Commands.Internal.Delete;
 
 public sealed class DeleteMaterialHandler(
 	IMaterialReads reads,

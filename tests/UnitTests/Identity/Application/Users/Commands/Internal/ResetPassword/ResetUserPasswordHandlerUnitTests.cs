@@ -1,5 +1,5 @@
-using CustomCADs.Identity.Application.Contracts;
-using CustomCADs.Identity.Application.Users.Commands.Internal.ResetPassword;
+using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ResetPassword;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Commands.Internal.ResetPassword;
 

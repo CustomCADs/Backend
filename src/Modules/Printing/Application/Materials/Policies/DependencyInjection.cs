@@ -1,4 +1,4 @@
-using CustomCADs.Printing.Application.Materials.Policies;
+using CustomCADs.Modules.Printing.Application.Materials.Policies;
 using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
@@ -6,9 +6,11 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static partial class DependencyInjection
 {
-	public static void AddMaterialsAccessPolicies(this IServiceCollection services)
+	extension(IServiceCollection services)
 	{
-		services.AddScoped<IFileUploadPolicy<ImageId>, MaterialTextureUploadPolicy>();
-		services.AddScoped<IFileReplacePolicy<ImageId>, MaterialTextureReplacePolicy>();
+		public void AddMaterialsAccessPolicies()
+			=> services
+				.AddScoped<IFileUploadPolicy<ImageId>, MaterialTextureUploadPolicy>()
+				.AddScoped<IFileReplacePolicy<ImageId>, MaterialTextureReplacePolicy>();
 	}
 }

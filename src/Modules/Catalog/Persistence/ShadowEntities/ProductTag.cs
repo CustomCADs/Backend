@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Products;
-using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Domain.Products;
+using CustomCADs.Modules.Catalog.Domain.Tags;
 
-namespace CustomCADs.Catalog.Persistence.ShadowEntities;
+namespace CustomCADs.Modules.Catalog.Persistence.ShadowEntities;
 
 public class ProductTag
 {

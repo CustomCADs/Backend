@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.Normal;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Post.Purchase;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Post.Purchase;
 
 public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 	: Endpoint<PurchaseActiveCartRequest, PaymentResponse>
@@ -21,7 +21,7 @@ public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 		PaymentDto payment = await sender.SendCommandAsync(
 			command: new PurchaseActiveCartCommand(
 				PaymentMethodId: req.PaymentMethodId,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

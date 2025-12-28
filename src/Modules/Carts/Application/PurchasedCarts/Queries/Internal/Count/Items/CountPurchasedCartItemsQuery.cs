@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.Count.Items;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.Count.Items;
 
 public sealed record CountPurchasedCartItemsQuery(
 	AccountId CallerId

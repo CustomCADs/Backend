@@ -1,5 +1,5 @@
-using CustomCADs.Accounts.Application.Accounts.Queries.Shared.Info;
-using CustomCADs.Accounts.Domain.Repositories.Reads;
+using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.Info;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 

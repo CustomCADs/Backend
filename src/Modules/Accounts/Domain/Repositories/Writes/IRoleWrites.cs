@@ -1,6 +1,6 @@
-using CustomCADs.Accounts.Domain.Roles;
+using CustomCADs.Modules.Accounts.Domain.Roles;
 
-namespace CustomCADs.Accounts.Domain.Repositories.Writes;
+namespace CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
 
 public interface IRoleWrites
 {

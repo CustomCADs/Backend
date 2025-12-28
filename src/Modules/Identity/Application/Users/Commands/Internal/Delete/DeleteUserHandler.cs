@@ -2,7 +2,7 @@ using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Events.Identity;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.Delete;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Delete;
 
 public sealed class DeleteUserHandler(
 	IUserService service,

@@ -1,5 +1,5 @@
 import { objectToSearchParams } from '@/utils/params';
-import { GALLERY_BASE_PATH } from '@/api/catalog/common';
+import { Counts, GALLERY_BASE_PATH } from '@/api/catalog/common';
 
 export type Request = {
 	categoryId?: number;
@@ -16,7 +16,7 @@ export type Response = {
 	name: string;
 	tags: string[];
 	category: string;
-	views: number;
+	counts: Counts;
 	imageId: string;
 };
 

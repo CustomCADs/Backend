@@ -1,4 +1,4 @@
-namespace CustomCADs.Customs.API.Customs.Endpoints.Admins.Patch.PatchCategory;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Admins.Patch.PatchCategory;
 
 public record PatchCustomCategoryRequest(
 	Guid Id,

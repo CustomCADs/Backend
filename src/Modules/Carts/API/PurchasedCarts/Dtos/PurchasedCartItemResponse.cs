@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Carts.API.PurchasedCarts.Dtos;
+﻿namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Dtos;
 
 public sealed record PurchasedCartItemResponse(
 	int Quantity,

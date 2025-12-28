@@ -1,6 +1,6 @@
-﻿using CustomCADs.Notifications.Application.Notifications.Commands.Internal.Read;
-using CustomCADs.Notifications.Domain.Repositories;
-using CustomCADs.Notifications.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Notifications.Application.Notifications.Commands.Internal.Read;
+using CustomCADs.Modules.Notifications.Domain.Repositories;
+using CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 

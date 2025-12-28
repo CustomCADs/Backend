@@ -1,12 +1,13 @@
-﻿using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
+using CustomCADs.Shared.Domain.Extensions;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
 
 public sealed class GalleryGetAllProductsHandler(IProductReads reads, IRequestSender sender)
 	: IQueryHandler<GalleryGetAllProductsQuery, Result<GalleryGetAllProductsDto>>

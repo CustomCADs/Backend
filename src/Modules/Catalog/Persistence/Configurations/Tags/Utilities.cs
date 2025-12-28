@@ -1,52 +1,56 @@
-﻿using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Domain.Tags;
 using CustomCADs.Shared.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Catalog.Persistence.Configurations.Tags;
+namespace CustomCADs.Modules.Catalog.Persistence.Configurations.Tags;
 
 using static DomainConstants.Tags;
 using static TagConstants;
 
-static class Utilities
+internal static class Utilities
 {
-	public static EntityTypeBuilder<Tag> SetPrimaryKey(this EntityTypeBuilder<Tag> builder)
+	extension(EntityTypeBuilder<Tag> builder)
 	{
-		builder.HasKey(x => x.Id);
+		internal EntityTypeBuilder<Tag> SetPrimaryKey()
+		{
+			builder.HasKey(x => x.Id);
 
-		return builder;
+			return builder;
+		}
+
+		internal EntityTypeBuilder<Tag> SetStronglyTypedIds()
+		{
+			builder.Property(x => x.Id)
+				.ValueGeneratedOnAdd()
+				.HasConversion(
+					x => x.Value,
+					x => TagId.New(x)
+				);
+
+			return builder;
+		}
+
+		internal EntityTypeBuilder<Tag> SetValidations()
+		{
+			builder.Property(x => x.Name)
+				.IsRequired()
+				.HasMaxLength(NameMaxLength)
+				.HasColumnName(nameof(Tag.Name));
+
+			return builder;
+		}
+
+		internal EntityTypeBuilder<Tag> SetSeeding()
+		{
+			builder.HasData([
+				Tag.CreateWithId(NewId, New),
+				Tag.CreateWithId(ProfessionalId, Professional),
+				Tag.CreateWithId(PrintableId, Printable),
+				Tag.CreateWithId(PopularId, Popular),
+			]);
+
+			return builder;
+		}
 	}
 
-	public static EntityTypeBuilder<Tag> SetStronglyTypedIds(this EntityTypeBuilder<Tag> builder)
-	{
-		builder.Property(x => x.Id)
-			.ValueGeneratedOnAdd()
-			.HasConversion(
-				x => x.Value,
-				x => TagId.New(x)
-			);
-
-		return builder;
-	}
-
-	public static EntityTypeBuilder<Tag> SetValidations(this EntityTypeBuilder<Tag> builder)
-	{
-		builder.Property(x => x.Name)
-			.IsRequired()
-			.HasMaxLength(NameMaxLength)
-			.HasColumnName(nameof(Tag.Name));
-
-		return builder;
-	}
-
-	public static EntityTypeBuilder<Tag> SetSeeding(this EntityTypeBuilder<Tag> builder)
-	{
-		builder.HasData([
-			Tag.CreateWithId(NewId, New),
-			Tag.CreateWithId(ProfessionalId, Professional),
-			Tag.CreateWithId(PrintableId, Printable),
-			Tag.CreateWithId(PopularId, Popular),
-		]);
-
-		return builder;
-	}
 }

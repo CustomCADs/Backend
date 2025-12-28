@@ -1,8 +1,8 @@
-﻿using CustomCADs.Accounts.Domain.Repositories.Reads;
-using CustomCADs.Accounts.Domain.Roles;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
+using CustomCADs.Modules.Accounts.Domain.Roles;
 using CustomCADs.Shared.Persistence.Extensions;
 
-namespace CustomCADs.Accounts.Persistence.Repositories.Roles;
+namespace CustomCADs.Modules.Accounts.Persistence.Repositories.Roles;
 
 public sealed class Reads(AccountsContext context) : IRoleReads
 {

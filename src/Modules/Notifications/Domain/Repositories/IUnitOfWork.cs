@@ -1,6 +1,6 @@
-using CustomCADs.Notifications.Domain.Notifications;
+using CustomCADs.Modules.Notifications.Domain.Notifications;
 
-namespace CustomCADs.Notifications.Domain.Repositories;
+namespace CustomCADs.Modules.Notifications.Domain.Repositories;
 
 public interface IUnitOfWork
 {

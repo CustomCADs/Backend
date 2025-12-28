@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Application.Dtos.Delivery;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Post.Purchase.WithDelivery;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Post.Purchase.WithDelivery;
 
 public sealed record PurchasCustomWithDeliveryRequest(
 	Guid Id,

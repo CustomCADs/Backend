@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Accounts.Domain.Roles;
+﻿namespace CustomCADs.Modules.Accounts.Domain.Roles;
 
 public static class RoleConstants
 {

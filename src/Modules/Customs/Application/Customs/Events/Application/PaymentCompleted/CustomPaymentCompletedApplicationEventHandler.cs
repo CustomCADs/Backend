@@ -1,5 +1,5 @@
-﻿using CustomCADs.Customs.Domain.Repositories;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Domain.Repositories;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Email;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Customs;
@@ -8,7 +8,7 @@ using CustomCADs.Shared.Application.UseCases.Identity.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
-namespace CustomCADs.Customs.Application.Customs.Events.Application.PaymentCompleted;
+namespace CustomCADs.Modules.Customs.Application.Customs.Events.Application.PaymentCompleted;
 
 public class CustomPaymentCompletedApplicationEventHandler(
 	ICustomReads reads,

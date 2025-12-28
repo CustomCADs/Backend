@@ -1,11 +1,11 @@
-﻿using CustomCADs.Customs.Domain.Repositories;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Domain.Repositories;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
-namespace CustomCADs.Customs.Application.Customs.Events.Application.DeliveryRequested;
+namespace CustomCADs.Modules.Customs.Application.Customs.Events.Application.DeliveryRequested;
 
 public class CustomDeliveryRequestedApplicationEventHandler(
 	ICustomReads reads,

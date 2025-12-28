@@ -1,6 +1,6 @@
-using CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.GetById;
+using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.GetById;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Post.Create;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Post.Create;
 
 public class PostCustomMapper : ResponseMapper<PostCustomResponse, CustomerGetCustomByIdDto>
 {

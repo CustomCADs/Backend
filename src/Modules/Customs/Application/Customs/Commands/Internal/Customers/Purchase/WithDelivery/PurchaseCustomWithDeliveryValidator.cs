@@ -2,7 +2,7 @@
 using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
 using FluentValidation;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 
 using static ApplicationConstants.FluentMessages;
 using static DomainConstants;

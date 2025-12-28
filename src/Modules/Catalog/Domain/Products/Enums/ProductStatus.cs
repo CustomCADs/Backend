@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Domain.Products.Enums;
+﻿namespace CustomCADs.Modules.Catalog.Domain.Products.Enums;
 
 public enum ProductStatus
 {

@@ -1,6 +1,6 @@
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Get.All;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Get.All;
 
 public class GetAllGalleryProductsMapper : ResponseMapper<GetAllGalleryProductsResponse, GalleryGetAllProductsDto>
 {
@@ -10,7 +10,7 @@ public class GetAllGalleryProductsMapper : ResponseMapper<GetAllGalleryProductsR
 			Name: product.Name,
 			Tags: product.Tags,
 			Category: product.Category.Name,
-			Views: product.Views,
+			Counts: product.Counts,
 			ImageId: product.ImageId.Value
 		);
 }

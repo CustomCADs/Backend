@@ -1,9 +1,9 @@
-using CustomCADs.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.ValueObjects;
 
-namespace CustomCADs.Notifications.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
 
 public record NotificationQuery(
 	Pagination Pagination,

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Domain.Products;
+﻿using CustomCADs.Modules.Catalog.Domain.Products;
 
-namespace CustomCADs.Catalog.Domain.Repositories.Writes;
+namespace CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 
 public interface IProductWrites
 {

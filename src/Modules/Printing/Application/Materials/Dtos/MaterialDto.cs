@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Printing.Application.Materials.Dtos;
+namespace CustomCADs.Modules.Printing.Application.Materials.Dtos;
 
 public record MaterialDto(
 	MaterialId Id,

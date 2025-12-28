@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Begin;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Begin;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Begin;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Patch.Begin;
 
 public sealed class BeginCustomEndpoint(IRequestSender sender)
 	: Endpoint<BeginCustomRequest>
@@ -20,7 +20,7 @@ public sealed class BeginCustomEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new BeginCustomCommand(
 				Id: CustomId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);
