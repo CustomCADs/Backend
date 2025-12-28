@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Idempotency.Domain.IdempotencyKeys;
+namespace CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
 
 public class IdempotencyKey : BaseAggregateRoot
 {

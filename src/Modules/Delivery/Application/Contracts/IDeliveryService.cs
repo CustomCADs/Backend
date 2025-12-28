@@ -1,6 +1,6 @@
-﻿using CustomCADs.Delivery.Application.Contracts.Dtos;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 
-namespace CustomCADs.Delivery.Application.Contracts;
+namespace CustomCADs.Modules.Delivery.Application.Contracts;
 
 public interface IDeliveryService
 {

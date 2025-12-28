@@ -1,6 +1,6 @@
-﻿using CustomCADs.Printing.Domain.Materials;
+﻿using CustomCADs.Modules.Printing.Domain.Materials;
 
-namespace CustomCADs.Printing.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 
 public interface IMaterialReads
 {

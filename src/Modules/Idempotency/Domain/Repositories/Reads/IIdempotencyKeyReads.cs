@@ -1,6 +1,6 @@
-using CustomCADs.Idempotency.Domain.IdempotencyKeys;
+using CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
 
-namespace CustomCADs.Idempotency.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Idempotency.Domain.Repositories.Reads;
 
 public interface IIdempotencyKeyReads
 {

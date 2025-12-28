@@ -1,4 +1,4 @@
-namespace CustomCADs.Identity.API.Identity.Get.MyAccount;
+namespace CustomCADs.Modules.Identity.API.Identity.Get.MyAccount;
 
 public record MyAccountResponse(
 	Guid Id,

@@ -1,7 +1,7 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Edit;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Edit;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Put;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Put;
 
 public sealed class PutCustomEndpoint(IRequestSender sender)
 	: Endpoint<PutCustomRequest>
@@ -24,7 +24,7 @@ public sealed class PutCustomEndpoint(IRequestSender sender)
 				Name: req.Name,
 				Description: req.Description,
 				CategoryId: CategoryId.New(req.CategoryId),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

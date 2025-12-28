@@ -1,7 +1,11 @@
-﻿namespace CustomCADs.Catalog.Application.Categories;
+﻿namespace CustomCADs.Modules.Catalog.Application.Categories;
 
 internal static class Mapper
 {
-	internal static CategoryReadDto ToDto(this Category category)
-		=> new(category.Id, category.Name, category.Description);
+	extension(Category category)
+	{
+		internal CategoryReadDto ToDto()
+			=> new(category.Id, category.Name, category.Description);
+	}
+
 }

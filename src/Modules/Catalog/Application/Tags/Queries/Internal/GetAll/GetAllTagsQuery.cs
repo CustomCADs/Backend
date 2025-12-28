@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Tags.Dtos;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
 
-namespace CustomCADs.Catalog.Application.Tags.Queries.Internal.GetAll;
+namespace CustomCADs.Modules.Catalog.Application.Tags.Queries.Internal.GetAll;
 
 public sealed record GetAllTagsQuery
  : IQuery<TagDto[]>;

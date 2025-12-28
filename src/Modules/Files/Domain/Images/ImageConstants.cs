@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Files.Domain.Images;
+﻿namespace CustomCADs.Modules.Files.Domain.Images;
 
 public static class ImageConstants
 {

@@ -1,7 +1,7 @@
-using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 
-namespace CustomCADs.Catalog.Application.Products.Events.Application.ProductCreated;
+namespace CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductCreated;
 
 public class ProductCreatedHandler(IProductWrites writes, IUnitOfWork uow)
 {

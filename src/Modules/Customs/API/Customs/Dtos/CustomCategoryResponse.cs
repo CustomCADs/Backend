@@ -1,6 +1,6 @@
-using CustomCADs.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.API.Customs.Dtos;
+namespace CustomCADs.Modules.Customs.API.Customs.Dtos;
 
 public record CustomCategoryResponse(
 	int Id,

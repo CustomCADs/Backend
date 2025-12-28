@@ -1,7 +1,7 @@
-using CustomCADs.Accounts.Domain.Accounts;
+using CustomCADs.Modules.Accounts.Domain.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Accounts.Domain.Repositories.Writes;
+namespace CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
 
 public interface IAccountWrites
 {

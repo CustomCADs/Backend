@@ -1,7 +1,7 @@
-﻿using CustomCADs.Files.Domain.Repositories;
-using CustomCADs.Files.Domain.Repositories.Reads;
-using CustomCADs.Files.Persistence;
-using CustomCADs.Files.Persistence.Repositories;
+﻿using CustomCADs.Modules.Files.Domain.Repositories;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
+using CustomCADs.Modules.Files.Persistence;
+using CustomCADs.Modules.Files.Persistence.Repositories;
 using CustomCADs.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,52 +9,48 @@ using Microsoft.EntityFrameworkCore;
 namespace Microsoft.Extensions.DependencyInjection;
 
 using static PersistenceConstants;
-using CadReads = CustomCADs.Files.Persistence.Repositories.Cads.Reads;
-using ImageReads = CustomCADs.Files.Persistence.Repositories.Images.Reads;
+using CadReads = CustomCADs.Modules.Files.Persistence.Repositories.Cads.Reads;
+using ImageReads = CustomCADs.Modules.Files.Persistence.Repositories.Images.Reads;
 
 public static class DependencyInjection
 {
-	public static async Task<IServiceProvider> UpdateFilesContextAsync(this IServiceProvider provider)
+	extension(IServiceProvider provider)
 	{
-		FilesContext context = provider.GetRequiredService<FilesContext>();
-		await context.Database.MigrateAsync().ConfigureAwait(false);
+		public async Task<IServiceProvider> UpdateFilesContextAsync()
+		{
+			FilesContext context = provider.GetRequiredService<FilesContext>();
+			await context.Database.MigrateAsync().ConfigureAwait(false);
 
-		return provider;
+			return provider;
+		}
 	}
 
-	public static IServiceCollection AddFilesPersistence(this IServiceCollection services, string connectionString)
-		=> services
-			.AddContext(connectionString)
-			.AddReads()
-			.AddWrites()
-			.AddUnitOfWork();
-
-	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
-		=> services.AddDbContext<FilesContext>(options =>
-			options.UseNpgsql(connectionString, opt
-				=> opt.MigrationsHistoryTable(MigrationsTable, Schemes.Files)
-			)
-		);
-
-	public static IServiceCollection AddReads(this IServiceCollection services)
+	extension(IServiceCollection services)
 	{
-		services.AddScoped<ICadReads, CadReads>();
-		services.AddScoped<IImageReads, ImageReads>();
+		public IServiceCollection AddFilesPersistence(string connectionString)
+			=> services
+				.AddContext(connectionString)
+				.AddReads()
+				.AddWrites()
+				.AddUnitOfWork();
 
-		return services;
+		private IServiceCollection AddContext(string connectionString)
+			=> services.AddDbContext<FilesContext>(options =>
+				options.UseNpgsql(connectionString, opt
+					=> opt.MigrationsHistoryTable(MigrationsTable, Schemes.Files)
+				)
+			);
+
+		public IServiceCollection AddReads()
+			=> services
+				.AddScoped<ICadReads, CadReads>()
+				.AddScoped<IImageReads, ImageReads>();
+
+		public IServiceCollection AddWrites()
+			=> services.AddScoped(typeof(IWrites<>), typeof(Writes<>));
+
+		public IServiceCollection AddUnitOfWork()
+			=> services.AddScoped<IUnitOfWork, UnitOfWork>();
 	}
 
-	public static IServiceCollection AddWrites(this IServiceCollection services)
-	{
-		services.AddScoped(typeof(IWrites<>), typeof(Writes<>));
-
-		return services;
-	}
-
-	public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
-	{
-		services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-		return services;
-	}
 }

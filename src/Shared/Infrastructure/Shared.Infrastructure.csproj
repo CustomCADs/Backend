@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="FluentEmail.Smtp" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Polly" />
+		<PackageReference Include="Quartz.Extensions.Hosting" />
+		<PackageReference Include="Stripe.net" />
+		<PackageReference Include="WolverineFx" />
+		<PackageReference Include="WolverineFx.FluentValidation" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="../Application/Shared.Application.csproj" />
+	</ItemGroup>
+
+</Project>

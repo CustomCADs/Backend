@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 using CustomCADs.Shared.Application.Abstractions.Payment;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Post.PurchaseWithDelivery;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Post.PurchaseWithDelivery;
 
 public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 	: Endpoint<PurchaseActiveCartRequest, PaymentResponse>
@@ -24,7 +24,7 @@ public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 				ShipmentService: req.ShipmentService,
 				Address: req.Address,
 				Contact: req.Contact,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

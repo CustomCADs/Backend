@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Tags.Commands.Internal.Delete;
+﻿namespace CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Delete;
 
 public sealed record DeleteTagCommand(
 	TagId Id

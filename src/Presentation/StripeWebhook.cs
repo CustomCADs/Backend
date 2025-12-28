@@ -20,109 +20,116 @@ using static ApplicationConstants;
 
 public static class StripeWebhook
 {
-	public static void MapStripeWebhook(this IEndpointRouteBuilder app)
+	extension(IEndpointRouteBuilder app)
 	{
-		app.MapPost($"api/{Paths.Stripe}/webhook", async (HttpContext context, IEventRaiser raiser, IOptions<PaymentSettings> options) =>
-		{
-			IResult? result = ExtractEvent(
-				json: await new StreamReader(context.Request.Body).ReadToEndAsync().ConfigureAwait(false),
-				signature: context.Request.Headers["Stripe-Signature"],
-				secret: options.Value.WebhookSecret,
-				out Event stripeEvent
-			);
-			if (result is not null) { return result; }
-
-			result = stripeEvent.Destructure(
-				out PaymentIntent intent,
-				out AccountId buyerId
-			);
-			if (result is not null) { return result; }
-
-			if (stripeEvent.Type is EventTypes.PaymentIntentPaymentFailed)
-			{
-				await raiser.RaiseApplicationEventAsync(
-					@event: new NotificationRequestedEvent(
-						Type: NotificationType.PaymentFailed,
-						Description: Notifications.Messages.PaymentFailed,
-						Link: Notifications.Links.PaymentFailed,
-						AuthorId: buyerId,
-						ReceiverIds: [buyerId]
-					)
-				).ConfigureAwait(false);
-			}
-			else if (stripeEvent.Type is EventTypes.PaymentIntentSucceeded)
-			{
-				string? rewardType = intent.Metadata["rewardType"];
-				string? rewardId = intent.Metadata["rewardId"];
-
-				if (rewardId is null || rewardType is not "cart" or "custom")
+		public void MapStripeWebhook() =>
+			app.MapPost(
+				pattern: $"api/{Paths.Stripe}/webhook",
+				handler: async (HttpContext context, IEventRaiser raiser, IOptions<PaymentSettings> options) =>
 				{
-					return Results.BadRequest("Missing RewardId");
-				}
+					IResult? result = ExtractEvent(
+						json: await new StreamReader(context.Request.Body).ReadToEndAsync().ConfigureAwait(false),
+						signature: context.Request.Headers["Stripe-Signature"],
+						secret: options.Value.WebhookSecret,
+						out Event stripeEvent
+					);
+					if (result is not null) { return result; }
 
-				switch (rewardType)
-				{
-					case "cart":
+					result = stripeEvent.Destructure(
+						out PaymentIntent intent,
+						out AccountId buyerId
+					);
+					if (result is not null) { return result; }
+
+					if (stripeEvent.Type is EventTypes.PaymentIntentPaymentFailed)
+					{
+						await raiser.RaiseApplicationEventAsync(
+							@event: new NotificationRequestedEvent(
+								Type: NotificationType.PaymentFailed,
+								Description: Notifications.Messages.PaymentFailed,
+								Link: Notifications.Links.PaymentFailed,
+								AuthorId: buyerId,
+								ReceiverIds: [buyerId]
+							)
+						).ConfigureAwait(false);
+					}
+					else if (stripeEvent.Type is EventTypes.PaymentIntentSucceeded)
+					{
+						string? rewardType = intent.Metadata["rewardType"];
+						string? rewardId = intent.Metadata["rewardId"];
+
+						if (rewardId is null || rewardType is not ("cart" or "custom"))
 						{
-							await raiser.RaiseApplicationEventAsync(
-								@event: new CartPaymentCompletedApplicationEvent(
-									CartId: PurchasedCartId.New(rewardId),
-									BuyerId: buyerId
-								)
-							).ConfigureAwait(false);
-							break;
+							return Results.BadRequest("Missing RewardId");
 						}
 
-					case "custom":
+						switch (rewardType)
 						{
-							await raiser.RaiseApplicationEventAsync(
-								@event: new CustomPaymentCompletedApplicationEvent(
-									CustomId: CustomId.New(intent.Metadata["rewardId"]),
-									BuyerId: buyerId
-								)
-							).ConfigureAwait(false);
-							break;
-						}
-				}
-				await raiser.RaiseApplicationEventAsync(
-					@event: new NotificationRequestedEvent(
-						Type: NotificationType.PaymentCompleted,
-						Description: Notifications.Messages.PaymentCompleted,
-						Link: Notifications.Links.PaymentCompleted,
-						AuthorId: buyerId,
-						ReceiverIds: [buyerId]
-					)
-				).ConfigureAwait(false);
-			}
-			else { /* Log unexpected type: stripeEvent.Type */ }
+							case "cart":
+								{
+									await raiser.RaiseApplicationEventAsync(
+										@event: new CartPaymentCompletedApplicationEvent(
+											CartId: PurchasedCartId.New(rewardId),
+											BuyerId: buyerId
+										)
+									).ConfigureAwait(false);
+									break;
+								}
 
-			return Results.Ok();
-		})
-		.WithTags(Tags[Paths.Stripe])
-		.WithSummary("Stripe Webhook")
-		.WithDescription("Not meant for the client to use")
-		.WithMetadata(new SkipIdempotencyAttribute());
+							case "custom":
+								{
+									await raiser.RaiseApplicationEventAsync(
+										@event: new CustomPaymentCompletedApplicationEvent(
+											CustomId: CustomId.New(intent.Metadata["rewardId"]),
+											BuyerId: buyerId
+										)
+									).ConfigureAwait(false);
+									break;
+								}
+						}
+						await raiser.RaiseApplicationEventAsync(
+							@event: new NotificationRequestedEvent(
+								Type: NotificationType.PaymentCompleted,
+								Description: Notifications.Messages.PaymentCompleted,
+								Link: Notifications.Links.PaymentCompleted,
+								AuthorId: buyerId,
+								ReceiverIds: [buyerId]
+							)
+						).ConfigureAwait(false);
+					}
+					else { /* Log unexpected type: stripeEvent.Type */ }
+
+					return Results.Ok();
+				}
+			)
+			.WithTags(Tags[Paths.Stripe])
+			.WithSummary("Stripe Webhook")
+			.WithDescription("Not meant for the client to use")
+			.WithMetadata(new SkipIdempotencyAttribute());
 	}
 
-	private static IResult? Destructure(this Event stripeEvent, out PaymentIntent paymentIntent, out AccountId buyerId)
+	extension(Event stripeEvent)
 	{
-		paymentIntent = default!;
-		buyerId = default;
-
-		if (stripeEvent.Data.Object is not PaymentIntent intent)
+		private IResult? Destructure(out PaymentIntent paymentIntent, out AccountId buyerId)
 		{
-			return Results.BadRequest("Invalid PaymentIntent object.");
-		}
-		paymentIntent = intent;
+			paymentIntent = default!;
+			buyerId = default;
 
-		AccountId id = AccountId.New(intent.Metadata["buyerId"]);
-		if (id.IsEmpty())
-		{
-			return Results.BadRequest("Invalid BuyerId metadata");
-		}
-		buyerId = id;
+			if (stripeEvent.Data.Object is not PaymentIntent intent)
+			{
+				return Results.BadRequest("Invalid PaymentIntent object.");
+			}
+			paymentIntent = intent;
 
-		return null;
+			AccountId id = AccountId.New(intent.Metadata["buyerId"]);
+			if (id.IsEmpty())
+			{
+				return Results.BadRequest("Invalid BuyerId metadata");
+			}
+			buyerId = id;
+
+			return null;
+		}
 	}
 
 	private static IResult? ExtractEvent(in string json, in string? signature, in string secret, out Event stripeEvent)

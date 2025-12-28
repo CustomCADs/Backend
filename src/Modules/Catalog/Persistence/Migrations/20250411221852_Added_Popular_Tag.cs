@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Catalog.Persistence.Migrations;
+namespace CustomCADs.Modules.Catalog.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Added_Popular_Tag : Migration

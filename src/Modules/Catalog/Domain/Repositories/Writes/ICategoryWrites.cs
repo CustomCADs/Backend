@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Domain.Categories;
+﻿using CustomCADs.Modules.Catalog.Domain.Categories;
 
-namespace CustomCADs.Catalog.Domain.Repositories.Writes;
+namespace CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 
 public interface ICategoryWrites
 {

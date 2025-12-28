@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Delivery.Domain.Shipments.ValueObjects;
+﻿namespace CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 
 public record ShipmentInfo(int Count, double Weight, string Recipient)
 {

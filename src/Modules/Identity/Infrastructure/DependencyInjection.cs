@@ -1,9 +1,9 @@
 #pragma warning disable IDE0130
-using CustomCADs.Identity.Application.Contracts;
-using CustomCADs.Identity.Infrastructure.BackgroundJobs;
-using CustomCADs.Identity.Infrastructure.Identity;
-using CustomCADs.Identity.Infrastructure.Identity.Context;
-using CustomCADs.Identity.Infrastructure.Tokens;
+using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Infrastructure.BackgroundJobs;
+using CustomCADs.Modules.Identity.Infrastructure.Identity;
+using CustomCADs.Modules.Identity.Infrastructure.Identity.Context;
+using CustomCADs.Modules.Identity.Infrastructure.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Quartz;
@@ -12,59 +12,64 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-	public static async Task<IServiceProvider> UpdateIdentityContextAsync(this IServiceProvider provider)
+	extension(IServiceProvider provider)
 	{
-		IdentityContext context = provider.GetRequiredService<IdentityContext>();
-		await context.Database.MigrateAsync().ConfigureAwait(false);
+		public async Task<IServiceProvider> UpdateIdentityContextAsync()
+		{
+			IdentityContext context = provider.GetRequiredService<IdentityContext>();
+			await context.Database.MigrateAsync().ConfigureAwait(false);
 
-		return provider;
+			return provider;
+		}
 	}
 
-	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
+	extension(IServiceCollection services)
 	{
-		services.AddDbContext<IdentityContext>(options =>
-			options.UseNpgsql(
-				dataSource: new NpgsqlDataSourceBuilder(connectionString).EnableDynamicJson().Build(),
-				npgsqlOptionsAction: opt => opt.MigrationsHistoryTable("__EFMigrationsHistory", "Identity")
-			)
-		);
+		public IServiceCollection AddTokensService()
+			=> services.AddScoped<ITokenService, IdentityTokenService>();
 
-		return services;
+		public IServiceCollection AddIdentityServices(string connectionString)
+			=> services
+				.AddContext(connectionString)
+				.AddScoped<IUserService, AppUserService>()
+				.AddScoped<IRoleService, AppRoleService>();
+
+		private IServiceCollection AddContext(string connectionString)
+		{
+			services.AddDbContext<IdentityContext>(options =>
+				options.UseNpgsql(
+					dataSource: new NpgsqlDataSourceBuilder(connectionString).EnableDynamicJson().Build(),
+					npgsqlOptionsAction: opt => opt.MigrationsHistoryTable("__EFMigrationsHistory", IdentityContext.Schema)
+				)
+			);
+
+			return services;
+		}
 	}
 
-	public static IServiceCollection AddTokensService(this IServiceCollection services)
+	extension(IServiceCollectionQuartzConfigurator configurator)
 	{
-		services.AddScoped<ITokenService, IdentityTokenService>();
-
-		return services;
+		public void AddIdentityBackgroundJobs()
+		{
+			configurator.AddTrigger(conf => conf
+				.ForJob(configurator.AddJobAndReturnKey<ClearRefreshTokensJob>())
+				.WithSimpleSchedule(schedule =>
+					schedule
+						.WithInterval(TimeSpan.FromDays(ClearRefreshTokensJob.IntervalDays))
+						.RepeatForever()
+				));
+		}
 	}
 
-	public static IServiceCollection AddIdentityServices(this IServiceCollection services, string connectionString)
+	extension(IServiceCollectionQuartzConfigurator q)
 	{
-		services.AddContext(connectionString);
-
-		services.AddScoped<IUserService, AppUserService>();
-		services.AddScoped<IRoleService, AppRoleService>();
-
-		return services;
-	}
-
-	public static void AddIdentityBackgroundJobs(this IServiceCollectionQuartzConfigurator configurator)
-	{
-		configurator.AddTrigger(conf => conf
-			.ForJob(configurator.AddJobAndReturnKey<ClearRefreshTokensJob>())
-			.WithSimpleSchedule(schedule =>
-				schedule
-					.WithInterval(TimeSpan.FromDays(ClearRefreshTokensJob.IntervalDays))
-					.RepeatForever()
-			));
-	}
-
-	private static JobKey AddJobAndReturnKey<TJob>(this IServiceCollectionQuartzConfigurator q, string? name = null)
+		private JobKey AddJobAndReturnKey<TJob>(string? name = null)
 		where TJob : IJob
-	{
-		JobKey key = new(name ?? typeof(TJob).Name);
-		q.AddJob<TJob>(conf => conf.WithIdentity(key));
-		return key;
+		{
+			JobKey key = new(name ?? typeof(TJob).Name);
+			q.AddJob<TJob>(conf => conf.WithIdentity(key));
+			return key;
+		}
 	}
+
 }

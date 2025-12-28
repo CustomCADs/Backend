@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Carts.Domain.ActiveCarts;
+﻿namespace CustomCADs.Modules.Carts.Domain.ActiveCarts;
 
 public static class ActiveCartItemConstants
 {

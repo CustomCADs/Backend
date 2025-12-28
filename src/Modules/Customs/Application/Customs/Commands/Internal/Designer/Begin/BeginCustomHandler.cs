@@ -1,10 +1,10 @@
-﻿using CustomCADs.Customs.Domain.Repositories;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Domain.Repositories;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Designer.Begin;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Begin;
 
 
 public sealed class BeginCustomHandler(

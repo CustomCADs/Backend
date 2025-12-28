@@ -12,130 +12,129 @@ public static partial class DependencyInjection
 {
 	private const string AuthScheme = JwtBearerDefaults.AuthenticationScheme;
 
-	public static AuthenticationBuilder AddAuthN(this IServiceCollection services, string scheme = AuthScheme)
+	extension(IServiceCollection services)
 	{
-		AuthenticationBuilder builder = services.AddAuthentication(opt =>
-		{
-			opt.DefaultAuthenticateScheme = scheme;
-			opt.DefaultForbidScheme = scheme;
-			opt.DefaultSignInScheme = scheme;
-			opt.DefaultSignOutScheme = scheme;
-			opt.DefaultChallengeScheme = scheme;
-			opt.DefaultScheme = scheme;
-		});
-
-		return builder;
+		public AuthenticationBuilder AddAuthN(string scheme = AuthScheme)
+			=> services.AddAuthentication(opt =>
+			{
+				opt.DefaultAuthenticateScheme = scheme;
+				opt.DefaultForbidScheme = scheme;
+				opt.DefaultSignInScheme = scheme;
+				opt.DefaultSignOutScheme = scheme;
+				opt.DefaultChallengeScheme = scheme;
+				opt.DefaultScheme = scheme;
+			});
 	}
 
-	public static AuthenticationBuilder AddJwt(this AuthenticationBuilder builder, (string SecretKey, string Issuer, string Audience) settings)
+	extension(AuthenticationBuilder authentication)
 	{
-		builder.AddJwtBearer(opt =>
-		{
-			opt.TokenValidationParameters = new()
+		public AuthenticationBuilder AddJwt((string SecretKey, string Issuer, string Audience) settings)
+			=> authentication.AddJwtBearer(opt =>
 			{
-				ValidateAudience = true,
-				ValidateIssuer = true,
-				ValidateLifetime = true,
-				ValidateIssuerSigningKey = true,
-				ValidIssuer = settings.Issuer,
-				ValidAudience = settings.Audience,
-				IssuerSigningKey = new SymmetricSecurityKey(
-					key: Encoding.UTF8.GetBytes(settings.SecretKey)
-				),
-			};
+				opt.TokenValidationParameters = new()
+				{
+					ValidateAudience = true,
+					ValidateIssuer = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = settings.Issuer,
+					ValidAudience = settings.Audience,
+					IssuerSigningKey = new SymmetricSecurityKey(
+						key: Encoding.UTF8.GetBytes(settings.SecretKey)
+					),
+				};
 
-			opt.Events = new()
+				opt.Events = new()
+				{
+					OnMessageReceived = context =>
+					{
+						context.Token = context.Request.Cookies["jwt"];
+						return Task.CompletedTask;
+					},
+
+					OnChallenge = async context =>
+					{
+						context.HandleResponse();
+
+						await context.HttpContext.RequestServices
+						   .GetRequiredService<IProblemDetailsService>()
+						   .UnauthorizedResponseAsync(
+								context: context.HttpContext,
+								ex: new UnauthorizedAccessException()
+						   ).ConfigureAwait(false);
+					},
+
+					OnForbidden = async context =>
+					{
+						await context.HttpContext.RequestServices
+						   .GetRequiredService<IProblemDetailsService>()
+						   .ForbiddenResponseAsync(
+								context: context.HttpContext,
+								ex: new AccessViolationException()
+						   ).ConfigureAwait(false);
+					},
+
+					OnTokenValidated = context =>
+					{
+						ClaimsIdentity claimsIdentity = new(context.Principal?.Claims ?? [], AuthScheme);
+						context.HttpContext.User = new ClaimsPrincipal(claimsIdentity);
+						return Task.CompletedTask;
+					},
+				};
+			});
+	}
+
+	extension(IApplicationBuilder app)
+	{
+		public IApplicationBuilder UseJwtPrincipal()
+			=> app.Use(async (context, next) =>
 			{
-				OnMessageReceived = context =>
+				string? accessToken = context.Request.Cookies["jwt"];
+				if (!string.IsNullOrWhiteSpace(accessToken))
 				{
-					context.Token = context.Request.Cookies["jwt"];
-					return Task.CompletedTask;
-				},
+					if (new JwtSecurityTokenHandler().ReadToken(accessToken) is JwtSecurityToken jwt)
+					{
+						ClaimsIdentity identity = new(jwt.Claims, AuthScheme);
+						context.User = new(identity);
+					}
+				}
 
-				OnChallenge = async context =>
+				await next().ConfigureAwait(false);
+			});
+
+		public IApplicationBuilder UseCsrfProtection()
+			=> app.Use(async (context, next) =>
+			{
+				if (
+					!context.Request.IsSignalR // isn't a websocket request
+					&& context.Request.IsMutationBySpec // might mutate state
+					&& context.User.IsAuthenticated // has access to sensitive info
+					&& context.Request.IsCsrfVulnerable // no csrf protection
+				)
 				{
-					context.HandleResponse();
-
-					await context.HttpContext.RequestServices
-					   .GetRequiredService<IProblemDetailsService>()
-					   .UnauthorizedResponseAsync(
-							context: context.HttpContext,
-							ex: new UnauthorizedAccessException()
-					   ).ConfigureAwait(false);
-				},
-
-				OnForbidden = async context =>
-				{
-					await context.HttpContext.RequestServices
+					await context.RequestServices
 					   .GetRequiredService<IProblemDetailsService>()
 					   .ForbiddenResponseAsync(
-							context: context.HttpContext,
-							ex: new AccessViolationException()
-					   ).ConfigureAwait(false);
-				},
-
-				OnTokenValidated = context =>
-				{
-					ClaimsIdentity claimsIdentity = new(context.Principal?.Claims ?? [], AuthScheme);
-					context.HttpContext.User = new ClaimsPrincipal(claimsIdentity);
-					return Task.CompletedTask;
-				},
-			};
-		});
-
-		return builder;
-	}
-
-	public static IApplicationBuilder UseJwtPrincipal(this IApplicationBuilder app)
-	{
-		app.Use(async (context, next) =>
-		{
-			string? accessToken = context.Request.Cookies["jwt"];
-			if (!string.IsNullOrWhiteSpace(accessToken))
-			{
-				if (new JwtSecurityTokenHandler().ReadToken(accessToken) is JwtSecurityToken jwt)
-				{
-					ClaimsIdentity identity = new(jwt.Claims, AuthScheme);
-					context.User = new(identity);
+							context: context,
+							ex: new CustomException("CSRF token validation failed: cookie and header mismatch."),
+							message: "CSRF token mismatch."
+						).ConfigureAwait(false);
+					return;
 				}
-			}
-
-			await next().ConfigureAwait(false);
-		});
-
-		return app;
+				await next().ConfigureAwait(false);
+			});
 	}
 
-	public static IApplicationBuilder UseCsrfProtection(this IApplicationBuilder app)
+	extension(HttpRequest request)
 	{
-		app.Use(async (context, next) =>
+		internal bool IsCsrfVulnerable
 		{
-			if (
-				!context.Request.IsSignalR()
-				&& context.Request.IsMutationBySpec() // might mutate state
-				&& context.User.GetAuthentication() == true // has access to sensitive info
-				&& context.Request.IsCsrfVulnerable() // no csrf protection
-			)
+			get
 			{
-				await context.RequestServices
-				   .GetRequiredService<IProblemDetailsService>()
-				   .ForbiddenResponseAsync(
-						context: context,
-						ex: new CustomException("CSRF token validation failed: cookie and header mismatch."),
-						message: "CSRF token mismatch."
-					).ConfigureAwait(false);
-				return;
+				string? cookie = request.Cookies["csrf"];
+				string? header = request.Headers["Csrf-Token"];
+				return string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(header) || !cookie.Equals(header);
 			}
-			await next().ConfigureAwait(false);
-		});
-
-		return app;
-	}
-
-	private static bool IsCsrfVulnerable(this HttpRequest request)
-	{
-		string? cookie = request.Cookies["csrf"];
-		string? header = request.Headers["Csrf-Token"];
-		return string.IsNullOrEmpty(cookie) || string.IsNullOrEmpty(header) || cookie != header;
+		}
 	}
 }

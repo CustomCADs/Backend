@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Patch.Finish;
+﻿namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Patch.Finish;
 
 public sealed record FinishCustomRequest(
 	Guid Id,

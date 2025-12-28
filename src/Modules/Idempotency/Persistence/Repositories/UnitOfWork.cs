@@ -1,8 +1,8 @@
-﻿using CustomCADs.Idempotency.Domain.Repositories;
+﻿using CustomCADs.Modules.Idempotency.Domain.Repositories;
 using CustomCADs.Shared.Persistence.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Idempotency.Persistence.Repositories;
+namespace CustomCADs.Modules.Idempotency.Persistence.Repositories;
 
 public class UnitOfWork(IdempotencyContext context) : IUnitOfWork
 {

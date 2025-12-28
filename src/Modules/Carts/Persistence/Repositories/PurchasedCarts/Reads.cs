@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Domain.PurchasedCarts;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Domain.PurchasedCarts;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
@@ -7,7 +7,7 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Carts.Persistence.Repositories.PurchasedCarts;
+namespace CustomCADs.Modules.Carts.Persistence.Repositories.PurchasedCarts;
 
 public sealed class Reads(CartsContext context) : IPurchasedCartReads
 {

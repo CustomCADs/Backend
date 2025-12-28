@@ -1,6 +1,6 @@
-using CustomCADs.Customs.Application.Customs.Queries.Internal.Designer.GetById;
+using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Designer.GetById;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Designer.Get.Single;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designer.Get.Single;
 
 public class GetCustomMapper : ResponseMapper<GetCustomResponse, DesignerGetCustomByIdDto>
 {

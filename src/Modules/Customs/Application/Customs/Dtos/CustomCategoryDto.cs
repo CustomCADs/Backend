@@ -1,7 +1,7 @@
-using CustomCADs.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.Application.Customs.Dtos;
+namespace CustomCADs.Modules.Customs.Application.Customs.Dtos;
 
 public record CustomCategoryDto(
 	CategoryId Id,

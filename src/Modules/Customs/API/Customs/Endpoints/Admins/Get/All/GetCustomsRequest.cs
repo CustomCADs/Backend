@@ -1,7 +1,7 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Enums;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Admins.Get.All;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Admins.Get.All;
 
 public sealed record GetCustomsRequest(
 	bool? ForDelivery = null,

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Accounts.Domain.Repositories;
-using CustomCADs.Accounts.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Events.Catalog;
 
-namespace CustomCADs.Accounts.Application.Accounts.Events.Application;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Events.Application;
 
 public class UserViewedProductHandler(IAccountWrites writes, IUnitOfWork uow)
 {

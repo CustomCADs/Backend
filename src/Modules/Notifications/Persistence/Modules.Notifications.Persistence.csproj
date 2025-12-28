@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="EFCore.BulkExtensions.PostgreSql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="../Domain/Modules.Notifications.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetSortings;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetSortings;
 
 public sealed class GetCustomSortingsHandler : IQueryHandler<GetCustomSortingsQuery, CustomSortingType[]>
 {

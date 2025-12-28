@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;

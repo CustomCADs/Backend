@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Get.Recent;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Get.Recent;
 
 public sealed record RecentProductsResponse(
 	Guid Id,

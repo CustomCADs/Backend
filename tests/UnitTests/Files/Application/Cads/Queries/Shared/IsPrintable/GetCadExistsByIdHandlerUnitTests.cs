@@ -1,5 +1,5 @@
-﻿using CustomCADs.Files.Application.Cads.Queries.Shared;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Application.Cads.Queries.Shared;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 

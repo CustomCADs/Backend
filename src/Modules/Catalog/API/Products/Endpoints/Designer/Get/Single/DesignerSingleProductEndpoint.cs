@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetById;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetById;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Single;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Single;
 
 public sealed class DesignerSingleProductEndpoint(IRequestSender sender)
 	: Endpoint<DesignerSingleProductRequest, DesignerSingleProductResponse, DesignerSingleProductMapper>
@@ -20,7 +20,7 @@ public sealed class DesignerSingleProductEndpoint(IRequestSender sender)
 		DesignerGetProductByIdDto product = await sender.SendQueryAsync(
 			query: new DesignerGetProductByIdQuery(
 				Id: ProductId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

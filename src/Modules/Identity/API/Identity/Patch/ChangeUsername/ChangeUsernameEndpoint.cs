@@ -1,6 +1,6 @@
-﻿using CustomCADs.Identity.Application.Users.Commands.Internal.ChangeUsername;
+﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ChangeUsername;
 
-namespace CustomCADs.Identity.API.Identity.Patch.ChangeUsername;
+namespace CustomCADs.Modules.Identity.API.Identity.Patch.ChangeUsername;
 
 public sealed class ChangeUsernameEndpoint(IRequestSender sender)
 	: Endpoint<ChangeUsernameRequest>
@@ -20,7 +20,7 @@ public sealed class ChangeUsernameEndpoint(IRequestSender sender)
 	{
 		await sender.SendCommandAsync(
 			command: new ChangeUsernameCommand(
-				Username: User.GetName(),
+				Username: User.Name,
 				NewUsername: req.Username
 			),
 			ct: ct

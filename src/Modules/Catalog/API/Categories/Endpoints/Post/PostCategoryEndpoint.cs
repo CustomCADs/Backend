@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.API.Categories.Endpoints.Get.Single;
-using CustomCADs.Catalog.Application.Categories.Commands.Internal.Create;
+using CustomCADs.Modules.Catalog.API.Categories.Endpoints.Get.Single.Id;
+using CustomCADs.Modules.Catalog.Application.Categories.Commands.Internal.Create;
 
-namespace CustomCADs.Catalog.API.Categories.Endpoints.Post;
+namespace CustomCADs.Modules.Catalog.API.Categories.Endpoints.Post;
 
 public sealed class PostCategoryEndpoint(IRequestSender sender)
 	: Endpoint<PostCategoryRequest, CategoryResponse>

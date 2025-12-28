@@ -1,6 +1,6 @@
-﻿using CustomCADs.Notifications.Application.Notifications.Queries.Internal.Count;
-using CustomCADs.Notifications.Domain.Notifications.Enums;
-using CustomCADs.Notifications.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.Count;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
 
 namespace CustomCADs.UnitTests.Notifications.Application.Notifications.Queries.Internal.Count;
 

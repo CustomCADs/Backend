@@ -1,10 +1,10 @@
-﻿using CustomCADs.Catalog.Domain.Products;
-using CustomCADs.Catalog.Domain.Products.Enums;
+﻿using CustomCADs.Modules.Catalog.Domain.Products;
+using CustomCADs.Modules.Catalog.Domain.Products.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 
 public interface IProductReads
 {

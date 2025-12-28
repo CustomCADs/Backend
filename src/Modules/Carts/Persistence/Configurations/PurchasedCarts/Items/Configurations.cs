@@ -1,8 +1,8 @@
-﻿using CustomCADs.Carts.Domain.PurchasedCarts.Entities;
+﻿using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Carts.Persistence.Configurations.PurchasedCarts.Items;
+namespace CustomCADs.Modules.Carts.Persistence.Configurations.PurchasedCarts.Items;
 
 public class Configurations : IEntityTypeConfiguration<PurchasedCartItem>
 {

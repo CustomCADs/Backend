@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Customs.Persistence;
+namespace CustomCADs.Modules.Customs.Persistence;
 
 public class CustomsPersistenceReference
 {

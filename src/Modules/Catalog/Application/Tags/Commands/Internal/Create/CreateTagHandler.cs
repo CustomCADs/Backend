@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
-using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
+using CustomCADs.Modules.Catalog.Domain.Tags;
 
-namespace CustomCADs.Catalog.Application.Tags.Commands.Internal.Create;
+namespace CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Create;
 
 public sealed class CreateTagHandler(
 	ITagWrites writes,

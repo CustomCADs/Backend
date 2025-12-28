@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Delivery.Application;
+namespace CustomCADs.Modules.Delivery.Application;
 
 public class DeliveryApplicationReference
 {

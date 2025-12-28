@@ -1,7 +1,7 @@
-﻿using CustomCADs.Accounts.Domain.Repositories;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories;
 using CustomCADs.Shared.Persistence.Exceptions;
 
-namespace CustomCADs.Accounts.Persistence.Repositories;
+namespace CustomCADs.Modules.Accounts.Persistence.Repositories;
 
 public class UnitOfWork(AccountsContext context) : IUnitOfWork
 {

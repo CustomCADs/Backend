@@ -1,13 +1,17 @@
-﻿using CustomCADs.Catalog.Application.Tags.Dtos;
-using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
+using CustomCADs.Modules.Catalog.Domain.Tags;
 
-namespace CustomCADs.Catalog.Application.Tags;
+namespace CustomCADs.Modules.Catalog.Application.Tags;
 
 internal static class Mapper
 {
-	internal static TagDto ToDto(this Tag tag)
-		=> new(
-			Id: tag.Id,
-			Name: tag.Name
-		);
+	extension(Tag tag)
+	{
+		internal TagDto ToDto()
+			=> new(
+				Id: tag.Id,
+				Name: tag.Name
+			);
+	}
+
 }

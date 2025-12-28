@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Files.Persistence;
+namespace CustomCADs.Modules.Files.Persistence;
 
 public class FilesPersistenceReference
 {

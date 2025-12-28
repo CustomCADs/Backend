@@ -1,13 +1,17 @@
-﻿namespace CustomCADs.Carts.Domain.ActiveCarts;
+﻿namespace CustomCADs.Modules.Carts.Domain.ActiveCarts;
 
 using static ActiveCartItemConstants;
 
-public static class Validations
+internal static class Validations
 {
-	public static ActiveCartItem ValidateQuantity(this ActiveCartItem item)
-		=> item
-			.ThrowIfInvalidRange(
-				expression: x => x.Quantity,
-				range: (QuantityMin, QuantityMax)
-			);
+	extension(ActiveCartItem item)
+	{
+		internal ActiveCartItem ValidateQuantity()
+			=> item
+				.ThrowIfInvalidRange(
+					expression: x => x.Quantity,
+					range: (QuantityMin, QuantityMax)
+				);
+	}
+
 }

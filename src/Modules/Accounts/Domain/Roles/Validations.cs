@@ -1,28 +1,32 @@
-﻿namespace CustomCADs.Accounts.Domain.Roles;
+﻿namespace CustomCADs.Modules.Accounts.Domain.Roles;
 
 using static RoleConstants;
 
-public static class Validations
+internal static class Validations
 {
-	public static Role ValidateName(this Role role)
-		=> role
-			.ThrowIfNull(
-				expression: x => x.Name,
-				predicate: string.IsNullOrWhiteSpace
-			)
-			.ThrowIfInvalidLength(
-				expression: x => x.Name,
-				length: (NameMinLength, NameMaxLength)
-			);
+	extension(Role role)
+	{
+		internal Role ValidateName()
+			=> role
+				.ThrowIfNull(
+					expression: x => x.Name,
+					predicate: string.IsNullOrWhiteSpace
+				)
+				.ThrowIfInvalidLength(
+					expression: x => x.Name,
+					length: (NameMinLength, NameMaxLength)
+				);
 
-	public static Role ValidateDescription(this Role role)
-		=> role
-			.ThrowIfNull(
-				expression: x => x.Description,
-				predicate: string.IsNullOrWhiteSpace
-			)
-			.ThrowIfInvalidLength(
-				expression: x => x.Description,
-				length: (DescriptionMinLength, DescriptionMaxLength)
-			);
+		internal Role ValidateDescription()
+			=> role
+				.ThrowIfNull(
+					expression: x => x.Description,
+					predicate: string.IsNullOrWhiteSpace
+				)
+				.ThrowIfInvalidLength(
+					expression: x => x.Description,
+					length: (DescriptionMinLength, DescriptionMaxLength)
+				);
+	}
+
 }

@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Catalog.Domain.Tags;
+namespace CustomCADs.Modules.Catalog.Domain.Tags;
 
 public class Tag : BaseAggregateRoot
 {

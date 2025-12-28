@@ -1,8 +1,8 @@
-using CustomCADs.Idempotency.Domain.IdempotencyKeys;
+using CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Idempotency.Persistence.Configurations.IdempotencyKeys;
+namespace CustomCADs.Modules.Idempotency.Persistence.Configurations.IdempotencyKeys;
 
 internal class Configurations : IEntityTypeConfiguration<IdempotencyKey>
 {

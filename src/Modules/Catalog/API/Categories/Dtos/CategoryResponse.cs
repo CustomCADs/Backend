@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Categories.Dtos;
+﻿namespace CustomCADs.Modules.Catalog.API.Categories.Dtos;
 
 public sealed record CategoryResponse(
 	int Id,

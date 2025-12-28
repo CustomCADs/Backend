@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.Domain.Repositories;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories;
 using CustomCADs.Shared.Persistence.Exceptions;
 
-namespace CustomCADs.Printing.Persistence.Repositories;
+namespace CustomCADs.Modules.Printing.Persistence.Repositories;
 
 public class UnitOfWork(PrintingContext context) : IUnitOfWork
 {

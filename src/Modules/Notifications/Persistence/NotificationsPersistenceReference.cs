@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Notifications.Persistence;
+namespace CustomCADs.Modules.Notifications.Persistence;
 
 public class NotificationsPersistenceReference
 {

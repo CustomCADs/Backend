@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Get.Single;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Get.Single;
 
 public sealed class GetGalleryProductEndpoint(IRequestSender sender)
 	: Endpoint<GetGalleryProductRequest, GetGalleryProductResponse, GetGalleryProductMapper>
@@ -20,7 +20,7 @@ public sealed class GetGalleryProductEndpoint(IRequestSender sender)
 		GalleryGetProductByIdDto product = await sender.SendQueryAsync(
 			query: new GalleryGetProductByIdQuery(
 				Id: ProductId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.API.Materials.Endpoints.Post;
+﻿namespace CustomCADs.Modules.Printing.API.Materials.Endpoints.Post;
 
 public sealed record PostMaterialRequest(
 	string Name,

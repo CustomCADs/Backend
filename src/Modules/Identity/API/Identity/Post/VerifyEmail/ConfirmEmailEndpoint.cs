@@ -1,9 +1,9 @@
-﻿using CustomCADs.Identity.Application.Users.Commands.Internal.VerifyEmail;
-using CustomCADs.Identity.Application.Users.Dtos;
+﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerifyEmail;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.Extensions.Options;
 
-namespace CustomCADs.Identity.API.Identity.Post.VerifyEmail;
+namespace CustomCADs.Modules.Identity.API.Identity.Post.VerifyEmail;
 
 public sealed class ConfirmEmailEndpoint(IRequestSender sender, IOptions<CookieSettings> settings)
 	: Endpoint<ConfirmEmailRequest>

@@ -1,13 +1,17 @@
-﻿namespace CustomCADs.Printing.Application.Materials;
+﻿namespace CustomCADs.Modules.Printing.Application.Materials;
 
 internal static class Mapper
 {
-	public static MaterialDto ToDto(this Material material)
-		=> new(
-			Id: material.Id,
-			Name: material.Name,
-			Density: material.Density,
-			Cost: material.Cost,
-			TextureId: material.TextureId
-		);
+	extension(Material material)
+	{
+		public MaterialDto ToDto()
+			=> new(
+				Id: material.Id,
+				Name: material.Name,
+				Density: material.Density,
+				Cost: material.Cost,
+				TextureId: material.TextureId
+			);
+	}
+
 }

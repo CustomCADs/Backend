@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.Domain.Customizations;
+﻿using CustomCADs.Modules.Printing.Domain.Customizations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Printing.Persistence.Configurations.Customizations;
+namespace CustomCADs.Modules.Printing.Persistence.Configurations.Customizations;
 
 public class Configurations : IEntityTypeConfiguration<Customization>
 {

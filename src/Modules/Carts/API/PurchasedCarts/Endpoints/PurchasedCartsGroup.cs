@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints;
+﻿namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints;
 
 using static APIConstants;
 using static DomainConstants.Roles;

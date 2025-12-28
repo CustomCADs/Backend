@@ -1,6 +1,6 @@
-﻿using CustomCADs.Printing.Domain.Customizations;
+﻿using CustomCADs.Modules.Printing.Domain.Customizations;
 
-namespace CustomCADs.Printing.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 
 public interface ICustomizationReads
 {

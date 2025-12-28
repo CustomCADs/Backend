@@ -1,12 +1,12 @@
-using CustomCADs.Customs.Application.Customs.Events.Application.DeliveryRequested;
-using CustomCADs.Customs.Application.Customs.Events.Application.PaymentCompleted;
-using CustomCADs.Customs.Application.Customs.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Customs.Application.Customs.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Customs.Application.Customs.Events.Application.PaymentCompleted;
+using CustomCADs.Modules.Customs.Application.Customs.Events.Application.PaymentStarted;
 using CustomCADs.Shared.Application.Events.Customs;
 using Wolverine;
 using Wolverine.Persistence.Sagas;
 
 #pragma warning disable IDE1006 // Async suffix
-namespace CustomCADs.Customs.Infrastructure.Sagas;
+namespace CustomCADs.Modules.Customs.Infrastructure.Sagas;
 
 public class CustomDeliveryPaymentSaga : Saga
 {

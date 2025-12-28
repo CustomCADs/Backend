@@ -1,9 +1,9 @@
-﻿using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 using CustomCADs.Shared.Application.UseCases.Cads.Queries;
 
-namespace CustomCADs.Files.Application.Cads.Queries.Shared;
+namespace CustomCADs.Modules.Files.Application.Cads.Queries.Shared;
 
 public sealed class IsCadPrintableByIdHandler(ICadReads reads, BaseCachingService<CadId, Cad> cache)
 	: IQueryHandler<IsCadPrintableByIdQuery, bool>

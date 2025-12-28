@@ -1,4 +1,4 @@
-namespace CustomCADs.Delivery.API.Shipments.Dtos;
+namespace CustomCADs.Modules.Delivery.API.Shipments.Dtos;
 
 public record InfoResponse(
 	int Count,

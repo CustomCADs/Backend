@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)\src\Modules\Catalog\Domain\Modules.Catalog.Domain.csproj" />
+		<ProjectReference Include="..\Data\UnitTests.Catalog.Data.csproj" />
+	</ItemGroup>
+
+</Project>

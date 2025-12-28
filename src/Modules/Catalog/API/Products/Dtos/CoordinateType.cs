@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Products.Dtos;
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Dtos;
 
 public enum CoordinateType
 {

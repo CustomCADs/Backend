@@ -1,7 +1,8 @@
-﻿using CustomCADs.Delivery.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Shared.Domain.Extensions;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetAll;
 
 public sealed class GetAllShipmentsHandler(IShipmentReads reads)
 	: IQueryHandler<GetAllShipmentsQuery, Result<GetAllShipmentsDto>>

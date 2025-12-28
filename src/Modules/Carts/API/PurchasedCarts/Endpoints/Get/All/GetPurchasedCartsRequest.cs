@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Domain.PurchasedCarts.Enums;
+﻿using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Enums;
 using CustomCADs.Shared.Domain.Enums;
 
-namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.All;
+namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.All;
 
 public sealed record GetPurchasedCartsRequest(
 	PurchasedCartSortingType SortingType = PurchasedCartSortingType.PurchasedAt,

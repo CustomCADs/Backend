@@ -1,22 +1,26 @@
-﻿using CustomCADs.Files.Domain.Cads;
+﻿using CustomCADs.Modules.Files.Domain.Cads;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Files.Persistence.Repositories.Cads;
+namespace CustomCADs.Modules.Files.Persistence.Repositories.Cads;
 
-public static class Utilities
+internal static class Utilities
 {
-	public static IQueryable<Cad> WithFilter(this IQueryable<Cad> query, CadId[]? ids, AccountId? ownerId)
+	extension(IQueryable<Cad> query)
 	{
-		if (ids is not null)
+		internal IQueryable<Cad> WithFilter(CadId[]? ids, AccountId? ownerId)
 		{
-			query = query.Where(x => ids.Contains(x.Id));
-		}
-		if (ownerId is not null)
-		{
-			query = query.Where(x => ownerId == x.OwnerId);
-		}
+			if (ids is not null)
+			{
+				query = query.Where(x => ids.Contains(x.Id));
+			}
+			if (ownerId is not null)
+			{
+				query = query.Where(x => ownerId == x.OwnerId);
+			}
 
-		return query;
+			return query;
+		}
 	}
+
 }

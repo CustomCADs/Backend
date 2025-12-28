@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.API.Materials.Dtos;
-using CustomCADs.Printing.Application.Materials.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Printing.API.Materials.Dtos;
+using CustomCADs.Modules.Printing.Application.Materials.Queries.Internal.GetById;
 
-namespace CustomCADs.Printing.API.Materials.Endpoints.Get.Single;
+namespace CustomCADs.Modules.Printing.API.Materials.Endpoints.Get.Single;
 
 public sealed class GetMaterialEndpoint(IRequestSender sender)
 	: Endpoint<GetMaterialRequest, MaterialResponse>

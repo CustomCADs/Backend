@@ -1,9 +1,9 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Domain.Repositories;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Domain.Repositories;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 
-namespace CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Commands.Internal.Cancel;
 
 public sealed class CancelShipmentHandler(
 	IShipmentReads reads,

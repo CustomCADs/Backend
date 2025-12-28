@@ -3,7 +3,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Carts.Domain.ActiveCarts;
+namespace CustomCADs.Modules.Carts.Domain.ActiveCarts;
 
 public class ActiveCartItem : BaseAggregateRoot
 {

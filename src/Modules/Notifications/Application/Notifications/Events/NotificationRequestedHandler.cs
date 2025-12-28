@@ -1,11 +1,11 @@
-using CustomCADs.Notifications.Application.Contracts;
-using CustomCADs.Notifications.Domain.Repositories;
+using CustomCADs.Modules.Notifications.Application.Contracts;
+using CustomCADs.Modules.Notifications.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Notifications.Application.Notifications.Events;
+namespace CustomCADs.Modules.Notifications.Application.Notifications.Events;
 
 public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfWork uow, IRequestSender sender, INotificationsRealTimeNotifier notifier)
 {

@@ -1,10 +1,10 @@
-﻿using CustomCADs.Identity.Application.Users.Dtos;
-using CustomCADs.Identity.Application.Users.Events.Application.Emails.PasswordReset;
+﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Application.Users.Events.Application.Emails.PasswordReset;
 using CustomCADs.Shared.Application;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using Microsoft.Extensions.Options;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.ResetPasswordEmail;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ResetPasswordEmail;
 
 using static ApplicationConstants;
 

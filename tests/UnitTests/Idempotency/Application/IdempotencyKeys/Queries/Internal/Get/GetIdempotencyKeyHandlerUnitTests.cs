@@ -1,5 +1,5 @@
-using CustomCADs.Idempotency.Application.IdempotencyKeys.Queries.Internal.Get;
-using CustomCADs.Idempotency.Domain.Repositories.Reads;
+using CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Queries.Internal.Get;
+using CustomCADs.Modules.Idempotency.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Idempotency.Application.IdempotencyKeys.Queries.Internal.Get;

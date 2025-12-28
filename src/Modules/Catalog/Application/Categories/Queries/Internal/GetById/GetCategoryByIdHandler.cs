@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 
-namespace CustomCADs.Catalog.Application.Categories.Queries.Internal.GetById;
+namespace CustomCADs.Modules.Catalog.Application.Categories.Queries.Internal.GetById;
 
 public sealed class GetCategoryByIdHandler(
 	ICategoryReads reads,

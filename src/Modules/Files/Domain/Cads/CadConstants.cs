@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Files.Domain.Cads;
+﻿namespace CustomCADs.Modules.Files.Domain.Cads;
 
 public static class CadConstants
 {

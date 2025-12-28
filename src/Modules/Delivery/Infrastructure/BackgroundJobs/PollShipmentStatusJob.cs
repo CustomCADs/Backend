@@ -1,11 +1,11 @@
-﻿using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Contracts.Dtos;
-using CustomCADs.Delivery.Domain.Repositories;
-using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
+using CustomCADs.Modules.Delivery.Domain.Repositories;
+using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 using Quartz;
 
-namespace CustomCADs.Delivery.Infrastructure.BackgroundJobs;
+namespace CustomCADs.Modules.Delivery.Infrastructure.BackgroundJobs;
 
 public class PollShipmentStatusJob(IShipmentReads reads, IUnitOfWork uow, IDeliveryService delivery) : IJob
 {

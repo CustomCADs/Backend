@@ -1,7 +1,7 @@
-using CustomCADs.Idempotency.Domain.Repositories;
-using CustomCADs.Idempotency.Domain.Repositories.Reads;
+using CustomCADs.Modules.Idempotency.Domain.Repositories;
+using CustomCADs.Modules.Idempotency.Domain.Repositories.Reads;
 
-namespace CustomCADs.Idempotency.Application.IdempotencyKeys.Commands.Internal.Complete;
+namespace CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Commands.Internal.Complete;
 
 public sealed class CompleteIdempotencyKeyHandler(
 	IIdempotencyKeyReads reads,

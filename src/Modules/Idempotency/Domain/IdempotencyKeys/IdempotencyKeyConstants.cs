@@ -1,4 +1,4 @@
-namespace CustomCADs.Idempotency.Domain.IdempotencyKeys;
+namespace CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
 
 public static class IdempotencyKeyConstants
 {

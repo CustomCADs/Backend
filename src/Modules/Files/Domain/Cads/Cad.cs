@@ -1,8 +1,8 @@
-﻿using CustomCADs.Files.Domain.Cads.ValueObjects;
+﻿using CustomCADs.Modules.Files.Domain.Cads.ValueObjects;
 using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Files.Domain.Cads;
+namespace CustomCADs.Modules.Files.Domain.Cads;
 
 public class Cad : BaseAggregateRoot
 {

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Notifications.API.Notifications.Endpoints;
+﻿namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints;
 
 using static APIConstants;
 using static DomainConstants.Roles;

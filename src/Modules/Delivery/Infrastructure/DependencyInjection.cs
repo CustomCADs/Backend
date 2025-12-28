@@ -1,7 +1,7 @@
-using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Infrastructure;
-using CustomCADs.Delivery.Infrastructure.BackgroundJobs;
-using CustomCADs.Shared.Infrastructure;
+using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Infrastructure;
+using CustomCADs.Modules.Delivery.Infrastructure.BackgroundJobs;
+using CustomCADs.Shared.Infrastructure.Requests;
 using Microsoft.Extensions.Options;
 using Quartz;
 
@@ -10,43 +10,47 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-	public static void AddDeliveryService(this IServiceCollection services)
+	extension(IServiceCollection services)
 	{
-		services.AddSpeedyService((provider) =>
-		{
-			using IServiceScope scope = provider.CreateScope();
-			DeliverySettings settings = scope.ServiceProvider
-				.GetRequiredService<IOptions<DeliverySettings>>()
-				.Value;
+		public void AddDeliveryService()
+			=> services
+				.AddSpeedyService((provider) =>
+				{
+					using IServiceScope scope = provider.CreateScope();
+					DeliverySettings settings = scope.ServiceProvider
+						.GetRequiredService<IOptions<DeliverySettings>>()
+						.Value;
 
-			return new(
-				Account: settings.Account,
-				Pickup: settings.Pickup,
-				Contact: settings.Contact
-			);
-		});
+					return new(
+						Account: settings.Account,
+						Pickup: settings.Pickup,
+						Contact: settings.Contact
+					);
+				})
+				.AddScoped<IDeliveryService>(
+					(sp) => new ResilientDeliveryService(
+						inner: new SpeedyDeliveryService(
+							speedy: sp.GetRequiredService<SpeedyNET.Sdk.ISpeedyService>()
+						),
+						policy: Polly.Policy.WrapAsync(
+							Polly.Policy.Handle<Exception>().AsyncCircuitBreak(),
+							Polly.Policy.Handle<Exception>().AsyncRetry()
+						)
+					)
+				);
+	}
 
-		services.AddScoped<IDeliveryService>(
-			(sp) => new ResilientDeliveryService(
-				inner: new SpeedyDeliveryService(
-					speedy: sp.GetRequiredService<SpeedyNET.Sdk.ISpeedyService>()
-				),
-				policy: Polly.Policy.WrapAsync(
-					Polly.Policy.Handle<Exception>().AsyncCircuitBreak(),
-					Polly.Policy.Handle<Exception>().AsyncRetry()
+	extension(IServiceCollectionQuartzConfigurator configurator)
+	{
+		public void AddDeliveryBackgroundJobs()
+		 => configurator.AddTrigger(conf => conf
+				.ForJob(configurator.AddJobAndReturnKey<PollShipmentStatusJob>())
+				.WithSimpleSchedule(schedule =>
+					schedule
+						.WithInterval(TimeSpan.FromHours(PollShipmentStatusJob.IntervalHours))
+						.RepeatForever()
 				)
-			)
-		);
+			);
 	}
 
-	public static void AddDeliveryBackgroundJobs(this IServiceCollectionQuartzConfigurator configurator)
-	{
-		configurator.AddTrigger(conf => conf
-			.ForJob(configurator.AddJobAndReturnKey<PollShipmentStatusJob>())
-			.WithSimpleSchedule(schedule =>
-				schedule
-					.WithInterval(TimeSpan.FromHours(PollShipmentStatusJob.IntervalHours))
-					.RepeatForever()
-			));
-	}
 }

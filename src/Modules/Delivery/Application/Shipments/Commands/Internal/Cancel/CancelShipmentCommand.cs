@@ -1,4 +1,4 @@
-namespace CustomCADs.Delivery.Application.Shipments.Commands.Internal.Cancel;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Commands.Internal.Cancel;
 
 public sealed record CancelShipmentCommand(
 	ShipmentId Id,

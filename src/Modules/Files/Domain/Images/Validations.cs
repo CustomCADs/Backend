@@ -1,18 +1,22 @@
-﻿namespace CustomCADs.Files.Domain.Images;
+﻿namespace CustomCADs.Modules.Files.Domain.Images;
 
-public static class Validations
+internal static class Validations
 {
-	public static Image ValidateKey(this Image image)
-		=> image
-			.ThrowIfNull(
-				expression: x => x.Key,
-				predicate: string.IsNullOrWhiteSpace
-			);
+	extension(Image image)
+	{
+		internal Image ValidateKey()
+			=> image
+				.ThrowIfNull(
+					expression: x => x.Key,
+					predicate: string.IsNullOrWhiteSpace
+				);
 
-	public static Image ValidateContentType(this Image image)
-		=> image
-			.ThrowIfNull(
-				expression: x => x.ContentType,
-				predicate: string.IsNullOrWhiteSpace
-			);
+		internal Image ValidateContentType()
+			=> image
+				.ThrowIfNull(
+					expression: x => x.ContentType,
+					predicate: string.IsNullOrWhiteSpace
+				);
+	}
+
 }

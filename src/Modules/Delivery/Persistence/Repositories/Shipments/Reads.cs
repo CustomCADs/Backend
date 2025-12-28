@@ -1,12 +1,12 @@
-﻿using CustomCADs.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Delivery.Domain.Shipments;
-using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
+using CustomCADs.Modules.Delivery.Domain.Shipments;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Delivery.Persistence.Repositories.Shipments;
+namespace CustomCADs.Modules.Delivery.Persistence.Repositories.Shipments;
 
 public sealed class Reads(DeliveryContext context) : IShipmentReads
 {

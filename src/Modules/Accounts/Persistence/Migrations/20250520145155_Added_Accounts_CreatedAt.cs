@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CustomCADs.Accounts.Persistence.Migrations;
+namespace CustomCADs.Modules.Accounts.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Added_Accounts_CreatedAt : Migration

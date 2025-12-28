@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿namespace CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 
 public enum ShipmentSortingType
 {

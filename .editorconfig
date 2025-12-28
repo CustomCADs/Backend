@@ -1,6 +1,15 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
+# JS/TS/JSON files
+[*.{ts,js,json}]
+
+# Indentation and spacing
+indent_size = 4
+indent_style = tab
+tab_width = 4
+trim_trailing_whitespace = true
+
 # C# files
 [*.{cs,csproj}]
 
@@ -242,11 +251,11 @@ dotnet_naming_symbols.async_methods.applicable_kinds = method
 dotnet_naming_symbols.async_methods.required_modifiers = async
 dotnet_naming_style.end_in_async.required_suffix = Async
 dotnet_naming_style.end_in_async.capitalization = pascal_case
+dotnet_diagnostic.CA2007.severity = warning
 
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
 tab_width = 4
 indent_size = 4
 end_of_line = crlf
-dotnet_diagnostic.CA2007.severity = warning
 dotnet_diagnostic.IDE0130.severity = warning

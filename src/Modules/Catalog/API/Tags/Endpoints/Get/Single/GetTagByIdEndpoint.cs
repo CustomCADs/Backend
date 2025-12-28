@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Application.Tags.Dtos;
-using CustomCADs.Catalog.Application.Tags.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
+using CustomCADs.Modules.Catalog.Application.Tags.Queries.Internal.GetById;
 
-namespace CustomCADs.Catalog.API.Tags.Endpoints.Get.Single;
+namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Get.Single;
 
 public class GetTagByIdEndpoint(IRequestSender sender)
 	: Endpoint<GetTagByIdRequest, GetTagByIdResponse>

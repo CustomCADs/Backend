@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Edit;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Edit;
 
 public sealed record EditCustomCommand(
 	CustomId Id,

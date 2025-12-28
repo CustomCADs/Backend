@@ -1,7 +1,7 @@
-﻿using CustomCADs.Accounts.Application.Roles.Commands.Internal.Delete;
+﻿using CustomCADs.Modules.Accounts.Application.Roles.Commands.Internal.Delete;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Accounts.API.Roles.Endpoints.Delete;
+namespace CustomCADs.Modules.Accounts.API.Roles.Endpoints.Delete;
 
 public sealed class DeleteRoleEndpoint(IRequestSender sender)
 	: Endpoint<DeleteRoleRequest>

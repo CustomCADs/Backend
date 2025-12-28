@@ -1,4 +1,4 @@
-namespace CustomCADs.Delivery.Domain.Shipments.ValueObjects;
+namespace CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 
 public record ShipmentReference(string? Id, string Service)
 {

@@ -8,8 +8,8 @@ if [ -z "$OPERATION" ]; then
   exit 1
 fi
 
-STARTUP_PATH="./src/Tools/Identity/CustomCADs.Tools.Identity.csproj"
-PROJECT_PATH="./src/Modules/Identity/Infrastructure/CustomCADs.Identity.Infrastructure.csproj"
+STARTUP_PATH="./src/Tools/Identity"
+PROJECT_PATH="./src/Modules/Identity/Infrastructure"
 CONTEXT="IdentityContext"
 
 case $OPERATION in

@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Create;
-using CustomCADs.Catalog.Application.Products.Events.Application.ProductCreated;
-using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Repositories;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Creator.Create;
+using CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductCreated;
+using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;

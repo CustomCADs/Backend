@@ -1,10 +1,10 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Add;
-using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.GetSingle;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Add;
+using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.GetSingle;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Post.Item;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Post.Item;
 
 public sealed class PostActiveCartItemEndpoint(IRequestSender sender)
 	: Endpoint<PostActiveCartItemRequest, ActiveCartItemResponse>
@@ -21,7 +21,7 @@ public sealed class PostActiveCartItemEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(PostActiveCartItemRequest req, CancellationToken ct)
 	{
-		AccountId callerId = User.GetAccountId();
+		AccountId callerId = User.AccountId;
 
 		await sender.SendCommandAsync(
 			command: new AddActiveCartItemCommand(

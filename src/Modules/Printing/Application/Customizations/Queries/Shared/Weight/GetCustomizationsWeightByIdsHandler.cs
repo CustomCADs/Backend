@@ -1,8 +1,8 @@
-﻿using CustomCADs.Printing.Domain.Repositories.Reads;
-using CustomCADs.Printing.Domain.Services;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
+using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
-namespace CustomCADs.Printing.Application.Customizations.Queries.Shared.Weight;
+namespace CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Weight;
 
 public sealed class GetCustomizationsWeightByIdsHandler(
 	ICustomizationReads customizationReads,

@@ -1,12 +1,12 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
-using CustomCADs.Carts.Domain.Repositories;
-using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Domain.Repositories;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
 
 public class ActiveCartDeliveryRequestedApplicationEventHandler(
 	IPurchasedCartReads reads,

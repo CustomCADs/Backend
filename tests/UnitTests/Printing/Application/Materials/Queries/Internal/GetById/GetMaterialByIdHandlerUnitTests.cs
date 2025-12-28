@@ -1,7 +1,7 @@
-using CustomCADs.Printing.Application.Materials.Dtos;
-using CustomCADs.Printing.Application.Materials.Queries.Internal.GetById;
-using CustomCADs.Printing.Domain.Materials;
-using CustomCADs.Printing.Domain.Repositories.Reads;
+using CustomCADs.Modules.Printing.Application.Materials.Dtos;
+using CustomCADs.Modules.Printing.Application.Materials.Queries.Internal.GetById;
+using CustomCADs.Modules.Printing.Domain.Materials;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Cache;
 
 namespace CustomCADs.UnitTests.Printing.Application.Materials.Queries.Internal.GetById;

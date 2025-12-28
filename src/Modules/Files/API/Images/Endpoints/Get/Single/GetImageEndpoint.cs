@@ -1,8 +1,8 @@
 
-using CustomCADs.Files.Application.Images.Dtos;
-using CustomCADs.Files.Application.Images.Queries.Internal.GetById;
+using CustomCADs.Modules.Files.Application.Images.Dtos;
+using CustomCADs.Modules.Files.Application.Images.Queries.Internal.GetById;
 
-namespace CustomCADs.Files.API.Images.Endpoints.Get.Single;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Get.Single;
 
 public class GetImageEndpoint(IRequestSender sender) : Endpoint<GetImageRequest, ImageResponse>
 {

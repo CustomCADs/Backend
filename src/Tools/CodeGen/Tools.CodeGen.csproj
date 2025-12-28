@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+	  	<UserSecretsId>c35211bd-a1a6-4758-acdd-52aaf838685a</UserSecretsId>
+  	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Accounts -->
+		<ProjectReference Include="..\..\Modules\Accounts\Application\Modules.Accounts.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Accounts\Persistence\Modules.Accounts.Persistence.csproj" />
+
+		<!-- Carts -->
+		<ProjectReference Include="..\..\Modules\Carts\Application\Modules.Carts.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Carts\Persistence\Modules.Carts.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Carts\Infrastructure\Modules.Carts.Infrastructure.csproj" />
+
+		<!-- Catalog -->
+		<ProjectReference Include="..\..\Modules\Catalog\Application\Modules.Catalog.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Catalog\Persistence\Modules.Catalog.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Catalog\Infrastructure\Modules.Catalog.Infrastructure.csproj" />
+
+		<!-- Customs -->
+		<ProjectReference Include="..\..\Modules\Customs\Application\Modules.Customs.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Customs\Persistence\Modules.Customs.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Customs\Infrastructure\Modules.Customs.Infrastructure.csproj" />
+
+		<!-- Delivery -->
+		<ProjectReference Include="..\..\Modules\Delivery\Application\Modules.Delivery.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Delivery\Infrastructure\Modules.Delivery.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\Modules\Delivery\Persistence\Modules.Delivery.Persistence.csproj" />
+
+		<!-- Files -->
+		<ProjectReference Include="..\..\Modules\Files\Application\Modules.Files.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Files\Infrastructure\Modules.Files.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\Modules\Files\Persistence\Modules.Files.Persistence.csproj" />
+
+		<!-- Idempotency -->
+		<ProjectReference Include="..\..\Modules\Idempotency\Application\Modules.Idempotency.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Idempotency\Persistence\Modules.Idempotency.Persistence.csproj" />
+		<ProjectReference Include="..\..\Modules\Idempotency\Infrastructure\Modules.Idempotency.Infrastructure.csproj" />
+
+		<!-- Identity -->
+		<ProjectReference Include="..\..\Modules\Identity\Application\Modules.Identity.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Identity\Infrastructure\Modules.Identity.Infrastructure.csproj" />
+
+		<!-- Notifications -->
+		<ProjectReference Include="..\..\Modules\Notifications\Application\Modules.Notifications.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Notifications\Infrastructure\Modules.Notifications.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\Modules\Notifications\Persistence\Modules.Notifications.Persistence.csproj" />
+
+		<!-- Printing -->
+		<ProjectReference Include="..\..\Modules\Printing\Application\Modules.Printing.Application.csproj" />
+		<ProjectReference Include="..\..\Modules\Printing\Persistence\Modules.Printing.Persistence.csproj" />
+
+		<!-- Shared Infrastructure -->
+		<ProjectReference Include="..\..\Shared\Infrastructure\Shared.Infrastructure.csproj" />
+	</ItemGroup>
+
+</Project>

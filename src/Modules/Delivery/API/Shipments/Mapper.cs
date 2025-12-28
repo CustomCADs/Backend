@@ -1,20 +1,27 @@
-﻿using CustomCADs.Delivery.Domain.Shipments.ValueObjects;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 
-namespace CustomCADs.Delivery.API.Shipments;
+namespace CustomCADs.Modules.Delivery.API.Shipments;
 
 internal static class Mapper
 {
-	internal static InfoResponse ToResponse(this ShipmentInfo info)
-		=> new(
-			Count: info.Count,
-			Weight: info.Weight,
-			Recipient: info.Recipient
-		);
+	extension(ShipmentInfo info)
+	{
+		internal InfoResponse ToResponse()
+			=> new(
+				Count: info.Count,
+				Weight: info.Weight,
+				Recipient: info.Recipient
+			);
+	}
 
-	internal static AddressResponse ToResponse(this ShipmentAddress address)
-		=> new(
-			Country: address.Country,
-			City: address.City,
-			Street: address.Street
-		);
+	extension(ShipmentAddress address)
+	{
+		internal AddressResponse ToResponse()
+			=> new(
+				Country: address.Country,
+				City: address.City,
+				Street: address.Street
+			);
+	}
+
 }

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Files.Domain.Repositories;
+﻿namespace CustomCADs.Modules.Files.Domain.Repositories;
 
 public interface IUnitOfWork
 {

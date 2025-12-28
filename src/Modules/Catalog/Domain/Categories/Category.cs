@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Catalog.Domain.Categories;
+namespace CustomCADs.Modules.Catalog.Domain.Categories;
 
 public class Category : BaseAggregateRoot
 {

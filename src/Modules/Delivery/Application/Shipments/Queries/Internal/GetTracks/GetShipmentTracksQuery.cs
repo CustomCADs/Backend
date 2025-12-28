@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetTracks;
+﻿namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetTracks;
 
 public sealed record GetShipmentTracksQuery(
 	ShipmentId Id

@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="SpeedyNET.Sdk" />
+	</ItemGroup>
+
+		<ItemGroup>
+		<ProjectReference Include="..\Application\Modules.Delivery.Application.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.API.Tags.Endpoints.Get.All;
+﻿namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Get.All;
 
 public record GetAllTagsResponse(
 	Guid Id,

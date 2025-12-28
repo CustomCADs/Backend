@@ -1,9 +1,9 @@
-using CustomCADs.Identity.Infrastructure.Identity.Context;
-using CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
+using CustomCADs.Modules.Identity.Infrastructure.Identity.Context;
+using CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 
-namespace CustomCADs.Identity.Infrastructure.BackgroundJobs;
+namespace CustomCADs.Modules.Identity.Infrastructure.BackgroundJobs;
 
 public class ClearRefreshTokensJob(IdentityContext dbContext) : IJob
 {

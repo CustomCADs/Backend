@@ -1,7 +1,7 @@
-using CustomCADs.Delivery.Application.Contracts;
-using CustomCADs.Delivery.Application.Contracts.Dtos;
+using CustomCADs.Modules.Delivery.Application.Contracts;
+using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 
-namespace CustomCADs.Delivery.Infrastructure;
+namespace CustomCADs.Modules.Delivery.Infrastructure;
 
 public class ResilientDeliveryService(
 	IDeliveryService inner,

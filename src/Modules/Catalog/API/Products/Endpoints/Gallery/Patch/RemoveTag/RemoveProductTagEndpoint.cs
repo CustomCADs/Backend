@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Patch.RemoveTag;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Patch.RemoveTag;
 
 using static DomainConstants.Roles;
 
@@ -24,7 +24,7 @@ public class RemoveProductTagEndpoint(IRequestSender sender)
 			command: new RemoveProductTagCommand(
 				Id: ProductId.New(req.Id),
 				TagId: TagId.New(req.TagId),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

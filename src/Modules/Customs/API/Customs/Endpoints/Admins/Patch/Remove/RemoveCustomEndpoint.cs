@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Commands.Internal.Admin.Remove;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Admin.Remove;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Admins.Patch.Remove;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Admins.Patch.Remove;
 
 public sealed class RemoveCustomEndpoint(IRequestSender sender)
 	: Endpoint<RemoveCustomRequest>
@@ -20,7 +20,7 @@ public sealed class RemoveCustomEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new RemoveCustomCommand(
 				Id: CustomId.New(req.Id),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

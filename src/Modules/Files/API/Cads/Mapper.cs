@@ -1,17 +1,21 @@
-﻿using CustomCADs.Files.Application.Cads.Dtos;
+﻿using CustomCADs.Modules.Files.Application.Cads.Dtos;
 
-namespace CustomCADs.Files.API.Cads;
+namespace CustomCADs.Modules.Files.API.Cads;
 
 internal static class Mapper
 {
-	internal static CadResponse ToResponse(this CadDto cad)
-		=> new(
-			Id: cad.Id.Value,
-			Key: cad.Key,
-			ContentType: cad.ContentType,
-			Volume: cad.Volume,
-			CamCoordinates: cad.CamCoordinates,
-			PanCoordinates: cad.PanCoordinates,
-			OwnerName: cad.OwnerName
-		);
+	extension(CadDto cad)
+	{
+		internal CadResponse ToResponse()
+			=> new(
+				Id: cad.Id.Value,
+				Key: cad.Key,
+				ContentType: cad.ContentType,
+				Volume: cad.Volume,
+				CamCoordinates: cad.CamCoordinates,
+				PanCoordinates: cad.PanCoordinates,
+				OwnerName: cad.OwnerName
+			);
+	}
+
 }

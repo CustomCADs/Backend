@@ -1,4 +1,4 @@
-namespace CustomCADs.Files.API.Images.Dtos;
+namespace CustomCADs.Modules.Files.API.Images.Dtos;
 
 public record ImageResponse(
 	Guid Id,

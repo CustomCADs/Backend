@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
+﻿namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
 
 public sealed record DesignerGetAllProductsDto(
 	ProductId Id,

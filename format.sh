@@ -2,4 +2,4 @@
 
 DIAGNOSTICS="IDE0130";
 
-dotnet format CustomCADs.sln --exclude-diagnostics "$DIAGNOSTICS"
+dotnet format CustomCADs.slnx --exclude-diagnostics "$DIAGNOSTICS"

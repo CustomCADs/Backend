@@ -1,6 +1,6 @@
 ﻿namespace CustomCADs.UnitTests.Files.Application.Cads;
 
-using CustomCADs.Files.Domain.Cads.ValueObjects;
+using CustomCADs.Modules.Files.Domain.Cads.ValueObjects;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using static CadsData;
 

@@ -1,4 +1,4 @@
-using CustomCADs.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Customizations;
 
 namespace CustomCADs.UnitTests.Printing.Domain.Customizations;
 

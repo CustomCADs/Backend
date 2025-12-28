@@ -1,8 +1,8 @@
-﻿using CustomCADs.Files.Domain.Images;
+﻿using CustomCADs.Modules.Files.Domain.Images;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CustomCADs.Files.Persistence.Configurations.Images;
+namespace CustomCADs.Modules.Files.Persistence.Configurations.Images;
 
 public class Configurations : IEntityTypeConfiguration<Image>
 {

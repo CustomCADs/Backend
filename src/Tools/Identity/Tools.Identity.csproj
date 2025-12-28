@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<UserSecretsId>bc0981a8-d29d-4f6d-96a0-879a328b74ab</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Modules\Identity\Infrastructure\Modules.Identity.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\Shared\Persistence\Shared.Persistence.csproj" />
+	</ItemGroup>
+
+</Project>

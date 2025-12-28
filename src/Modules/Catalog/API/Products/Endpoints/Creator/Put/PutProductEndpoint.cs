@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Creator.Edit;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Creator.Edit;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Creator.Put;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Put;
 
 public sealed class PutProductEndpoint(IRequestSender sender)
 	: Endpoint<PutProductRequest>
@@ -23,7 +23,7 @@ public sealed class PutProductEndpoint(IRequestSender sender)
 				Description: req.Description,
 				CategoryId: CategoryId.New(req.CategoryId),
 				Price: req.Price,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,7 +1,11 @@
-﻿namespace CustomCADs.Accounts.API.Roles;
+﻿namespace CustomCADs.Modules.Accounts.API.Roles;
 
 internal static class Mapper
 {
-	internal static RoleResponse ToResponse(this RoleDto role)
-		=> new(role.Name, role.Description);
+	extension(RoleDto role)
+	{
+		internal RoleResponse ToResponse()
+			=> new(role.Name, role.Description);
+	}
+
 }

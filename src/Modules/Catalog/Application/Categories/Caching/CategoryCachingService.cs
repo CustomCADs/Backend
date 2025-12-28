@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Catalog.Application.Categories.Caching;
+namespace CustomCADs.Modules.Catalog.Application.Categories.Caching;
 
 public class CategoryCachingService(ICacheService service) : BaseCachingService<CategoryId, Category>
 {

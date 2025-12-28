@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Printing.Application;
+namespace CustomCADs.Modules.Printing.Application;
 
 public class PrintingApplicationReference
 {

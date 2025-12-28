@@ -1,5 +1,5 @@
-using CustomCADs.Catalog.Domain.Products;
-using CustomCADs.Catalog.Infrastructure.BackgroundJobs;
+using CustomCADs.Modules.Catalog.Domain.Products;
+using CustomCADs.Modules.Catalog.Infrastructure.BackgroundJobs;
 using Quartz;
 
 #pragma warning disable IDE0130
@@ -9,14 +9,16 @@ using static ProductConstants;
 
 public static class DependencyInjection
 {
-	public static void AddCatalogBackgroundJobs(this IServiceCollectionQuartzConfigurator configurator)
+	extension(IServiceCollectionQuartzConfigurator configurator)
 	{
-		configurator.AddTrigger(conf => conf
-			.ForJob(configurator.AddJobAndReturnKey<ClearTagsJob>())
-			.WithSimpleSchedule(schedule =>
-				schedule
-					.WithInterval(TimeSpan.FromDays(ClearTagsIntervalDays))
-					.RepeatForever()
-			));
+		public void AddCatalogBackgroundJobs()
+			=> configurator.AddTrigger(conf => conf
+				.ForJob(configurator.AddJobAndReturnKey<ClearTagsJob>())
+				.WithSimpleSchedule(schedule =>
+					schedule
+						.WithInterval(TimeSpan.FromDays(ClearTagsIntervalDays))
+						.RepeatForever()
+				)
+			);
 	}
 }

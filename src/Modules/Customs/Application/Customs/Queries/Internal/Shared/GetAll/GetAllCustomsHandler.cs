@@ -1,12 +1,13 @@
-﻿using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
+using CustomCADs.Shared.Domain.Extensions;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 
 public sealed class GetAllCustomsHandler(ICustomReads reads, IRequestSender sender)
 	: IQueryHandler<GetAllCustomsQuery, Result<GetAllCustomsDto>>

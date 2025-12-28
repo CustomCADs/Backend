@@ -1,9 +1,9 @@
-﻿using CustomCADs.Identity.Domain.Users;
-using CustomCADs.Identity.Domain.Users.Entities;
-using CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
+﻿using CustomCADs.Modules.Identity.Domain.Users;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
+using CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Shared.Domain.TypedIds.Identity;
 
-namespace CustomCADs.Identity.Infrastructure.Identity;
+namespace CustomCADs.Modules.Identity.Infrastructure.Identity;
 
 internal static class Mapper
 {
@@ -25,53 +25,66 @@ internal static class Mapper
 			};
 	}
 
-	internal static User ToUser(this AppUser appUser, string role)
-		=> User.Create(
-			id: UserId.New(appUser.Id),
-			role: role,
-			username: appUser.Username,
-			email: new(appUser.Email ?? string.Empty, appUser.EmailConfirmed),
-			accountId: appUser.AccountId,
-			refreshTokens: [.. appUser.RefreshTokens.Select(x => Shallow.ToRefreshToken(x))]
-		);
+	extension(AppUser appUser)
+	{
+		internal User ToUser(string role)
+			=> User.Create(
+				id: UserId.New(appUser.Id),
+				role: role,
+				username: appUser.Username,
+				email: new(appUser.Email ?? string.Empty, appUser.EmailConfirmed),
+				accountId: appUser.AccountId,
+				refreshTokens: [.. appUser.RefreshTokens.Select(x => Shallow.ToRefreshToken(x))]
+			);
+	}
 
-	internal static AppUser ToAppUser(this User user)
-		=> new AppUser()
-		{
-			Id = user.Id.Value,
-			IsSSO = false,
-			Provider = null,
-			UserName = user.Username,
-			Email = user.Email.Value,
-			EmailConfirmed = user.Email.IsVerified,
-			AccountId = user.AccountId,
-		}.FillRefreshTokens([.. user.RefreshTokens.Select(x => Shallow.ToAppRefreshToken(x))]);
+	extension(User user)
+	{
+		internal AppUser ToAppUser()
+			=> new AppUser()
+			{
+				Id = user.Id.Value,
+				IsSSO = false,
+				Provider = null,
+				UserName = user.Username,
+				Email = user.Email.Value,
+				EmailConfirmed = user.Email.IsVerified,
+				AccountId = user.AccountId,
+			}.FillRefreshTokens([.. user.RefreshTokens.Select(x => Shallow.ToAppRefreshToken(x))]);
 
 
-	internal static AppUser ToAppUser(this User user, string provider)
-		=> new AppUser()
-		{
-			Id = user.Id.Value,
-			IsSSO = true,
-			Provider = provider,
-			Username = user.Username,
-			Email = user.Email.Value,
-			EmailConfirmed = true,
-			AccountId = user.AccountId,
-		}.FillRefreshTokens([.. user.RefreshTokens.Select(x => Shallow.ToAppRefreshToken(x))]);
+		internal AppUser ToAppUser(string provider)
+			=> new AppUser()
+			{
+				Id = user.Id.Value,
+				IsSSO = true,
+				Provider = provider,
+				Username = user.Username,
+				Email = user.Email.Value,
+				EmailConfirmed = true,
+				AccountId = user.AccountId,
+			}.FillRefreshTokens([.. user.RefreshTokens.Select(x => Shallow.ToAppRefreshToken(x))]);
+	}
 
-	internal static RefreshToken ToRefreshToken(this AppRefreshToken rt)
-		=> RefreshToken.Create(
-			id: RefreshTokenId.New(rt.Id),
-			value: rt.Value,
-			userId: UserId.New(rt.UserId),
-			issuedAt: rt.IssuedAt,
-			expiresAt: rt.ExpiresAt
-		);
+	extension(AppRefreshToken rt)
+	{
+		internal RefreshToken ToRefreshToken()
+			=> RefreshToken.Create(
+				id: RefreshTokenId.New(rt.Id),
+				value: rt.Value,
+				userId: UserId.New(rt.UserId),
+				issuedAt: rt.IssuedAt,
+				expiresAt: rt.ExpiresAt
+			);
+	}
 
-	internal static AppRefreshToken ToAppRefreshToken(this RefreshToken rt)
-		=> new(rt.Value, rt.UserId.Value, rt.IssuedAt, rt.ExpiresAt)
-		{
-			Id = rt.Id.Value,
-		};
+	extension(RefreshToken rt)
+	{
+		internal AppRefreshToken ToAppRefreshToken()
+			=> new(rt.Value, rt.UserId.Value, rt.IssuedAt, rt.ExpiresAt)
+			{
+				Id = rt.Id.Value,
+			};
+	}
+
 }

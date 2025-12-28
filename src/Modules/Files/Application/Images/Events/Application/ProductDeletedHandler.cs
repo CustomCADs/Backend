@@ -1,9 +1,9 @@
-﻿using CustomCADs.Files.Application.Images.Storage;
-using CustomCADs.Files.Domain.Repositories;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Application.Images.Storage;
+using CustomCADs.Modules.Files.Domain.Repositories;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Events.Files;
 
-namespace CustomCADs.Files.Application.Images.Events.Application;
+namespace CustomCADs.Modules.Files.Application.Images.Events.Application;
 
 public class ProductDeletedHandler(IImageReads reads, IWrites<Image> writes, IUnitOfWork uow, IImageStorageService storage, BaseCachingService<ImageId, Image> cache)
 {

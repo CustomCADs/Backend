@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Files.Application.Images.Caching;
+namespace CustomCADs.Modules.Files.Application.Images.Caching;
 
 public class ImageCachingService(ICacheService service) : BaseCachingService<ImageId, Image>
 {

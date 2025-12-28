@@ -1,29 +1,33 @@
-﻿using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetAll;
-using CustomCADs.Accounts.Application.Accounts.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetAll;
+using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetById;
 
-namespace CustomCADs.Accounts.Application.Accounts;
+namespace CustomCADs.Modules.Accounts.Application.Accounts;
 
 internal static class Mapper
 {
-	internal static GetAllAccountsDto ToGetAllDto(this Account account)
-		=> new(
-			Id: account.Id,
-			Role: account.RoleName,
-			Username: account.Username,
-			Email: account.Email,
-			FirstName: account.FirstName,
-			LastName: account.LastName,
-			CreatedAt: account.CreatedAt
-		);
+	extension(Account account)
+	{
+		internal GetAllAccountsDto ToGetAllDto()
+			=> new(
+				Id: account.Id,
+				Role: account.RoleName,
+				Username: account.Username,
+				Email: account.Email,
+				FirstName: account.FirstName,
+				LastName: account.LastName,
+				CreatedAt: account.CreatedAt
+			);
 
-	internal static GetAccountByIdDto ToGetByUsernameDto(this Account account)
-		=> new(
-			Id: account.Id,
-			Role: account.RoleName,
-			Username: account.Username,
-			Email: account.Email,
-			FirstName: account.FirstName,
-			LastName: account.LastName,
-			CreatedAt: account.CreatedAt
-		);
+		internal GetAccountByIdDto ToGetByUsernameDto()
+			=> new(
+				Id: account.Id,
+				Role: account.RoleName,
+				Username: account.Username,
+				Email: account.Email,
+				FirstName: account.FirstName,
+				LastName: account.LastName,
+				CreatedAt: account.CreatedAt
+			);
+	}
+
 }

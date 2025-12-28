@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Application.Customs.Events.Application.DeliveryRequested;
-using CustomCADs.Customs.Domain.Repositories;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Customs.Domain.Repositories;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Application.Exceptions;

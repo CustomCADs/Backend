@@ -1,7 +1,7 @@
-using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
+using CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.GetAll;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.All;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Get.All;
 
 public class GetNotificationsEndpoint(IRequestSender sender)
 	: Endpoint<GetNotificationsRequest, Result<GetNotificationsResponse>, GetNotificationsMapper>
@@ -21,7 +21,7 @@ public class GetNotificationsEndpoint(IRequestSender sender)
 		Result<GetAllNotificationsDto> result = await sender.SendQueryAsync(
 			query: new GetAllNotificationsQuery(
 				Pagination: new(req.Page, req.Limit),
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				Status: req.Status,
 				Sorting: new(req.SortingType, req.SortingDirection)
 			),

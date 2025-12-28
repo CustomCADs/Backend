@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Delivery.API.Shipments.Endpoints;
+﻿namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints;
 
 using static APIConstants;
 using static DomainConstants.Roles;

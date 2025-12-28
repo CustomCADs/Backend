@@ -1,9 +1,9 @@
-using CustomCADs.Files.Application.Images.Queries.Internal.PresignedUrls.Get;
+using CustomCADs.Modules.Files.Application.Images.Queries.Internal.PresignedUrls.Get;
 using CustomCADs.Shared.API.Attributes;
 using CustomCADs.Shared.Application.Dtos.Files;
 using Microsoft.AspNetCore.Builder;
 
-namespace CustomCADs.Files.API.Images.Endpoints.Presigned.Get;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Presigned.Get;
 
 public class ImagePresignedUrlGetEndpoint(IRequestSender sender) : Endpoint<ImagePresignedUrlGetRequest, DownloadFileResponse>
 {
@@ -25,7 +25,7 @@ public class ImagePresignedUrlGetEndpoint(IRequestSender sender) : Endpoint<Imag
 			query: new GetImagePresignedUrlGetQuery(
 				Id: ImageId.New(req.Id),
 				RelationType: req.RelationType,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Domain.Tags;
 
-namespace CustomCADs.Catalog.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 
 public interface ITagReads
 {

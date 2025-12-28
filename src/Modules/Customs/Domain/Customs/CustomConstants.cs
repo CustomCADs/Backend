@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Customs.Domain.Customs;
+﻿namespace CustomCADs.Modules.Customs.Domain.Customs;
 
 public static class CustomConstants
 {

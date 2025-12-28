@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Accounts.Domain.Roles;
+namespace CustomCADs.Modules.Accounts.Domain.Roles;
 
 public class Role : BaseAggregateRoot
 {

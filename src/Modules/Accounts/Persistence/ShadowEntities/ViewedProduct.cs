@@ -1,7 +1,7 @@
-using CustomCADs.Accounts.Domain.Accounts;
+using CustomCADs.Modules.Accounts.Domain.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Accounts.Persistence.ShadowEntities;
+namespace CustomCADs.Modules.Accounts.Persistence.ShadowEntities;
 
 public class ViewedProduct
 {

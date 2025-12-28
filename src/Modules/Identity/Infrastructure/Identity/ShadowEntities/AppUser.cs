@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using Microsoft.AspNetCore.Identity;
 
-namespace CustomCADs.Identity.Infrastructure.Identity.ShadowEntities;
+namespace CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 
 public class AppUser : IdentityUser<Guid>
 {

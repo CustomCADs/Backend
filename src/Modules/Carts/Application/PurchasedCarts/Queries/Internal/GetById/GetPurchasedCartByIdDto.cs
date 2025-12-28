@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Domain.PurchasedCarts.Enums;
+﻿using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Enums;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
 
 public sealed record GetPurchasedCartByIdDto(
 	PurchasedCartId Id,

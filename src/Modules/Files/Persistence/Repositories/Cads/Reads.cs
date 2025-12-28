@@ -1,11 +1,11 @@
-﻿using CustomCADs.Files.Domain.Cads;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Domain.Cads;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Files.Persistence.Repositories.Cads;
+namespace CustomCADs.Modules.Files.Persistence.Repositories.Cads;
 
 public sealed class Reads(FilesContext context) : ICadReads
 {

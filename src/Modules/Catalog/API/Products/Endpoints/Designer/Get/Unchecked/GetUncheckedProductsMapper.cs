@@ -1,6 +1,6 @@
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Unchecked;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Unchecked;
 
 public class GetUncheckedProductsMapper : ResponseMapper<GetUncheckedProductsResponse, DesignerGetAllProductsDto>
 {

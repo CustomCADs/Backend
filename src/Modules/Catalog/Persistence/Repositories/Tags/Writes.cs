@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Repositories.Writes;
-using CustomCADs.Catalog.Domain.Tags;
+﻿using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
+using CustomCADs.Modules.Catalog.Domain.Tags;
 
-namespace CustomCADs.Catalog.Persistence.Repositories.Tags;
+namespace CustomCADs.Modules.Catalog.Persistence.Repositories.Tags;
 
 public class Writes(CatalogContext context) : ITagWrites
 {

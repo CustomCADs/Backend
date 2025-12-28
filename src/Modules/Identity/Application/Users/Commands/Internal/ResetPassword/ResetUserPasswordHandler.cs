@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Identity.Application.Users.Commands.Internal.ResetPassword;
+﻿namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ResetPassword;
 
 public sealed class ResetUserPasswordHandler(IUserService service)
 	: ICommandHandler<ResetUserPasswordCommand>

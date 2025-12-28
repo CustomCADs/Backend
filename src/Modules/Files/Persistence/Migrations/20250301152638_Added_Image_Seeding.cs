@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CustomCADs.Files.Persistence.Migrations;
+namespace CustomCADs.Modules.Files.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Added_Image_Seeding : Migration

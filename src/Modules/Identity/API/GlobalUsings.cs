@@ -1,4 +1,4 @@
-﻿global using CustomCADs.Identity.API.Common;
+﻿global using CustomCADs.Modules.Identity.API.Common;
 global using CustomCADs.Shared.API;
 global using CustomCADs.Shared.API.Extensions;
 global using CustomCADs.Shared.Application.Abstractions.Requests.Sender;

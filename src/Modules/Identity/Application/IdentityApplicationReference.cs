@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Identity.Application;
+namespace CustomCADs.Modules.Identity.Application;
 
 public class IdentityApplicationReference
 {

@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Stats;
+﻿namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.Stats;
 
 public sealed record PurchasedCartsStatsResponse(
 	int Total,

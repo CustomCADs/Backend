@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.Domain.Repositories;
-using CustomCADs.Printing.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 
-namespace CustomCADs.Printing.Application.Customizations.Commands.Internal.Edit;
+namespace CustomCADs.Modules.Printing.Application.Customizations.Commands.Internal.Edit;
 
 public sealed class EditCustomizationHandler(
 	ICustomizationReads reads,

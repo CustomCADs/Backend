@@ -1,7 +1,7 @@
-using CustomCADs.Printing.Application.Customizations.Commands.Shared.Delete;
-using CustomCADs.Printing.Domain.Customizations;
-using CustomCADs.Printing.Domain.Repositories;
-using CustomCADs.Printing.Domain.Repositories.Reads;
+using CustomCADs.Modules.Printing.Application.Customizations.Commands.Shared.Delete;
+using CustomCADs.Modules.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Repositories;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Customizations.Commands;
 

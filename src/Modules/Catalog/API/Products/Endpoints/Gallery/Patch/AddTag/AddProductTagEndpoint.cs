@@ -1,6 +1,6 @@
-﻿using CustomCADs.Catalog.Application.Products.Commands.Internal.Designer.AddTag;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Commands.Internal.Designer.AddTag;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Gallery.Patch.AddTag;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Patch.AddTag;
 
 using static DomainConstants.Roles;
 
@@ -24,7 +24,7 @@ public class AddProductTagEndpoint(IRequestSender sender)
 			command: new AddProductTagCommand(
 				Id: ProductId.New(req.Id),
 				TagId: TagId.New(req.TagId),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

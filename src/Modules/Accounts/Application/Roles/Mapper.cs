@@ -1,7 +1,11 @@
-﻿namespace CustomCADs.Accounts.Application.Roles;
+﻿namespace CustomCADs.Modules.Accounts.Application.Roles;
 
 internal static class Mapper
 {
-	internal static RoleDto ToDto(this Role role)
-		=> new(role.Id, role.Name, role.Description);
+	extension(Role role)
+	{
+		internal RoleDto ToDto()
+			=> new(role.Id, role.Name, role.Description);
+	}
+
 }

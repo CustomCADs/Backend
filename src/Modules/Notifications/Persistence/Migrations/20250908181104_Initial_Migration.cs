@@ -3,7 +3,7 @@
 #nullable disable
 
 
-namespace CustomCADs.Notifications.Persistence.Migrations;
+namespace CustomCADs.Modules.Notifications.Persistence.Migrations;
 
 /// <inheritdoc />
 public partial class Initial_Migration : Migration

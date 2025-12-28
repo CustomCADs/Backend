@@ -1,4 +1,4 @@
-﻿using CustomCADs.Catalog.Domain.Products.Enums;
+﻿using CustomCADs.Modules.Catalog.Domain.Products.Enums;
 
 namespace CustomCADs.UnitTests.Catalog.Domain.Products.Create.WithId;
 

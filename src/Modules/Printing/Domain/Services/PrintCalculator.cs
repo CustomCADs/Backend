@@ -1,7 +1,7 @@
-using CustomCADs.Printing.Domain.Customizations;
-using CustomCADs.Printing.Domain.Materials;
+using CustomCADs.Modules.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Materials;
 
-namespace CustomCADs.Printing.Domain.Services;
+namespace CustomCADs.Modules.Printing.Domain.Services;
 
 public class PrintCalculator : IPrintCalculator
 {

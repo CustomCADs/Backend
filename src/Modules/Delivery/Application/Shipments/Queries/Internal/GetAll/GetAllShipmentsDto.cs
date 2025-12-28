@@ -1,7 +1,7 @@
-﻿using CustomCADs.Delivery.Domain.Shipments.Enums;
-using CustomCADs.Delivery.Domain.Shipments.ValueObjects;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
+using CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 
-namespace CustomCADs.Delivery.Application.Shipments.Queries.Internal.GetAll;
+namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetAll;
 
 public sealed record GetAllShipmentsDto(
 	ShipmentId Id,

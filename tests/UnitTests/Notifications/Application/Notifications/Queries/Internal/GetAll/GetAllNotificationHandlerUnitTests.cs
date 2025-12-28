@@ -1,5 +1,5 @@
-﻿using CustomCADs.Notifications.Application.Notifications.Queries.Internal.GetAll;
-using CustomCADs.Notifications.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.GetAll;
+using CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.Querying;

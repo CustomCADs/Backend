@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Files.Domain.Images;
+namespace CustomCADs.Modules.Files.Domain.Images;
 
 public class Image : BaseAggregateRoot
 {

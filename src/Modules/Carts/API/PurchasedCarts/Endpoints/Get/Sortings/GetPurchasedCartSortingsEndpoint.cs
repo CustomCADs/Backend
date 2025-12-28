@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.GetSortings;
-using CustomCADs.Carts.Domain.PurchasedCarts.Enums;
+﻿using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetSortings;
+using CustomCADs.Modules.Carts.Domain.PurchasedCarts.Enums;
 
-namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Sortings;
+namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.Sortings;
 
 public sealed class GetPurchasedCartSortingsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<PurchasedCartSortingType[]>

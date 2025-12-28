@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Delivery.Domain.Shipments;
+﻿namespace CustomCADs.Modules.Delivery.Domain.Shipments;
 
 public static class ShipmentConstants
 {

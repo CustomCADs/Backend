@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 
 public sealed record GetAllCustomsDto(
 	CustomId Id,

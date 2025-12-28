@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Printing.Application.Materials.Policies;
+namespace CustomCADs.Modules.Printing.Application.Materials.Policies;
 
 public class MaterialTextureReplacePolicy(IRequestSender sender) : IFileReplacePolicy<ImageId>
 {

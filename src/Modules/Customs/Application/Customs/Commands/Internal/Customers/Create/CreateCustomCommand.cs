@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Create;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Create;
 
 public sealed record CreateCustomCommand(
 	string Name,

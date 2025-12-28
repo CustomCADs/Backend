@@ -1,31 +1,35 @@
-﻿namespace CustomCADs.Printing.Domain.Materials;
+﻿namespace CustomCADs.Modules.Printing.Domain.Materials;
 
 using static MaterialConstants;
 
-public static class Validations
+internal static class Validations
 {
-	public static Material ValidateName(this Material material)
-		=> material
-			.ThrowIfNull(
-				expression: (x) => x.Name,
-				predicate: string.IsNullOrWhiteSpace
-			)
-			.ThrowIfInvalidLength(
-				expression: (x) => x.Name,
-				length: (NameMinLength, NameMaxLength)
-			);
+	extension(Material material)
+	{
+		internal Material ValidateName()
+			=> material
+				.ThrowIfNull(
+					expression: (x) => x.Name,
+					predicate: string.IsNullOrWhiteSpace
+				)
+				.ThrowIfInvalidLength(
+					expression: (x) => x.Name,
+					length: (NameMinLength, NameMaxLength)
+				);
 
-	public static Material ValidateDensity(this Material material)
-		=> material
-			.ThrowIfInvalidRange(
-				expression: (x) => x.Density,
-				range: (DensityMin, DensityMax)
-			);
+		internal Material ValidateDensity()
+			=> material
+				.ThrowIfInvalidRange(
+					expression: (x) => x.Density,
+					range: (DensityMin, DensityMax)
+				);
 
-	public static Material ValidateCost(this Material material)
-		=> material
-			.ThrowIfInvalidRange(
-				expression: (x) => x.Cost,
-				range: (CostMin, CostMax)
-			);
+		internal Material ValidateCost()
+			=> material
+				.ThrowIfInvalidRange(
+					expression: (x) => x.Cost,
+					range: (CostMin, CostMax)
+				);
+	}
+
 }

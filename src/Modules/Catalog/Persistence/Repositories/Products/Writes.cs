@@ -1,8 +1,8 @@
-﻿using CustomCADs.Catalog.Domain.Products;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
-using CustomCADs.Catalog.Persistence.ShadowEntities;
+﻿using CustomCADs.Modules.Catalog.Domain.Products;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
+using CustomCADs.Modules.Catalog.Persistence.ShadowEntities;
 
-namespace CustomCADs.Catalog.Persistence.Repositories.Products;
+namespace CustomCADs.Modules.Catalog.Persistence.Repositories.Products;
 
 public class Writes(CatalogContext context) : IProductWrites
 {

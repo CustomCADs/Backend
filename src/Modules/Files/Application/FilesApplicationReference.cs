@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Files.Application;
+namespace CustomCADs.Modules.Files.Application;
 
 public class FilesApplicationReference
 {

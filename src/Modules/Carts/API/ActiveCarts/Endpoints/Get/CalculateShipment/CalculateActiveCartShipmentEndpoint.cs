@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Get.CalculateShipment;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Get.CalculateShipment;
 
 public class CalculateActiveCartShipmentEndpoint(IRequestSender sender)
 	: Endpoint<CalculateActiveCartShipmentRequest, ICollection<CalculateActiveCartShipmentResponse>, CalculateActiveCartShipmentMappper>
@@ -20,7 +20,7 @@ public class CalculateActiveCartShipmentEndpoint(IRequestSender sender)
 	{
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
 			query: new CalculateActiveCartShipmentQuery(
-				CallerId: User.GetAccountId(),
+				CallerId: User.AccountId,
 				Address: new(req.Country, req.City, req.Street)
 			),
 			ct: ct

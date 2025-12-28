@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Stats;
+﻿namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.Stats;
 
 public sealed record GetCustomsStatsResponse(
 	int PendingCount,

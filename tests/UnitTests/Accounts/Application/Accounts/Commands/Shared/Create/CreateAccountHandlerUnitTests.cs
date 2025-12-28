@@ -1,6 +1,6 @@
-﻿using CustomCADs.Accounts.Application.Accounts.Commands.Shared;
-using CustomCADs.Accounts.Domain.Repositories;
-using CustomCADs.Accounts.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Commands.Shared;
+using CustomCADs.Modules.Accounts.Domain.Repositories;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.UseCases.Accounts.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 

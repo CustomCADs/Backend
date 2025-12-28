@@ -1,7 +1,7 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.Remove;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Remove;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Delete;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Delete;
 
 public sealed class DeleteActiveCartItemEndpoint(IRequestSender sender)
 	: Endpoint<DeleteActiveCartItemRequest>
@@ -21,7 +21,7 @@ public sealed class DeleteActiveCartItemEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new RemoveActiveCartItemCommand(
 				ProductId: ProductId.New(req.ProductId),
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

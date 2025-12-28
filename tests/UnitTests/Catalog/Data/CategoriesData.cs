@@ -1,4 +1,4 @@
-﻿using CustomCADs.Catalog.Domain.Categories;
+﻿using CustomCADs.Modules.Catalog.Domain.Categories;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Catalog.Data;

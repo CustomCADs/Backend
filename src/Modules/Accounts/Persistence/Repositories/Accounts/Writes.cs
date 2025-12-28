@@ -1,9 +1,9 @@
-using CustomCADs.Accounts.Domain.Accounts;
-using CustomCADs.Accounts.Domain.Repositories.Writes;
-using CustomCADs.Accounts.Persistence.ShadowEntities;
+using CustomCADs.Modules.Accounts.Domain.Accounts;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
+using CustomCADs.Modules.Accounts.Persistence.ShadowEntities;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Accounts.Persistence.Repositories.Accounts;
+namespace CustomCADs.Modules.Accounts.Persistence.Repositories.Accounts;
 
 public class Writes(AccountsContext context) : IAccountWrites
 {

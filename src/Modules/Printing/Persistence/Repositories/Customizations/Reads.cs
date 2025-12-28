@@ -1,9 +1,9 @@
-﻿using CustomCADs.Printing.Domain.Customizations;
-using CustomCADs.Printing.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 using CustomCADs.Shared.Persistence.Extensions;
 
-namespace CustomCADs.Printing.Persistence.Repositories.Customizations;
+namespace CustomCADs.Modules.Printing.Persistence.Repositories.Customizations;
 
 public class Reads(PrintingContext context) : ICustomizationReads
 {

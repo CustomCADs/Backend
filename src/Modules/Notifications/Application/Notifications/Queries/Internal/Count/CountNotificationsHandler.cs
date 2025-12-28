@@ -1,8 +1,8 @@
-﻿using CustomCADs.Notifications.Domain.Notifications.Enums;
-using CustomCADs.Notifications.Domain.Repositories.Reads;
-using CustomCADs.Shared.Application;
+﻿using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Extensions;
 
-namespace CustomCADs.Notifications.Application.Notifications.Queries.Internal.Count;
+namespace CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.Count;
 
 public sealed class CountNotificationsHandler(INotificationReads reads)
 	: IQueryHandler<CountNotificationsQuery, CountNotificationsDto>

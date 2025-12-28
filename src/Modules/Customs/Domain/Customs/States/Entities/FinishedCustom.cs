@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Domain.Bases.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Customs.Domain.Customs.States.Entities;
+namespace CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
 
 public class FinishedCustom : BaseEntity
 {

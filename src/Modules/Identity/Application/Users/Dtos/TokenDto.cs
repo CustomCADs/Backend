@@ -1,3 +1,3 @@
-﻿namespace CustomCADs.Identity.Application.Users.Dtos;
+﻿namespace CustomCADs.Modules.Identity.Application.Users.Dtos;
 
 public record TokenDto(string Value, DateTimeOffset ExpiresAt);

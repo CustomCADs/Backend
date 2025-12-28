@@ -1,6 +1,6 @@
-﻿using CustomCADs.Files.Application.Cads.Queries.Internal.PresignedUrls.Put;
-using CustomCADs.Files.Application.Cads.Storage;
-using CustomCADs.Files.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Files.Application.Cads.Queries.Internal.PresignedUrls.Put;
+using CustomCADs.Modules.Files.Application.Cads.Storage;
+using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Application.Policies;
 

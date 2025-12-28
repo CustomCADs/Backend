@@ -1,7 +1,7 @@
-﻿using CustomCADs.Identity.Application.Users.Commands.Internal.VerificationEmail;
+﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerificationEmail;
 using CustomCADs.Shared.API.Attributes;
 
-namespace CustomCADs.Identity.API.Identity.Post.RetryVerifyEmail;
+namespace CustomCADs.Modules.Identity.API.Identity.Post.RetryVerifyEmail;
 
 public sealed class RetryConfirmEmailEndpoint(IRequestSender sender)
 	: Endpoint<RetryConfirmEmailRequest>

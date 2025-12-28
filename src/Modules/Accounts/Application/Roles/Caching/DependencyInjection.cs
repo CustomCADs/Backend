@@ -1,10 +1,13 @@
-using CustomCADs.Accounts.Application.Roles.Caching;
+using CustomCADs.Modules.Accounts.Application.Roles.Caching;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-	public static IServiceCollection AddRoleCaching(this IServiceCollection services)
-		=> services.AddScoped<BaseCachingService<RoleId, Role>, RoleCachingService>();
+	extension(IServiceCollection services)
+	{
+		public IServiceCollection AddRoleCaching()
+			=> services.AddScoped<BaseCachingService<RoleId, Role>, RoleCachingService>();
+	}
 }

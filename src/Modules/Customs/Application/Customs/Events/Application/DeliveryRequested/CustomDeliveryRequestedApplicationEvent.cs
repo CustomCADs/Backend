@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Domain.Bases.Events;
 
-namespace CustomCADs.Customs.Application.Customs.Events.Application.DeliveryRequested;
+namespace CustomCADs.Modules.Customs.Application.Customs.Events.Application.DeliveryRequested;
 
 public record CustomDeliveryRequestedApplicationEvent(
 	CustomId CustomId,

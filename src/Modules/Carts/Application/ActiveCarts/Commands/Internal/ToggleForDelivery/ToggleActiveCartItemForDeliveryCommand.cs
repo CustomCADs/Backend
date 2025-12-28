@@ -2,7 +2,7 @@
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Carts.Application.ActiveCarts.Commands.Internal.ToggleForDelivery;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.ToggleForDelivery;
 
 public sealed record ToggleActiveCartItemForDeliveryCommand(
 	AccountId CallerId,

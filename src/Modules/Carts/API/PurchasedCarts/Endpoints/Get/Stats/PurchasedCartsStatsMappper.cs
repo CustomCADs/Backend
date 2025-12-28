@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.TypedIds.Carts;
 
-namespace CustomCADs.Carts.API.PurchasedCarts.Endpoints.Get.Stats;
+namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints.Get.Stats;
 
 using CountPurchasedCartsDto = (int TotalCartCount, Dictionary<PurchasedCartId, int> Counts);
 

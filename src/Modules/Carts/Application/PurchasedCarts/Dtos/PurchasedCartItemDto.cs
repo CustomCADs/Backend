@@ -2,7 +2,7 @@
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Dtos;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Dtos;
 
 public record PurchasedCartItemDto(
 	int Quantity,

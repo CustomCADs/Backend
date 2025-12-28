@@ -1,6 +1,6 @@
-﻿using CustomCADs.Files.Application.Images.Commands.Internal.Edit;
+﻿using CustomCADs.Modules.Files.Application.Images.Commands.Internal.Edit;
 
-namespace CustomCADs.Files.API.Images.Endpoints.Put;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Put;
 
 public sealed class PutImageEndpoint(IRequestSender sender) : Endpoint<PutImageRequest>
 {
@@ -20,7 +20,7 @@ public sealed class PutImageEndpoint(IRequestSender sender) : Endpoint<PutImageR
 			command: new EditImageCommand(
 				Id: ImageId.New(req.Id),
 				ContentType: req.ContentType,
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

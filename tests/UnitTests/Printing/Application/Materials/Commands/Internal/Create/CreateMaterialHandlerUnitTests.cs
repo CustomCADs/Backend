@@ -1,6 +1,6 @@
-using CustomCADs.Printing.Application.Materials.Commands.Internal.Create;
-using CustomCADs.Printing.Domain.Materials;
-using CustomCADs.Printing.Domain.Repositories;
+using CustomCADs.Modules.Printing.Application.Materials.Commands.Internal.Create;
+using CustomCADs.Modules.Printing.Domain.Materials;
+using CustomCADs.Modules.Printing.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Cache;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Images.Queries;

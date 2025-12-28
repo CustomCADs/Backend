@@ -1,8 +1,8 @@
-﻿using CustomCADs.Printing.API.Customizations.Endpoints.Get;
-using CustomCADs.Printing.Application.Customizations.Commands.Internal.Create;
-using CustomCADs.Printing.Application.Customizations.Queries.Internal.GetById;
+﻿using CustomCADs.Modules.Printing.API.Customizations.Endpoints.Get;
+using CustomCADs.Modules.Printing.Application.Customizations.Commands.Internal.Create;
+using CustomCADs.Modules.Printing.Application.Customizations.Queries.Internal.GetById;
 
-namespace CustomCADs.Printing.API.Customizations.Endpoints.Post;
+namespace CustomCADs.Modules.Printing.API.Customizations.Endpoints.Post;
 
 public class CreateCustomizationEndpoint(IRequestSender sender)
 	: Endpoint<CreateCustomizationRequest, CustomizationResponse>

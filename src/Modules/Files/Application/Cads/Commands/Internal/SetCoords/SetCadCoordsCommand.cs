@@ -2,7 +2,7 @@
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Files.Application.Cads.Commands.Internal.SetCoords;
+namespace CustomCADs.Modules.Files.Application.Cads.Commands.Internal.SetCoords;
 
 public sealed record SetCadCoordsCommand(
 	CadId Id,

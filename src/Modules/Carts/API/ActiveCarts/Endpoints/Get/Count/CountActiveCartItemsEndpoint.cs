@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Application.ActiveCarts.Queries.Internal.Count;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.Count;
 
-namespace CustomCADs.Carts.API.ActiveCarts.Endpoints.Get.Count;
+namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Get.Count;
 
 public sealed class CountActiveCartItemsEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<int>
@@ -19,7 +19,7 @@ public sealed class CountActiveCartItemsEndpoint(IRequestSender sender)
 	{
 		int count = await sender.SendQueryAsync(
 			query: new CountActiveCartItemsQuery(
-				CallerId: User.GetAccountId()
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

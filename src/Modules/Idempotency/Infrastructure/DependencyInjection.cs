@@ -1,5 +1,5 @@
-using CustomCADs.Idempotency.Domain.IdempotencyKeys;
-using CustomCADs.Idempotency.Infrastructure.BackgroundJobs;
+using CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
+using CustomCADs.Modules.Idempotency.Infrastructure.BackgroundJobs;
 using Quartz;
 
 #pragma warning disable IDE0130
@@ -9,14 +9,17 @@ using static IdempotencyKeyConstants;
 
 public static class DependencyInjection
 {
-	public static void AddIdempotencyBackgroundJobs(this IServiceCollectionQuartzConfigurator configurator)
+	extension(IServiceCollectionQuartzConfigurator configurator)
 	{
-		configurator.AddTrigger(conf => conf
-			.ForJob(configurator.AddJobAndReturnKey<ClearIdempotencyKeysJob>())
-			.WithSimpleSchedule(schedule =>
-				schedule
-					.WithInterval(TimeSpan.FromHours(ClearIdempotencyKeysIntervalHours))
-					.RepeatForever()
-			));
+		public void AddIdempotencyBackgroundJobs()
+			=> configurator.AddTrigger(conf => conf
+				.ForJob(configurator.AddJobAndReturnKey<ClearIdempotencyKeysJob>())
+				.WithSimpleSchedule(schedule =>
+					schedule
+						.WithInterval(TimeSpan.FromHours(ClearIdempotencyKeysIntervalHours))
+						.RepeatForever()
+				)
+			);
 	}
+
 }

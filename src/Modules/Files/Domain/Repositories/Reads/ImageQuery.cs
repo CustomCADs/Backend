@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Files.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Files.Domain.Repositories.Reads;
 
 public record ImageQuery(
 	Pagination Pagination,

@@ -1,4 +1,4 @@
-namespace CustomCADs.Identity.Application.Contracts;
+namespace CustomCADs.Modules.Identity.Application.Contracts;
 
 public interface IRoleService
 {

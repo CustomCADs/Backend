@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Files.Domain.Cads.ValueObjects;
+﻿namespace CustomCADs.Modules.Files.Domain.Cads.ValueObjects;
 
 public record Coordinates(
 	decimal X = 0,

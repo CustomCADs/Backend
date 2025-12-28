@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.Domain.Customs.States.Implementations;
+namespace CustomCADs.Modules.Customs.Domain.Customs.States.Implementations;
 
 public class CompletedCustomState : BaseCustomState
 {

@@ -1,5 +1,5 @@
-using CustomCADs.Printing.Application.Customizations.Queries.Shared.Exists;
-using CustomCADs.Printing.Domain.Repositories.Reads;
+using CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Exists;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.UnitTests.Printing.Application.Customizations.Queries.Shared.Exists;

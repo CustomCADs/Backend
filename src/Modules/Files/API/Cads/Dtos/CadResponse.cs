@@ -1,6 +1,6 @@
 using CustomCADs.Shared.Application.Dtos.Files;
 
-namespace CustomCADs.Files.API.Cads.Dtos;
+namespace CustomCADs.Modules.Files.API.Cads.Dtos;
 
 public record CadResponse(
 	Guid Id,

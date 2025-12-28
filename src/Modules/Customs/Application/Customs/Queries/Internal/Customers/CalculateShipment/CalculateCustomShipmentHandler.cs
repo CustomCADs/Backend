@@ -1,10 +1,10 @@
-﻿using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
-namespace CustomCADs.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment;
 
 public sealed class CalculateCustomShipmentHandler(ICustomReads reads, IRequestSender sender)
 	: IQueryHandler<CalculateCustomShipmentQuery, CalculateShipmentDto[]>

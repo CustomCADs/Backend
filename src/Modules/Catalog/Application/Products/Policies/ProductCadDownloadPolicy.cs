@@ -1,9 +1,9 @@
-using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Policies;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Catalog.Application.Products.Policies;
+namespace CustomCADs.Modules.Catalog.Application.Products.Policies;
 
 public class ProductCadDownloadPolicy(IProductReads reads) : IFileDownloadPolicy<CadId>
 {

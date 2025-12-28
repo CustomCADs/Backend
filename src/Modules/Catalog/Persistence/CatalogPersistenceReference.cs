@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Catalog.Persistence;
+namespace CustomCADs.Modules.Catalog.Persistence;
 
 public class CatalogPersistenceReference
 {

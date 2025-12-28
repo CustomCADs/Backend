@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Printing.Application.Materials.Queries.Internal.GetById;
+﻿namespace CustomCADs.Modules.Printing.Application.Materials.Queries.Internal.GetById;
 
 public sealed record GetMaterialByIdQuery(
 	MaterialId Id

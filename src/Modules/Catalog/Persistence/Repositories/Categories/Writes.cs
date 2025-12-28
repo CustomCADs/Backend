@@ -1,7 +1,7 @@
-﻿using CustomCADs.Catalog.Domain.Categories;
-using CustomCADs.Catalog.Domain.Repositories.Writes;
+﻿using CustomCADs.Modules.Catalog.Domain.Categories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 
-namespace CustomCADs.Catalog.Persistence.Repositories.Categories;
+namespace CustomCADs.Modules.Catalog.Persistence.Repositories.Categories;
 
 public class Writes(CatalogContext context) : ICategoryWrites
 {

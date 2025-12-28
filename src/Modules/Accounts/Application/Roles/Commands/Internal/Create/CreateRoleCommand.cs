@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Accounts.Application.Roles.Commands.Internal.Create;
+﻿namespace CustomCADs.Modules.Accounts.Application.Roles.Commands.Internal.Create;
 
 public sealed record CreateRoleCommand(
 	string Name,

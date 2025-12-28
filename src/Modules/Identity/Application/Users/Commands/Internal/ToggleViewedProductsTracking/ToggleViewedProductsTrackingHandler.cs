@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.Events.Identity;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Identity.Application.Users.Commands.Internal.ToggleViewedProductsTracking;
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ToggleViewedProductsTracking;
 
 public sealed class ToggleViewedProductsTrackingHandler(
 	IUserService service,

@@ -1,7 +1,7 @@
-﻿using CustomCADs.Printing.Domain.Repositories;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories;
 using CustomCADs.Shared.Domain.Bases.Entities;
 
-namespace CustomCADs.Printing.Persistence.Repositories;
+namespace CustomCADs.Modules.Printing.Persistence.Repositories;
 
 public class Writes<TEntity>(PrintingContext context) : IWrites<TEntity> where TEntity : BaseAggregateRoot
 {

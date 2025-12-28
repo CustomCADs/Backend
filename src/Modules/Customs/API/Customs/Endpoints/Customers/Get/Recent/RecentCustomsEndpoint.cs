@@ -1,9 +1,9 @@
-﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
-using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Enums;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.Recent;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.Recent;
 
 public sealed class RecentCustomsEndpoint(IRequestSender sender)
 	: Endpoint<RecentCustomsRequest, RecentCustomsResponse[], RecentCustomsMapper>
@@ -22,7 +22,7 @@ public sealed class RecentCustomsEndpoint(IRequestSender sender)
 	{
 		Result<GetAllCustomsDto> result = await sender.SendQueryAsync(
 			query: new GetAllCustomsQuery(
-				CustomerId: User.GetAccountId(),
+				CustomerId: User.AccountId,
 				Sorting: new(CustomSortingType.OrderedAt, SortingDirection.Descending),
 				Pagination: new(Limit: req.Limit)
 			),

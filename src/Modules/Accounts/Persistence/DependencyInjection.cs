@@ -1,63 +1,60 @@
-﻿using CustomCADs.Accounts.Domain.Repositories;
-using CustomCADs.Accounts.Domain.Repositories.Reads;
-using CustomCADs.Accounts.Domain.Repositories.Writes;
-using CustomCADs.Accounts.Persistence;
-using CustomCADs.Accounts.Persistence.Repositories;
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
+using CustomCADs.Modules.Accounts.Persistence;
+using CustomCADs.Modules.Accounts.Persistence.Repositories;
 using CustomCADs.Shared.Persistence;
 
 #pragma warning disable IDE0130
 namespace Microsoft.Extensions.DependencyInjection;
 
 using static PersistenceConstants;
-using AccountReads = CustomCADs.Accounts.Persistence.Repositories.Accounts.Reads;
-using AccountWrites = CustomCADs.Accounts.Persistence.Repositories.Accounts.Writes;
-using RoleReads = CustomCADs.Accounts.Persistence.Repositories.Roles.Reads;
-using RoleWrites = CustomCADs.Accounts.Persistence.Repositories.Roles.Writes;
+using AccountReads = CustomCADs.Modules.Accounts.Persistence.Repositories.Accounts.Reads;
+using AccountWrites = CustomCADs.Modules.Accounts.Persistence.Repositories.Accounts.Writes;
+using RoleReads = CustomCADs.Modules.Accounts.Persistence.Repositories.Roles.Reads;
+using RoleWrites = CustomCADs.Modules.Accounts.Persistence.Repositories.Roles.Writes;
 
 public static class DependencyInjection
 {
-	public static async Task<IServiceProvider> UpdateAccountsContextAsync(this IServiceProvider provider)
+	extension(IServiceProvider provider)
 	{
-		AccountsContext context = provider.GetRequiredService<AccountsContext>();
-		await context.Database.MigrateAsync().ConfigureAwait(false);
+		public async Task<IServiceProvider> UpdateAccountsContextAsync()
+		{
+			AccountsContext context = provider.GetRequiredService<AccountsContext>();
+			await context.Database.MigrateAsync().ConfigureAwait(false);
 
-		return provider;
+			return provider;
+		}
 	}
 
-	public static IServiceCollection AddAccountsPersistence(this IServiceCollection services, string connectionString)
-		=> services
-			.AddContext(connectionString)
-			.AddReads()
-			.AddWrites()
-			.AddUnitOfWork();
-
-	private static IServiceCollection AddContext(this IServiceCollection services, string connectionString)
-		=> services.AddDbContext<AccountsContext>(options =>
-			options.UseNpgsql(connectionString, opt =>
-				opt.MigrationsHistoryTable(MigrationsTable, Schemes.Accounts)
-			)
-		);
-
-	private static IServiceCollection AddReads(this IServiceCollection services)
+	extension(IServiceCollection services)
 	{
-		services.AddScoped<IRoleReads, RoleReads>();
-		services.AddScoped<IAccountReads, AccountReads>();
+		public IServiceCollection AddAccountsPersistence(string connectionString)
+			=> services
+				.AddContext(connectionString)
+				.AddReads()
+				.AddWrites()
+				.AddUnitOfWork();
 
-		return services;
-	}
+		private IServiceCollection AddContext(string connectionString)
+			=> services.AddDbContext<AccountsContext>(options =>
+				options.UseNpgsql(connectionString, opt =>
+					opt.MigrationsHistoryTable(MigrationsTable, Schemes.Accounts)
+				)
+			);
 
-	private static IServiceCollection AddWrites(this IServiceCollection services)
-	{
-		services.AddScoped<IAccountWrites, AccountWrites>();
-		services.AddScoped<IRoleWrites, RoleWrites>();
+		private IServiceCollection AddReads()
+			=> services
+				.AddScoped<IRoleReads, RoleReads>()
+				.AddScoped<IAccountReads, AccountReads>();
 
-		return services;
-	}
+		private IServiceCollection AddWrites()
+			=> services
+				.AddScoped<IRoleWrites, RoleWrites>()
+				.AddScoped<IAccountWrites, AccountWrites>();
 
-	private static IServiceCollection AddUnitOfWork(this IServiceCollection services)
-	{
-		services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-		return services;
+		private IServiceCollection AddUnitOfWork()
+			=> services
+				.AddScoped<IUnitOfWork, UnitOfWork>();
 	}
 }

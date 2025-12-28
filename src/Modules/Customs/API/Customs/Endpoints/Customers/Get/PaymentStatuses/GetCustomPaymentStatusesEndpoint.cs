@@ -1,7 +1,7 @@
-﻿using CustomCADs.Customs.Application.Customs.Queries.Internal.Shared.GetPaymentStatuses;
-using CustomCADs.Customs.Domain.Customs.Enums;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetPaymentStatuses;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 
-namespace CustomCADs.Customs.API.Customs.Endpoints.Customers.Get.PaymentStatuses;
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Get.PaymentStatuses;
 
 public sealed class GetCustomPaymentStatusesEndpoint(IRequestSender sender)
 	: EndpointWithoutRequest<PaymentStatus[]>

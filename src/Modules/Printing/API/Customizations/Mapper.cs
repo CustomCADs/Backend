@@ -1,15 +1,19 @@
-﻿namespace CustomCADs.Printing.API.Customizations;
+﻿namespace CustomCADs.Modules.Printing.API.Customizations;
 
 internal static class Mapper
 {
-	internal static CustomizationResponse ToResponse(this CustomizationDto customization)
-		=> new(
-			Id: customization.Id.Value,
-			Scale: customization.Scale,
-			Infill: customization.Infill,
-			Weight: customization.Weight,
-			Cost: customization.Cost,
-			Color: customization.Color,
-			MaterialId: customization.MaterialId.Value
-		);
+	extension(CustomizationDto customization)
+	{
+		internal CustomizationResponse ToResponse()
+			=> new(
+				Id: customization.Id.Value,
+				Scale: customization.Scale,
+				Infill: customization.Infill,
+				Weight: customization.Weight,
+				Cost: customization.Cost,
+				Color: customization.Color,
+				MaterialId: customization.MaterialId.Value
+			);
+	}
+
 }

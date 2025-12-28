@@ -1,7 +1,8 @@
-﻿using CustomCADs.Catalog.Domain.Products.Enums;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Extensions;
 
-namespace CustomCADs.Catalog.Application.Products.Queries.Internal.Creator.Count;
+namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Creator.Count;
 
 public sealed class ProductsCountHandler(IProductReads reads)
 	: IQueryHandler<ProductsCountQuery, ProductsCountDto>

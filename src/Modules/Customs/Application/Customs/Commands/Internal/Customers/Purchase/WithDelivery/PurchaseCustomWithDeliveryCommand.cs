@@ -3,7 +3,7 @@ using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
+namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 
 public sealed record PurchaseCustomWithDeliveryCommand(
 	CustomId Id,

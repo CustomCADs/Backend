@@ -1,0 +1,86 @@
+<Project>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
+		<NSPrefix>CustomCADs</NSPrefix>
+		<RootNamespace>$(NSPrefix).$(MSBuildProjectName)</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- System -->
+		<IsModulesProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Modules'))">true</IsModulesProject>
+		<IsSharedProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Shared'))">true</IsSharedProject>
+		<IsToolsProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Tools'))">true</IsToolsProject>
+		<IsPresentationProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Presentation'))">true</IsPresentationProject>
+		<IsUnitTestsProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('UnitTests'))">true</IsUnitTestsProject>
+
+		<!-- Modules -->
+		<IsIdentityProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').Contains('Identity'))">true</IsIdentityProject>
+
+		<!-- Architecture -->
+		<IsDomainProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').EndsWith('Domain'))">true</IsDomainProject>
+		<IsPersistenceProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').EndsWith('Persistence'))">true</IsPersistenceProject>
+		<IsApplicationProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').EndsWith('Application'))">true</IsApplicationProject>
+		<IsInfrastructureProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').EndsWith('Infrastructure'))">true</IsInfrastructureProject>
+		<IsAPIProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').EndsWith('API'))">true</IsAPIProject>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(IsUnitTestsProject) == 'true'">
+		<LangVersion>latest</LangVersion>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup Condition="$(IsUnitTestsProject) == 'true'">
+		<PackageReference Include="coverlet.collector" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Moq" />
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.runner.visualstudio">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<!-- Domain Items -->
+	<ItemGroup Condition="$(IsDomainProject) == 'true'">
+		<ProjectReference Include="$(SolutionDir)/src/Shared/Domain/Shared.Domain.csproj" />
+	</ItemGroup>
+
+	<!-- Persistence Items -->
+	<ItemGroup Condition="$(IsPersistenceProject) == 'true'">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<ProjectReference Include="$(SolutionDir)/src/Shared/Persistence/Shared.Persistence.csproj" />
+	</ItemGroup>
+
+	<!-- Application Items -->
+	<ItemGroup Condition="$(IsApplicationProject) == 'true'">
+		<ProjectReference Include="$(SolutionDir)/src/Shared/Application/Shared.Application.csproj" />
+	</ItemGroup>
+
+	<!-- Infrastructure Items -->
+	<ItemGroup Condition="$(IsInfrastructureProject) == 'true' AND $(IsIdentityProject) != 'true'">
+		<ProjectReference Include="$(SolutionDir)/src/Shared/Infrastructure/Shared.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<!-- API Items -->
+	<ItemGroup Condition="$(IsAPIProject) == 'true'">
+		<PackageReference Include="FastEndpoints" />
+		<ProjectReference Include="$(SolutionDir)/src/Shared/API/Shared.API.csproj" />
+	</ItemGroup>
+
+	<!-- API Properties -->
+	<PropertyGroup Condition="$(IsAPIProject) == 'true'">
+		<NoWarn>$(NoWarn);CA2016</NoWarn>
+	</PropertyGroup>
+
+</Project>

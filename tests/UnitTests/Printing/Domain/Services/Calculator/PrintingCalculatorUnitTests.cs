@@ -1,4 +1,4 @@
-using CustomCADs.Printing.Domain.Services;
+using CustomCADs.Modules.Printing.Domain.Services;
 
 namespace CustomCADs.UnitTests.Printing.Domain.Services.Calculator;
 

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Carts.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Queries.Internal.Count.Items;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.Count.Items;
 
 public sealed class CountPurchasedCartItemsHandler(IPurchasedCartReads reads)
 	: IQueryHandler<CountPurchasedCartItemsQuery, Dictionary<PurchasedCartId, int>>

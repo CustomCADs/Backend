@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Customs.API.Customs.Endpoints.Customers;
+﻿namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers;
 
 using static APIConstants;
 using static DomainConstants.Roles;

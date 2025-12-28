@@ -1,6 +1,6 @@
-using CustomCADs.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetAll;
 
-namespace CustomCADs.Catalog.API.Products.Endpoints.Designer.Get.Reported;
+namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Designer.Get.Reported;
 
 public class GetReportedProductsMapper : ResponseMapper<GetReportedProductsResponse, DesignerGetAllProductsDto>
 {

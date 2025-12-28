@@ -1,10 +1,10 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using CustomCADs.Files.Application.Contracts;
+using CustomCADs.Modules.Files.Application.Contracts;
 using CustomCADs.Shared.Application.Dtos.Files;
 using Microsoft.Extensions.Options;
 
-namespace CustomCADs.Files.Infrastructure;
+namespace CustomCADs.Modules.Files.Infrastructure;
 
 public sealed class AmazonStorageService(IAmazonS3 s3Client, IOptions<StorageSettings> settings) : IStorageService
 {

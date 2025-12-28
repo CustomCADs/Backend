@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CustomCADs.Carts.Persistence;
+namespace CustomCADs.Modules.Carts.Persistence;
 
 public class CartsPersistenceReference
 {

@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="$(SolutionDir)\src\Modules\Carts\Application\Modules.Carts.Application.csproj" />
+		<ProjectReference Include="..\Data\UnitTests.Carts.Data.csproj" />
+	</ItemGroup>
+
+</Project>

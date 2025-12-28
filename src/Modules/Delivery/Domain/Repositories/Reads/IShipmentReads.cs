@@ -1,8 +1,8 @@
-﻿using CustomCADs.Delivery.Domain.Shipments;
-using CustomCADs.Delivery.Domain.Shipments.Enums;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Delivery.Domain.Repositories.Reads;
+namespace CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
 
 public interface IShipmentReads
 {

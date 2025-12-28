@@ -1,11 +1,11 @@
-﻿using CustomCADs.Catalog.Domain.Products;
-using CustomCADs.Catalog.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Catalog.Domain.Products;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Persistence.Extensions;
 
-namespace CustomCADs.Catalog.Persistence.Repositories.Products;
+namespace CustomCADs.Modules.Catalog.Persistence.Repositories.Products;
 
 public sealed class Reads(CatalogContext context) : IProductReads
 {

@@ -1,6 +1,6 @@
-﻿using CustomCADs.Customs.Domain.Customs;
-using CustomCADs.Customs.Domain.Customs.Enums;
-using CustomCADs.Customs.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Customs.Domain.Customs;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Customs;
@@ -8,7 +8,7 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 using CustomCADs.Shared.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Customs.Persistence.Repositories.Customs;
+namespace CustomCADs.Modules.Customs.Persistence.Repositories.Customs;
 
 public sealed class Reads(CustomsContext context) : ICustomReads
 {

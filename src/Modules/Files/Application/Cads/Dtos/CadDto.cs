@@ -1,7 +1,7 @@
 using CustomCADs.Shared.Application.Dtos.Files;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.Files.Application.Cads.Dtos;
+namespace CustomCADs.Modules.Files.Application.Cads.Dtos;
 
 public record CadDto(
 	CadId Id,

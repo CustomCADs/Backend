@@ -1,8 +1,8 @@
-﻿using CustomCADs.Printing.Domain.Repositories;
-using CustomCADs.Printing.Domain.Repositories.Reads;
+﻿using CustomCADs.Modules.Printing.Domain.Repositories;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Customizations.Commands;
 
-namespace CustomCADs.Printing.Application.Customizations.Commands.Shared.Delete;
+namespace CustomCADs.Modules.Printing.Application.Customizations.Commands.Shared.Delete;
 
 public sealed class DeleteCustomizationHandler(
 	ICustomizationReads reads,

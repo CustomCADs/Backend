@@ -1,7 +1,7 @@
-using CustomCADs.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 
-namespace CustomCADs.Notifications.API.Notifications.Endpoints.Get.All;
+namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints.Get.All;
 
 public record GetNotificationsResponse(
 	Guid Id,

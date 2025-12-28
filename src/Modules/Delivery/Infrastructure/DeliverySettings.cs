@@ -1,6 +1,6 @@
 ﻿using SpeedyNET.Abstractions.UserConfigs;
 
-namespace CustomCADs.Delivery.Infrastructure;
+namespace CustomCADs.Modules.Delivery.Infrastructure;
 
 public record DeliverySettings(
 	SpeedyAccount Account,

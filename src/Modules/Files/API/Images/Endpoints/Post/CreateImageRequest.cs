@@ -1,4 +1,4 @@
-namespace CustomCADs.Files.API.Images.Endpoints.Post;
+namespace CustomCADs.Modules.Files.API.Images.Endpoints.Post;
 
 public record CreateImageRequest(
 	string GeneratedKey,

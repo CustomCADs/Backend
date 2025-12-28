@@ -1,5 +1,5 @@
-﻿using CustomCADs.Carts.Domain.PurchasedCarts.ValueObjects;
-using CustomCADs.Carts.Domain.Repositories;
+﻿using CustomCADs.Modules.Carts.Domain.PurchasedCarts.ValueObjects;
+using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Catalog;
@@ -10,7 +10,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
-namespace CustomCADs.Carts.Application.PurchasedCarts.Commands.Internal.Create;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 
 public sealed class CreatePurchasedCartHandler(
 	IWrites<PurchasedCart> writes,

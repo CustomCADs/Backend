@@ -1,49 +1,40 @@
-using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.Bases.Id;
 
 namespace CustomCADs.Shared.Application.Policies;
 
 public static class IFileAccessPolicyExtensions
 {
-	public static async Task EvaluateAsync<TTypedId>(
-		this IEnumerable<IFileDownloadPolicy<TTypedId>> policies,
-		IFileDownloadPolicy<TTypedId>.FileContext context,
-		FileContextType type
-	) where TTypedId : IEntityId<Guid>
+	extension<TTypedId>(IEnumerable<IFileDownloadPolicy<TTypedId>> policies) where TTypedId : IEntityId<Guid>
 	{
-		foreach (IFileDownloadPolicy<TTypedId> policy in policies.Where(x => x.Type == type))
+		public async Task EvaluateAsync(IFileDownloadPolicy<TTypedId>.FileContext context, FileContextType type)
 		{
-			await policy.EnsureDownloadGrantedAsync(context).ConfigureAwait(false);
+			foreach (IFileDownloadPolicy<TTypedId> policy in policies.Where(x => x.Type == type))
+			{
+				await policy.EnsureDownloadGrantedAsync(context).ConfigureAwait(false);
+			}
 		}
 	}
 
-	public static async Task EvaluateAsync<TTypedId>(
-		this IEnumerable<IFileUploadPolicy<TTypedId>> policies,
-		IFileUploadPolicy<TTypedId>.FileContext context,
-		FileContextType type
-	) where TTypedId : IEntityId<Guid>
+	extension<TTypedId>(IEnumerable<IFileUploadPolicy<TTypedId>> policies) where TTypedId : IEntityId<Guid>
 	{
-		foreach (IFileUploadPolicy<TTypedId> policy in policies.Where(x => x.Type == type))
+		public async Task EvaluateAsync(IFileUploadPolicy<TTypedId>.FileContext context, FileContextType type)
 		{
-			await policy.EnsureUploadGrantedAsync(context).ConfigureAwait(false);
+			foreach (IFileUploadPolicy<TTypedId> policy in policies.Where(x => x.Type == type))
+			{
+				await policy.EnsureUploadGrantedAsync(context).ConfigureAwait(false);
+			}
 		}
 	}
 
-	public static async Task EvaluateAsync<TTypedId>(
-		this IEnumerable<IFileReplacePolicy<TTypedId>> policies,
-		IFileReplacePolicy<TTypedId>.FileContext context,
-		FileContextType type
-	) where TTypedId : IEntityId<Guid>
+	extension<TTypedId>(IEnumerable<IFileReplacePolicy<TTypedId>> policies) where TTypedId : IEntityId<Guid>
 	{
-		var applicablePolicies = policies.Where(x => x.Type == type);
-		if (!applicablePolicies.Any())
+		public async Task EvaluateAsync(IFileReplacePolicy<TTypedId>.FileContext context, FileContextType type)
 		{
-			throw new CustomException("No Applicable policies found - operation blocked!");
-		}
-
-		foreach (IFileReplacePolicy<TTypedId> policy in applicablePolicies)
-		{
-			await policy.EnsureReplaceGrantedAsync(context).ConfigureAwait(false);
+			foreach (IFileReplacePolicy<TTypedId> policy in policies.Where(x => x.Type == type))
+			{
+				await policy.EnsureReplaceGrantedAsync(context).ConfigureAwait(false);
+			}
 		}
 	}
+
 }
