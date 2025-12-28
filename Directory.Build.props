@@ -12,22 +12,6 @@
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(IsUnitTestsProject) == 'true'">
-		<LangVersion>latest</LangVersion>
-		<IsPackable>false</IsPackable>
-		<NoWarn>$(NoWarn);CA2007</NoWarn>
-	</PropertyGroup>
-
-	<ItemGroup Condition="$(IsUnitTestsProject) == 'true'">
-		<PackageReference Include="coverlet.collector" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="Moq" />
-		<PackageReference Include="xunit" />
-		<PackageReference Include="xunit.runner.visualstudio">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>	</ItemGroup>
-
 	<PropertyGroup>
 		<!-- System -->
 		<IsModulesProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Modules'))">true</IsModulesProject>
@@ -46,6 +30,22 @@
 		<IsInfrastructureProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').EndsWith('Infrastructure'))">true</IsInfrastructureProject>
 		<IsAPIProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').EndsWith('API'))">true</IsAPIProject>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="$(IsUnitTestsProject) == 'true'">
+		<LangVersion>latest</LangVersion>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup Condition="$(IsUnitTestsProject) == 'true'">
+		<PackageReference Include="coverlet.collector" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Moq" />
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.runner.visualstudio">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
 	<!-- Domain Items -->
 	<ItemGroup Condition="$(IsDomainProject) == 'true'">
