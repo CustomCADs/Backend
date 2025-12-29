@@ -2,6 +2,9 @@ name: Deliver Production to AWS ECR Action
 
 on:
     workflow_call:
+        secrets:
+            token:
+                required: true
 
 jobs:
     publish:
@@ -34,7 +37,7 @@ jobs:
 
             - name: Publish SDK to NPM
               env:
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.token }}
               run: |
                   cd sdk/js/react
                   npm publish --access public

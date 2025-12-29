@@ -22,3 +22,5 @@ jobs:
   publish-sdk:
     needs: deliver
     uses: ./.github/workflows/sdk-publish.yml
+    secrets:
+      token: ${{ secrets.NPM_GAT }}
