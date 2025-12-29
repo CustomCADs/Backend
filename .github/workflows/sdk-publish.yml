@@ -1,10 +1,5 @@
 name: Deliver Production to AWS ECR Action
 
-permissions:
-    id-token: write
-    contents: read
-    packages: write
-
 on:
     workflow_call:
 
