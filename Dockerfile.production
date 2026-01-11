@@ -1,6 +1,4 @@
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-USER app
-WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
@@ -23,9 +21,27 @@ RUN dotnet build -c $BUILD_CONFIGURATION
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Publish Entrypoint
+RUN dotnet publish src/Presentation/Presentation.csproj -c $BUILD_CONFIGURATION -o /app/presentation /p:UseAppHost=false
+
+# Publish Tools
+RUN dotnet publish src/Tools/Migrations/Tools.Migrations.csproj -c $BUILD_CONFIGURATION -o /app/migrations
+RUN dotnet publish src/Tools/Identity/Tools.Identity.csproj -c $BUILD_CONFIGURATION -o /app/identity
+
+# Publish Scripts
+COPY full-migration.sh .
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Presentation.dll"]
+
+# Copy Migrations script & chmod it
+COPY --from=publish /source/full-migration.sh .
+RUN chmod +x full-migration.sh
+
+# Copy all compiled application code
+COPY --from=publish /app .
+
+# Expose Entrypoint and set User
+ENTRYPOINT ["dotnet", "presentation/Presentation.dll"]
+USER app

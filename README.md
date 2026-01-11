@@ -109,7 +109,7 @@ It’s built as a **Modular Monolith** following **Clean Architecture**, **DDD**
 ├── .github/
 ├── .terraform/
 ├── .platform/
-├── Dockerfile
+├── Dockerfile.dev
 ├── Dockerfile.staging
 ├── Dockerfile.production
 └── README.md

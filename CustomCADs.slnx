@@ -164,7 +164,7 @@
 
 	<Folder Name="/.deploy/docker/">
 		<File Path=".dockerignore" />
-		<File Path="Dockerfile" />
+		<File Path="Dockerfile.dev" />
 		<File Path="Dockerfile.staging" />
 		<File Path="Dockerfile.production" />
 		<File Path="Dockerrun.aws.json" />

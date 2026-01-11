@@ -15,7 +15,7 @@ variable "awsecr_repostory" {
 # Dev
 target "dev" {
     context = "."
-    dockerfile = "Dockerfile"
+    dockerfile = "Dockerfile.dev"
     tags = ["customcads:dev"]
 }
 
