@@ -12,12 +12,26 @@ jobs:
 
   deliver:
     needs: ci
-    uses: ./.github/workflows/production-delivery.yml
+    uses: ./.github/workflows/awsecr-delivery.yml
+    with:
+      dockerfile: Dockerfile.production
+      tag: git_version
     secrets:
       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       aws-region: ${{ secrets.AWS_REGION }}
       aws-ecr-registry: ${{ secrets.AWS_ECR_REGISTRY }}
+      aws-ecr-repository: ${{ secrets.AWS_ECR_REPOSITORY }}
+
+  upload:
+    needs: deliver
+    uses: ./.github/workflows/awseb-upload.yml
+    with:
+      version: ${{ needs.deliver.outputs.version }}
+    secrets:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-region: ${{ secrets.AWS_REGION }}
 
   publish-sdk:
     needs: deliver

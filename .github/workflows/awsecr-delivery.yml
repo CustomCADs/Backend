@@ -1,0 +1,69 @@
+name: Deliver to AWS ECR Action
+
+on:
+    workflow_call:
+        inputs:
+            tag:
+                type: string
+                required: true
+            dockerfile:
+                type: string
+                required: true
+        secrets:
+            aws-access-key-id:
+                required: true
+            aws-secret-access-key:
+                required: true
+            aws-region:
+                required: true
+            aws-ecr-registry:
+                required: true
+            aws-ecr-repository:
+                required: true
+        outputs:
+            version:
+                value: ${{ jobs.deliver.outputs.version }}
+                description: "Docker image tag"
+
+jobs:
+    deliver:
+        runs-on: ubuntu-latest
+        outputs:
+            version: ${{ steps.tag.outputs.TAG }}
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.aws-access-key-id }}
+                  aws-secret-access-key: ${{ secrets.aws-secret-access-key }}
+                  aws-region: ${{ secrets.aws-region }}
+
+            - name: Login to ECR
+              uses: aws-actions/amazon-ecr-login@v2
+
+            - name: Obtain Docker tag
+              id: tag
+              run: |
+                  if [[ "${{ inputs.tag }}" == "git_version" ]]; then
+                      TAG=$(git describe --tags --abbrev=0)
+                  else
+                      TAG=${{ inputs.tag }}
+                  fi
+                  echo "TAG=$TAG" >> $GITHUB_ENV
+
+            - name: Build and push image to ECR
+              env:
+                  ECR_REGISTRY: ${{ secrets.aws-ecr-registry }}
+                  ECR_REPOSITORY: ${{ secrets.aws-ecr-repository }}
+                  DOCKERFILE: ${{ inputs.dockerfile }}
+                  TAG: ${{ env.TAG }}
+              run: |
+                  docker build -f $DOCKERFILE -t $ECR_REPOSITORY:$TAG .
+                  docker tag $ECR_REPOSITORY:$TAG $ECR_REGISTRY/$ECR_REPOSITORY:$TAG
+                  docker push $ECR_REGISTRY/$ECR_REPOSITORY:$TAG
