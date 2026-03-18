@@ -52,7 +52,7 @@ jobs:
                   REPOSITORY: ${{ secrets.docker-repository }}
                   TAG: ${{ env.TAG }}
               with:
-                  images: $REGISTRY/$REPOSITORY:$TAG
+                  images: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.TAG }}
 
             - name: Build and push Docker image
               id: push
