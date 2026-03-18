@@ -12,9 +12,12 @@ jobs:
 
   deliver:
     needs: ci
-    uses: ./.github/workflows/staging-delivery.yml
+    uses: ./.github/workflows/dockerhub-delivery.yml
+    with:
+      dockerfile: Dockerfile.staging
+      tag: staging
     secrets:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      aws-region: ${{ secrets.AWS_REGION }}
-      aws-ecr-registry: ${{ secrets.AWS_ECR_REGISTRY }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+      docker-username: ${{ secrets.DOCKER_USERNAME }}
+      docker-registry: ${{ secrets.DOCKER_REGISTRY }}
+      docker-repository: ${{ secrets.DOCKER_REPOSITORY }}

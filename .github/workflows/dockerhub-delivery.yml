@@ -1,0 +1,66 @@
+name: Deliver to DockerHub Action
+
+on:
+    workflow_call:
+        inputs:
+            tag:
+                type: string
+                required: true
+            dockerfile:
+                type: string
+                required: true
+        secrets:
+            docker-username:
+                required: true
+            docker-password:
+                required: true
+            docker-registry:
+                required: true
+            docker-repository:
+                required: true
+
+jobs:
+    deliver:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Log into DockerHub
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.docker-username }}
+                  password: ${{ secrets.docker-password }}
+
+            - name: Obtain Docker tag
+              run: |
+                  if [[ "${{ inputs.tag }}" == "git_version" ]]; then
+                      TAG=$(git describe --tags --abbrev=0)
+                  else
+                      TAG=${{ inputs.tag }}
+                  fi
+                  echo "TAG=$TAG" >> $GITHUB_ENV
+
+            - name: Collect metadata about Image
+              id: meta
+              uses: docker/metadata-action@v5
+              env:
+                  REGISTRY: ${{ secrets.docker-registry }}
+                  REPOSITORY: ${{ secrets.docker-repository }}
+                  TAG: ${{ env.TAG }}
+              with:
+                  images: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
+                  tags: ${{ env.TAG }}
+
+            - name: Build and push Docker image
+              id: push
+              uses: docker/build-push-action@v6
+              with:
+                  context: .
+                  file: ${{ inputs.dockerfile }}
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
