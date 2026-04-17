@@ -63,6 +63,6 @@ public class User : BaseAggregateRoot
 
 	public bool RemoveRefreshToken(RefreshToken rt)
 	{
-		return refreshTokens.Remove(rt);
+		return refreshTokens.RemoveAll(x => x.Id == rt.Id) == 1;
 	}
 }

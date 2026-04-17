@@ -36,7 +36,16 @@ public class AppUser : IdentityUser<Guid>
 
 	internal AppUser FillRefreshTokens(ICollection<AppRefreshToken> refreshTokens)
 	{
-		this.refreshTokens = [.. refreshTokens];
+		Dictionary<Guid, AppRefreshToken> incomingById = refreshTokens.ToDictionary(x => x.Id);
+
+		this.refreshTokens.RemoveAll(rt => !incomingById.ContainsKey(rt.Id));
+		this.refreshTokens.RemoveAll(rt => !refreshTokens.Any(nt => nt.Id == rt.Id));
+		foreach (var token in refreshTokens)
+		{
+			if (!this.refreshTokens.Any(rt => rt.Id == token.Id))
+				this.refreshTokens.Add(token);
+		}
+
 		return this;
 	}
 
