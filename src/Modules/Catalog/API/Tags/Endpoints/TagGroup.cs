@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class TagGroup : Group
 {
@@ -9,7 +9,7 @@ public class TagGroup : Group
 	{
 		Configure(Paths.Tags, x =>
 		{
-			x.Roles(Admin);
+			x.Roles(AdminRole);
 			x.Description(x => x.WithTags(Tags[Paths.Tags]));
 		});
 	}

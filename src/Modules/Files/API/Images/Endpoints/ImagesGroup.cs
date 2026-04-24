@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Files.API.Images.Endpoints;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class ImagesGroup : Group
 {
@@ -9,7 +9,7 @@ public class ImagesGroup : Group
 	{
 		Configure(Paths.Images, x =>
 		{
-			x.Roles(Customer, Contributor, Designer, Admin);
+			x.Roles(CustomerRole, ContributorRole, DesignerRole, AdminRole);
 			x.Description(x => x.WithTags(Tags[Paths.Images]));
 		});
 	}

@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Printing.API.Materials.Endpoints;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class MaterialsGroup : Group
 {
@@ -9,7 +9,7 @@ public class MaterialsGroup : Group
 	{
 		Configure(Paths.Materials, x =>
 		{
-			x.Roles(Admin);
+			x.Roles(AdminRole);
 			x.Description(x => x.WithTags(Tags[Paths.Materials]));
 		});
 	}

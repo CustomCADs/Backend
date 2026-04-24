@@ -16,7 +16,7 @@ public class MaterialTextureUploadPolicy(IRequestSender sender) : IFileUploadPol
 			query: new GetUserRoleByIdQuery(context.CallerId)
 		).ConfigureAwait(false);
 
-		if (role is not DomainConstants.Roles.Admin)
+		if (role is not DomainConstants.Users.AdminRole)
 		{
 			throw CustomAuthorizationException<Material>.Custom("Only Admins can upload a Material's Texture");
 		}

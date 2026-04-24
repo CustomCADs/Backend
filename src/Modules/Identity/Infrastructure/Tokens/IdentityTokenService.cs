@@ -2,7 +2,6 @@
 using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Modules.Identity.Domain.Users;
 using CustomCADs.Modules.Identity.Domain.Users.Entities;
-using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -13,7 +12,7 @@ using System.Text;
 
 namespace CustomCADs.Modules.Identity.Infrastructure.Tokens;
 
-using static DomainConstants.Tokens;
+using static Domain.Constants.Tokens;
 
 public sealed class IdentityTokenService(IOptions<JwtSettings> jwtOptions) : ITokenService
 {

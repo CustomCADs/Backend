@@ -16,8 +16,7 @@ public sealed class GetShipmentWaybillHandler(
 		Shipment shipment = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Shipment>.ById(req.Id);
 
-		Guid headDesignerId = Guid.Parse(DesignerAccountId);
-		if (req.CallerId.Value != headDesignerId)
+		if (req.CallerId != DesignerAccountId)
 		{
 			throw CustomAuthorizationException<Shipment>.ById(req.Id);
 		}

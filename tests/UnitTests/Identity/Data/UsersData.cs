@@ -10,7 +10,7 @@ using static UserConstants;
 
 public static class UsersData
 {
-	public const string ValidRole = Roles.Customer;
+	public const string ValidRole = Users.CustomerRole;
 	public static readonly string InvalidRole = string.Empty;
 
 	public static readonly string MinValidUsername = new('a', UsernameMinLength + 1);

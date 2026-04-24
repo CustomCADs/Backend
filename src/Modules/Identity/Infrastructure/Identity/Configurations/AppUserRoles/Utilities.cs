@@ -1,10 +1,8 @@
-﻿using CustomCADs.Shared.Domain;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Modules.Identity.Infrastructure.Identity.Configurations.AppUserRoles;
 
-using static DomainConstants;
-using AppUserRole = Microsoft.AspNetCore.Identity.IdentityUserRole<Guid>;
+using static Infrastructure.Constants;
 
 internal static class Utilities
 {
@@ -13,10 +11,10 @@ internal static class Utilities
 		internal EntityTypeBuilder<AppUserRole> SetSeeding()
 		{
 			builder.HasData([
-				new() { RoleId = new(Roles.CustomerId), UserId = new(Users.CustomerUserId) },
-				new() { RoleId = new(Roles.ContributorId), UserId = new(Users.ContributorUserId) },
-				new() { RoleId = new(Roles.DesignerId), UserId = new(Users.DesignerUserId) },
-				new() { RoleId = new(Roles.AdminId), UserId = new(Users.AdminUserId) },
+				new() { RoleId = Roles.CustomerId, UserId = Users.CustomerId },
+				new() { RoleId = Roles.ContributorId, UserId = Users.ContributorId },
+				new() { RoleId = Roles.DesignerId, UserId = Users.DesignerId },
+				new() { RoleId = Roles.AdminId, UserId = Users.AdminId },
 		]);
 
 			return builder;

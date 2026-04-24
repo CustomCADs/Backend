@@ -3,11 +3,10 @@ using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Refresh;
 using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain;
+using static CustomCADs.Modules.Identity.Domain.Constants.Tokens;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Commands.Internal.Refresh;
 
-using static DomainConstants.Tokens;
 using static UsersData;
 
 public class RefreshUserHandlerUnitTests : UsersBaseUnitTests

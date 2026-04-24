@@ -1,9 +1,7 @@
 ﻿using CustomCADs.Modules.Identity.Domain.Users.Entities;
-using CustomCADs.Shared.Domain;
+using static CustomCADs.Modules.Identity.Domain.Constants;
 
 namespace CustomCADs.UnitTests.Identity.Domain.Users.Behaviors.AddRefreshToken;
-
-using static DomainConstants;
 
 public class UserAddRefreshTokenUnitTests : UsersBaseUnitTests
 {

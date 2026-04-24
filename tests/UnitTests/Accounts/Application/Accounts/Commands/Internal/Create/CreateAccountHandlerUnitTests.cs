@@ -8,7 +8,6 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Commands.Internal.Create;
 
 using static AccountsData;
-using static DomainConstants;
 
 public class CreateAccountHandlerUnitTests : AccountsBaseUnitTests
 {
@@ -23,7 +22,7 @@ public class CreateAccountHandlerUnitTests : AccountsBaseUnitTests
 
 		writes.Setup(x => x.AddAsync(
 			It.Is<Account>(x =>
-				x.RoleName == Roles.Customer
+				x.RoleName == ValidRole
 				&& x.Username == ValidUsername
 				&& x.Email == ValidEmail1
 				&& x.FirstName == ValidFirstName
@@ -38,7 +37,7 @@ public class CreateAccountHandlerUnitTests : AccountsBaseUnitTests
 	{
 		// Arrange
 		CreateAccountCommand command = new(
-			Role: Roles.Customer,
+			Role: ValidRole,
 			Username: ValidUsername,
 			Email: ValidEmail1,
 			Password: ValidPassword,
@@ -52,7 +51,7 @@ public class CreateAccountHandlerUnitTests : AccountsBaseUnitTests
 		// Assert
 		writes.Verify(x => x.AddAsync(
 			It.Is<Account>(x =>
-				x.RoleName == Roles.Customer
+				x.RoleName == ValidRole
 				&& x.Username == ValidUsername
 				&& x.Email == ValidEmail1
 				&& x.FirstName == ValidFirstName
@@ -68,7 +67,7 @@ public class CreateAccountHandlerUnitTests : AccountsBaseUnitTests
 	{
 		// Arrange
 		CreateAccountCommand command = new(
-			Role: Roles.Customer,
+			Role: ValidRole,
 			Username: ValidUsername,
 			Email: ValidEmail1,
 			Password: ValidPassword,
@@ -95,7 +94,7 @@ public class CreateAccountHandlerUnitTests : AccountsBaseUnitTests
 	{
 		// Arrange
 		CreateAccountCommand command = new(
-			Role: Roles.Customer,
+			Role: ValidRole,
 			Username: ValidUsername,
 			Email: ValidEmail1,
 			Password: ValidPassword,

@@ -47,7 +47,7 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserRoleByIdQuery>(x => x.Id == ValidCreatorId),
 			ct
-		)).ReturnsAsync(DomainConstants.Roles.Contributor);
+		)).ReturnsAsync("role");
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<IsCadPrintableByIdQuery>(x => x.Id == ValidCadId),
 			ct
@@ -186,7 +186,7 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserRoleByIdQuery>(x => x.Id == ValidCreatorId),
 			ct
-		)).ReturnsAsync(DomainConstants.Roles.Designer);
+		)).ReturnsAsync(DomainConstants.Users.DesignerRole);
 
 		CreateProductCommand command = new(
 			Name: MinValidName,
@@ -212,7 +212,7 @@ public class CreateProductHandlerUnitTests : ProductsBaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserRoleByIdQuery>(x => x.Id == ValidCreatorId),
 			ct
-		)).ReturnsAsync(DomainConstants.Roles.Designer);
+		)).ReturnsAsync(DomainConstants.Users.DesignerRole);
 
 		CreateProductCommand command = new(
 			Name: MinValidName,

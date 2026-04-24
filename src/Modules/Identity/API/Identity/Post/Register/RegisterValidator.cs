@@ -6,14 +6,14 @@ using FluentValidation;
 namespace CustomCADs.Modules.Identity.API.Identity.Post.Register;
 
 using static ApplicationConstants.FluentMessages;
-using static DomainConstants;
+using static DomainConstants.Users;
 
 public class RegisterRequestValidator : Validator<RegisterRequest>
 {
 	public RegisterRequestValidator()
 	{
 		RuleFor(x => x.Role)
-			.Must(x => x is Roles.Customer or Roles.Contributor)
+			.Must(x => x is CustomerRole or ContributorRole)
 			.WithMessage("""Role must be either "Customer" or "Contributor" """);
 
 

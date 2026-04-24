@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Get.Waybill;
 
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class GetShipmentWaybillEndpoint(IRequestSender sender)
 	: Endpoint<GetShipmentWaybillRequest>
@@ -11,7 +11,7 @@ public class GetShipmentWaybillEndpoint(IRequestSender sender)
 	{
 		Get("{id}/waybill");
 		Group<ShipmentsGroup>();
-		Roles(Designer);
+		Roles(DesignerRole);
 		Description(x => x
 			.WithSummary("Waybill")
 			.WithDescription("Download this Shipment's waybill")

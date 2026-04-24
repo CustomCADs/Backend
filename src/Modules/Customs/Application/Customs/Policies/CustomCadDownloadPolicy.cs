@@ -21,11 +21,11 @@ public class CustomCadDownloadPolicy(ICustomReads reads, IRequestSender sender) 
 
 		switch (role)
 		{
-			case DomainConstants.Roles.Customer:
+			case DomainConstants.Users.CustomerRole:
 				await EnsureCustomerDownloadGrantedAsync(context).ConfigureAwait(false);
 				break;
 
-			case DomainConstants.Roles.Designer:
+			case DomainConstants.Users.DesignerRole:
 				await EnsureDesignerDownloadGrantedAsync(context).ConfigureAwait(false);
 				break;
 
