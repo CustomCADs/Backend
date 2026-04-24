@@ -10,7 +10,6 @@ public sealed class ChangeUsernameEndpoint(IRequestSender sender)
 		Patch("username");
 		Group<IdentityGroup>();
 		Description(x => x
-			.WithName(IdentityNames.ChangeUsername)
 			.WithSummary("Change Username")
 			.WithDescription("Change your Username")
 		);

@@ -10,7 +10,6 @@ public sealed class MyAccountEndpoint(IRequestSender sender)
 		Get("my-account");
 		Group<IdentityGroup>();
 		Description(x => x
-			.WithName(IdentityNames.MyAccount)
 			.WithSummary("My Account")
 			.WithDescription("See your Account's details")
 		);

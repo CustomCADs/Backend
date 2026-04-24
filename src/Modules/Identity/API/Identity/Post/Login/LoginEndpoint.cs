@@ -14,7 +14,6 @@ public sealed class LoginEndpoint(IRequestSender sender, IOptions<CookieSettings
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.Login)
 			.WithSummary("Login")
 			.WithDescription("Log in to your account")
 			.WithMetadata(new SkipIdempotencyAttribute())

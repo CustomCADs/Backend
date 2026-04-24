@@ -12,7 +12,6 @@ public sealed class DeleteAccountEndpoint(IRequestSender sender, IOptions<Cookie
 		Delete("");
 		Group<IdentityGroup>();
 		Description(x => x
-			.WithName(IdentityNames.DeleteAccount)
 			.WithSummary("Delete")
 			.WithDescription("Delete your account")
 		);

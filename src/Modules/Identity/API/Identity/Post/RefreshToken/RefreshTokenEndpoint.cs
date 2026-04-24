@@ -14,7 +14,6 @@ public sealed class RefreshTokenEndpoint(IRequestSender sender, IOptions<CookieS
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.Refresh)
 			.WithSummary("Refresh")
 			.WithDescription("Refresh your login")
 			.WithMetadata(new SkipIdempotencyAttribute())

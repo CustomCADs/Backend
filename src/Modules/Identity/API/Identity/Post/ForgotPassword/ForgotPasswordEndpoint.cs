@@ -12,7 +12,6 @@ public sealed class ForgotPasswordEndpoint(IRequestSender sender)
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.ForgotPassword)
 			.WithSummary("Reset Password Email")
 			.WithDescription("Receive an Email with a link to reset your Password")
 			.WithMetadata(new SkipIdempotencyAttribute())

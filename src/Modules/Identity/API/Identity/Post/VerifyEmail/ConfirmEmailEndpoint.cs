@@ -14,7 +14,6 @@ public sealed class ConfirmEmailEndpoint(IRequestSender sender, IOptions<CookieS
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.ConfirmEmail)
 			.WithSummary("Confirm Email")
 			.WithDescription("Confirm the verification email")
 			.WithMetadata(new SkipIdempotencyAttribute())

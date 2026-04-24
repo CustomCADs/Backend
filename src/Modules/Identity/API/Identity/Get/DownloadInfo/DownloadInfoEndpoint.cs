@@ -11,7 +11,6 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 		Get("download-info");
 		Group<IdentityGroup>();
 		Description(x => x
-			.WithName(IdentityNames.DownloadInfo)
 			.WithSummary("Download Info")
 			.WithDescription("Download all your persisted info")
 		);

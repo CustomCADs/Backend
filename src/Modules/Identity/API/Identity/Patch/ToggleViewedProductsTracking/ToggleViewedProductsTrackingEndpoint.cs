@@ -10,7 +10,6 @@ public sealed class ToggleViewedProductsTrackingEndpoint(IRequestSender sender)
 		Patch("viewed-products");
 		Group<IdentityGroup>();
 		Description(x => x
-			.WithName(IdentityNames.ToggleViewedProductsTracking)
 			.WithSummary("Viewed Products Tracking")
 			.WithDescription("Toggle whether the Products you View get Tracked")
 		);

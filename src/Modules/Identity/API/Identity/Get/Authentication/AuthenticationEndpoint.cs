@@ -9,7 +9,6 @@ public sealed class AuthenticationEndpoint
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.Authentication)
 			.WithSummary("AuthN")
 			.WithDescription("See if you're logged in")
 		);
