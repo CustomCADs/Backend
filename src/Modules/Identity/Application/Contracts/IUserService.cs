@@ -14,6 +14,7 @@ public interface IUserService
 	#region GetX
 	Task<bool> GetExistsByUsernameAsync(string username);
 	Task<bool> GetExistsByEmailAsync(string email);
+	Task<bool> GetIsSSOByEmailAsync(string email);
 	Task<AccountId> GetAccountIdAsync(string username);
 	Task<DateTimeOffset?> GetIsLockedOutAsync(string username);
 	#endregion

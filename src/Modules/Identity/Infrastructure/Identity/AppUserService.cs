@@ -61,6 +61,11 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 			.AnyAsync(x => x.Email == email)
 			.ConfigureAwait(false);
 
+	public async Task<bool> GetIsSSOByEmailAsync(string email)
+		=> await manager.Users
+			.AnyAsync(x => x.Email == email && x.IsSSO)
+			.ConfigureAwait(false);
+
 	public async Task<AccountId> GetAccountIdAsync(string username)
 	{
 		AccountId accountId = await manager.Users
