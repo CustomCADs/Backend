@@ -77,6 +77,15 @@ internal static class Utilities
 					secStamp: "FNNIT3NPOZKZK2E67WFLV5R3RGVBX7LV"
 				),
 				CreateAppUser(
+					id: Constants.Users.HeadDesignerId,
+					accountId: Shared.Domain.DomainConstants.Users.HeadDesignerAccountId,
+					username: Shared.Domain.DomainConstants.Users.HeadDesignerUsername,
+					email: Shared.Domain.DomainConstants.Users.HeadDesignerEmail,
+					passHash: "AQAAAAIAAYagAAAAEJGRCbKUsSh9BwxPXoIQRG1AVXYDfmWsY5vEA4aEnqBBQAzdcgLFCHUtpwd86+B4mA==",
+					concStamp: "c11d44ef-29c5-43ac-89f9-a2e7cd482ec8",
+					secStamp: "MHG763AUJVOJPKKWUC64FQSF7DIVVBOU"
+				),
+				CreateAppUser(
 					id: Constants.Users.AdminId,
 					accountId: Shared.Domain.DomainConstants.Users.AdminAccountId,
 					username: Shared.Domain.DomainConstants.Users.AdminUsername,

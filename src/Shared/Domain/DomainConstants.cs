@@ -45,7 +45,8 @@ public static partial class DomainConstants
 	{
 		public static readonly AccountId CustomerAccountId = AccountId.New("2da61b05-1a27-4af9-9df2-be4f1f4e835f");
 		public static readonly AccountId ContributorAccountId = AccountId.New("6d963818-23dc-4e9a-aaa8-b4c77252bc97");
-		public static readonly AccountId DesignerAccountId = AccountId.New("0fb3212f-7d51-4586-8fc2-0f333ec9fbc1");
+		public static readonly AccountId DesignerAccountId = AccountId.New("8d477999-0580-4770-8864-e9ba4bed9cd1");
+		public static readonly AccountId HeadDesignerAccountId = AccountId.New("0fb3212f-7d51-4586-8fc2-0f333ec9fbc1");
 		public static readonly AccountId AdminAccountId = AccountId.New("e995039c-a535-4f20-8288-7aadcb71b252");
 
 		public static readonly string[] Roles = [CustomerRole, ContributorRole, DesignerRole, AdminRole];
@@ -56,12 +57,14 @@ public static partial class DomainConstants
 
 		public const string CustomerUsername = "For7a7a";
 		public const string ContributorUsername = "PDMatsaliev20";
-		public const string DesignerUsername = "Oracle3000";
+		public const string DesignerUsername = "John_CAD";
+		public const string HeadDesignerUsername = "Oracle3000";
 		public const string AdminUsername = "NinjataBG";
 
 		public const string CustomerEmail = "ivanzlatinov006@gmail.com";
 		public const string ContributorEmail = "PDMatsaliev20@codingburgas.bg";
-		public const string DesignerEmail = "boriskolev2006@gmail.com";
+		public const string DesignerEmail = "john.cad@gmail.com";
+		public const string HeadDesignerEmail = "boriskolev2006@gmail.com";
 		public const string AdminEmail = "ivanangelov414@gmail.com";
 	}
 }

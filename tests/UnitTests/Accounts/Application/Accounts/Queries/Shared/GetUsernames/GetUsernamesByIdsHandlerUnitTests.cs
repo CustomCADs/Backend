@@ -15,7 +15,7 @@ public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
 	private readonly Mock<IAccountReads> reads = new();
 
 	private static readonly AccountId[] ids = [ValidId, ValidId, ValidId, ValidId];
-	private static readonly string[] usernames = [CustomerUsername, ContributorUsername, DesignerUsername, AdminUsername];
+	private static readonly string[] usernames = [CustomerUsername, ContributorUsername, DesignerUsername, HeadDesignerUsername, AdminUsername];
 	private static readonly AccountQuery accountQuery = new(Pagination: new(1, ids.Length), Ids: ids);
 
 	public GetUsernamesByIdsHandlerUnitTests()
@@ -28,6 +28,7 @@ public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
 					CreateAccountWithId(id: AccountId.New(), username: CustomerUsername),
 					CreateAccountWithId(id: AccountId.New(), username: ContributorUsername),
 					CreateAccountWithId(id: AccountId.New(), username: DesignerUsername),
+					CreateAccountWithId(id: AccountId.New(), username: HeadDesignerUsername),
 					CreateAccountWithId(id: AccountId.New(), username: AdminUsername),
 				]
 			));

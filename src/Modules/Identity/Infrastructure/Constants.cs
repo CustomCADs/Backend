@@ -14,7 +14,8 @@ public static class Constants
 	{
 		public static readonly Guid CustomerId = new("e38c495f-b1f3-4226-d289-08dd11623eb9");
 		public static readonly Guid ContributorId = new("af840410-f3f2-4a3b-d28a-08dd11623eb9");
-		public static readonly Guid DesignerId = new("4337a774-2c5c-4c27-d28b-08dd11623eb9");
+		public static readonly Guid DesignerId = new("a8145f5f-a3a4-4f06-9461-9f24b9f23fde");
+		public static readonly Guid HeadDesignerId = new("4337a774-2c5c-4c27-d28b-08dd11623eb9");
 		public static readonly Guid AdminId = new("cb7749fb-3fff-4902-d28c-08dd11623eb9");
 	}
 }

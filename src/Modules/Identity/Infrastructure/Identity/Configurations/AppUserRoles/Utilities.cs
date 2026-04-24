@@ -14,6 +14,7 @@ internal static class Utilities
 				new() { RoleId = Roles.CustomerId, UserId = Users.CustomerId },
 				new() { RoleId = Roles.ContributorId, UserId = Users.ContributorId },
 				new() { RoleId = Roles.DesignerId, UserId = Users.DesignerId },
+				new() { RoleId = Roles.DesignerId, UserId = Users.HeadDesignerId },
 				new() { RoleId = Roles.AdminId, UserId = Users.AdminId },
 		]);
 

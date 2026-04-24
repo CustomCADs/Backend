@@ -78,6 +78,7 @@ internal static class Utilities
 				Account.CreateWithId(CustomerAccountId, CustomerRole, CustomerUsername, CustomerEmail, new DateTimeOffset(2025, 05, 10, 19, 23, 12, 123, TimeSpan.FromHours(3))),
 				Account.CreateWithId(ContributorAccountId, ContributorRole, ContributorUsername, ContributorEmail, new DateTimeOffset(2025, 05, 13, 17, 42, 57, 456, TimeSpan.FromHours(3))),
 				Account.CreateWithId(DesignerAccountId, DesignerRole, DesignerUsername, DesignerEmail, new DateTimeOffset(2025, 01, 09, 13, 15, 28, 789, TimeSpan.FromHours(3))),
+				Account.CreateWithId(HeadDesignerAccountId, DesignerRole, HeadDesignerUsername, HeadDesignerEmail, new DateTimeOffset(2024, 03, 17, 02, 17, 32, 789, TimeSpan.FromHours(3))),
 				Account.CreateWithId(AdminAccountId, AdminRole, AdminUsername, AdminEmail, new DateTimeOffset(2024, 03, 17, 02, 45, 13, 000, TimeSpan.FromHours(3))),
 			]);
 
