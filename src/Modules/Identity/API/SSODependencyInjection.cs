@@ -66,7 +66,12 @@ public static partial class DependencyInjection
 					IServiceProvider sp = ctx.Request.HttpContext.RequestServices;
 
 					if (ctx.Principal is null) throw new Exception("Claims required");
-					ctx.Principal.ExtractUserFromSSO(out string email, out string username);
+					ctx.Principal.ExtractUserFromSSO(
+						out string email,
+						out string username,
+						out string? firstName,
+						out string? lastName
+					);
 
 					string? role = null;
 					ctx.Properties?.Items.TryGetValue("role", out role);
@@ -80,6 +85,8 @@ public static partial class DependencyInjection
 						tokens: await sender.SendCommandAsync(
 							command: new SingleSignOnUserCommand(
 								Role: role,
+								FirstName: firstName,
+								LastName: lastName,
 								Username: username,
 								Email: email,
 								Provider: provider

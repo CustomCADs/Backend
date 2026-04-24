@@ -50,6 +50,8 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 		// Arrange
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
 			Provider: Provider
@@ -76,6 +78,8 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
 			Provider: Provider
@@ -97,6 +101,8 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
 			Provider: Provider
@@ -130,6 +136,8 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 		// Arrange
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
 			Provider: Provider
@@ -151,6 +159,8 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 		// Arrange
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
 			Provider: Provider

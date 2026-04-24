@@ -4,6 +4,8 @@ namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.SSO.Re
 
 public sealed record SingleSignOnUserCommand(
 	string? Role,
+	string? FirstName,
+	string? LastName,
 	string Username,
 	string Email,
 	string Provider

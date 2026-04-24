@@ -12,7 +12,7 @@ public static class ClaimsPrincipalExtensions
 		public bool IsAuthenticated => user.Identity?.IsAuthenticated ?? false;
 		public string? Authorization => user.FindFirstValue(ClaimTypes.Role);
 
-		public void ExtractUserFromSSO(out string email, out string username)
+		public void ExtractUserFromSSO(out string email, out string username, out string? firstName, out string? lastName)
 		{
 			email = user.Claims.FirstOrDefault(c => c.Type switch
 			{
@@ -29,6 +29,20 @@ public static class ClaimsPrincipalExtensions
 				"name" => true,
 				_ => false,
 			})?.Value ?? email.Split('@').First();
+
+			firstName = user.Claims.FirstOrDefault(c => c.Type switch
+			{
+				ClaimTypes.GivenName => true,
+				"givenname" => true,
+				_ => false,
+			})?.Value;
+
+			lastName = user.Claims.FirstOrDefault(c => c.Type switch
+			{
+				ClaimTypes.Surname => true,
+				"surname" => true,
+				_ => false,
+			})?.Value;
 		}
 	}
 }

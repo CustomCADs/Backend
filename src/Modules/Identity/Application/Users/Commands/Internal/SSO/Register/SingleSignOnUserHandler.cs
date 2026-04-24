@@ -38,16 +38,16 @@ public sealed class SingleSignOnUserHandler(
 			(true, true) => await service.GetByUsernameAsync(req.Username).ConfigureAwait(false),
 		};
 
-		async Task<User> CreateUser(SingleSignOnUserCommand req, CancellationToken ct)
+		async Task<User> CreateUser(SingleSignOnUserCommand req, CancellationToken ct, string defaultRole = DomainConstants.Roles.Customer)
 		{
-			string role = req.Role ?? DomainConstants.Roles.Customer;
+			string role = string.IsNullOrWhiteSpace(req.Role) ? defaultRole : req.Role;
 			AccountId accountId = await sender.SendCommandAsync(
 				command: new CreateAccountCommand(
 					Role: role,
 					Username: req.Username,
 					Email: req.Email,
-					FirstName: null,
-					LastName: null
+					FirstName: req.FirstName,
+					LastName: req.LastName
 				),
 				ct: ct
 			).ConfigureAwait(false);
