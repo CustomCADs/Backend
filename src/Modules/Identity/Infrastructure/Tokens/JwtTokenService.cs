@@ -14,7 +14,7 @@ namespace CustomCADs.Modules.Identity.Infrastructure.Tokens;
 
 using static Domain.Constants.Tokens;
 
-public sealed class IdentityTokenService(IOptions<JwtSettings> jwtOptions) : ITokenService
+public sealed class JwtTokenService(IOptions<JwtSettings> jwtOptions) : ITokenService
 {
 	private const string Algorithm = SecurityAlgorithms.HmacSha256;
 	private readonly JwtSettings jwtSettings = jwtOptions.Value;

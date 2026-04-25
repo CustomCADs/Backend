@@ -5,7 +5,7 @@ namespace CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 
 public class AppUser : IdentityUser<Guid>
 {
-	private List<AppRefreshToken> refreshTokens = [];
+	private readonly List<AppRefreshToken> refreshTokens = [];
 	private string? provider;
 
 	public AppUser() : base() { }

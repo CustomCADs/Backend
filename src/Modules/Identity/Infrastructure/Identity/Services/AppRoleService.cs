@@ -2,7 +2,7 @@ using CustomCADs.Modules.Identity.Application.Contracts;
 using CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 using Microsoft.AspNetCore.Identity;
 
-namespace CustomCADs.Modules.Identity.Infrastructure.Identity;
+namespace CustomCADs.Modules.Identity.Infrastructure.Identity.Services;
 
 public class AppRoleService(RoleManager<AppRole> manager) : IRoleService
 {

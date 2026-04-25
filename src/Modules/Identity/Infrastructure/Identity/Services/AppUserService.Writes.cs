@@ -1,104 +1,15 @@
-using CustomCADs.Modules.Identity.Application.Contracts;
 using CustomCADs.Modules.Identity.Domain.Users;
 using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomCADs.Modules.Identity.Infrastructure.Identity;
+namespace CustomCADs.Modules.Identity.Infrastructure.Identity.Services;
 
-public class AppUserService(UserManager<AppUser> manager) : IUserService
+public partial class AppUserService
 {
-	#region GetUserByX
-	public async Task<User> GetByUsernameAsync(string username)
-	{
-		AppUser appUser = await manager.Users
-			.Include(x => x.RefreshTokens)
-			.FirstOrDefaultAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
-			.ConfigureAwait(false)
-			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
-
-		return await appUser.ToUserWithRoleAsync(manager).ConfigureAwait(false);
-	}
-
-	public async Task<User> GetByEmailAsync(string email)
-	{
-		AppUser appUser = await manager.Users
-			.Include(x => x.RefreshTokens)
-			.FirstOrDefaultAsync(x => x.Email == email)
-			.ConfigureAwait(false)
-			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(email), email);
-
-		return await appUser.ToUserWithRoleAsync(manager).ConfigureAwait(false);
-	}
-
-	public async Task<(User User, RefreshToken RefreshToken)> GetByRefreshTokenAsync(string token)
-	{
-		AppUser appUser = await manager.Users
-			.Include(x => x.RefreshTokens)
-			.FirstOrDefaultAsync(x => x.RefreshTokens.Any(x => x.Value == token))
-			.ConfigureAwait(false)
-			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(token), token);
-
-		return (
-			User: await appUser.ToUserWithRoleAsync(manager).ConfigureAwait(false),
-			RefreshToken: appUser.RefreshTokens.First(x => x.Value == token).ToRefreshToken()
-		);
-	}
-	#endregion
-
-	#region GetPropertyX
-	public async Task<bool> GetExistsByUsernameAsync(string username)
-		=> await manager.Users
-			.AnyAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
-			.ConfigureAwait(false);
-
-	public async Task<bool> GetExistsByEmailAsync(string email)
-		=> await manager.Users
-			.AnyAsync(x => x.Email == email)
-			.ConfigureAwait(false);
-
-	public async Task<bool> GetIsSSOByEmailAsync(string email)
-		=> await manager.Users
-			.AnyAsync(x => x.Email == email && x.IsSSO)
-			.ConfigureAwait(false);
-
-	public async Task<AccountId> GetAccountIdAsync(string username)
-	{
-		AccountId accountId = await manager.Users
-			.Where(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
-			.Select(x => x.AccountId)
-			.FirstOrDefaultAsync()
-			.ConfigureAwait(false);
-
-		if (accountId.IsEmpty())
-		{
-			throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
-		}
-
-		return accountId;
-	}
-
-	public async Task<DateTimeOffset?> GetIsLockedOutAsync(string username)
-	{
-		AppUser appUser = await manager.Users
-			.FirstOrDefaultAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
-			.ConfigureAwait(false)
-			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
-
-		bool isLockedOut = await manager.IsLockedOutAsync(appUser).ConfigureAwait(false);
-		if (!isLockedOut)
-		{
-			return null;
-		}
-
-		return appUser.LockoutEnd;
-	}
-	#endregion
-
 	#region Lifecycle
 	public async Task CreateAsync(User user, string password)
 	{
@@ -126,7 +37,7 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 
 	public async Task DeleteAsync(string username)
 	{
-		AppUser appUser = await manager.FindByIdAsync(username).ConfigureAwait(false)
+		AppUser appUser = await manager.FindByNameAsync(username).ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
 
 		await manager.DeleteAsync(appUser).ConfigureAwait(false);
@@ -163,11 +74,14 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 
 	public async Task SaveRefreshTokensAsync(User user)
 	{
-		AppUser appUser = await manager.FindByIdAsync(user.Id.ToString()).ConfigureAwait(false)
+		AppUser appUser = await context.Users
+			.Include(x => x.RefreshTokens)
+			.FirstOrDefaultAsync(x => x.Id == user.Id.Value)
+			.ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(user.Id), user.Id);
 
 		appUser.FillRefreshTokens([.. user.RefreshTokens.Select(x => x.ToAppRefreshToken())]);
-		await manager.UpdateAsync(appUser).ConfigureAwait(false);
+		await context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
 	public async Task RevokeRefreshTokenAsync(string token)
@@ -175,11 +89,11 @@ public class AppUserService(UserManager<AppUser> manager) : IUserService
 		(User User, RefreshToken RefreshToken) = await GetByRefreshTokenAsync(token).ConfigureAwait(false);
 		User.RemoveRefreshToken(RefreshToken);
 
-		AppUser appUser = await manager.FindByIdAsync(User.Id.ToString()).ConfigureAwait(false)
+		AppUser appUser = await context.Users.FirstOrDefaultAsync(x => x.Id == User.Id.Value).ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(User.Id), User.Id);
 
 		appUser.FillRefreshTokens([.. User.RefreshTokens.Select(x => x.ToAppRefreshToken())]);
-		await manager.UpdateAsync(appUser).ConfigureAwait(false);
+		await context.SaveChangesAsync().ConfigureAwait(false);
 	}
 	#endregion
 

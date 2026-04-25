@@ -1,8 +1,6 @@
-using CustomCADs.Shared.Domain.Bases.Entities;
-
 namespace CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 
-public class AppRefreshToken : BaseEntity
+public class AppRefreshToken
 {
 	public AppRefreshToken() { }
 	public AppRefreshToken(string value, Guid userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
