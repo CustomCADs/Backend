@@ -17,5 +17,5 @@ public class Writes(AccountsContext context) : IAccountWrites
 			).ConfigureAwait(false);
 
 	public void Remove(Account entity)
-		=> context.Accounts.Remove(entity);
+		=> entity.Delete();
 }

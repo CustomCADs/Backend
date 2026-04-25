@@ -12,6 +12,7 @@ public class Configurations : IEntityTypeConfiguration<Account>
 			.SetStronglyTypedIds()
 			.SetIndexes()
 			.SetValidations()
-			.SetSeeding();
+			.SetSeeding()
+			.SetFilters();
 	}
 }

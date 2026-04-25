@@ -69,6 +69,15 @@ internal static class Utilities
 				.IsRequired()
 				.HasColumnName(nameof(Account.CreatedAt));
 
+			builder
+				.Property(x => x.IsDeleted)
+				.IsRequired()
+				.HasColumnName(nameof(Account.IsDeleted));
+
+			builder
+				.Property(x => x.DeletedAt)
+				.HasColumnName(nameof(Account.DeletedAt));
+
 			return builder;
 		}
 
@@ -81,6 +90,13 @@ internal static class Utilities
 				Account.CreateWithId(HeadDesignerAccountId, DesignerRole, HeadDesignerUsername, HeadDesignerEmail, new DateTimeOffset(2024, 03, 17, 02, 17, 32, 789, TimeSpan.FromHours(3))),
 				Account.CreateWithId(AdminAccountId, AdminRole, AdminUsername, AdminEmail, new DateTimeOffset(2024, 03, 17, 02, 45, 13, 000, TimeSpan.FromHours(3))),
 			]);
+
+			return builder;
+		}
+
+		internal EntityTypeBuilder<Account> SetFilters()
+		{
+			builder.HasQueryFilter(x => !x.IsDeleted);
 
 			return builder;
 		}

@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Modules.Accounts.Domain.Accounts;
 
-public class Account : BaseAggregateRoot
+public class Account : BaseAggregateRoot, ISoftDeletable<Account>
 {
 	private Account() { }
 	private Account(
@@ -30,6 +30,8 @@ public class Account : BaseAggregateRoot
 	public string RoleName { get; private set; } = string.Empty;
 	public bool TrackViewedProducts { get; private set; }
 	public DateTimeOffset CreatedAt { get; private set; }
+	public bool IsDeleted { get; private set; }
+	public DateTimeOffset? DeletedAt { get; private set; }
 
 	public static Account Create(
 		string role,
@@ -94,6 +96,14 @@ public class Account : BaseAggregateRoot
 	public Account SetTrackViewedProducts(bool track)
 	{
 		TrackViewedProducts = track;
+		return this;
+	}
+
+	public Account Delete()
+	{
+		IsDeleted = true;
+		DeletedAt = DateTimeOffset.UtcNow;
+
 		return this;
 	}
 }
