@@ -60,26 +60,16 @@ public static partial class DependencyInjection
 						   .GetRequiredService<IProblemDetailsService>()
 						   .UnauthorizedResponseAsync(
 								context: context.HttpContext,
-								ex: new UnauthorizedAccessException()
+								ex: new UnauthorizedAccessException("User needs an account to access this resource!")
 						   ).ConfigureAwait(false);
 					},
 
-					OnForbidden = async context =>
-					{
-						await context.HttpContext.RequestServices
+					OnForbidden = async context => await context.HttpContext.RequestServices
 						   .GetRequiredService<IProblemDetailsService>()
 						   .ForbiddenResponseAsync(
 								context: context.HttpContext,
-								ex: new AccessViolationException()
-						   ).ConfigureAwait(false);
-					},
-
-					OnTokenValidated = context =>
-					{
-						ClaimsIdentity claimsIdentity = new(context.Principal?.Claims ?? [], AuthScheme);
-						context.HttpContext.User = new ClaimsPrincipal(claimsIdentity);
-						return Task.CompletedTask;
-					},
+								ex: new UnauthorizedAccessException("User doesn't have permission to access this resource!")
+						   ).ConfigureAwait(false),
 				};
 			});
 	}
