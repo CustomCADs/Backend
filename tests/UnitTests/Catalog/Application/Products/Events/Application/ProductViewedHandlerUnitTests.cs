@@ -22,6 +22,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 
 	private const string Username = Users.CustomerUsername;
 	private readonly AccountInfoDto info = new(
+		Id: ValidCreatorId,
 		CreatedAt: default,
 		TrackViewedProducts: true,
 		FirstName: null,

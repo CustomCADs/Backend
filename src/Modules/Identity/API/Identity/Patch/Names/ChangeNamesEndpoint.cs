@@ -1,13 +1,13 @@
 ﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ChangeUsername;
 
-namespace CustomCADs.Modules.Identity.API.Identity.Patch.ChangeUsername;
+namespace CustomCADs.Modules.Identity.API.Identity.Patch.Names;
 
-public sealed class ChangeUsernameEndpoint(IRequestSender sender)
-	: Endpoint<ChangeUsernameRequest>
+public sealed class ChangeNamesEndpoint(IRequestSender sender)
+	: Endpoint<ChangeNamesRequest>
 {
 	public override void Configure()
 	{
-		Patch("username");
+		Patch("names");
 		Group<IdentityGroup>();
 		Description(x => x
 			.WithSummary("Change Username")
@@ -15,12 +15,14 @@ public sealed class ChangeUsernameEndpoint(IRequestSender sender)
 		);
 	}
 
-	public override async Task HandleAsync(ChangeUsernameRequest req, CancellationToken ct)
+	public override async Task HandleAsync(ChangeNamesRequest req, CancellationToken ct)
 	{
 		await sender.SendCommandAsync(
 			command: new ChangeUsernameCommand(
-				Username: User.Name,
-				NewUsername: req.Username
+				Id: User.AccountId,
+				Username: req.Username,
+				FirstName: req.FirstName,
+				LastName: req.LastName
 			),
 			ct: ct
 		).ConfigureAwait(false);

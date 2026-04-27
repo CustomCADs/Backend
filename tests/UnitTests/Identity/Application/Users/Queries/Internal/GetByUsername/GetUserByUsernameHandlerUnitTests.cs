@@ -12,38 +12,39 @@ public class GetUserByUsernameHandlerUnitTests : UsersBaseUnitTests
 	private readonly GetUserByUsernameHandler handler;
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IRequestSender> sender = new();
+	private readonly User user = CreateUserWithId();
 
 	public GetUserByUsernameHandlerUnitTests()
 	{
 		handler = new(service.Object, sender.Object);
 
-		service.Setup(x => x.GetByUsernameAsync(MaxValidUsername))
-			.ReturnsAsync(CreateUserWithId());
+		service.Setup(x => x.GetByAccountIdAsync(user.AccountId))
+			.ReturnsAsync(user);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == MaxValidUsername),
 			ct
-		)).ReturnsAsync(new AccountInfoDto(DateTimeOffset.UtcNow, true, null, null));
+		)).ReturnsAsync(new AccountInfoDto(ValidAccountId, DateTimeOffset.UtcNow, true, null, null));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(MaxValidUsername);
+		GetUserByUsernameQuery query = new(user.AccountId);
 
 		// Act
 		await handler.Handle(query, ct);
 
 		// Assert
-		service.Verify(x => x.GetByUsernameAsync(MaxValidUsername), Times.Once());
+		service.Verify(x => x.GetByAccountIdAsync(user.AccountId), Times.Once());
 	}
 
 	[Fact]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(MaxValidUsername);
+		GetUserByUsernameQuery query = new(user.AccountId);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -63,7 +64,7 @@ public class GetUserByUsernameHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(MaxValidUsername);
+		GetUserByUsernameQuery query = new(user.AccountId);
 
 		// Act
 		var result = await handler.Handle(query, ct);

@@ -7,7 +7,7 @@ import * as loginResources from './login';
 import * as refreshResources from './refresh';
 import * as logoutResources from './logout';
 import * as deleteResources from './delete';
-import * as changeUsernameResources from './change-username';
+import * as changeNamesResources from './change-names';
 import * as toggleTrackViewedProductsResources from './toggle-track-viewed-products';
 import * as forgotPasswordResources from './forgot-password';
 import * as resetPasswordResources from './reset-password';
@@ -37,8 +37,8 @@ export const refresh = async () =>
 
 export const logout = async () => await axios.post(logoutResources.url());
 
-export const changeUsername = async (req: changeUsernameResources.Request) =>
-	await axios.patch(changeUsernameResources.url(), req);
+export const changeUsername = async (req: changeNamesResources.Request) =>
+	await axios.patch(changeNamesResources.url(), req);
 
 export const toggleTrackViewedProducts = async () =>
 	await axios.patch(toggleTrackViewedProductsResources.url());

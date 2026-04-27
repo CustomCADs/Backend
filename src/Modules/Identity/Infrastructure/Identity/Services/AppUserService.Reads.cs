@@ -15,6 +15,17 @@ public partial class AppUserService
 		);
 
 	#region GetUserByX
+	public async Task<User> GetByAccountIdAsync(AccountId accountId)
+	{
+		AppUser appUser = await context.Users
+			.Include(x => x.RefreshTokens)
+			.FirstOrDefaultAsync(x => x.AccountId == accountId)
+			.ConfigureAwait(false)
+			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(User.AccountId), accountId);
+
+		return await MapToUserAsync(appUser).ConfigureAwait(false);
+	}
+
 	public async Task<User> GetByUsernameAsync(string username)
 	{
 		AppUser appUser = await context.Users

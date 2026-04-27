@@ -5,6 +5,7 @@ public sealed record GetAccountInfoByUsernameQuery(
 ) : IQuery<AccountInfoDto>;
 
 public sealed record AccountInfoDto(
+	AccountId Id,
 	DateTimeOffset CreatedAt,
 	bool TrackViewedProducts,
 	string? FirstName,

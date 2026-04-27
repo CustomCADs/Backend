@@ -6,6 +6,7 @@ namespace CustomCADs.Modules.Identity.Application.Contracts;
 public interface IUserService
 {
 	#region GetUserByX
+	Task<User> GetByAccountIdAsync(AccountId accountId);
 	Task<User> GetByUsernameAsync(string username);
 	Task<User> GetByEmailAsync(string email);
 	Task<(User User, RefreshToken RefreshToken)> GetByRefreshTokenAsync(string token);

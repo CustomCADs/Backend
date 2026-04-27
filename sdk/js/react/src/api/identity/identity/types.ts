@@ -1,6 +1,6 @@
 export type { Response as AuthnResponse } from './authn';
 export type { Response as AuthzResponse } from './authz';
-export type { Request as ChangeUsernameRequest } from './change-username';
+export type { Request as ChangeNamesRequest } from './change-names';
 export type { Request as ConfirmEmailRequest } from './confirm-email';
 export type { Response as DownloadUserInfoResponse } from './download-info';
 export type { Request as ForgotPasswordRequest } from './forgot-password';

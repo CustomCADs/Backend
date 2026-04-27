@@ -10,15 +10,15 @@ public sealed class GetUserByUsernameHandler(IUserService service, IRequestSende
 {
 	public async Task<GetUserByUsernameDto> Handle(GetUserByUsernameQuery req, CancellationToken ct = default)
 	{
-		User user = await service.GetByUsernameAsync(req.Username).ConfigureAwait(false);
+		User user = await service.GetByAccountIdAsync(req.Id).ConfigureAwait(false);
 
 		AccountInfoDto info = await sender.SendQueryAsync(
-			query: new GetAccountInfoByUsernameQuery(req.Username),
+			query: new GetAccountInfoByUsernameQuery(user.Username),
 			ct: ct
 		).ConfigureAwait(false);
 
 		ProductId[] viewedProductIds = await sender.SendQueryAsync(
-			query: new GetAccountViewedProductsByUsernameQuery(req.Username),
+			query: new GetAccountViewedProductsByUsernameQuery(user.Username),
 			ct: ct
 		).ConfigureAwait(false);
 

@@ -3,7 +3,7 @@ import { identityApi as api } from '@/api';
 import { Request as Login } from '@/api/identity/identity/login';
 import { Request as ForgotPassword } from '@/api/identity/identity/forgot-password';
 import { Request as ResetPassword } from '@/api/identity/identity/reset-password';
-import { Request as ChangeUsername } from '@/api/identity/identity/change-username';
+import { Request as ChangeNames } from '@/api/identity/identity/change-names';
 import { Request as Register } from '@/api/identity/identity/register';
 import { Request as ConfirmEmail } from '@/api/identity/identity/confirm-email';
 import { Request as RetryConfirmEmail } from '@/api/identity/identity/retry-confirm-email';
@@ -22,9 +22,9 @@ export const identity = {
 		mutationKey: [...BASE_KEY, 'refresh'],
 		mutationFn: async () => (await api.refresh()).data,
 	}),
-	changeUsername: mutationOptions({
-		mutationKey: [...BASE_KEY, 'change-username'],
-		mutationFn: async (params: ChangeUsername) =>
+	changeNames: mutationOptions({
+		mutationKey: [...BASE_KEY, 'change-names'],
+		mutationFn: async (params: ChangeNames) =>
 			(await api.changeUsername(params)).data,
 	}),
 	toggleTrackViewedProducts: mutationOptions({

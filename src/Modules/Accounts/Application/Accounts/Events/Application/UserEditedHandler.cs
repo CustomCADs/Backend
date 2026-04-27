@@ -19,6 +19,19 @@ public class UserEditedHandler(IAccountReads reads, IUnitOfWork uow)
 		{
 			account.SetTrackViewedProducts(ae.TrackViewedProducts.Value);
 		}
+
+		if (ae.Names is not null)
+		{
+			if (ae.Names.FirstName is not null)
+			{
+				account.SetFirstName(ae.Names.FirstName);
+			}
+			if (ae.Names.LastName is not null)
+			{
+				account.SetLastName(ae.Names.LastName);
+			}
+		}
+
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 	}
 }

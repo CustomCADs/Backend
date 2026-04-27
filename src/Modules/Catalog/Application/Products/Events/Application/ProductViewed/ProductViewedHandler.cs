@@ -18,11 +18,11 @@ public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequest
 			query: new GetUsernameByIdQuery(ae.AccountId)
 		).ConfigureAwait(false);
 
-		(DateTimeOffset _, bool UserTracksViewedProducts, string? _, string? _) = await sender.SendQueryAsync(
+		AccountInfoDto account = await sender.SendQueryAsync(
 			query: new GetAccountInfoByUsernameQuery(username)
 		).ConfigureAwait(false);
 
-		if (!UserTracksViewedProducts)
+		if (!account.TrackViewedProducts)
 		{
 			return;
 		}
