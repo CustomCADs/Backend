@@ -7,9 +7,9 @@ public sealed class ResetPasswordEmailValidator : CommandValidator<ResetPassword
 {
 	public ResetPasswordEmailValidator(IUserService service)
 	{
-		RuleFor(x => x.Email)
+		RuleFor(x => x)
 			.MustAsync(
-				async (email, ct) => !await service.GetIsSSOByEmailAsync(email).ConfigureAwait(false)
+				async (command, ct) => !await service.GetIsSSOByEmailAsync(command.Email).ConfigureAwait(false)
 			)
 			.WithMessage("Accounts with SSO have no Password to Reset.");
 	}
