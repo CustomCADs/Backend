@@ -2,6 +2,7 @@ import { CategoryDto, Counts, GALLERY_BASE_PATH } from '@/api/catalog/common';
 
 export type Request = {
 	id: string;
+	viewed?: boolean;
 };
 
 export type Response = {

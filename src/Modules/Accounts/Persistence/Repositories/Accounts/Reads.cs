@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Modules.Accounts.Domain.Accounts;
+using CustomCADs.Modules.Accounts.Domain.Accounts.Entities;
 using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
@@ -57,14 +58,24 @@ public sealed class Reads(AccountsContext context) : IAccountReads
 			.ConfigureAwait(false);
 
 	public async Task<ProductId[]> ViewedProductsByIdAsync(AccountId id, CancellationToken ct = default)
-		=> await context.ViewedProducts
-			.GetViewedProductsByAccountIdAsync(id, ct)
-			.ConfigureAwait(false);
+		=> [.. await context.Accounts
+			.Where(x => x.Id == id)
+			.SelectMany(x => x.ViewedProducts)
+			.Select(x => x.ProductId)
+			.ToArrayAsync(ct)
+			.ConfigureAwait(false)
+			?? []
+		];
 
-	public async Task<ProductId[]> ViewedProductsByUsernameAsync(string username, CancellationToken ct = default)
-		=> await context.ViewedProducts
-			.GetViewedProductsByAccountUsernrameAsync(username, ct)
-			.ConfigureAwait(false);
+	public async Task<ViewedProduct[]> ViewedProductsByUsernameAsync(string username, CancellationToken ct = default)
+		=> [.. await context.Accounts
+			.Where(x => x.Username == username)
+			.SelectMany(x => x.ViewedProducts)
+			.OrderByDescending(x => x.ViewedAt)
+			.ToArrayAsync(ct)
+			.ConfigureAwait(false)
+			?? []
+		];
 
 	public async Task<int> CountAsync(CancellationToken ct = default)
 		=> await context.Accounts

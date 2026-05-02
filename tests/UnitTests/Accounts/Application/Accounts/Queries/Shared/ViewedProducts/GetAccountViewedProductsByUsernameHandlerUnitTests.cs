@@ -1,9 +1,9 @@
-using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProduct;
+using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProducts;
+using CustomCADs.Modules.Accounts.Domain.Accounts.Entities;
 using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.ViewedProduct;
+namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.ViewedProducts;
 
 using static AccountsData;
 
@@ -12,7 +12,7 @@ public class GetAccountViewedProductsByUsernameHandlerUnitTests : AccountsBaseUn
 	private readonly GetAccountViewedProductsByUsernameHandler handler;
 	private readonly Mock<IAccountReads> reads = new();
 
-	private static readonly ProductId[] expected = [];
+	private static readonly ViewedProduct[] expected = [];
 
 	public GetAccountViewedProductsByUsernameHandlerUnitTests()
 	{
@@ -41,9 +41,9 @@ public class GetAccountViewedProductsByUsernameHandlerUnitTests : AccountsBaseUn
 		GetAccountViewedProductsByUsernameQuery query = new(ValidUsername);
 
 		// Act
-		ProductId[] ids = await handler.Handle(query, ct);
+		ViewedProductDto[] products = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(expected, ids);
+		Assert.Equal(expected.Select(x => x.ProductId), products.Select(x => x.Id));
 	}
 }

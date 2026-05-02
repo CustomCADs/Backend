@@ -1,9 +1,9 @@
-﻿using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProduct;
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProducts;
 using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.ViewedProduct;
+namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.ViewedProducts;
 
 using static AccountsData;
 

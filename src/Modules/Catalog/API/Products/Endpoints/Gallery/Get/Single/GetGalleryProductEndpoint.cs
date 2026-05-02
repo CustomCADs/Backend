@@ -17,10 +17,13 @@ public sealed class GetGalleryProductEndpoint(IRequestSender sender)
 
 	public override async Task HandleAsync(GetGalleryProductRequest req, CancellationToken ct)
 	{
+		string? viewed = HttpContext.Request.Headers["X-Viewed-Product"];
+
 		GalleryGetProductByIdDto product = await sender.SendQueryAsync(
 			query: new GalleryGetProductByIdQuery(
 				Id: ProductId.New(req.Id),
-				CallerId: User.AccountId
+				CallerId: User.AccountId,
+				Viewed: string.Equals(viewed, "true", StringComparison.CurrentCultureIgnoreCase)
 			),
 			ct: ct
 		).ConfigureAwait(false);

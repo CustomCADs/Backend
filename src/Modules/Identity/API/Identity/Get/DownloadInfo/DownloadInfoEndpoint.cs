@@ -36,7 +36,7 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 				firstName = user.FirstName,
 				lastName = user.LastName,
 				trackViewedProducts = user.TrackViewedProducts,
-				viewedProductIds = user.ViewedProductIds.Select(x => x.Value),
+				viewedProductIds = user.ViewedProducts.Select(x => new { id = x.Id.Value, x.ViewedAt }),
 			},
 			options: new() { WriteIndented = true }
 		).ConfigureAwait(false);

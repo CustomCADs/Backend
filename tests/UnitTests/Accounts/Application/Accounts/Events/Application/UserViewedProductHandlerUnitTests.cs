@@ -15,6 +15,7 @@ public class UserViewedProductHandlerUnitTests : AccountsBaseUnitTests
 
 	private static readonly AccountId id = AccountId.New();
 	private static readonly ProductId productId = ProductId.New();
+	private static readonly DateTimeOffset viewedAt = DateTimeOffset.UtcNow;
 
 	public UserViewedProductHandlerUnitTests()
 	{
@@ -25,13 +26,13 @@ public class UserViewedProductHandlerUnitTests : AccountsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		UserViewedProductApplicationEvent ie = new(id, productId);
+		UserViewedProductApplicationEvent ie = new(id, productId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(ie);
 
 		// Assert
-		writes.Verify(x => x.ViewProductAsync(id, productId, ct), Times.Once());
+		writes.Verify(x => x.ViewProductAsync(id, productId, viewedAt, ct), Times.Once());
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
 	}
 }

@@ -1,7 +1,6 @@
 using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 
@@ -17,7 +16,7 @@ public sealed class GetUserByUsernameHandler(IUserService service, IRequestSende
 			ct: ct
 		).ConfigureAwait(false);
 
-		ProductId[] viewedProductIds = await sender.SendQueryAsync(
+		ViewedProductDto[] viewedProducts = await sender.SendQueryAsync(
 			query: new GetAccountViewedProductsByUsernameQuery(user.Username),
 			ct: ct
 		).ConfigureAwait(false);
@@ -31,7 +30,7 @@ public sealed class GetUserByUsernameHandler(IUserService service, IRequestSende
 			CreatedAt: info.CreatedAt,
 			FirstName: info.FirstName,
 			LastName: info.LastName,
-			ViewedProductIds: viewedProductIds
+			ViewedProducts: viewedProducts
 		);
 	}
 }

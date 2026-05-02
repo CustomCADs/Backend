@@ -2,7 +2,7 @@
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
-namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProduct;
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProducts;
 
 public sealed class GetAccountViewedProductHandler(IAccountReads reads)
 	: IQueryHandler<GetAccountViewedProductQuery, bool>

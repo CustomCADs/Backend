@@ -21,6 +21,7 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	private readonly Mock<IEventRaiser> raiser = new();
 
 	private readonly Product product = CreateProductWithId(id: ValidId);
+	private static readonly DateTimeOffset viewedAt = DateTimeOffset.UtcNow;
 
 	public GalleryGetProductByIdHandlerUnitTests()
 	{
@@ -37,7 +38,7 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId);
+		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -50,7 +51,7 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId);
+		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -66,11 +67,17 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 		), Times.Once());
 	}
 
-	[Fact]
-	public async Task Handle_ShouldRaiseEvents_WhenAccountIdEmpty()
+	[Theory]
+	[InlineData(false, false)]
+	[InlineData(true, false)]
+	[InlineData(false, true)]
+	[InlineData(true, true)]
+	public async Task Handle_ShouldRaiseEvents(bool authenticatedUser, bool viewed)
 	{
+		AccountId creatorId = authenticatedUser ? ValidCreatorId : AccountId.New(Guid.Empty);
+
 		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId);
+		GalleryGetProductByIdQuery query = new(ValidId, creatorId, Viewed: viewed);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -78,29 +85,14 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
 			It.Is<ProductViewedApplicationEvent>(x => x.Id == product.Id)
-		), Times.Once());
-	}
-
-	[Fact]
-	public async Task Handle_ShouldNotRaiseEvents_WhenAccountIdEmpty()
-	{
-		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, AccountId.New(Guid.Empty));
-
-		// Act
-		await handler.Handle(query, ct);
-
-		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<ProductViewedApplicationEvent>(x => x.Id == product.Id)
-		), Times.Never());
+		), Times.Exactly(authenticatedUser && viewed ? 1 : 0));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId);
+		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Act
 		var result = await handler.Handle(query, ct);
@@ -120,7 +112,7 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	{
 		// Arrange
 		product.Report(ValidDesignerId);
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId);
+		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomStatusException<Product>>(
@@ -135,7 +127,7 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as Product);
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId);
+		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(

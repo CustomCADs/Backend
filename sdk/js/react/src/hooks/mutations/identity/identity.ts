@@ -4,6 +4,7 @@ import { Request as Login } from '@/api/identity/identity/login';
 import { Request as ForgotPassword } from '@/api/identity/identity/forgot-password';
 import { Request as ResetPassword } from '@/api/identity/identity/reset-password';
 import { Request as ChangeNames } from '@/api/identity/identity/change-names';
+import { Request as DeleteViewedProduct } from '@/api/identity/identity/delete-viewed-product';
 import { Request as Register } from '@/api/identity/identity/register';
 import { Request as ConfirmEmail } from '@/api/identity/identity/confirm-email';
 import { Request as RetryConfirmEmail } from '@/api/identity/identity/retry-confirm-email';
@@ -34,6 +35,11 @@ export const identity = {
 	deleteMyAccount: mutationOptions({
 		mutationKey: [...BASE_KEY, 'delete-my-account'],
 		mutationFn: async () => (await api.delete_()).data,
+	}),
+	deleteViewedProduct: mutationOptions({
+		mutationKey: [...BASE_KEY, 'delete-viewed-product'],
+		mutationFn: async (params: DeleteViewedProduct) =>
+			(await api.deleteViewedProduct(params)).data,
 	}),
 	forgotPassword: mutationOptions({
 		mutationKey: [...BASE_KEY, 'forgot-password'],

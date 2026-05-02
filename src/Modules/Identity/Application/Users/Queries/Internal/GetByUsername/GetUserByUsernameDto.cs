@@ -1,5 +1,5 @@
 using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
+using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 
@@ -12,5 +12,5 @@ public sealed record GetUserByUsernameDto(
 	bool TrackViewedProducts,
 	Email Email,
 	DateTimeOffset CreatedAt,
-	ProductId[] ViewedProductIds
+	ViewedProductDto[] ViewedProducts
 );

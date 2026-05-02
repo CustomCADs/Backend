@@ -1,4 +1,4 @@
-import { IDENTITY_BASE_PATH } from '../common';
+import { IDENTITY_BASE_PATH, ViewedProduct } from '../common';
 
 export type Response = {
 	id: string;
@@ -8,6 +8,7 @@ export type Response = {
 	lastName?: string;
 	email: string;
 	trackViewedProducts: boolean;
+	viewedProducts: ViewedProduct[];
 	createdAt: string;
 };
 

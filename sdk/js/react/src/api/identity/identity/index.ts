@@ -1,4 +1,4 @@
-import { axios } from '@/api/axios';
+import { axios, config } from '@/api/axios';
 import * as authnResources from './authn';
 import * as authzResources from './authz';
 import * as myAccountResources from './my-account';
@@ -7,6 +7,7 @@ import * as loginResources from './login';
 import * as refreshResources from './refresh';
 import * as logoutResources from './logout';
 import * as deleteResources from './delete';
+import * as deleteViewedProductResources from './delete-viewed-product';
 import * as changeNamesResources from './change-names';
 import * as toggleTrackViewedProductsResources from './toggle-track-viewed-products';
 import * as forgotPasswordResources from './forgot-password';
@@ -44,6 +45,14 @@ export const toggleTrackViewedProducts = async () =>
 	await axios.patch(toggleTrackViewedProductsResources.url());
 
 export const delete_ = async () => await axios.delete(deleteResources.url());
+
+export const deleteViewedProduct = async (
+	req: deleteViewedProductResources.Request,
+) =>
+	await axios.delete(
+		deleteViewedProductResources.url(),
+		config({ data: req }),
+	);
 
 export const forgotPassword = async (req: forgotPasswordResources.Request) =>
 	await axios.post(forgotPasswordResources.url(), req);

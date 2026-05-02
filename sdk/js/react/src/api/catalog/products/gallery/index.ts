@@ -8,7 +8,9 @@ export const all = async (req: allResources.Request) =>
 	await axios.get<Result<allResources.Response>>(allResources.url(req));
 
 export const single = async (req: singleResources.Request) =>
-	await axios.get<singleResources.Response>(singleResources.url(req));
+	await axios.get<singleResources.Response>(singleResources.url(req), {
+		headers: { 'X-Viewed-Product': req.viewed },
+	});
 
 export const sortings = async () =>
 	await axios.get<sortingsResources.Response>(sortingsResources.url());

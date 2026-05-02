@@ -29,6 +29,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		LastName: null
 	);
 	private readonly Product product = CreateProduct();
+	private static readonly DateTimeOffset viewedAt = DateTimeOffset.UtcNow;
 
 	public ProductViewedHandlerUnitTests()
 	{
@@ -57,7 +58,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(ae);
@@ -70,7 +71,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(ae);
@@ -83,7 +84,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(ae);
@@ -107,7 +108,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(ae);
@@ -122,7 +123,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
-		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(ae);
@@ -139,7 +140,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == Username),
 			ct
 		)).ReturnsAsync(info with { TrackViewedProducts = false });
-		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(ae);
@@ -159,7 +160,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 			It.Is<GetAccountViewedProductQuery>(x => x.Id == ValidCreatorId && x.ProductId == ValidId),
 			ct
 		)).ReturnsAsync(true);
-		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(ae);
@@ -178,7 +179,7 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Product);
 
-		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId);
+		ProductViewedApplicationEvent ae = new(ValidId, ValidCreatorId, viewedAt);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(

@@ -11,30 +11,23 @@ public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequest
 {
 	public async Task HandleAsync(ProductViewedApplicationEvent ae)
 	{
-		Product product = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Product>.ById(ae.Id);
-
-		string username = await sender.SendQueryAsync(
-			query: new GetUsernameByIdQuery(ae.AccountId)
-		).ConfigureAwait(false);
-
-		AccountInfoDto account = await sender.SendQueryAsync(
-			query: new GetAccountInfoByUsernameQuery(username)
-		).ConfigureAwait(false);
-
-		if (!account.TrackViewedProducts)
-		{
-			return;
-		}
-
 		bool userAlreadyViewed = await sender.SendQueryAsync(
 			query: new GetAccountViewedProductQuery(ae.AccountId, ae.Id)
 		).ConfigureAwait(false);
+		if (userAlreadyViewed) return;
 
-		if (userAlreadyViewed)
-		{
-			return;
-		}
+		var account = await sender.SendQueryAsync(
+			query: new GetAccountInfoByUsernameQuery(
+				Username: await sender.SendQueryAsync(
+					query: new GetUsernameByIdQuery(ae.AccountId)
+				).ConfigureAwait(false)
+			)
+		).ConfigureAwait(false);
+
+		if (!account.TrackViewedProducts) return;
+
+		Product product = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Product>.ById(ae.Id);
 
 		product.AddToViewCount();
 		await uow.SaveChangesAsync().ConfigureAwait(false);
@@ -42,7 +35,8 @@ public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequest
 		await raiser.RaiseApplicationEventAsync(
 			@event: new UserViewedProductApplicationEvent(
 				Id: ae.Id,
-				AccountId: ae.AccountId
+				AccountId: ae.AccountId,
+				ViewedAt: ae.ViewedAt
 			)
 		).ConfigureAwait(false);
 	}
