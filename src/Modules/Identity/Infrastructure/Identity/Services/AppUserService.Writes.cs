@@ -68,7 +68,7 @@ public partial class AppUserService
 		AppUser appUser = await manager.FindByIdAsync(id.ToString()).ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(id), id);
 
-		appUser.Username = username;
+		if (appUser.Username != username) appUser.Username = username;
 		await manager.UpdateAsync(appUser).ConfigureAwait(false);
 	}
 

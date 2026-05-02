@@ -13,8 +13,12 @@ public class UserEditedHandler(IAccountReads reads, IUnitOfWork uow)
 
 		if (ae.Username is not null)
 		{
-			account.SetUsername(ae.Username);
+			if (ae.Username != account.Username)
+			{
+				account.SetUsername(ae.Username);
+			}
 		}
+
 		if (ae.TrackViewedProducts is not null)
 		{
 			account.SetTrackViewedProducts(ae.TrackViewedProducts.Value);
@@ -22,11 +26,11 @@ public class UserEditedHandler(IAccountReads reads, IUnitOfWork uow)
 
 		if (ae.Names is not null)
 		{
-			if (ae.Names.FirstName is not null)
+			if (ae.Names.FirstName != account.FirstName)
 			{
 				account.SetFirstName(ae.Names.FirstName);
 			}
-			if (ae.Names.LastName is not null)
+			if (ae.Names.LastName != account.LastName)
 			{
 				account.SetLastName(ae.Names.LastName);
 			}

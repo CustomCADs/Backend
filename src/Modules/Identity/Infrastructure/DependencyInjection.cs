@@ -36,9 +36,13 @@ public static class DependencyInjection
 
 		private IServiceCollection AddContext(string connectionString)
 		{
-			services.AddDbContext<IdentityContext>(options =>
+			services.AddSingleton(
+				sp => new NpgsqlDataSourceBuilder(connectionString).EnableDynamicJson().Build()
+			);
+
+			services.AddDbContext<IdentityContext>((sp, options) =>
 				options.UseNpgsql(
-					dataSource: new NpgsqlDataSourceBuilder(connectionString).EnableDynamicJson().Build(),
+					dataSource: sp.GetRequiredService<NpgsqlDataSource>(),
 					npgsqlOptionsAction: opt => opt.MigrationsHistoryTable("__EFMigrationsHistory", IdentityContext.Schema)
 				)
 			);
