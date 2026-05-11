@@ -5,6 +5,7 @@ import { Request as ForgotPassword } from '@/api/identity/identity/forgot-passwo
 import { Request as ResetPassword } from '@/api/identity/identity/reset-password';
 import { Request as ChangeNames } from '@/api/identity/identity/change-names';
 import { Request as DeleteViewedProduct } from '@/api/identity/identity/delete-viewed-product';
+import { Request as DeleteFingerprint } from '@/api/identity/identity/delete-fingerprint';
 import { Request as Register } from '@/api/identity/identity/register';
 import { Request as ConfirmEmail } from '@/api/identity/identity/confirm-email';
 import { Request as RetryConfirmEmail } from '@/api/identity/identity/retry-confirm-email';
@@ -40,6 +41,11 @@ export const identity = {
 		mutationKey: [...BASE_KEY, 'delete-viewed-product'],
 		mutationFn: async (params: DeleteViewedProduct) =>
 			(await api.deleteViewedProduct(params)).data,
+	}),
+	deleteFingerprint: mutationOptions({
+		mutationKey: [...BASE_KEY, 'delete-fingerprint'],
+		mutationFn: async (params: DeleteFingerprint) =>
+			(await api.deleteFingerprint(params)).data,
 	}),
 	forgotPassword: mutationOptions({
 		mutationKey: [...BASE_KEY, 'forgot-password'],

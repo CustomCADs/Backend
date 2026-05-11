@@ -8,6 +8,7 @@ import * as refreshResources from './refresh';
 import * as logoutResources from './logout';
 import * as deleteResources from './delete';
 import * as deleteViewedProductResources from './delete-viewed-product';
+import * as deleteFingerprintResources from './delete-fingerprint';
 import * as changeNamesResources from './change-names';
 import * as toggleTrackViewedProductsResources from './toggle-track-viewed-products';
 import * as forgotPasswordResources from './forgot-password';
@@ -53,6 +54,11 @@ export const deleteViewedProduct = async (
 		deleteViewedProductResources.url(),
 		config({ data: req }),
 	);
+
+export const deleteFingerprint = async (
+	req: deleteFingerprintResources.Request,
+) =>
+	await axios.delete(deleteFingerprintResources.url(), config({ data: req }));
 
 export const forgotPassword = async (req: forgotPasswordResources.Request) =>
 	await axios.post(forgotPasswordResources.url(), req);

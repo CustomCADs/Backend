@@ -1,4 +1,4 @@
-export type { ViewedProduct } from '../common';
+export type { ViewedProduct, Fingerprint } from '../common';
 export type { Response as AuthnResponse } from './authn';
 export type { Response as AuthzResponse } from './authz';
 export type { Request as ChangeNamesRequest } from './change-names';
