@@ -22,8 +22,8 @@ public sealed class DeleteAccountHandler(
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-				@event: new AccountDeletedApplicationEvent(
-				account.Username
+			@event: new AccountDeletedApplicationEvent(
+				account.Id
 			)
 		).ConfigureAwait(false);
 	}

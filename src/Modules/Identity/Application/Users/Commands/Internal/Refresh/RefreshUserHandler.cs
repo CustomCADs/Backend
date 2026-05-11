@@ -1,4 +1,5 @@
-﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
+﻿using CustomCADs.Modules.Identity.Application.Extensions;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Exceptions;
 
@@ -13,20 +14,15 @@ public sealed class RefreshUserHandler(
 	{
 		if (string.IsNullOrEmpty(req.Token))
 		{
-			throw CustomAuthorizationException<User>.Custom("No Refresh Token found.");
+			throw CustomAuthorizationException<User>.NoRefreshToken();
 		}
 
 		(User User, RefreshToken RefreshToken) = await service.GetByRefreshTokenAsync(req.Token).ConfigureAwait(false);
 		if (RefreshToken.ExpiresAt < DateTime.UtcNow)
 		{
-			throw CustomAuthorizationException<User>.Custom("Refresh Token found, but expired.");
+			throw CustomAuthorizationException<User>.RefreshTokenExpired();
 		}
 
-		RefreshToken rt = tokenService.IssueRefreshToken(
-			createRefreshToken: (token) => User.AddRefreshToken(token, req.Fingerprint, longerSession: false)
-		);
-		await service.SaveRefreshTokensAsync(User).ConfigureAwait(false);
-
-		return tokenService.IssueTokens(User, rt);
+		return tokenService.IssueTokens(User, RefreshToken);
 	}
 }

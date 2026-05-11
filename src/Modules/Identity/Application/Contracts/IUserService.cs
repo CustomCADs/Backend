@@ -16,14 +16,13 @@ public interface IUserService
 	Task<bool> GetExistsByUsernameAsync(string username);
 	Task<bool> GetExistsByEmailAsync(string email);
 	Task<bool> GetIsSSOByEmailAsync(string email);
-	Task<AccountId> GetAccountIdAsync(string username);
 	Task<DateTimeOffset?> GetIsLockedOutAsync(string username);
 	#endregion
 
 	#region Lifecycle
 	Task CreateAsync(User user, string password);
 	Task CreateSSOAsync(User user, string provider);
-	Task DeleteAsync(string username);
+	Task DeleteAsync(AccountId id);
 	#endregion
 
 	#region Mutation

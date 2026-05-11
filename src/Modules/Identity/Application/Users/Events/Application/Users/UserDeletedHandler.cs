@@ -6,6 +6,6 @@ public class UserDeletedHandler(IUserService service)
 {
 	public async Task HandleAsync(AccountDeletedApplicationEvent ae)
 	{
-		await service.DeleteAsync(ae.Username).ConfigureAwait(false);
+		await service.DeleteAsync(ae.Id).ConfigureAwait(false);
 	}
 }

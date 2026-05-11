@@ -109,6 +109,12 @@ public class Account : BaseAggregateRoot, ISoftDeletable<Account>
 		IsDeleted = true;
 		DeletedAt = DateTimeOffset.UtcNow;
 
+		Username = this.Id.ToString();
+		Email = this.Id.ToString();
+
+		FirstName = null;
+		LastName = null;
+
 		return this;
 	}
 }

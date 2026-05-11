@@ -19,7 +19,8 @@ public sealed class ToggleViewedProductsTrackingEndpoint(IRequestSender sender)
 	{
 		await sender.SendCommandAsync(
 			command: new ToggleViewedProductsTrackingCommand(
-				Username: User.Name
+				Username: User.Name,
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);

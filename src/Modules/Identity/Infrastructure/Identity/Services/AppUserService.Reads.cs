@@ -15,6 +15,9 @@ public partial class AppUserService
 			role: (await manager.GetRolesAsync(user).ConfigureAwait(false)).Single()
 		);
 
+	private static IQueryable<AppUser> QueryByUsername(IQueryable<AppUser> query, string username)
+		=> query.Where(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username));
+
 	private async Task<(User User, RefreshToken RefreshToken)> GetByRefreshTokenAsync(RefreshTokenId refreshTokenId)
 	{
 		AppUser appUser = await context.Users
@@ -43,9 +46,8 @@ public partial class AppUserService
 
 	public async Task<User> GetByUsernameAsync(string username)
 	{
-		AppUser appUser = await context.Users
-			.Include(x => x.RefreshTokens)
-			.FirstOrDefaultAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
+		AppUser appUser = await QueryByUsername(context.Users.Include(x => x.RefreshTokens), username)
+			.FirstOrDefaultAsync()
 			.ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
 
@@ -80,9 +82,7 @@ public partial class AppUserService
 
 	#region GetX
 	public async Task<bool> GetExistsByUsernameAsync(string username)
-		=> await context.Users
-			.AnyAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
-			.ConfigureAwait(false);
+		=> await QueryByUsername(context.Users, username).AnyAsync().ConfigureAwait(false);
 
 	public async Task<bool> GetExistsByEmailAsync(string email)
 		=> await context.Users
@@ -94,26 +94,10 @@ public partial class AppUserService
 			.AnyAsync(x => x.Email == email && x.IsSSO)
 			.ConfigureAwait(false);
 
-	public async Task<AccountId> GetAccountIdAsync(string username)
-	{
-		AccountId accountId = await context.Users
-			.Where(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
-			.Select(x => x.AccountId)
-			.FirstOrDefaultAsync()
-			.ConfigureAwait(false);
-
-		if (accountId.IsEmpty())
-		{
-			throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
-		}
-
-		return accountId;
-	}
-
 	public async Task<DateTimeOffset?> GetIsLockedOutAsync(string username)
 	{
-		AppUser appUser = await context.Users
-			.FirstOrDefaultAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))
+		AppUser appUser = await QueryByUsername(context.Users, username)
+			.FirstOrDefaultAsync()
 			.ConfigureAwait(false)
 			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(username), username);
 
