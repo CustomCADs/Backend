@@ -84,6 +84,18 @@ public partial class AppUserService
 		await context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
+	public async Task RevokeRefreshTokenAsync(RefreshTokenId id)
+	{
+		(User User, RefreshToken RefreshToken) = await GetByRefreshTokenAsync(id).ConfigureAwait(false);
+		User.RemoveRefreshToken(RefreshToken);
+
+		AppUser appUser = await context.Users.FirstOrDefaultAsync(x => x.Id == User.Id.Value).ConfigureAwait(false)
+			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(User.Id), User.Id);
+
+		appUser.FillRefreshTokens([.. User.RefreshTokens.Select(x => x.ToAppRefreshToken())]);
+		await context.SaveChangesAsync().ConfigureAwait(false);
+	}
+
 	public async Task RevokeRefreshTokenAsync(string token)
 	{
 		(User User, RefreshToken RefreshToken) = await GetByRefreshTokenAsync(token).ConfigureAwait(false);

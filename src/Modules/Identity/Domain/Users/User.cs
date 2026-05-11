@@ -53,9 +53,9 @@ public class User : BaseAggregateRoot
 		this.ValidateUsername();
 	}
 
-	public RefreshToken AddRefreshToken(string token, bool longerSession)
+	public RefreshToken AddRefreshToken(string token, Fingerprint fingerprint, bool longerSession)
 	{
-		RefreshToken rt = RefreshToken.Create(token, this.Id, longerSession);
+		RefreshToken rt = RefreshToken.Create(token, fingerprint, this.Id, longerSession);
 		refreshTokens.Add(rt);
 
 		return rt;

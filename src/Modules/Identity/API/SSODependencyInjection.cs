@@ -1,4 +1,5 @@
 using CustomCADs.Modules.Identity.API;
+using CustomCADs.Modules.Identity.Application.Contracts;
 using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.SSO.Register;
 using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using Microsoft.AspNetCore.Authentication;
@@ -77,6 +78,7 @@ public static partial class DependencyInjection
 					ctx.Properties?.Items.TryGetValue("role", out role);
 
 					IRequestSender sender = sp.GetRequiredService<IRequestSender>();
+					IFingerprintService fingerprint = sp.GetRequiredService<IFingerprintService>();
 					CookieSettings cookie = sp.GetRequiredService<IOptions<CookieSettings>>().Value;
 
 					ctx.HttpContext.SaveAllCookies(
@@ -89,7 +91,8 @@ public static partial class DependencyInjection
 								LastName: lastName,
 								Username: username,
 								Email: email,
-								Provider: provider
+								Provider: provider,
+								Fingerprint: fingerprint.GetFingerprint(ctx.Request.HeadersDictionary)
 							),
 							ct: ct
 						).ConfigureAwait(false)

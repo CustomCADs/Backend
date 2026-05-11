@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 
 namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.SSO.Register;
 
@@ -8,5 +9,6 @@ public sealed record SingleSignOnUserCommand(
 	string? LastName,
 	string Username,
 	string Email,
-	string Provider
+	string Provider,
+	Fingerprint Fingerprint
 ) : ICommand<TokensDto>;

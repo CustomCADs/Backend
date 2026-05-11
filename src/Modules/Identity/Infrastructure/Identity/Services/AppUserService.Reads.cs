@@ -3,6 +3,7 @@ using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomCADs.Modules.Identity.Infrastructure.Identity.Services;
@@ -13,6 +14,20 @@ public partial class AppUserService
 		=> user.ToUser(
 			role: (await manager.GetRolesAsync(user).ConfigureAwait(false)).Single()
 		);
+
+	private async Task<(User User, RefreshToken RefreshToken)> GetByRefreshTokenAsync(RefreshTokenId refreshTokenId)
+	{
+		AppUser appUser = await context.Users
+			.Include(x => x.RefreshTokens)
+			.FirstOrDefaultAsync(x => x.RefreshTokens.Any(x => x.Id == refreshTokenId.Value))
+			.ConfigureAwait(false)
+			?? throw CustomNotFoundException<AppUser>.ByProp(nameof(RefreshToken.Id), refreshTokenId);
+
+		return (
+			User: await MapToUserAsync(appUser).ConfigureAwait(false),
+			RefreshToken: appUser.RefreshTokens.First(x => x.Id == refreshTokenId.Value).ToRefreshToken()
+		);
+	}
 
 	#region GetUserByX
 	public async Task<User> GetByAccountIdAsync(AccountId accountId)
@@ -63,7 +78,7 @@ public partial class AppUserService
 	}
 	#endregion
 
-	#region GetPropertyX
+	#region GetX
 	public async Task<bool> GetExistsByUsernameAsync(string username)
 		=> await context.Users
 			.AnyAsync(x => x.UserName == (x.IsSSO ? x.Provider + '/' + username : username))

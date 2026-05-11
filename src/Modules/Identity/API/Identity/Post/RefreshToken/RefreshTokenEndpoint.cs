@@ -1,11 +1,12 @@
-﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Refresh;
+﻿using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Refresh;
 using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.Extensions.Options;
 
 namespace CustomCADs.Modules.Identity.API.Identity.Post.RefreshToken;
 
-public sealed class RefreshTokenEndpoint(IRequestSender sender, IOptions<CookieSettings> settings)
+public sealed class RefreshTokenEndpoint(IRequestSender sender, IFingerprintService fingerprintService, IOptions<CookieSettings> settings)
 	: EndpointWithoutRequest
 {
 	public override void Configure()
@@ -24,7 +25,8 @@ public sealed class RefreshTokenEndpoint(IRequestSender sender, IOptions<CookieS
 	{
 		TokensDto tokens = await sender.SendCommandAsync(
 			command: new RefreshUserCommand(
-				Token: HttpContext.RefreshTokenCookie
+				Token: HttpContext.RefreshTokenCookie,
+				Fingerprint: fingerprintService.GetFingerprint(HttpContext.Request.HeadersDictionary)
 			),
 			ct: ct
 		).ConfigureAwait(false);

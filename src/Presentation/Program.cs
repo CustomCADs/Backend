@@ -19,6 +19,7 @@ builder.Services.AddAccessPolicies();
 // External Services
 builder.Services.AddEmailService(builder.Configuration);
 builder.Services.AddTokensService(builder.Configuration);
+builder.Services.AddFingerprintsService();
 builder.Services.AddPaymentService(builder.Configuration);
 builder.Services.AddDeliveryService(builder.Configuration);
 builder.Services.AddStorageService(builder.Configuration);

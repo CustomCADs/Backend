@@ -23,7 +23,7 @@ public sealed class RefreshUserHandler(
 		}
 
 		RefreshToken rt = tokenService.IssueRefreshToken(
-			createRefreshToken: (token) => User.AddRefreshToken(token, longerSession: false)
+			createRefreshToken: (token) => User.AddRefreshToken(token, req.Fingerprint, longerSession: false)
 		);
 		await service.SaveRefreshTokensAsync(User).ConfigureAwait(false);
 

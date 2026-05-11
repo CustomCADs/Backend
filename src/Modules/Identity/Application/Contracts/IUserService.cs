@@ -30,6 +30,7 @@ public interface IUserService
 	Task<bool> CheckPasswordAsync(string username, string password);
 	Task UpdateUsernameAsync(UserId id, string username);
 	Task SaveRefreshTokensAsync(User user);
+	Task RevokeRefreshTokenAsync(RefreshTokenId refreshTokenId);
 	Task RevokeRefreshTokenAsync(string token);
 	#endregion
 

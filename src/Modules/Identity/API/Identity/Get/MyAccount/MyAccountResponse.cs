@@ -11,5 +11,6 @@ public record MyAccountResponse(
 	string Email,
 	bool TrackViewedProducts,
 	DateTimeOffset CreatedAt,
-	ViewedProductResponse[] ViewedProducts
+	ViewedProductResponse[] ViewedProducts,
+	FingerprintResponse[] Fingerprints
 );

@@ -1,3 +1,5 @@
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Domain.Users.Entities;
 using CustomCADs.Shared.Application.Abstractions.Requests.Queries;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
@@ -30,7 +32,20 @@ public sealed class GetUserByUsernameHandler(IUserService service, IRequestSende
 			CreatedAt: info.CreatedAt,
 			FirstName: info.FirstName,
 			LastName: info.LastName,
-			ViewedProducts: viewedProducts
+			ViewedProducts: viewedProducts,
+			Fingerprints: [.. user.RefreshTokens
+				.Select(x => ToFingerprintDto(x, x.Value == req.RefreshToken))
+				.OrderByDescending(x => x.IssuedAt)
+			]
 		);
 	}
+
+	private static FingerprintDto ToFingerprintDto(RefreshToken refreshToken, bool isCurrent)
+		=> new(
+			Id: refreshToken.Id,
+			Device: refreshToken.Fingerprint.Device,
+			Location: refreshToken.Fingerprint.Location,
+			IssuedAt: refreshToken.IssuedAt,
+			DeleteAllowed: !isCurrent
+		);
 }

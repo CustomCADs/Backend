@@ -18,7 +18,7 @@ public sealed class SingleSignOnUserHandler(
 		User user = await GetUserAsync(req, ct).ConfigureAwait(false);
 
 		RefreshToken rt = tokenService.IssueRefreshToken(
-			createRefreshToken: (token) => user.AddRefreshToken(token, longerSession: false)
+			createRefreshToken: (token) => user.AddRefreshToken(token, req.Fingerprint, longerSession: false)
 		);
 		await service.SaveRefreshTokensAsync(user).ConfigureAwait(false);
 

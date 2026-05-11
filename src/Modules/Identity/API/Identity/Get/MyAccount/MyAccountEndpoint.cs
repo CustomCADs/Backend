@@ -18,7 +18,7 @@ public sealed class MyAccountEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		GetUserByUsernameDto user = await sender.SendQueryAsync(
-			query: new GetUserByUsernameQuery(User.AccountId),
+			query: new GetUserByUsernameQuery(User.AccountId, HttpContext.RefreshTokenCookie),
 			ct: ct
 		).ConfigureAwait(false);
 

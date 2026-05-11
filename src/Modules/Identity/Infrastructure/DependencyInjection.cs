@@ -1,6 +1,7 @@
 #pragma warning disable IDE0130
 using CustomCADs.Modules.Identity.Application.Contracts;
 using CustomCADs.Modules.Identity.Infrastructure.BackgroundJobs;
+using CustomCADs.Modules.Identity.Infrastructure.Fingerprints;
 using CustomCADs.Modules.Identity.Infrastructure.Identity.Context;
 using CustomCADs.Modules.Identity.Infrastructure.Identity.Services;
 using CustomCADs.Modules.Identity.Infrastructure.Tokens;
@@ -25,6 +26,9 @@ public static class DependencyInjection
 
 	extension(IServiceCollection services)
 	{
+		public IServiceCollection AddFingerprintsService()
+			=> services.AddScoped<IFingerprintService, DeviceDetectorFingerprintService>();
+
 		public IServiceCollection AddTokensService()
 			=> services.AddScoped<ITokenService, JwtTokenService>();
 

@@ -1,11 +1,12 @@
-﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerifyEmail;
+﻿using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerifyEmail;
 using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.Extensions.Options;
 
 namespace CustomCADs.Modules.Identity.API.Identity.Post.VerifyEmail;
 
-public sealed class ConfirmEmailEndpoint(IRequestSender sender, IOptions<CookieSettings> settings)
+public sealed class ConfirmEmailEndpoint(IRequestSender sender, IFingerprintService fingerprintService, IOptions<CookieSettings> settings)
 	: Endpoint<ConfirmEmailRequest>
 {
 	public override void Configure()
@@ -25,7 +26,8 @@ public sealed class ConfirmEmailEndpoint(IRequestSender sender, IOptions<CookieS
 		TokensDto tokens = await sender.SendCommandAsync(
 			command: new VerifyUserEmailCommand(
 				Username: req.Username,
-				Token: req.Token.Replace(' ', '+')
+				Token: req.Token.Replace(' ', '+'),
+				Fingerprint: fingerprintService.GetFingerprint(HttpContext.Request.HeadersDictionary)
 			),
 			ct: ct
 		).ConfigureAwait(false);

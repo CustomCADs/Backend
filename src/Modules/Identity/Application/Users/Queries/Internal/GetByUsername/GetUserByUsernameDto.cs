@@ -1,3 +1,4 @@
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
@@ -12,5 +13,6 @@ public sealed record GetUserByUsernameDto(
 	bool TrackViewedProducts,
 	Email Email,
 	DateTimeOffset CreatedAt,
-	ViewedProductDto[] ViewedProducts
+	ViewedProductDto[] ViewedProducts,
+	FingerprintDto[] Fingerprints
 );

@@ -19,7 +19,7 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		GetUserByUsernameDto user = await sender.SendQueryAsync(
-			query: new GetUserByUsernameQuery(User.AccountId),
+			query: new GetUserByUsernameQuery(User.AccountId, HttpContext.RefreshTokenCookie),
 			ct: ct
 		).ConfigureAwait(false);
 
@@ -36,7 +36,8 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 				firstName = user.FirstName,
 				lastName = user.LastName,
 				trackViewedProducts = user.TrackViewedProducts,
-				viewedProductIds = user.ViewedProducts.Select(x => new { id = x.Id.Value, x.ViewedAt }),
+				fingerprints = user.Fingerprints.Select(x => new { id = x.Id.Value, device = x.Device, location = x.Location, issuedAt = x.IssuedAt }),
+				viewedProducts = user.ViewedProducts.Select(x => new { id = x.Id.Value, viewedAt = x.ViewedAt }),
 			},
 			options: new() { WriteIndented = true }
 		).ConfigureAwait(false);

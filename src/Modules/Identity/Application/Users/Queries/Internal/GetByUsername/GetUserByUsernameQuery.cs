@@ -4,5 +4,6 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 namespace CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 
 public sealed record GetUserByUsernameQuery(
-	AccountId Id
+	AccountId Id,
+	string? RefreshToken
 ) : IQuery<GetUserByUsernameDto>;

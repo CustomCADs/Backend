@@ -19,6 +19,7 @@
 
     <!--Infrastructure-->
     <PackageVersion Include="AWSSDK.S3" Version="4.0.14.3" />
+    <PackageVersion Include="DeviceDetector.NET" Version="6.5.0" />
     <PackageVersion Include="FluentEmail.Smtp" Version="3.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" />
