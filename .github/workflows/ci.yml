@@ -6,8 +6,7 @@ on:
     branches:
       - feature/*
       - hotfix/*
-    tags-ignore:
-      - "v*.*.*"
+    tags-ignore: ["*"]
 
 jobs:
   unit_test:
