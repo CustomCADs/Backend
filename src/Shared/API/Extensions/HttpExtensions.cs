@@ -8,6 +8,10 @@ public static class HttpExtensions
 	{
 		public bool IsSignalR => request.Path.StartsWithSegments($"/{APIConstants.RequestPrefixForSignalR}");
 
+		public bool IsGetWithEmptyBody =>
+			HttpMethods.IsGet(request.Method)
+			&& request is { ContentLength: null or 0 };
+
 		public bool IsIdempotentBySpec =>
 			HttpMethods.IsGet(request.Method)
 			|| HttpMethods.IsPut(request.Method)

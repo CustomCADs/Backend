@@ -178,7 +178,7 @@ public static class ProgramExtensions
 				cfg.Versioning.PrependToRoute = true;
 
 				cfg.Errors.ResponseBuilder = (failures, _, _) => throw failures.ValidationException;
-			});
+			}).UseEmptyBodySanitization();
 
 		public IApplicationBuilder UseDisableBrowserCaching()
 			=> app.Use(async (context, next) =>
@@ -193,6 +193,21 @@ public static class ProgramExtensions
 
 				await next().ConfigureAwait(false);
 			});
+
+		private IApplicationBuilder UseEmptyBodySanitization()
+		{
+			app.Use(async (context, next) =>
+			{
+				if (context.Request.IsGetWithEmptyBody)
+				{
+					context.Request.ContentType = null;
+				}
+
+				await next().ConfigureAwait(false);
+			});
+
+			return app;
+		}
 	}
 
 	extension(IEndpointRouteBuilder router)
