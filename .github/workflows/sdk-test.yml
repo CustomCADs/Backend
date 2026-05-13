@@ -1,0 +1,53 @@
+name: Publish React SDK to NPM
+
+on:
+    workflow_call:
+        secrets:
+            token:
+                required: true
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Obtain Git Version tag
+              run: |
+                  VERSION=$(git describe --tags --abbrev=0)
+                  VERSION=${VERSION#v}
+                  echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+            - name: Set up Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "lts/*"
+                  registry-url: "https://registry.npmjs.org/"
+
+            - name: Set SDK version
+              env:
+                  VERSION: ${{ env.VERSION }}
+              run: |
+                  cd sdk/js/react
+                  npm version $VERSION --no-git-tag-version
+
+            - name: Install dependencies
+              run: |
+                  cd sdk/js/react
+                  npm ci
+
+            - name: Build SDK
+              env:
+                  VERSION: ${{ env.VERSION }}
+              run: |
+                  cd sdk/js/react
+                  npm run build
+
+            - name: Publish SDK to NPM
+              run: |
+                  cd sdk/js/react
+                  npm run test
