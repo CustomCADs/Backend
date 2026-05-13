@@ -1,4 +1,4 @@
-name: Deliver Production to AWS ECR Action
+name: Publish React SDK to NPM
 
 on:
     workflow_call:
@@ -34,6 +34,11 @@ jobs:
               run: |
                   cd sdk/js/react
                   npm version $VERSION --no-git-tag-version
+
+            - name: Install dependencies
+              run: |
+                  cd sdk/js/react
+                  npm ci
 
             - name: Build SDK
               env:
