@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
     "module": "ESNext",
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
@@ -22,7 +22,7 @@
     "emitDeclarationOnly": false,
     "outDir": "dist/types",
 
-/* Linting */
+    /* Linting */
     "strict": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,

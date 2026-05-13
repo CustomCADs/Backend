@@ -2,15 +2,15 @@
   "extends": "./tsconfig.app.json",
   "exclude": ["**/*.test.ts", "vitest.config.*", "vite.config.*", "node_modules", "tests", "src/**/*.test.ts"],
   "compilerOptions": {
+    "rootDir": "./src",
     "noEmit": false,
     "declaration": true,
     "outDir": "dist",
     "emitDeclarationOnly": false,
     "types": [],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
+    }
   },
   "tsc-alias": {
     "resolveFullPaths": true,
