@@ -15,19 +15,19 @@ public sealed class CancelShipmentHandler(
 	{
 		Shipment shipment = await reads.SingleByIdAsync(req.Id, track: false, ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Shipment>.ById(req.Id);
+		shipment.Cancel();
 
-		if (shipment is not { Status: ShipmentStatus.Active, Reference.Id: not null })
+		if (shipment is not { Reference.Id: not null })
 		{
 			throw CustomStatusException<Shipment>.ById(req.Id);
 		}
-
-		shipment.Cancel();
-		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await delivery.CancelAsync(
 			shipmentId: shipment.Reference.Id,
 			comment: req.Comment,
 			ct: ct
 		).ConfigureAwait(false);
+
+		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 	}
 }
