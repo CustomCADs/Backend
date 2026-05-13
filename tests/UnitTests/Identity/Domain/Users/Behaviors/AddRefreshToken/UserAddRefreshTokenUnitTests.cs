@@ -1,9 +1,7 @@
 ﻿using CustomCADs.Modules.Identity.Domain.Users.Entities;
-using CustomCADs.Shared.Domain;
+using static CustomCADs.Modules.Identity.Domain.Constants;
 
 namespace CustomCADs.UnitTests.Identity.Domain.Users.Behaviors.AddRefreshToken;
-
-using static DomainConstants;
 
 public class UserAddRefreshTokenUnitTests : UsersBaseUnitTests
 {
@@ -13,7 +11,7 @@ public class UserAddRefreshTokenUnitTests : UsersBaseUnitTests
 	[Fact]
 	public void AddRefreshToken_ShouldNotThrowException()
 	{
-		user.AddRefreshToken(Value, longerSession: false);
+		user.AddRefreshToken(Value, new(), longerSession: false);
 	}
 
 	[Theory]
@@ -26,7 +24,7 @@ public class UserAddRefreshTokenUnitTests : UsersBaseUnitTests
 			: Tokens.RtDurationInDays;
 		TimeSpan expectedDuration = TimeSpan.FromDays(expectedDurationDays);
 
-		RefreshToken rt = user.AddRefreshToken(Value, longerSession);
+		RefreshToken rt = user.AddRefreshToken(Value, new(), longerSession);
 		TimeSpan actualDuration = rt.ExpiresAt - rt.IssuedAt;
 
 		Assert.Multiple(
@@ -39,7 +37,7 @@ public class UserAddRefreshTokenUnitTests : UsersBaseUnitTests
 	[Fact]
 	public void AddRefreshToken_PopulatesProperty()
 	{
-		RefreshToken rt = user.AddRefreshToken(Value, longerSession: false);
+		RefreshToken rt = user.AddRefreshToken(Value, new(), longerSession: false);
 		Assert.Contains(rt, user.RefreshTokens);
 	}
 }

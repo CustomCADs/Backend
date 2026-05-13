@@ -1,8 +1,6 @@
 ﻿using CustomCADs.Modules.Accounts.Domain.Accounts;
 using CustomCADs.Modules.Accounts.Domain.Accounts.Enums;
-using CustomCADs.Modules.Accounts.Persistence.ShadowEntities;
 using CustomCADs.Shared.Domain.Extensions;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.ValueObjects;
 
 namespace CustomCADs.Modules.Accounts.Persistence.Repositories.Accounts;
@@ -55,23 +53,5 @@ internal static class Utilities
 				AccountSortingType.Role => query.ToSorted(sorting, x => x.RoleName),
 				_ => query,
 			};
-	}
-
-	extension(DbSet<ViewedProduct> set)
-	{
-		internal async Task<ProductId[]> GetViewedProductsByAccountIdAsync(AccountId id, CancellationToken ct = default)
-			=> await set
-				.Where(x => x.AccountId == id)
-				.Select(x => x.ProductId)
-				.ToArrayAsync(ct)
-				.ConfigureAwait(false);
-
-		internal async Task<ProductId[]> GetViewedProductsByAccountUsernrameAsync(string username, CancellationToken ct = default)
-			=> await set
-				.Include(x => x.Account)
-				.Where(x => x.Account.Username == username)
-				.Select(x => x.ProductId)
-				.ToArrayAsync(ct)
-				.ConfigureAwait(false);
 	}
 }

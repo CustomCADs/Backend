@@ -19,6 +19,12 @@ public static class HttpExtensions
 			|| HttpMethods.IsPatch(request.Method)
 			|| HttpMethods.IsDelete(request.Method);
 
+		public Dictionary<string, string?> HeadersDictionary =>
+			request.Headers.ToDictionary(
+				x => x.Key,
+				x => x.Value.FirstOrDefault()
+			);
+
 		public bool TryGetIdempotencyKey(out Guid idempotencyKey, string idempotencyHeader = "Idempotency-Key")
 		{
 			string? header = request.Headers[idempotencyHeader];

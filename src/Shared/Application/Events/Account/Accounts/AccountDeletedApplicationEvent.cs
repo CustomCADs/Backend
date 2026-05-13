@@ -1,5 +1,5 @@
 ﻿namespace CustomCADs.Shared.Application.Events.Account.Accounts;
 
 public record AccountDeletedApplicationEvent(
-	string Username
+	AccountId Id
 ) : BaseApplicationEvent;

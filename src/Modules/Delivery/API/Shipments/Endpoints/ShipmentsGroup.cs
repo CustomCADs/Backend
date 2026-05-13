@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class ShipmentsGroup : Group
 {
@@ -9,7 +9,7 @@ public class ShipmentsGroup : Group
 	{
 		Configure(Paths.Shipments, x =>
 		{
-			x.Roles(Customer);
+			x.Roles(CustomerRole);
 			x.Description(x => x.WithTags(Tags[Paths.Shipments]));
 		});
 	}

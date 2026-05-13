@@ -45,7 +45,7 @@ public sealed class CreateCustomHandler(
 				Link: Notifications.Links.CustomCreated,
 				AuthorId: custom.BuyerId,
 				ReceiverIds: [.. await sender.SendQueryAsync(
-					query: new GetAccountIdsByRoleQuery(DomainConstants.Roles.Designer),
+					query: new GetAccountIdsByRoleQuery(DomainConstants.Users.DesignerRole),
 					ct: ct
 				).ConfigureAwait(false)]
 			)

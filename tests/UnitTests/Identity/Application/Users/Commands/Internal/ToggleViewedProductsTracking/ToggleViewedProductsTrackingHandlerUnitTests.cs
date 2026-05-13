@@ -12,7 +12,6 @@ using static UsersData;
 public class ToggleViewedProductsTrackingHandlerUnitTests : UsersBaseUnitTests
 {
 	private readonly ToggleViewedProductsTrackingHandler handler;
-	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
@@ -20,33 +19,19 @@ public class ToggleViewedProductsTrackingHandlerUnitTests : UsersBaseUnitTests
 
 	public ToggleViewedProductsTrackingHandlerUnitTests()
 	{
-		handler = new(service.Object, sender.Object, raiser.Object);
+		handler = new(sender.Object, raiser.Object);
 
-		service.Setup(x => x.GetAccountIdAsync(MaxValidUsername)).ReturnsAsync(ValidAccountId);
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == MaxValidUsername),
 			ct
-		)).ReturnsAsync(new AccountInfoDto(default, InitialTrackViewedProducts, null, null));
-	}
-
-	[Fact]
-	public async Task Handle_ShouldCallService()
-	{
-		// Arrange
-		ToggleViewedProductsTrackingCommand command = new(MaxValidUsername);
-
-		// Act
-		await handler.Handle(command, ct);
-
-		// Assert
-		service.Verify(x => x.GetAccountIdAsync(MaxValidUsername), Times.Once());
+		)).ReturnsAsync(new AccountInfoDto(ValidAccountId, default, InitialTrackViewedProducts, null, null));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		ToggleViewedProductsTrackingCommand command = new(MaxValidUsername);
+		ToggleViewedProductsTrackingCommand command = new(MaxValidUsername, ValidAccountId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -62,7 +47,7 @@ public class ToggleViewedProductsTrackingHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		ToggleViewedProductsTrackingCommand command = new(MaxValidUsername);
+		ToggleViewedProductsTrackingCommand command = new(MaxValidUsername, ValidAccountId);
 
 		// Act
 		await handler.Handle(command, ct);

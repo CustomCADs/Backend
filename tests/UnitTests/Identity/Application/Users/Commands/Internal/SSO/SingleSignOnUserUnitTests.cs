@@ -18,7 +18,7 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 
 	private const string Provider = "Google";
 	private readonly User User = CreateUser(username: MaxValidUsername);
-	private static readonly RefreshToken RefreshToken = RefreshToken.Create("refresh-token", ValidId, false);
+	private static readonly RefreshToken RefreshToken = RefreshToken.Create("refresh-token", ValidFingerprint, ValidId, false);
 	private static readonly TokensDto Tokens = new(
 		Role: "role",
 		AccessToken: new("access-token", DateTimeOffset.UtcNow),
@@ -50,9 +50,12 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 		// Arrange
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
-			Provider: Provider
+			Provider: Provider,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Act
@@ -76,9 +79,12 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
-			Provider: Provider
+			Provider: Provider,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Act
@@ -97,9 +103,12 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
-			Provider: Provider
+			Provider: Provider,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Act
@@ -130,9 +139,12 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 		// Arrange
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
-			Provider: Provider
+			Provider: Provider,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Act
@@ -151,9 +163,12 @@ public class SingleSignOnUserUnitTests : UsersBaseUnitTests
 		// Arrange
 		SingleSignOnUserCommand command = new(
 			Role: User.Role,
+			FirstName: null,
+			LastName: null,
 			Username: User.Username,
 			Email: User.Email.Value,
-			Provider: Provider
+			Provider: Provider,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Act

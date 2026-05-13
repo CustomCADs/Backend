@@ -16,7 +16,7 @@ public class MaterialTextureReplacePolicy(IRequestSender sender) : IFileReplaceP
 			query: new GetUserRoleByIdQuery(context.CallerId)
 		).ConfigureAwait(false);
 
-		if (role is not DomainConstants.Roles.Admin)
+		if (role is not DomainConstants.Users.AdminRole)
 		{
 			throw CustomAuthorizationException<Material>.ById(context.FileId, "Texture");
 		}

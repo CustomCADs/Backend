@@ -1,4 +1,4 @@
-import { IDENTITY_BASE_PATH } from '../common';
+import { IDENTITY_BASE_PATH, ViewedProduct, Fingerprint } from '../common';
 
 export type Response = {
 	id: string;
@@ -9,6 +9,8 @@ export type Response = {
 	email: string;
 	trackViewedProducts: boolean;
 	createdAt: string;
+	viewedProducts: ViewedProduct[];
+	fingerprints: Fingerprint[];
 };
 
 export const url = () => `${IDENTITY_BASE_PATH}/my-account`;

@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Catalog.API.Categories.Endpoints;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class CategoriesGroup : Group
 {
@@ -9,7 +9,7 @@ public class CategoriesGroup : Group
 	{
 		Configure(Paths.Categories, x =>
 		{
-			x.Roles(Admin);
+			x.Roles(AdminRole);
 			x.Description(x => x.WithTags(Tags[Paths.Categories]));
 		});
 	}

@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Admins;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class AdminGroup : SubGroup<CustomsGroup>
 {
@@ -9,7 +9,7 @@ public class AdminGroup : SubGroup<CustomsGroup>
 	{
 		Configure(Paths.Admin, x =>
 		{
-			x.Roles(Admin);
+			x.Roles(AdminRole);
 			x.Description(x => x.WithTags(Tags[$"{Paths.Customs}/{Paths.Admin}"]));
 		});
 	}

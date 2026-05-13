@@ -8,7 +8,7 @@ public class UserViewedProductHandler(IAccountWrites writes, IUnitOfWork uow)
 {
 	public async Task HandleAsync(UserViewedProductApplicationEvent ae)
 	{
-		await writes.ViewProductAsync(ae.AccountId, ae.Id).ConfigureAwait(false);
+		await writes.ViewProductAsync(ae.AccountId, ae.Id, ae.ViewedAt).ConfigureAwait(false);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 	}
 }

@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Accounts.API.Accounts.Endpoints;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class AccountsGroup : Group
 {
@@ -9,7 +9,7 @@ public class AccountsGroup : Group
 	{
 		Configure(Paths.Accounts, x =>
 		{
-			x.Roles(Admin);
+			x.Roles(AdminRole);
 			x.Description(opt => opt.WithTags(Tags[Paths.Accounts]));
 		});
 	}

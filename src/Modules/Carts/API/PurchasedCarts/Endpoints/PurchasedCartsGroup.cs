@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Carts.API.PurchasedCarts.Endpoints;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class PurchasedCartsGroup : Group
 {
@@ -9,7 +9,7 @@ public class PurchasedCartsGroup : Group
 	{
 		Configure(Paths.PurchasedCarts, x =>
 		{
-			x.Roles(Customer);
+			x.Roles(CustomerRole);
 			x.Description(x => x.WithTags(Tags[Paths.PurchasedCarts]));
 		});
 	}

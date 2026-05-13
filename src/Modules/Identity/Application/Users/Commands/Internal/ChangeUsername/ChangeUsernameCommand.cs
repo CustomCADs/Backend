@@ -1,6 +1,10 @@
-﻿namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ChangeUsername;
+﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
+
+namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ChangeUsername;
 
 public sealed record ChangeUsernameCommand(
+	AccountId Id,
 	string Username,
-	string NewUsername
+	string? FirstName,
+	string? LastName
 ) : ICommand;

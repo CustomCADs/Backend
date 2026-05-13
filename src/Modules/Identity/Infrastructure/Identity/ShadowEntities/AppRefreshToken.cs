@@ -1,13 +1,14 @@
-using CustomCADs.Shared.Domain.Bases.Entities;
+using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 
 namespace CustomCADs.Modules.Identity.Infrastructure.Identity.ShadowEntities;
 
-public class AppRefreshToken : BaseEntity
+public class AppRefreshToken
 {
 	public AppRefreshToken() { }
-	public AppRefreshToken(string value, Guid userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
+	public AppRefreshToken(string value, Fingerprint fingerprint, Guid userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
 	{
 		Value = value;
+		Fingerprint = fingerprint;
 		UserId = userId;
 		IssuedAt = issuedAt;
 		ExpiresAt = expiresAt;
@@ -17,6 +18,7 @@ public class AppRefreshToken : BaseEntity
 	public DateTimeOffset IssuedAt { get; init; }
 	public DateTimeOffset ExpiresAt { get; init; }
 	public string Value { get; private set; } = string.Empty;
+	public Fingerprint Fingerprint { get; private set; } = new();
 	public Guid UserId { get; private set; }
 	public AppUser User { get; init; } = null!;
 }

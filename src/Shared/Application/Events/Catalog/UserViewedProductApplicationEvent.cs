@@ -2,5 +2,6 @@
 
 public record UserViewedProductApplicationEvent(
 	AccountId AccountId,
-	ProductId Id
+	ProductId Id,
+	DateTimeOffset ViewedAt
 ) : BaseApplicationEvent;

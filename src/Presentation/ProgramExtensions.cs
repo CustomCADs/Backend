@@ -5,6 +5,7 @@ using CustomCADs.Presentation;
 using CustomCADs.Shared.API;
 using CustomCADs.Shared.API.Extensions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -171,9 +172,12 @@ public static class ProgramExtensions
 					ep.AuthSchemes(AuthScheme);
 					ep.Description(d => d.RequireRateLimiting(APIConstants.RateLimitPolicy));
 				};
+
 				cfg.Endpoints.RoutePrefix = "api";
 				cfg.Versioning.DefaultVersion = 1;
 				cfg.Versioning.PrependToRoute = true;
+
+				cfg.Errors.ResponseBuilder = (failures, _, _) => throw failures.ValidationException;
 			});
 
 		public IApplicationBuilder UseDisableBrowserCaching()

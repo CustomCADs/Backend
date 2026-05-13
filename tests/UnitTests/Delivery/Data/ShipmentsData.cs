@@ -44,5 +44,5 @@ public static class ShipmentsData
 	public const string ValidReferenceId = "some-reference-id";
 
 	public static readonly ShipmentId ValidId = ShipmentId.New();
-	public static readonly AccountId ValidBuyerId = AccountId.New(CustomerAccountId);
+	public static readonly AccountId ValidBuyerId = AccountId.New();
 }

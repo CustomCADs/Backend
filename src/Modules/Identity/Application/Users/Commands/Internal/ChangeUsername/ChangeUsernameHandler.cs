@@ -10,15 +10,16 @@ public sealed class ChangeUsernameHandler(
 {
 	public async Task Handle(ChangeUsernameCommand req, CancellationToken ct)
 	{
-		User user = await service.GetByUsernameAsync(req.Username).ConfigureAwait(false);
+		User user = await service.GetByAccountIdAsync(req.Id).ConfigureAwait(false);
 
-		user.SetUsername(req.NewUsername);
+		user.SetUsername(req.Username);
 		await service.UpdateUsernameAsync(user.Id, user.Username).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
 			@event: new UserEditedApplicationEvent(
 				Id: user.AccountId,
-				Username: user.Username
+				Username: user.Username,
+				Names: new(req.FirstName, req.LastName)
 			)
 		).ConfigureAwait(false);
 	}

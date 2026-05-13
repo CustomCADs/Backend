@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Patch.AddTag;
 
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class AddProductTagEndpoint(IRequestSender sender)
 	: Endpoint<AddProductTagRequest>
@@ -11,7 +11,7 @@ public class AddProductTagEndpoint(IRequestSender sender)
 	{
 		Patch("tags/add");
 		Group<GalleryGroup>();
-		Roles(Admin);
+		Roles(AdminRole);
 		Description(x => x
 			.WithSummary("Add Tag")
 			.WithDescription("Adds a Tag to a Product")

@@ -11,7 +11,6 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 		Get("download-info");
 		Group<IdentityGroup>();
 		Description(x => x
-			.WithName(IdentityNames.DownloadInfo)
 			.WithSummary("Download Info")
 			.WithDescription("Download all your persisted info")
 		);
@@ -20,7 +19,7 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		GetUserByUsernameDto user = await sender.SendQueryAsync(
-			query: new GetUserByUsernameQuery(User.Name),
+			query: new GetUserByUsernameQuery(User.AccountId, HttpContext.RefreshTokenCookie),
 			ct: ct
 		).ConfigureAwait(false);
 
@@ -37,7 +36,8 @@ public sealed class DownloadInfoEndpoint(IRequestSender sender)
 				firstName = user.FirstName,
 				lastName = user.LastName,
 				trackViewedProducts = user.TrackViewedProducts,
-				viewedProductIds = user.ViewedProductIds.Select(x => x.Value),
+				fingerprints = user.Fingerprints.Select(x => new { id = x.Id.Value, device = x.Device, location = x.Location, issuedAt = x.IssuedAt }),
+				viewedProducts = user.ViewedProducts.Select(x => new { id = x.Id.Value, viewedAt = x.ViewedAt }),
 			},
 			options: new() { WriteIndented = true }
 		).ConfigureAwait(false);

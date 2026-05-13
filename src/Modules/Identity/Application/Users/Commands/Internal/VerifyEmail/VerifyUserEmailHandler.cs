@@ -20,7 +20,7 @@ public sealed class VerifyUserEmailHandler(
 		await service.ConfirmEmailAsync(req.Username, req.Token).ConfigureAwait(false);
 
 		RefreshToken rt = tokenService.IssueRefreshToken(
-			createRefreshToken: (token) => user.AddRefreshToken(token, longerSession: false)
+			createRefreshToken: (token) => user.AddRefreshToken(token, req.Fingerprint, longerSession: false)
 		);
 		await service.SaveRefreshTokensAsync(user).ConfigureAwait(false);
 

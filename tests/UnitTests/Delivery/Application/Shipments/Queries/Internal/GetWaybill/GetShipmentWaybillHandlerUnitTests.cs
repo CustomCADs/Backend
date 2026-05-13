@@ -3,7 +3,6 @@ using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetWayb
 using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
@@ -17,7 +16,6 @@ public class GetShipmentWaybillHandlerUnitTests : ShipmentsBaseUnitTests
 	private readonly Mock<IDeliveryService> delivery = new();
 
 	private static readonly byte[] bytes = [1, 2, 3, 4, 5, 6];
-	private static readonly AccountId headDesignerId = AccountId.New(DesignerAccountId);
 
 	public GetShipmentWaybillHandlerUnitTests()
 	{
@@ -33,7 +31,7 @@ public class GetShipmentWaybillHandlerUnitTests : ShipmentsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetShipmentWaybillQuery query = new(ValidId, headDesignerId);
+		GetShipmentWaybillQuery query = new(ValidId, HeadDesignerAccountId);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -49,7 +47,7 @@ public class GetShipmentWaybillHandlerUnitTests : ShipmentsBaseUnitTests
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
-		GetShipmentWaybillQuery query = new(ValidId, headDesignerId);
+		GetShipmentWaybillQuery query = new(ValidId, HeadDesignerAccountId);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -62,7 +60,7 @@ public class GetShipmentWaybillHandlerUnitTests : ShipmentsBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetShipmentWaybillQuery query = new(ValidId, headDesignerId);
+		GetShipmentWaybillQuery query = new(ValidId, HeadDesignerAccountId);
 
 		// Act
 		byte[] result = await handler.Handle(query, ct);
@@ -89,7 +87,7 @@ public class GetShipmentWaybillHandlerUnitTests : ShipmentsBaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(CreateShipment());
-		GetShipmentWaybillQuery query = new(ValidId, headDesignerId);
+		GetShipmentWaybillQuery query = new(ValidId, HeadDesignerAccountId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(

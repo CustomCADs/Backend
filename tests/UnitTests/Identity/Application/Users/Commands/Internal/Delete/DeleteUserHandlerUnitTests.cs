@@ -18,29 +18,26 @@ public class DeleteUserHandlerUnitTests : UsersBaseUnitTests
 	public DeleteUserHandlerUnitTests()
 	{
 		handler = new(service.Object, raiser.Object);
-
-		service.Setup(x => x.GetAccountIdAsync(user.Username)).ReturnsAsync(ValidAccountId);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		DeleteUserCommand command = new(user.Username);
+		DeleteUserCommand command = new(user.AccountId);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.GetAccountIdAsync(MaxValidUsername), Times.Once());
-		service.Verify(x => x.DeleteAsync(user.Username), Times.Once());
+		service.Verify(x => x.DeleteAsync(user.AccountId), Times.Once());
 	}
 
 	[Fact]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		DeleteUserCommand command = new(user.Username);
+		DeleteUserCommand command = new(user.AccountId);
 
 		// Act
 		await handler.Handle(command, ct);

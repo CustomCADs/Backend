@@ -1,14 +1,14 @@
 using CustomCADs.Modules.Identity.API;
 using CustomCADs.Presentation;
 using CustomCADs.Shared.API;
-using static CustomCADs.Shared.Domain.DomainConstants.Roles;
+using CustomCADs.Shared.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Neccessities
 builder.Services.AddCorsForClient(builder.Configuration);
 builder.Services.AddAuthN().AddJwt(builder.Configuration).AddSSO(builder.Configuration, APIConstants.SSO.Providers);
-builder.Services.AddAuthZ(Customer, Contributor, Designer, Admin);
+builder.Services.AddAuthZ(DomainConstants.Users.Roles);
 
 // Use Cases
 builder.Services.AddUseCases(builder.Environment);
@@ -19,6 +19,7 @@ builder.Services.AddAccessPolicies();
 // External Services
 builder.Services.AddEmailService(builder.Configuration);
 builder.Services.AddTokensService(builder.Configuration);
+builder.Services.AddFingerprintsService();
 builder.Services.AddPaymentService(builder.Configuration);
 builder.Services.AddDeliveryService(builder.Configuration);
 builder.Services.AddStorageService(builder.Configuration);

@@ -5,6 +5,8 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Modules.Customs.Application.Customs.Policies;
 
+using static DomainConstants;
+
 public class CustomCadUploadPolicy(IRequestSender sender) : IFileUploadPolicy<CadId>
 {
 	public FileContextType Type => FileContextType.Custom;
@@ -15,7 +17,7 @@ public class CustomCadUploadPolicy(IRequestSender sender) : IFileUploadPolicy<Ca
 			query: new GetUserRoleByIdQuery(context.CallerId)
 		).ConfigureAwait(false);
 
-		if (role is not DomainConstants.Roles.Designer)
+		if (role is not Users.DesignerRole)
 		{
 			throw CustomAuthorizationException<Custom>.Custom("Must be a Designer to upload a Custom's CAD.");
 		}

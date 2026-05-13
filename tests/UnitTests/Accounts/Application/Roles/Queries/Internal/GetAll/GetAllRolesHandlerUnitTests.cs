@@ -5,8 +5,6 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Roles.Queries.Internal.GetAll;
 
-using static DomainConstants.Roles;
-
 public class GetAllRolesHandlerUnitTests : RolesBaseUnitTests
 {
 	private readonly GetAllRolesHandler handler;
@@ -14,10 +12,10 @@ public class GetAllRolesHandlerUnitTests : RolesBaseUnitTests
 	private readonly Mock<BaseCachingService<RoleId, Role>> cache = new();
 
 	private readonly Role[] roles = [
-		Role.CreateWithId(RoleId.New(), Customer, CustomerDescription),
-		Role.CreateWithId(RoleId.New(), Contributor, ContributorDescription),
-		Role.CreateWithId(RoleId.New(), Designer, DesignerDescription),
-		Role.CreateWithId(RoleId.New(), Admin, AdminDescription),
+		CreateRoleWithId(),
+		CreateRoleWithId(),
+		CreateRoleWithId(),
+		CreateRoleWithId(),
 	];
 
 	public GetAllRolesHandlerUnitTests()

@@ -1,25 +1,27 @@
-using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.Bases.Entities;
 
 namespace CustomCADs.Modules.Identity.Domain.Users.Entities;
 
-using static DomainConstants.Tokens;
+using ValueObjects;
+using static Constants.Tokens;
 
 public class RefreshToken : BaseEntity
 {
 	private RefreshToken() { }
-	private RefreshToken(string value, UserId userId, bool longerSession)
+	private RefreshToken(string value, Fingerprint fingerprint, UserId userId, bool longerSession)
 	{
 		Value = value;
+		Fingerprint = fingerprint;
 		UserId = userId;
 		IssuedAt = DateTimeOffset.UtcNow;
 		ExpiresAt = IssuedAt.AddDays(
 			longerSession ? LongerRtDurationInDays : RtDurationInDays
 		);
 	}
-	private RefreshToken(string value, UserId userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
+	private RefreshToken(string value, Fingerprint fingerprint, UserId userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
 	{
 		Value = value;
+		Fingerprint = fingerprint;
 		UserId = userId;
 		IssuedAt = issuedAt;
 		ExpiresAt = expiresAt;
@@ -29,19 +31,20 @@ public class RefreshToken : BaseEntity
 	public DateTimeOffset IssuedAt { get; init; }
 	public DateTimeOffset ExpiresAt { get; init; }
 	public string Value { get; private set; } = string.Empty;
+	public Fingerprint Fingerprint { get; private set; } = new();
 	public UserId UserId { get; private set; }
 
-	public static RefreshToken Create(string value, UserId userId, bool longerSession)
-		=> new(value, userId, longerSession);
+	public static RefreshToken Create(string value, Fingerprint fingerprint, UserId userId, bool longerSession)
+		=> new(value, fingerprint, userId, longerSession);
 
-	public static RefreshToken Create(RefreshTokenId id, string value, UserId userId, bool longerSession)
-		=> new(value, userId, longerSession)
+	public static RefreshToken Create(RefreshTokenId id, string value, Fingerprint fingerprint, UserId userId, bool longerSession)
+		=> new(value, fingerprint, userId, longerSession)
 		{
 			Id = id,
 		};
 
-	public static RefreshToken Create(RefreshTokenId id, string value, UserId userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
-		=> new(value, userId, issuedAt, expiresAt)
+	public static RefreshToken Create(RefreshTokenId id, string value, Fingerprint fingerprint, UserId userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
+		=> new(value, fingerprint, userId, issuedAt, expiresAt)
 		{
 			Id = id,
 		};

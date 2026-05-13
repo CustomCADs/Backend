@@ -2,7 +2,7 @@
 
 namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Gallery.Patch.RemoveTag;
 
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class RemoveProductTagEndpoint(IRequestSender sender)
 	: Endpoint<RemoveProductTagRequest>
@@ -11,7 +11,7 @@ public class RemoveProductTagEndpoint(IRequestSender sender)
 	{
 		Patch("tags/remove");
 		Group<GalleryGroup>();
-		Roles(Admin);
+		Roles(AdminRole);
 		Description(x => x
 			.WithSummary("Remove Tag")
 			.WithDescription("Removes a Tag from a Product")

@@ -1,4 +1,4 @@
-import { axios } from '@/api/axios';
+import { axios, config } from '@/api/axios';
 import * as authnResources from './authn';
 import * as authzResources from './authz';
 import * as myAccountResources from './my-account';
@@ -7,7 +7,9 @@ import * as loginResources from './login';
 import * as refreshResources from './refresh';
 import * as logoutResources from './logout';
 import * as deleteResources from './delete';
-import * as changeUsernameResources from './change-username';
+import * as deleteViewedProductResources from './delete-viewed-product';
+import * as deleteFingerprintResources from './delete-fingerprint';
+import * as changeNamesResources from './change-names';
 import * as toggleTrackViewedProductsResources from './toggle-track-viewed-products';
 import * as forgotPasswordResources from './forgot-password';
 import * as resetPasswordResources from './reset-password';
@@ -37,13 +39,26 @@ export const refresh = async () =>
 
 export const logout = async () => await axios.post(logoutResources.url());
 
-export const changeUsername = async (req: changeUsernameResources.Request) =>
-	await axios.patch(changeUsernameResources.url(), req);
+export const changeUsername = async (req: changeNamesResources.Request) =>
+	await axios.patch(changeNamesResources.url(), req);
 
 export const toggleTrackViewedProducts = async () =>
 	await axios.patch(toggleTrackViewedProductsResources.url());
 
 export const delete_ = async () => await axios.delete(deleteResources.url());
+
+export const deleteViewedProduct = async (
+	req: deleteViewedProductResources.Request,
+) =>
+	await axios.delete(
+		deleteViewedProductResources.url(),
+		config({ data: req }),
+	);
+
+export const deleteFingerprint = async (
+	req: deleteFingerprintResources.Request,
+) =>
+	await axios.delete(deleteFingerprintResources.url(), config({ data: req }));
 
 export const forgotPassword = async (req: forgotPasswordResources.Request) =>
 	await axios.post(forgotPasswordResources.url(), req);

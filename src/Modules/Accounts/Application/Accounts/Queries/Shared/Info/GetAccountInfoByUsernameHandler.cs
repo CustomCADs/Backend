@@ -12,6 +12,7 @@ public sealed class GetAccountInfoByUsernameHandler(IAccountReads reads)
 			?? throw CustomNotFoundException<Account>.ByProp(nameof(req.Username), req.Username);
 
 		return new(
+			Id: account.Id,
 			CreatedAt: account.CreatedAt,
 			TrackViewedProducts: account.TrackViewedProducts,
 			FirstName: account.FirstName,

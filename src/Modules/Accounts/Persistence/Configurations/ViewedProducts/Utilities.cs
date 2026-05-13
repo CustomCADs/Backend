@@ -1,4 +1,4 @@
-using CustomCADs.Modules.Accounts.Persistence.ShadowEntities;
+using CustomCADs.Modules.Accounts.Domain.Accounts.Entities;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,7 +19,7 @@ internal static class Utilities
 		{
 			builder
 				.HasOne(x => x.Account)
-				.WithMany()
+				.WithMany(x => x.ViewedProducts)
 				.HasForeignKey(x => x.AccountId)
 				.OnDelete(DeleteBehavior.Cascade);
 

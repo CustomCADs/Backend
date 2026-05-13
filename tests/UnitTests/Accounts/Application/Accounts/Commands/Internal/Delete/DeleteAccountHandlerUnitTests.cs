@@ -64,7 +64,7 @@ public class DeleteAccountHandlerUnitTests : AccountsBaseUnitTests
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<AccountDeletedApplicationEvent>(x => x.Username == ValidUsername)
+			It.Is<AccountDeletedApplicationEvent>(x => x.Id == ValidId)
 		), Times.Once());
 	}
 

@@ -21,12 +21,13 @@ public sealed class GalleryGetProductByIdHandler(IProductReads reads, IRequestSe
 			throw CustomStatusException<Product>.ById(req.Id);
 		}
 
-		if (!req.CallerId.IsEmpty())
+		if (req.Viewed && !req.CallerId.IsEmpty())
 		{
 			await raiser.RaiseApplicationEventAsync(
 				@event: new ProductViewedApplicationEvent(
 					Id: req.Id,
-					AccountId: req.CallerId
+					AccountId: req.CallerId,
+					ViewedAt: DateTimeOffset.UtcNow
 				)
 			).ConfigureAwait(false);
 		}

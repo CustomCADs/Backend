@@ -2,8 +2,12 @@
 
 namespace CustomCADs.Modules.Accounts.Domain.Accounts;
 
-public class Account : BaseAggregateRoot
+using Entities;
+
+public class Account : BaseAggregateRoot, ISoftDeletable<Account>
 {
+	private readonly List<ViewedProduct> viewedProducts = [];
+
 	private Account() { }
 	private Account(
 		string role,
@@ -30,6 +34,9 @@ public class Account : BaseAggregateRoot
 	public string RoleName { get; private set; } = string.Empty;
 	public bool TrackViewedProducts { get; private set; }
 	public DateTimeOffset CreatedAt { get; private set; }
+	public bool IsDeleted { get; private set; }
+	public DateTimeOffset? DeletedAt { get; private set; }
+	public IReadOnlyCollection<ViewedProduct> ViewedProducts => viewedProducts;
 
 	public static Account Create(
 		string role,
@@ -94,6 +101,20 @@ public class Account : BaseAggregateRoot
 	public Account SetTrackViewedProducts(bool track)
 	{
 		TrackViewedProducts = track;
+		return this;
+	}
+
+	public Account Delete()
+	{
+		IsDeleted = true;
+		DeletedAt = DateTimeOffset.UtcNow;
+
+		Username = this.Id.ToString();
+		Email = this.Id.ToString();
+
+		FirstName = null;
+		LastName = null;
+
 		return this;
 	}
 }

@@ -12,7 +12,7 @@ public class LogoutUserHandlerUnitTests : UsersBaseUnitTests
 	private readonly LogoutUserHandler handler;
 	private readonly Mock<IUserService> service = new();
 
-	private static readonly RefreshToken token = RefreshToken.Create("refresh-token", ValidId, longerSession: false);
+	private static readonly RefreshToken token = RefreshToken.Create("refresh-token", ValidFingerprint, ValidId, longerSession: false);
 	private readonly User user = CreateUser(username: MaxValidUsername);
 
 	public LogoutUserHandlerUnitTests()

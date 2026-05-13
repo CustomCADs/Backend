@@ -1,6 +1,6 @@
 ﻿using CustomCADs.Modules.Accounts.Domain.Accounts;
+using CustomCADs.Modules.Accounts.Domain.Accounts.Entities;
 using CustomCADs.Modules.Accounts.Domain.Roles;
-using CustomCADs.Modules.Accounts.Persistence.ShadowEntities;
 using CustomCADs.Shared.Persistence;
 
 namespace CustomCADs.Modules.Accounts.Persistence;

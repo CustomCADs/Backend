@@ -65,6 +65,7 @@ public static class DependencyInjection
 				}
 
 				cfg.UseFluentValidation();
+				cfg.Services.AddSingleton(typeof(IFailureAction<>), typeof(CustomFailureAction<>));
 			});
 
 			services.AddScoped<IRequestSender, WolverineRequestSender>();

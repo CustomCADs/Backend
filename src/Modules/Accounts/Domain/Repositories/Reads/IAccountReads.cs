@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Modules.Accounts.Domain.Accounts;
+using CustomCADs.Modules.Accounts.Domain.Accounts.Entities;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
@@ -13,6 +14,6 @@ public interface IAccountReads
 	Task<bool> ExistsByIdAsync(AccountId id, CancellationToken ct = default);
 	Task<bool> ExistsByUsernameAsync(string username, CancellationToken ct = default);
 	Task<ProductId[]> ViewedProductsByIdAsync(AccountId id, CancellationToken ct = default);
-	Task<ProductId[]> ViewedProductsByUsernameAsync(string username, CancellationToken ct = default);
+	Task<ViewedProduct[]> ViewedProductsByUsernameAsync(string username, CancellationToken ct = default);
 	Task<int> CountAsync(CancellationToken ct = default);
 }

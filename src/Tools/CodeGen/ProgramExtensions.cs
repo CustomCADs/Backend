@@ -135,7 +135,7 @@ public static class ProgramExtensions
 				options.Password.RequireUppercase = false;
 				options.Password.RequiredLength = PasswordMinLength;
 				options.User.RequireUniqueEmail = true;
-				options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+" + ' '; // default + space
+				options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+" + ' ' + '/'; // default + space + '/'
 				options.Lockout.MaxFailedAccessAttempts = 5;
 				options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 			})

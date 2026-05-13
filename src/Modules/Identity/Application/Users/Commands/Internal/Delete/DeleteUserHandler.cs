@@ -1,6 +1,5 @@
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Events.Identity;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Delete;
 
@@ -11,11 +10,10 @@ public sealed class DeleteUserHandler(
 {
 	public async Task Handle(DeleteUserCommand req, CancellationToken ct = default)
 	{
-		AccountId accountId = await service.GetAccountIdAsync(req.Username).ConfigureAwait(false);
-		await service.DeleteAsync(req.Username).ConfigureAwait(false);
+		await service.DeleteAsync(req.CallerId).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			@event: new UserDeletedApplicationEvent(accountId)
+			@event: new UserDeletedApplicationEvent(req.CallerId)
 		).ConfigureAwait(false);
 	}
 }

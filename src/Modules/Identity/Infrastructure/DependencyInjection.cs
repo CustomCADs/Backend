@@ -1,8 +1,9 @@
 #pragma warning disable IDE0130
 using CustomCADs.Modules.Identity.Application.Contracts;
 using CustomCADs.Modules.Identity.Infrastructure.BackgroundJobs;
-using CustomCADs.Modules.Identity.Infrastructure.Identity;
+using CustomCADs.Modules.Identity.Infrastructure.Fingerprints;
 using CustomCADs.Modules.Identity.Infrastructure.Identity.Context;
+using CustomCADs.Modules.Identity.Infrastructure.Identity.Services;
 using CustomCADs.Modules.Identity.Infrastructure.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -25,8 +26,11 @@ public static class DependencyInjection
 
 	extension(IServiceCollection services)
 	{
+		public IServiceCollection AddFingerprintsService()
+			=> services.AddScoped<IFingerprintService, DeviceDetectorFingerprintService>();
+
 		public IServiceCollection AddTokensService()
-			=> services.AddScoped<ITokenService, IdentityTokenService>();
+			=> services.AddScoped<ITokenService, JwtTokenService>();
 
 		public IServiceCollection AddIdentityServices(string connectionString)
 			=> services
@@ -36,9 +40,13 @@ public static class DependencyInjection
 
 		private IServiceCollection AddContext(string connectionString)
 		{
-			services.AddDbContext<IdentityContext>(options =>
+			services.AddSingleton(
+				sp => new NpgsqlDataSourceBuilder(connectionString).EnableDynamicJson().Build()
+			);
+
+			services.AddDbContext<IdentityContext>((sp, options) =>
 				options.UseNpgsql(
-					dataSource: new NpgsqlDataSourceBuilder(connectionString).EnableDynamicJson().Build(),
+					dataSource: sp.GetRequiredService<NpgsqlDataSource>(),
 					npgsqlOptionsAction: opt => opt.MigrationsHistoryTable("__EFMigrationsHistory", IdentityContext.Schema)
 				)
 			);
