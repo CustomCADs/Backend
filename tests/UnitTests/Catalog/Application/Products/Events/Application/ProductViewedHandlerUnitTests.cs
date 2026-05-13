@@ -146,10 +146,12 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		await handler.HandleAsync(ae);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountViewedProductQuery>(x => x.Id == ValidCreatorId && x.ProductId == ValidId),
-			ct
+		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Never());
+		uow.Verify(x => x.SaveChangesAsync(ct), Times.Never());
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<UserViewedProductApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
 		), Times.Never());
+		Assert.Equal(0, product.Counts.Views);
 	}
 
 	[Fact]
@@ -166,6 +168,14 @@ public class ProductViewedHandlerUnitTests : ProductsBaseUnitTests
 		await handler.HandleAsync(ae);
 
 		// Assert
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == Username),
+			ct
+		), Times.Never());
+
+		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Never());
+		uow.Verify(x => x.SaveChangesAsync(ct), Times.Never());
+
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
 			It.Is<UserViewedProductApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
 		), Times.Never());

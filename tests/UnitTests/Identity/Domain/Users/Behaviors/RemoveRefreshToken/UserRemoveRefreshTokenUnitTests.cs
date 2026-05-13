@@ -9,7 +9,7 @@ public class UserRemoveRefreshTokenUnitTests : UsersBaseUnitTests
 
 	public UserRemoveRefreshTokenUnitTests()
 	{
-		rt = user.AddRefreshToken("refresh-token", longerSession: false);
+		rt = user.AddRefreshToken("refresh-token", new(), longerSession: false);
 	}
 
 	[Fact]

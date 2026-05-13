@@ -16,7 +16,7 @@ public class VerifyUserEmailHandlerUnitTests : UsersBaseUnitTests
 
 	private const string Token = "email-token";
 	private readonly User User = CreateUser(email: new(ValidEmail, IsVerified: false));
-	private static readonly RefreshToken RefreshToken = RefreshToken.Create(Token, ValidId, false);
+	private static readonly RefreshToken RefreshToken = RefreshToken.Create(Token, ValidFingerprint, ValidId, false);
 	private static readonly TokensDto Tokens = new(
 		Role: "role",
 		AccessToken: new("access-token", DateTimeOffset.UtcNow),
@@ -40,7 +40,7 @@ public class VerifyUserEmailHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		VerifyUserEmailCommand command = new(User.Username, Token);
+		VerifyUserEmailCommand command = new(User.Username, Token, ValidFingerprint);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -54,7 +54,7 @@ public class VerifyUserEmailHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldIssueTokens()
 	{
 		// Arrange
-		VerifyUserEmailCommand command = new(User.Username, Token);
+		VerifyUserEmailCommand command = new(User.Username, Token, ValidFingerprint);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -70,7 +70,7 @@ public class VerifyUserEmailHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		VerifyUserEmailCommand command = new(User.Username, Token);
+		VerifyUserEmailCommand command = new(User.Username, Token, ValidFingerprint);
 
 		// Act
 		TokensDto tokens = await handler.Handle(command, ct);
@@ -86,7 +86,7 @@ public class VerifyUserEmailHandlerUnitTests : UsersBaseUnitTests
 		User verifiedUser = CreateUser(email: new(ValidEmail, IsVerified: true));
 		service.Setup(x => x.GetByUsernameAsync(verifiedUser.Username)).ReturnsAsync(verifiedUser);
 
-		VerifyUserEmailCommand command = new(verifiedUser.Username, Token);
+		VerifyUserEmailCommand command = new(verifiedUser.Username, Token, ValidFingerprint);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(

@@ -1,4 +1,5 @@
 using CustomCADs.Modules.Identity.Domain.Users;
+using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Identity;
@@ -25,6 +26,8 @@ public static class UsersData
 	public static readonly string MinValidPassword = new('a', PasswordMinLength + 1);
 	public static readonly string InvalidPassword = string.Empty;
 	public static readonly string MinInvalidPassword = new('a', PasswordMinLength - 1);
+
+	public static readonly Fingerprint ValidFingerprint = new();
 
 	public static readonly UserId ValidId = UserId.New();
 	public static readonly AccountId ValidAccountId = AccountId.New();

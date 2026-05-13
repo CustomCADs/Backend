@@ -15,7 +15,7 @@ public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<ITokenService> tokenService = new();
 
-	private static readonly RefreshToken RefreshToken = RefreshToken.Create("refresh-token", ValidId, longerSession: false);
+	private static readonly RefreshToken RefreshToken = RefreshToken.Create("refresh-token", ValidFingerprint, ValidId, longerSession: false);
 	private readonly User User = CreateUser(username: MaxValidUsername);
 	private static readonly TokensDto Tokens = new(
 		Role: "role",
@@ -28,9 +28,6 @@ public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
 	{
 		handler = new(service.Object, tokenService.Object);
 
-		tokenService.Setup(x => x.IssueRefreshToken(
-			It.IsAny<Func<string, RefreshToken>>()
-		)).Returns(RefreshToken);
 		tokenService.Setup(x => x.IssueTokens(User, RefreshToken)).Returns(Tokens);
 
 		service.Setup(x => x.GetByRefreshTokenAsync(RefreshToken.Value)).ReturnsAsync((User, RefreshToken));
@@ -40,7 +37,7 @@ public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		RefreshUserCommand command = new(RefreshToken.Value);
+		RefreshUserCommand command = new(RefreshToken.Value, ValidFingerprint);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -53,15 +50,12 @@ public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldIssueTokens()
 	{
 		// Arrange
-		RefreshUserCommand command = new(RefreshToken.Value);
+		RefreshUserCommand command = new(RefreshToken.Value, ValidFingerprint);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		tokenService.Verify(x => x.IssueRefreshToken(
-			It.IsAny<Func<string, RefreshToken>>()
-		), Times.Once());
 		tokenService.Verify(x => x.IssueTokens(User, RefreshToken), Times.Once());
 	}
 
@@ -69,7 +63,7 @@ public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		RefreshUserCommand command = new(RefreshToken.Value);
+		RefreshUserCommand command = new(RefreshToken.Value, ValidFingerprint);
 
 		// Act
 		TokensDto tokens = await handler.Handle(command, ct);
@@ -82,7 +76,7 @@ public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenMissingToken()
 	{
 		// Arrange
-		RefreshUserCommand command = new(Token: null);
+		RefreshUserCommand command = new(Token: null, ValidFingerprint);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
@@ -99,13 +93,14 @@ public class RefreshUserHandlerUnitTests : UsersBaseUnitTests
 		RefreshToken token = RefreshToken.Create(
 			id: RefreshTokenId.New(),
 			value: "refresh-token",
+			fingerprint: ValidFingerprint,
 			userId: ValidId,
 			issuedAt: yesterday.AddDays(-RtDurationInDays),
 			expiresAt: yesterday
 		);
 		service.Setup(x => x.GetByRefreshTokenAsync(token.Value)).ReturnsAsync((User, token));
 
-		RefreshUserCommand command = new(token.Value);
+		RefreshUserCommand command = new(token.Value, ValidFingerprint);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(

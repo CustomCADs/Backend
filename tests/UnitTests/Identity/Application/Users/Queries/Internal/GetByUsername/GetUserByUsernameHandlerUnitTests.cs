@@ -16,13 +16,15 @@ public class GetUserByUsernameHandlerUnitTests : UsersBaseUnitTests
 
 	public GetUserByUsernameHandlerUnitTests()
 	{
+		user.AddRefreshToken("refresh-token", ValidFingerprint, false);
+
 		handler = new(service.Object, sender.Object);
 
 		service.Setup(x => x.GetByAccountIdAsync(user.AccountId))
 			.ReturnsAsync(user);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == MaxValidUsername),
+			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == user.Username),
 			ct
 		)).ReturnsAsync(new AccountInfoDto(ValidAccountId, DateTimeOffset.UtcNow, true, null, null));
 	}
@@ -31,7 +33,7 @@ public class GetUserByUsernameHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(user.AccountId);
+		GetUserByUsernameQuery query = new(user.AccountId, "refresh-token");
 
 		// Act
 		await handler.Handle(query, ct);
@@ -44,18 +46,18 @@ public class GetUserByUsernameHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(user.AccountId);
+		GetUserByUsernameQuery query = new(user.AccountId, "refresh-token");
 
 		// Act
 		await handler.Handle(query, ct);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == MaxValidUsername),
+			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == user.Username),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountViewedProductsByUsernameQuery>(x => x.Username == MaxValidUsername),
+			It.Is<GetAccountViewedProductsByUsernameQuery>(x => x.Username == user.Username),
 			ct
 		), Times.Once());
 	}
@@ -64,7 +66,7 @@ public class GetUserByUsernameHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(user.AccountId);
+		GetUserByUsernameQuery query = new(user.AccountId, "refresh-token");
 
 		// Act
 		var result = await handler.Handle(query, ct);
