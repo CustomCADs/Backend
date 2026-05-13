@@ -7,24 +7,6 @@ namespace CustomCADs.Modules.Identity.Infrastructure.Identity;
 
 internal static class Mapper
 {
-	private static class Shallow
-	{
-		internal static RefreshToken ToRefreshToken(AppRefreshToken rt)
-			=> RefreshToken.Create(
-				id: RefreshTokenId.New(rt.Id),
-				value: rt.Value,
-				userId: UserId.New(rt.UserId),
-				issuedAt: rt.IssuedAt,
-				expiresAt: rt.ExpiresAt
-			);
-
-		internal static AppRefreshToken ToAppRefreshToken(RefreshToken rt)
-			=> new(rt.Value, rt.UserId.Value, rt.IssuedAt, rt.ExpiresAt)
-			{
-				Id = rt.Id.Value,
-			};
-	}
-
 	extension(AppUser appUser)
 	{
 		internal User ToUser(string role)
@@ -34,7 +16,7 @@ internal static class Mapper
 				username: appUser.Username,
 				email: new(appUser.Email ?? string.Empty, appUser.EmailConfirmed),
 				accountId: appUser.AccountId,
-				refreshTokens: [.. appUser.RefreshTokens.Select(x => Shallow.ToRefreshToken(x))]
+				refreshTokens: [.. appUser.RefreshTokens.Select(ToRefreshToken)]
 			);
 	}
 
@@ -50,7 +32,7 @@ internal static class Mapper
 				Email = user.Email.Value,
 				EmailConfirmed = user.Email.IsVerified,
 				AccountId = user.AccountId,
-			}.FillRefreshTokens([.. user.RefreshTokens.Select(x => Shallow.ToAppRefreshToken(x))]);
+			}.FillRefreshTokens([.. user.RefreshTokens.Select(ToAppRefreshToken)]);
 
 
 		internal AppUser ToAppUser(string provider)
@@ -63,7 +45,7 @@ internal static class Mapper
 				Email = user.Email.Value,
 				EmailConfirmed = true,
 				AccountId = user.AccountId,
-			}.FillRefreshTokens([.. user.RefreshTokens.Select(x => Shallow.ToAppRefreshToken(x))]);
+			}.FillRefreshTokens([.. user.RefreshTokens.Select(ToAppRefreshToken)]);
 	}
 
 	extension(AppRefreshToken rt)
@@ -71,6 +53,7 @@ internal static class Mapper
 		internal RefreshToken ToRefreshToken()
 			=> RefreshToken.Create(
 				id: RefreshTokenId.New(rt.Id),
+				fingerprint: rt.Fingerprint,
 				value: rt.Value,
 				userId: UserId.New(rt.UserId),
 				issuedAt: rt.IssuedAt,
@@ -81,7 +64,7 @@ internal static class Mapper
 	extension(RefreshToken rt)
 	{
 		internal AppRefreshToken ToAppRefreshToken()
-			=> new(rt.Value, rt.UserId.Value, rt.IssuedAt, rt.ExpiresAt)
+			=> new(rt.Value, rt.Fingerprint, rt.UserId.Value, rt.IssuedAt, rt.ExpiresAt)
 			{
 				Id = rt.Id.Value,
 			};

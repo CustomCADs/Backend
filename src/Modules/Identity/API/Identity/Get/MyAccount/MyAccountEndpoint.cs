@@ -10,7 +10,6 @@ public sealed class MyAccountEndpoint(IRequestSender sender)
 		Get("my-account");
 		Group<IdentityGroup>();
 		Description(x => x
-			.WithName(IdentityNames.MyAccount)
 			.WithSummary("My Account")
 			.WithDescription("See your Account's details")
 		);
@@ -19,7 +18,7 @@ public sealed class MyAccountEndpoint(IRequestSender sender)
 	public override async Task HandleAsync(CancellationToken ct)
 	{
 		GetUserByUsernameDto user = await sender.SendQueryAsync(
-			query: new GetUserByUsernameQuery(User.Name),
+			query: new GetUserByUsernameQuery(User.AccountId, HttpContext.RefreshTokenCookie),
 			ct: ct
 		).ConfigureAwait(false);
 

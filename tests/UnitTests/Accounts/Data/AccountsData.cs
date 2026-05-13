@@ -19,7 +19,6 @@ public static class AccountsData
 	public const string ValidEmail1 = CustomerEmail;
 	public const string ValidEmail2 = ContributorEmail;
 	public const string ValidEmail3 = DesignerEmail;
-	public const string ValidEmail4 = AdminEmail;
 	public const string InvalidEmail = "";
 	public const string InvalidEmailLocal = "@domain.tld";
 	public const string InvalidEmailDomain = "local@";
@@ -36,6 +35,7 @@ public static class AccountsData
 	public static readonly string MinInvalidLastName = new('a', NameMinLength - 1);
 	public static readonly string MaxInvalidLastName = new('a', NameMaxLength + 1);
 
+	public const string ValidRole = "role123";
 	public const string ValidPassword = "password123";
-	public static readonly AccountId ValidId = AccountId.New(CustomerAccountId);
+	public static readonly AccountId ValidId = AccountId.New();
 }

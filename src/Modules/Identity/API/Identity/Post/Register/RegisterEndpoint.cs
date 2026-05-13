@@ -13,7 +13,6 @@ public sealed class RegisterEndpoint(IRequestSender sender)
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.Register)
 			.WithSummary("Register")
 			.WithDescription("Register an Account")
 			.WithMetadata(new SkipIdempotencyAttribute())

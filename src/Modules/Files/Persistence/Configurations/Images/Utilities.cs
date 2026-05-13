@@ -58,7 +58,7 @@ internal static class Utilities
 
 		internal EntityTypeBuilder<Image> SetSeeding()
 		{
-			AccountId adminId = AccountId.New(Guid.Parse(DomainConstants.Users.AdminAccountId));
+			AccountId adminId = DomainConstants.Users.AdminAccountId;
 			builder.HasData([
 				Image.CreateWithId(PLA, "textures/pla.webp", "image/webp", adminId),
 				Image.CreateWithId(ABS, "textures/abs.webp", "image/webp", adminId),

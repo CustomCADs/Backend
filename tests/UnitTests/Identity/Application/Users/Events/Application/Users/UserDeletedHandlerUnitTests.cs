@@ -20,12 +20,12 @@ public class UserDeletedHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		AccountDeletedApplicationEvent ae = new(MaxValidUsername);
+		AccountDeletedApplicationEvent ae = new(ValidAccountId);
 
 		// Act
 		await handler.HandleAsync(ae);
 
 		// Assert
-		service.Verify(x => x.DeleteAsync(MaxValidUsername), Times.Once());
+		service.Verify(x => x.DeleteAsync(ValidAccountId), Times.Once());
 	}
 }

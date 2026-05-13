@@ -1,0 +1,15 @@
+﻿using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
+
+namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProducts;
+
+public sealed class GetAccountViewedProductHandler(IAccountReads reads)
+	: IQueryHandler<GetAccountViewedProductQuery, bool>
+{
+	public async Task<bool> Handle(GetAccountViewedProductQuery req, CancellationToken ct)
+	{
+		ProductId[] viewedProductIds = await reads.ViewedProductsByIdAsync(req.Id, ct).ConfigureAwait(false);
+		return viewedProductIds.Contains(req.ProductId);
+	}
+}

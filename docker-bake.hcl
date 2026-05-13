@@ -46,7 +46,7 @@ target "awsecr_staging" {
     tags = ["${awsecr_repostory}:staging"]
 }
 
-# Printing
+# Production
 target "production" {
     context = "."
     dockerfile = "Dockerfile.production"

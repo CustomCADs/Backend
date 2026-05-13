@@ -7,7 +7,6 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.GetUsernames;
 
 using static AccountsData;
-using static DomainConstants.Roles;
 using static DomainConstants.Users;
 
 public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
@@ -16,7 +15,7 @@ public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
 	private readonly Mock<IAccountReads> reads = new();
 
 	private static readonly AccountId[] ids = [ValidId, ValidId, ValidId, ValidId];
-	private static readonly string[] usernames = [CustomerUsername, ContributorUsername, DesignerUsername, AdminUsername];
+	private static readonly string[] usernames = [CustomerUsername, ContributorUsername, DesignerUsername, HeadDesignerUsername, AdminUsername];
 	private static readonly AccountQuery accountQuery = new(Pagination: new(1, ids.Length), Ids: ids);
 
 	public GetUsernamesByIdsHandlerUnitTests()
@@ -26,10 +25,11 @@ public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
 		reads.Setup(x => x.AllAsync(accountQuery, false, ct)).ReturnsAsync(new Result<Account>(
 				Count: ids.Length,
 				Items: [
-					CreateAccountWithId(AccountId.New(), Customer, CustomerUsername),
-					CreateAccountWithId(AccountId.New(), Contributor, ContributorUsername),
-					CreateAccountWithId(AccountId.New(), Designer, DesignerUsername),
-					CreateAccountWithId(AccountId.New(), Admin, AdminUsername),
+					CreateAccountWithId(id: AccountId.New(), username: CustomerUsername),
+					CreateAccountWithId(id: AccountId.New(), username: ContributorUsername),
+					CreateAccountWithId(id: AccountId.New(), username: DesignerUsername),
+					CreateAccountWithId(id: AccountId.New(), username: HeadDesignerUsername),
+					CreateAccountWithId(id: AccountId.New(), username: AdminUsername),
 				]
 			));
 	}

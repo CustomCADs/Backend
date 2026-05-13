@@ -8,5 +8,6 @@ public class Configurations : IEntityTypeConfiguration<AppRefreshToken>
 {
 	public void Configure(EntityTypeBuilder<AppRefreshToken> builder)
 		=> builder
+			.SetValueObjects()
 			.SetValidations();
 }

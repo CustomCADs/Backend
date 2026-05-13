@@ -3,6 +3,7 @@ using CustomCADs.Modules.Delivery.Application.Shipments.Commands.Internal.Cancel
 using CustomCADs.Modules.Delivery.Domain.Repositories;
 using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
+using CustomCADs.Shared.Domain.Exceptions;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Commands.Internal.Cancel;
 
@@ -81,7 +82,7 @@ public class CancelShipmentHandlerUnitTests : ShipmentsBaseUnitTests
 		CancelShipmentCommand command = new(ValidId, Comment);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
+		await Assert.ThrowsAsync<CustomValidationException<Shipment>>(
 			// Act
 			async () => await handler.Handle(command, ct)
 		);

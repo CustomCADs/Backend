@@ -9,7 +9,6 @@ public sealed class AuthorizationEndpoint
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.Authorization)
 			.WithSummary("AuthZ")
 			.WithDescription("See what Role you're logged in with")
 		);

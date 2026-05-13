@@ -1,4 +1,4 @@
-import { Currency } from '@/types';
+import { Currency } from '@/constants';
 
 export type ExchangeRate = {
 	date: string;

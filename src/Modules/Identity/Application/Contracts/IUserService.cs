@@ -6,6 +6,7 @@ namespace CustomCADs.Modules.Identity.Application.Contracts;
 public interface IUserService
 {
 	#region GetUserByX
+	Task<User> GetByAccountIdAsync(AccountId accountId);
 	Task<User> GetByUsernameAsync(string username);
 	Task<User> GetByEmailAsync(string email);
 	Task<(User User, RefreshToken RefreshToken)> GetByRefreshTokenAsync(string token);
@@ -14,20 +15,21 @@ public interface IUserService
 	#region GetX
 	Task<bool> GetExistsByUsernameAsync(string username);
 	Task<bool> GetExistsByEmailAsync(string email);
-	Task<AccountId> GetAccountIdAsync(string username);
+	Task<bool> GetIsSSOByEmailAsync(string email);
 	Task<DateTimeOffset?> GetIsLockedOutAsync(string username);
 	#endregion
 
 	#region Lifecycle
 	Task CreateAsync(User user, string password);
 	Task CreateSSOAsync(User user, string provider);
-	Task DeleteAsync(string username);
+	Task DeleteAsync(AccountId id);
 	#endregion
 
 	#region Mutation
 	Task<bool> CheckPasswordAsync(string username, string password);
 	Task UpdateUsernameAsync(UserId id, string username);
 	Task SaveRefreshTokensAsync(User user);
+	Task RevokeRefreshTokenAsync(RefreshTokenId refreshTokenId);
 	Task RevokeRefreshTokenAsync(string token);
 	#endregion
 

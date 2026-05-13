@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Notifications.API.Notifications.Endpoints;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class NotificationsGroup : Group
 {
@@ -9,7 +9,7 @@ public class NotificationsGroup : Group
 	{
 		Configure(Paths.Notifications, x =>
 		{
-			x.Roles(Customer, Contributor, Designer, Admin);
+			x.Roles(CustomerRole, ContributorRole, DesignerRole, AdminRole);
 			x.Description(x => x.WithTags(Tags[Paths.Notifications]));
 		});
 	}

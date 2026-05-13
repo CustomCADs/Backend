@@ -1,15 +1,15 @@
 ﻿using CustomCADs.Modules.Accounts.Domain.Roles;
-using CustomCADs.Shared.Domain;
+using CustomCADs.Modules.Accounts.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Accounts.Data;
 
-using static DomainConstants.Roles;
+using static Constants.Roles;
 using static RoleConstants;
 
 public static class RolesData
 {
-	public static readonly string ValidName = Customer;
+	public static readonly string ValidName = Shared.Domain.DomainConstants.Users.CustomerRole;
 	public static readonly string MinValidName = new('a', NameMinLength + 1);
 	public static readonly string MaxValidName = new('a', NameMaxLength - 1);
 	public const string InvalidName = "";

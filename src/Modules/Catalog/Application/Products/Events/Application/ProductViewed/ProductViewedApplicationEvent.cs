@@ -5,5 +5,6 @@ namespace CustomCADs.Modules.Catalog.Application.Products.Events.Application.Pro
 
 public record ProductViewedApplicationEvent(
 	ProductId Id,
-	AccountId AccountId
+	AccountId AccountId,
+	DateTimeOffset ViewedAt
 ) : BaseApplicationEvent;

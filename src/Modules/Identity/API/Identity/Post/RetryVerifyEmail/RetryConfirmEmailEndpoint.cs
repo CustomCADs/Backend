@@ -12,7 +12,6 @@ public sealed class RetryConfirmEmailEndpoint(IRequestSender sender)
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.RetryConfirmEmail)
 			.WithSummary("Retry Send Email")
 			.WithDescription("Receive another verification email")
 			.WithMetadata(new SkipIdempotencyAttribute())

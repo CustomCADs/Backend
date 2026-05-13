@@ -15,7 +15,7 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 	private readonly Mock<ITokenService> tokenService = new();
 
 	private readonly User User = CreateUser(username: MaxValidUsername);
-	private static readonly RefreshToken RefreshToken = RefreshToken.Create("refresh-token", ValidId, false);
+	private static readonly RefreshToken RefreshToken = RefreshToken.Create("refresh-token", ValidFingerprint, ValidId, false);
 	private static readonly TokensDto Tokens = new(
 		Role: "role",
 		AccessToken: new("access-token", DateTimeOffset.UtcNow),
@@ -43,7 +43,8 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 		LoginUserCommand command = new(
 			Username: User.Username,
 			Password: MinValidPassword,
-			LongerExpireTime: false
+			LongerExpireTime: false,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Act
@@ -62,7 +63,8 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 		LoginUserCommand command = new(
 			Username: User.Username,
 			Password: MinValidPassword,
-			LongerExpireTime: false
+			LongerExpireTime: false,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Act
@@ -82,7 +84,8 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 		LoginUserCommand command = new(
 			Username: User.Username,
 			Password: MinValidPassword,
-			LongerExpireTime: false
+			LongerExpireTime: false,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Act
@@ -101,7 +104,8 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 		LoginUserCommand command = new(
 			Username: User.Username,
 			Password: MinValidPassword,
-			LongerExpireTime: false
+			LongerExpireTime: false,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Assert
@@ -120,7 +124,8 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 		LoginUserCommand command = new(
 			Username: User.Username,
 			Password: MinValidPassword,
-			LongerExpireTime: false
+			LongerExpireTime: false,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Assert
@@ -140,7 +145,8 @@ public class LoginUserHandlerUnitTests : UsersBaseUnitTests
 		LoginUserCommand command = new(
 			Username: unverifiedUser.Username,
 			Password: MinValidPassword,
-			LongerExpireTime: false
+			LongerExpireTime: false,
+			Fingerprint: ValidFingerprint
 		);
 
 		// Assert

@@ -1,11 +1,12 @@
-﻿using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Login;
+﻿using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.Login;
 using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Shared.API.Attributes;
 using Microsoft.Extensions.Options;
 
 namespace CustomCADs.Modules.Identity.API.Identity.Post.Login;
 
-public sealed class LoginEndpoint(IRequestSender sender, IOptions<CookieSettings> settings)
+public sealed class LoginEndpoint(IRequestSender sender, IFingerprintService fingerprintService, IOptions<CookieSettings> settings)
 	: Endpoint<LoginRequest>
 {
 	public override void Configure()
@@ -14,7 +15,6 @@ public sealed class LoginEndpoint(IRequestSender sender, IOptions<CookieSettings
 		Group<IdentityGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithName(IdentityNames.Login)
 			.WithSummary("Login")
 			.WithDescription("Log in to your account")
 			.WithMetadata(new SkipIdempotencyAttribute())
@@ -27,7 +27,8 @@ public sealed class LoginEndpoint(IRequestSender sender, IOptions<CookieSettings
 			command: new LoginUserCommand(
 				Username: req.Username,
 				Password: req.Password,
-				LongerExpireTime: req.RememberMe ?? false
+				LongerExpireTime: req.RememberMe ?? false,
+				Fingerprint: fingerprintService.GetFingerprint(HttpContext.Request.HeadersDictionary)
 			),
 			ct: ct
 		).ConfigureAwait(false);

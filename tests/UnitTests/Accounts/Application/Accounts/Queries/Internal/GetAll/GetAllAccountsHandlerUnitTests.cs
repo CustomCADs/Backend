@@ -5,19 +5,16 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Internal.GetAll;
 
-using static DomainConstants;
-using static DomainConstants.Users;
-
 public class GetAllAccountsHandlerUnitTests : AccountsBaseUnitTests
 {
 	private readonly GetAllAccountsHandler handler;
 	private readonly Mock<IAccountReads> reads = new();
 
 	private readonly Account[] accounts = [
-		Account.CreateWithId(AccountId.New(), Roles.Customer, CustomerUsername, CustomerEmail, DateTimeOffset.UtcNow),
-		Account.CreateWithId(AccountId.New(), Roles.Contributor, ContributorUsername, ContributorEmail, DateTimeOffset.UtcNow),
-		Account.CreateWithId(AccountId.New(), Roles.Designer, DesignerUsername, DesignerEmail, DateTimeOffset.UtcNow),
-		Account.CreateWithId(AccountId.New(), Roles.Admin, AdminUsername, AdminEmail, DateTimeOffset.UtcNow),
+		CreateAccountWithId(id: AccountId.New()),
+		CreateAccountWithId(id: AccountId.New()),
+		CreateAccountWithId(id: AccountId.New()),
+		CreateAccountWithId(id: AccountId.New()),
 	];
 	private readonly AccountQuery query = new(Pagination: new(1, 1));
 

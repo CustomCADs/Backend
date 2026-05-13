@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator;
 
 using static APIConstants;
-using static DomainConstants.Roles;
+using static DomainConstants.Users;
 
 public class CreatorGroup : SubGroup<ProductsGroup>
 {
@@ -9,7 +9,7 @@ public class CreatorGroup : SubGroup<ProductsGroup>
 	{
 		Configure(Paths.Creator, x =>
 		{
-			x.Roles(Contributor, Designer);
+			x.Roles(ContributorRole, DesignerRole);
 			x.Description(x => x.WithTags(Tags[$"{Paths.Products}/{Paths.Creator}"]));
 		});
 	}

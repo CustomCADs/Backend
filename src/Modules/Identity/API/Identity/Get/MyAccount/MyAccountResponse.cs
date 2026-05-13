@@ -1,3 +1,5 @@
+using CustomCADs.Modules.Identity.API.Dtos;
+
 namespace CustomCADs.Modules.Identity.API.Identity.Get.MyAccount;
 
 public record MyAccountResponse(
@@ -8,5 +10,7 @@ public record MyAccountResponse(
 	string? LastName,
 	string Email,
 	bool TrackViewedProducts,
-	DateTimeOffset CreatedAt
+	DateTimeOffset CreatedAt,
+	ViewedProductResponse[] ViewedProducts,
+	FingerprintResponse[] Fingerprints
 );

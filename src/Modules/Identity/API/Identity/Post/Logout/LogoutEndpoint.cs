@@ -13,7 +13,6 @@ public sealed class LogoutEndpoint(IRequestSender sender, IOptions<CookieSetting
 		Post("logout");
 		Group<IdentityGroup>();
 		Description(x => x
-			.WithName(IdentityNames.Logout)
 			.WithSummary("Log out")
 			.WithDescription("Log out of your account")
 			.WithMetadata(new SkipIdempotencyAttribute())

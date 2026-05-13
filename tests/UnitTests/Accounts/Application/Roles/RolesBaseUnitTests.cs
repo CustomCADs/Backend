@@ -8,8 +8,8 @@ public class RolesBaseUnitTests
 	public static readonly CancellationToken ct = CancellationToken.None;
 
 	protected static Role CreateRole(string? name = null, string? description = null)
-		=> Role.Create(name ?? ValidName, MinValidDescription);
+		=> Role.Create(name ?? ValidName, description ?? MinValidDescription);
 
 	protected static Role CreateRoleWithId(RoleId? id = null, string? name = null, string? description = null)
-		=> Role.CreateWithId(id ?? ValidId, name ?? ValidName, MinValidDescription);
+		=> Role.CreateWithId(id ?? ValidId, name ?? ValidName, description ?? MinValidDescription);
 }

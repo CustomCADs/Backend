@@ -1,10 +1,8 @@
 ﻿using CustomCADs.Modules.Accounts.Domain.Roles;
-using CustomCADs.Shared.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CustomCADs.Modules.Accounts.Persistence.Configurations.Roles;
 
-using static DomainConstants.Roles;
 using static RoleConstants;
 
 internal static class Utilities
@@ -48,10 +46,26 @@ internal static class Utilities
 		internal EntityTypeBuilder<Role> SetSeeding()
 		{
 			builder.HasData([
-				Role.CreateWithId(RoleId.New(1), Customer, CustomerDescription),
-				Role.CreateWithId(RoleId.New(2), Contributor, ContributorDescription),
-				Role.CreateWithId(RoleId.New(3), Designer, DesignerDescription),
-				Role.CreateWithId(RoleId.New(4), Admin, AdminDescription),
+				Role.CreateWithId(
+					id: Domain.Constants.Roles.CustomerId,
+					name: Shared.Domain.DomainConstants.Users.CustomerRole,
+					description: Domain.Constants.Roles.CustomerDescription
+				),
+				Role.CreateWithId(
+					id: Domain.Constants.Roles.ContributorId,
+					name: Shared.Domain.DomainConstants.Users.ContributorRole,
+					description: Domain.Constants.Roles.ContributorDescription
+				),
+				Role.CreateWithId(
+					id: Domain.Constants.Roles.DesignerId,
+					name: Shared.Domain.DomainConstants.Users.DesignerRole,
+					description: Domain.Constants.Roles.DesignerDescription
+				),
+				Role.CreateWithId(
+					id: Domain.Constants.Roles.AdminId,
+					name: Shared.Domain.DomainConstants.Users.AdminRole,
+					description: Domain.Constants.Roles.AdminDescription
+				),
 			]);
 
 			return builder;

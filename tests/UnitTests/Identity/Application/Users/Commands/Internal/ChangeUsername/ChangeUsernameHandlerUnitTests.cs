@@ -13,13 +13,13 @@ public class ChangeUsernameHandlerUnitTests : UsersBaseUnitTests
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private readonly User user = CreateUser(username: MaxValidUsername);
+	private readonly User user = CreateUser();
 
 	public ChangeUsernameHandlerUnitTests()
 	{
 		handler = new(service.Object, raiser.Object);
 
-		service.Setup(x => x.GetByUsernameAsync(user.Username)).ReturnsAsync(user);
+		service.Setup(x => x.GetByAccountIdAsync(user.AccountId)).ReturnsAsync(user);
 	}
 
 	[Fact]
@@ -27,15 +27,17 @@ public class ChangeUsernameHandlerUnitTests : UsersBaseUnitTests
 	{
 		// Arrange
 		ChangeUsernameCommand command = new(
-			Username: user.Username,
-			NewUsername: MinValidUsername
+			Id: user.AccountId,
+			Username: MinValidUsername,
+			FirstName: null,
+			LastName: null
 		);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.GetByUsernameAsync(MaxValidUsername), Times.Once());
+		service.Verify(x => x.GetByAccountIdAsync(user.AccountId), Times.Once());
 		service.Verify(x => x.UpdateUsernameAsync(user.Id, MinValidUsername), Times.Once());
 	}
 
@@ -44,8 +46,10 @@ public class ChangeUsernameHandlerUnitTests : UsersBaseUnitTests
 	{
 		// Arrange
 		ChangeUsernameCommand command = new(
-			Username: MaxValidUsername,
-			NewUsername: MinValidUsername
+			Id: user.AccountId,
+			Username: MinValidUsername,
+			FirstName: null,
+			LastName: null
 		);
 
 		// Act

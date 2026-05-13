@@ -59,7 +59,7 @@ public sealed class CreateProductHandler(
 			ct: ct
 		).ConfigureAwait(false);
 
-		if (role is Roles.Designer)
+		if (role is Users.DesignerRole)
 		{
 			product.Validate(req.CallerId);
 		}
@@ -71,7 +71,7 @@ public sealed class CreateProductHandler(
 				TagIds: TagId.Filter(new()
 				{
 					[Tags.NewId] = true,
-					[Tags.ProfessionalId] = role is Roles.Designer,
+					[Tags.ProfessionalId] = role is Users.DesignerRole,
 					[Tags.PrintableId] = await sender.SendQueryAsync(
 						query: new IsCadPrintableByIdQuery(req.CadId),
 						ct: ct

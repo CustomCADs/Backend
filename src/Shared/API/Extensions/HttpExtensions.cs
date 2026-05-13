@@ -8,6 +8,10 @@ public static class HttpExtensions
 	{
 		public bool IsSignalR => request.Path.StartsWithSegments($"/{APIConstants.RequestPrefixForSignalR}");
 
+		public bool IsGetWithEmptyBody =>
+			HttpMethods.IsGet(request.Method)
+			&& request is { ContentLength: null or 0 };
+
 		public bool IsIdempotentBySpec =>
 			HttpMethods.IsGet(request.Method)
 			|| HttpMethods.IsPut(request.Method)
@@ -18,6 +22,12 @@ public static class HttpExtensions
 			|| HttpMethods.IsPut(request.Method)
 			|| HttpMethods.IsPatch(request.Method)
 			|| HttpMethods.IsDelete(request.Method);
+
+		public Dictionary<string, string?> HeadersDictionary =>
+			request.Headers.ToDictionary(
+				x => x.Key,
+				x => x.Value.FirstOrDefault()
+			);
 
 		public bool TryGetIdempotencyKey(out Guid idempotencyKey, string idempotencyHeader = "Idempotency-Key")
 		{
