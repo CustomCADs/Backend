@@ -35,6 +35,13 @@ jobs:
                   cd sdk/js/react
                   npm version $VERSION --no-git-tag-version
 
+            - name: Build SDK
+              env:
+                  VERSION: ${{ env.VERSION }}
+              run: |
+                  cd sdk/js/react
+                  npm run build
+
             - name: Publish SDK to NPM
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.token }}
