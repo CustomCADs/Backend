@@ -6,9 +6,11 @@ on:
     branches:
       - feature/*
       - hotfix/*
-    tags-ignore:
-      - "v*.*.*"
+    tags-ignore: ["*"]
 
 jobs:
   unit_test:
     uses: ./.github/workflows/unit-test.yml
+
+  sdk_test:
+    uses: ./.github/workflows/sdk-test.yml

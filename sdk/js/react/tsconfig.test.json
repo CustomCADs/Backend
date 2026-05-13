@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "rootDir": "./src",
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*", "tests/**/*"]
+  "include": ["src/**/*"]
 }
