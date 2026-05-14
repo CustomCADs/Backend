@@ -1,0 +1,17 @@
+using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Customers.Queries.Get.All;
+
+public class GetCustomsMapper : ResponseMapper<GetCustomsResponse, GetAllCustomsDto>
+{
+	public override GetCustomsResponse FromEntity(GetAllCustomsDto custom)
+		=> new(
+			Id: custom.Id.Value,
+			Name: custom.Name,
+			OrderedAt: custom.OrderedAt,
+			ForDelivery: custom.ForDelivery,
+			Status: custom.CustomStatus,
+			DesignerName: custom.DesignerName,
+			CategoryName: custom.CategoryName
+		);
+};

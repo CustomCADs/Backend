@@ -1,6 +1,6 @@
-﻿using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Get.All;
-using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Get.Single;
-using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Post;
+﻿using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Queries.Get.All;
+using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Queries.Get.Single;
+using CustomCADs.Modules.Catalog.API.Tags.Endpoints.Mutations.Post;
 using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
 
 namespace CustomCADs.Modules.Catalog.API.Tags;

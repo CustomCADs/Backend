@@ -1,0 +1,13 @@
+﻿namespace CustomCADs.Modules.Catalog.API.Products.Endpoints.Creator.Queries.Get.Single;
+
+public sealed record CreatorSingleProductResponse(
+	Guid Id,
+	string Name,
+	string Description,
+	decimal Price,
+	DateTimeOffset UploadedAt,
+	CountsDto Counts,
+	CategoryDtoResponse Category,
+	Guid CadId,
+	Guid ImageId
+);
