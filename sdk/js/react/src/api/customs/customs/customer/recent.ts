@@ -9,7 +9,7 @@ export type Response = {
 	id: string;
 	name: string;
 	orderedAt: string;
-	designerName?: string;
+	designerName: string | null;
 };
 
 export const url = (req: Request) =>

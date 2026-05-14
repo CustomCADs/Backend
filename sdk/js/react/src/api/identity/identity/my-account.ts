@@ -4,8 +4,8 @@ export type Response = {
 	id: string;
 	role: string;
 	username: string;
-	firstName?: string;
-	lastName?: string;
+	firstName: string | null;
+	lastName: string | null;
 	email: string;
 	trackViewedProducts: boolean;
 	createdAt: string;

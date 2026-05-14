@@ -4,6 +4,9 @@ export type Request = {
 	id: string;
 };
 
-export type Response = Record<string, { message: string; place?: string }>;
+export type Response = Record<
+	string,
+	{ message: string; place: string | null }
+>;
 
 export const url = (req: Request) => `${SHIPMENTS_BASE_PATH}/${req.id}/track`;

@@ -18,10 +18,10 @@ export type Response = {
 	status: string;
 	forDelivery: boolean;
 	buyerName: string;
-	category?: CustomCategory;
-	accepted?: AcceptedCustomDto;
-	finished?: FinishedCustomDto;
-	completed?: CompletedCustomDto;
+	category: CustomCategory | null;
+	accepted: AcceptedCustomDto | null;
+	finished: FinishedCustomDto | null;
+	completed: CompletedCustomDto | null;
 };
 
 export const url = (req: Request) => `${CUSTOMS_DESIGNER_BASE_PATH}/${req.id}`;

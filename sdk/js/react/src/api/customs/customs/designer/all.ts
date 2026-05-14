@@ -19,7 +19,7 @@ export type Response = {
 	orderedAt: string;
 	forDelivery: boolean;
 	buyerName: string;
-	categoryName?: string;
+	categoryName: string | null;
 };
 
 export const url = (req: Request) =>

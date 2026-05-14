@@ -8,8 +8,8 @@ export type AccountResponse = {
 	email: string;
 	role: string;
 	createdAt: string;
-	firstName?: string;
-	lastName?: string;
+	firstName: string | null;
+	lastName: string | null;
 };
 
 export const ACCOUNTS_BASE_PATH = '/account';
