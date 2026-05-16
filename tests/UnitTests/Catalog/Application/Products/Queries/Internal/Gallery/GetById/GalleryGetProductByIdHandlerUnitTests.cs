@@ -4,6 +4,7 @@ using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Files;
+using CustomCADs.Shared.Application.Events.Catalog;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
@@ -21,7 +22,6 @@ public class GalleryGetProductByIdHandlerUnitTests : ProductsBaseUnitTests
 	private readonly Mock<IEventRaiser> raiser = new();
 
 	private readonly Product product = CreateProductWithId(id: ValidId);
-	private static readonly DateTimeOffset viewedAt = DateTimeOffset.UtcNow;
 
 	public GalleryGetProductByIdHandlerUnitTests()
 	{

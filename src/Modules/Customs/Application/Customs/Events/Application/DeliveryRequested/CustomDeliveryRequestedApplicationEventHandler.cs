@@ -13,23 +13,23 @@ public class CustomDeliveryRequestedApplicationEventHandler(
 	IRequestSender sender
 )
 {
-	public async Task HandleAsync(CustomDeliveryRequestedApplicationEvent ae)
+	public async Task HandleAsync(CustomDeliveryRequestedApplicationEvent @event)
 	{
-		Custom custom = await reads.SingleByIdAsync(ae.CustomId).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Custom>.ById(ae.CustomId);
+		Custom custom = await reads.SingleByIdAsync(@event.CustomId).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Custom>.ById(@event.CustomId);
 
 		string buyer = await sender.SendQueryAsync(
 			query: new GetUsernameByIdQuery(custom.BuyerId)
 		).ConfigureAwait(false);
-		int count = ae.Count;
-		double weight = ae.Weight;
+		int count = @event.Count;
+		double weight = @event.Weight;
 
 		ShipmentId shipmentId = await sender.SendCommandAsync(
 			command: new CreateShipmentCommand(
 				Info: new(count, weight, buyer),
-				Service: ae.ShipmentService,
-				Address: ae.Address,
-				Contact: ae.Contact,
+				Service: @event.ShipmentService,
+				Address: @event.Address,
+				Contact: @event.Contact,
 				BuyerId: custom.BuyerId
 			)
 		).ConfigureAwait(false);

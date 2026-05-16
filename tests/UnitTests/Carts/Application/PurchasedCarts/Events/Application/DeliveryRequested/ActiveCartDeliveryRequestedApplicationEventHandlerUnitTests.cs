@@ -44,7 +44,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ActiveCartDeliveryRequestedApplicationEvent de = new(
+		ActiveCartDeliveryRequestedApplicationEvent @event = new(
 			PurchasedCartId: ValidId,
 			ShipmentService: string.Empty,
 			Weight: default,
@@ -54,7 +54,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 		);
 
 		// Act
-		await handler.HandleAsync(de);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -64,7 +64,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		ActiveCartDeliveryRequestedApplicationEvent de = new(
+		ActiveCartDeliveryRequestedApplicationEvent @event = new(
 			PurchasedCartId: ValidId,
 			ShipmentService: string.Empty,
 			Weight: default,
@@ -74,7 +74,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 		);
 
 		// Act
-		await handler.HandleAsync(de);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -94,7 +94,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as PurchasedCart);
 
-		ActiveCartDeliveryRequestedApplicationEvent de = new(
+		ActiveCartDeliveryRequestedApplicationEvent @event = new(
 			PurchasedCartId: ValidId,
 			ShipmentService: string.Empty,
 			Weight: default,
@@ -106,7 +106,7 @@ public class ActiveCartDeliveryRequestedApplicationEventHandlerUnitTests : Purch
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
 			// Act
-			async () => await handler.HandleAsync(de)
+			async () => await handler.HandleAsync(@event)
 		);
 	}
 }

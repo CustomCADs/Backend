@@ -34,7 +34,7 @@ public sealed class CreatePurchasedCartHandler(
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			@event: new UserPurchasedProductApplicationEvent(
+			@event: new ProductsPurchasedApplicationEvent(
 				Ids: [.. items.Select(x => x.ProductId)]
 			)
 		).ConfigureAwait(false);

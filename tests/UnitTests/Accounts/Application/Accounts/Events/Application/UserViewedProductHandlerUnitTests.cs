@@ -26,10 +26,10 @@ public class UserViewedProductHandlerUnitTests : AccountsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		UserViewedProductApplicationEvent ie = new(id, productId, viewedAt);
+		ProductViewedApplicationEvent @event = new(productId, id, viewedAt);
 
 		// Act
-		await handler.HandleAsync(ie);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		writes.Verify(x => x.ViewProductAsync(id, productId, viewedAt, ct), Times.Once());

@@ -14,23 +14,23 @@ public class ActiveCartDeliveryRequestedApplicationEventHandler(
 	IRequestSender sender
 )
 {
-	public async Task HandleAsync(ActiveCartDeliveryRequestedApplicationEvent ae)
+	public async Task HandleAsync(ActiveCartDeliveryRequestedApplicationEvent @event)
 	{
-		PurchasedCart cart = await reads.SingleByIdAsync(ae.PurchasedCartId).ConfigureAwait(false)
-			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.PurchasedCartId);
+		PurchasedCart cart = await reads.SingleByIdAsync(@event.PurchasedCartId).ConfigureAwait(false)
+			?? throw CustomNotFoundException<PurchasedCart>.ById(@event.PurchasedCartId);
 
 		string buyer = await sender.SendQueryAsync(
 			query: new GetUsernameByIdQuery(cart.BuyerId)
 		).ConfigureAwait(false);
-		double weight = ae.Weight;
-		int count = ae.Count;
+		double weight = @event.Weight;
+		int count = @event.Count;
 
 		ShipmentId shipmentId = await sender.SendCommandAsync(
 			command: new CreateShipmentCommand(
 				Info: new(count, weight, buyer),
-				Service: ae.ShipmentService,
-				Address: ae.Address,
-				Contact: ae.Contact,
+				Service: @event.ShipmentService,
+				Address: @event.Address,
+				Contact: @event.Contact,
 				BuyerId: cart.BuyerId
 			)
 		).ConfigureAwait(false);

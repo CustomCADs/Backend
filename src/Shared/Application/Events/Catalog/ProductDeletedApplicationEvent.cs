@@ -1,4 +1,4 @@
-﻿namespace CustomCADs.Shared.Application.Events.Files;
+namespace CustomCADs.Shared.Application.Events.Catalog;
 
 public record ProductDeletedApplicationEvent(
 	ProductId Id,

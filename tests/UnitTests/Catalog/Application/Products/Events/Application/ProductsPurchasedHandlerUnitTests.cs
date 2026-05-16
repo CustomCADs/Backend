@@ -4,14 +4,14 @@ using CustomCADs.Shared.Application.Events.Catalog;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Events.Application;
 
-public class UserPurchasedProductHandlerUnitTests : ProductsBaseUnitTests
+public class ProductsPurchasedHandlerUnitTests : ProductsBaseUnitTests
 {
-	private readonly UserPurchasedProductHandler handler;
+	private readonly ProductsPurchasedHandler handler;
 	private readonly Mock<IUnitOfWork> uow = new();
 
 	private static readonly ProductId[] ids = [];
 
-	public UserPurchasedProductHandlerUnitTests()
+	public ProductsPurchasedHandlerUnitTests()
 	{
 		handler = new(uow.Object);
 	}
@@ -20,12 +20,12 @@ public class UserPurchasedProductHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		UserPurchasedProductApplicationEvent ae = new(ids);
+		ProductsPurchasedApplicationEvent @event = new(ids);
 
 		// Act
-		await handler.HandleAsync(ae, ct);
+		await handler.HandleAsync(@event, ct);
 
 		// Assert
-		uow.Verify(x => x.AddProductPurchasesAsync(ids, 1, ct), Times.Once());
+		uow.Verify(x => x.AddProductsPurchasesAsync(ids, 1, ct), Times.Once());
 	}
 }

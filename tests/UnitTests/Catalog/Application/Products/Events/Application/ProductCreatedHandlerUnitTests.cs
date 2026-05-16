@@ -23,10 +23,10 @@ public class ProductCreatedHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductCreatedApplicationEvent ae = new(ValidId, TagIds);
+		ProductCreatedApplicationEvent @event = new(ValidId, TagIds);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		writes.Verify(

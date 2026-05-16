@@ -20,10 +20,10 @@ public class EmailVerificationRequestedHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldSendEmails()
 	{
 		// Arrange
-		EmailVerificationRequestedApplicationEvent ae = new(Email, Endpoint);
+		EmailVerificationRequestedApplicationEvent @event = new(Email, Endpoint);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		email.Verify(x => x.SendVerificationEmailAsync(Email, Endpoint, ct), Times.Once());

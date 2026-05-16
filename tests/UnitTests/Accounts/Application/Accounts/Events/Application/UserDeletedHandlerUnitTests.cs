@@ -30,10 +30,10 @@ public class UserDeletedHandlerUnitTests : AccountsBaseUnitTests
 	public async Task Handle_ShoulQueryDatabase()
 	{
 		// Arrange
-		UserDeletedApplicationEvent ae = new(ValidId);
+		UserDeletedApplicationEvent @event = new(ValidId);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -43,10 +43,10 @@ public class UserDeletedHandlerUnitTests : AccountsBaseUnitTests
 	public async Task Handle_ShoulPersistToDatabase()
 	{
 		// Arrange
-		UserDeletedApplicationEvent ae = new(ValidId);
+		UserDeletedApplicationEvent @event = new(ValidId);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		writes.Verify(x => x.Remove(account), Times.Once());
@@ -58,12 +58,12 @@ public class UserDeletedHandlerUnitTests : AccountsBaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Account);
-		UserDeletedApplicationEvent ae = new(ValidId);
+		UserDeletedApplicationEvent @event = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			async () => await handler.HandleAsync(ae)
+			async () => await handler.HandleAsync(@event)
 		);
 	}
 }

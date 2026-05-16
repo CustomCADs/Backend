@@ -52,7 +52,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CustomDeliveryRequestedApplicationEvent de = new(
+		CustomDeliveryRequestedApplicationEvent @event = new(
 			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
@@ -62,7 +62,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 		);
 
 		// Act
-		await handler.HandleAsync(de);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
@@ -72,7 +72,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CustomDeliveryRequestedApplicationEvent de = new(
+		CustomDeliveryRequestedApplicationEvent @event = new(
 			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
@@ -82,7 +82,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 		);
 
 		// Act
-		await handler.HandleAsync(de);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
@@ -92,7 +92,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CustomDeliveryRequestedApplicationEvent de = new(
+		CustomDeliveryRequestedApplicationEvent @event = new(
 			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
@@ -102,7 +102,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 		);
 
 		// Act
-		await handler.HandleAsync(de);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -119,7 +119,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
-		CustomDeliveryRequestedApplicationEvent de = new(
+		CustomDeliveryRequestedApplicationEvent @event = new(
 			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
@@ -129,7 +129,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 		);
 
 		// Act
-		await handler.HandleAsync(de);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		Assert.Equal(ValidShipmentId, custom.CompletedCustom?.ShipmentId);
@@ -142,7 +142,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Custom);
 
-		CustomDeliveryRequestedApplicationEvent de = new(
+		CustomDeliveryRequestedApplicationEvent @event = new(
 			CustomId: ValidId,
 			ShipmentService: ShipmentService,
 			Weight: Weight,
@@ -154,7 +154,7 @@ public class CustomDeliveryRequestedApplicationEventHandlerUnitTests : CustomsBa
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			async () => await handler.HandleAsync(de)
+			async () => await handler.HandleAsync(@event)
 		);
 	}
 }

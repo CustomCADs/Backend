@@ -1,5 +1,5 @@
 namespace CustomCADs.Shared.Application.Events.Catalog;
 
-public sealed record UserPurchasedProductApplicationEvent(
+public sealed record ProductsPurchasedApplicationEvent(
 	ProductId[] Ids
 ) : BaseApplicationEvent;

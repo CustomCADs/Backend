@@ -20,13 +20,13 @@ public class RoleCreatedHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		RoleCreatedApplicationEvent ae = new(
+		RoleCreatedApplicationEvent @event = new(
 			Name: ValidRole,
 			Description: string.Empty
 		);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		service.Verify(x => x.CreateAsync(ValidRole), Times.Once());

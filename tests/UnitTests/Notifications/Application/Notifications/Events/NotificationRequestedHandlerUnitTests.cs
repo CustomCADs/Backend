@@ -43,7 +43,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase_WhenSingleReceiver()
 	{
 		// Arrange
-		NotificationRequestedEvent ae = new(
+		NotificationRequestedEvent @event = new(
 			Type: NotificationType.Unkown,
 			Description: MinValidDescription,
 			Link: ValidLink,
@@ -52,15 +52,15 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 		);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		writes.Verify(x => x.AddAsync(
 			It.Is<Notification>(x =>
-				x.Type == ae.Type.ToString()
-				&& x.Content == new NotificationContent(ae.Description, ae.Link)
-				&& x.AuthorId == ae.AuthorId
-				&& x.ReceiverId == ae.ReceiverIds.First()
+				x.Type == @event.Type.ToString()
+				&& x.Content == new NotificationContent(@event.Description, @event.Link)
+				&& x.AuthorId == @event.AuthorId
+				&& x.ReceiverId == @event.ReceiverIds.First()
 			),
 			ct
 		), Times.Once());
@@ -71,7 +71,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 	public async Task Handle_ShouldBulkInsert_WhenMultipleReceivers()
 	{
 		// Arrange
-		NotificationRequestedEvent ae = new(
+		NotificationRequestedEvent @event = new(
 			Type: NotificationType.Unkown,
 			Description: MinValidDescription,
 			Link: ValidLink,
@@ -80,7 +80,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 		);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		uow.Verify(x => x.InsertNotificationsAsync(
@@ -93,7 +93,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		NotificationRequestedEvent ae = new(
+		NotificationRequestedEvent @event = new(
 			Type: NotificationType.Unkown,
 			Description: MinValidDescription,
 			Link: ValidLink,
@@ -102,7 +102,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 		);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
@@ -115,7 +115,7 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 	public async Task Handle_ShouldNotifySubscribers()
 	{
 		// Arrange
-		NotificationRequestedEvent ae = new(
+		NotificationRequestedEvent @event = new(
 			Type: NotificationType.Unkown,
 			Description: MinValidDescription,
 			Link: ValidLink,
@@ -124,11 +124,11 @@ public class NotificationRequestedHandlerUnitTests : NotificationsBaseUnitTests
 		);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		notifier.Verify(x => x.NotifyUsersAsync(
-			ae.ReceiverIds,
+			@event.ReceiverIds,
 			It.IsAny<string>(),
 			It.IsAny<object>(),
 			ct

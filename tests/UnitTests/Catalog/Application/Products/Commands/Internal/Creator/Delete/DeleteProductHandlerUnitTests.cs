@@ -5,7 +5,7 @@ using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Notifications;
-using CustomCADs.Shared.Application.Events.Files;
+using CustomCADs.Shared.Application.Events.Catalog;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.ActiveCarts.Queries;

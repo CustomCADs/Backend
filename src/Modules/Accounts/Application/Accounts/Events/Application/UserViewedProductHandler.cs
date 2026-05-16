@@ -6,9 +6,9 @@ namespace CustomCADs.Modules.Accounts.Application.Accounts.Events.Application;
 
 public class UserViewedProductHandler(IAccountWrites writes, IUnitOfWork uow)
 {
-	public async Task HandleAsync(UserViewedProductApplicationEvent ae)
+	public async Task HandleAsync(ProductViewedApplicationEvent @event)
 	{
-		await writes.ViewProductAsync(ae.AccountId, ae.Id, ae.ViewedAt).ConfigureAwait(false);
+		await writes.ViewProductAsync(@event.AccountId, @event.Id, @event.ViewedAt).ConfigureAwait(false);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 	}
 }

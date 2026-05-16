@@ -20,10 +20,10 @@ public class RoleDeletedHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		RoleDeletedApplicationEvent ae = new(ValidRole);
+		RoleDeletedApplicationEvent @event = new(ValidRole);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		service.Verify(x => x.DeleteAsync(ValidRole), Times.Once());

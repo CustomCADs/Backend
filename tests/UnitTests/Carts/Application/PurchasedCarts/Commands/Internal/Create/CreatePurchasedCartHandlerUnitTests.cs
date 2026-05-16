@@ -117,7 +117,7 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 
 		// Assert
 		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<UserPurchasedProductApplicationEvent>(x => x.Ids == productIds)
+			It.Is<ProductsPurchasedApplicationEvent>(x => x.Ids == productIds)
 		), Times.Once());
 	}
 

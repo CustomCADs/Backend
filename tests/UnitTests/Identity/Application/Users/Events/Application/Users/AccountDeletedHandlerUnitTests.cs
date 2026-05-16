@@ -6,12 +6,12 @@ namespace CustomCADs.UnitTests.Identity.Application.Users.Events.Application.Use
 
 using static UsersData;
 
-public class UserDeletedHandlerUnitTests : UsersBaseUnitTests
+public class AccountDeletedHandlerUnitTests : UsersBaseUnitTests
 {
-	private readonly UserDeletedHandler handler;
+	private readonly AccountDeletedHandler handler;
 	private readonly Mock<IUserService> service = new();
 
-	public UserDeletedHandlerUnitTests()
+	public AccountDeletedHandlerUnitTests()
 	{
 		handler = new(service.Object);
 	}
@@ -20,10 +20,10 @@ public class UserDeletedHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		AccountDeletedApplicationEvent ae = new(ValidAccountId);
+		AccountDeletedApplicationEvent @event = new(ValidAccountId);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		service.Verify(x => x.DeleteAsync(ValidAccountId), Times.Once());

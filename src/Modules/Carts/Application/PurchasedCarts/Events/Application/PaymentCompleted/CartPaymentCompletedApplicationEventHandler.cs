@@ -17,18 +17,18 @@ public class CartPaymentCompletedApplicationEventHandler(
 	IEmailService email
 )
 {
-	public async Task HandleAsync(CartPaymentCompletedApplicationEvent ae)
+	public async Task HandleAsync(CartPaymentCompletedApplicationEvent @event)
 	{
-		PurchasedCart cart = await reads.SingleByIdAsync(ae.CartId).ConfigureAwait(false)
-			?? throw CustomNotFoundException<PurchasedCart>.ById(ae.CartId);
+		PurchasedCart cart = await reads.SingleByIdAsync(@event.CartId).ConfigureAwait(false)
+			?? throw CustomNotFoundException<PurchasedCart>.ById(@event.CartId);
 
 		cart.FinishPayment(success: true);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
-		await uow.BulkDeleteItemsByBuyerIdAsync(ae.BuyerId).ConfigureAwait(false);
+		await uow.BulkDeleteItemsByBuyerIdAsync(@event.BuyerId).ConfigureAwait(false);
 
 		string to = await sender.SendQueryAsync(
-			query: new GetUserEmailByIdQuery(ae.BuyerId)
+			query: new GetUserEmailByIdQuery(@event.BuyerId)
 		).ConfigureAwait(false);
 
 		string url = await sender.SendQueryAsync(

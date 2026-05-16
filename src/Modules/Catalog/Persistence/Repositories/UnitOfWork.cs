@@ -29,7 +29,7 @@ public class UnitOfWork(CatalogContext context) : IUnitOfWork
 			.ExecuteDeleteAsync(ct)
 			.ConfigureAwait(false);
 
-	public async Task AddProductPurchasesAsync(ProductId[] ids, int count = 1, CancellationToken ct = default)
+	public async Task AddProductsPurchasesAsync(ProductId[] ids, int count = 1, CancellationToken ct = default)
 		=> await context.Products
 			.Where(x => ids.Contains(x.Id))
 			.ExecuteUpdateAsync(x => x

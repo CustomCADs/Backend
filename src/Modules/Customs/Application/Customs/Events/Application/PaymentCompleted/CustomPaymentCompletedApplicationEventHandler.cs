@@ -17,16 +17,16 @@ public class CustomPaymentCompletedApplicationEventHandler(
 	IEmailService email
 )
 {
-	public async Task HandleAsync(CustomPaymentCompletedApplicationEvent ae)
+	public async Task HandleAsync(CustomPaymentCompletedApplicationEvent @event)
 	{
-		Custom custom = await reads.SingleByIdAsync(ae.CustomId).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Custom>.ById(ae.CustomId);
+		Custom custom = await reads.SingleByIdAsync(@event.CustomId).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Custom>.ById(@event.CustomId);
 
 		custom.FinishPayment(success: true);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
 		string to = await sender.SendQueryAsync(
-			query: new GetUserEmailByIdQuery(ae.BuyerId)
+			query: new GetUserEmailByIdQuery(@event.BuyerId)
 		).ConfigureAwait(false);
 
 		string url = await sender.SendQueryAsync(

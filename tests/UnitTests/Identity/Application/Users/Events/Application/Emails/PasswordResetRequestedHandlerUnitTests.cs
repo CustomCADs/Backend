@@ -20,10 +20,10 @@ public class PasswordResetRequestedHandlerUnitTests : UsersBaseUnitTests
 	public async Task Handle_ShouldSendEmails()
 	{
 		// Arrange
-		PasswordResetRequestedApplicationEvent ae = new(Email, Endpoint);
+		PasswordResetRequestedApplicationEvent @event = new(Email, Endpoint);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(@event);
 
 		// Assert
 		email.Verify(x => x.SendForgotPasswordEmailAsync(Email, Endpoint, ct), Times.Once());

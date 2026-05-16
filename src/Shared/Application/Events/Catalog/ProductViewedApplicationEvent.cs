@@ -1,7 +1,7 @@
 ﻿namespace CustomCADs.Shared.Application.Events.Catalog;
 
-public record UserViewedProductApplicationEvent(
-	AccountId AccountId,
+public record ProductViewedApplicationEvent(
 	ProductId Id,
+	AccountId AccountId,
 	DateTimeOffset ViewedAt
 ) : BaseApplicationEvent;

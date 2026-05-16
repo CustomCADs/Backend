@@ -9,16 +9,16 @@ namespace CustomCADs.Modules.Notifications.Application.Notifications.Events;
 
 public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfWork uow, IRequestSender sender, INotificationsRealTimeNotifier notifier)
 {
-	public async Task HandleAsync(NotificationRequestedEvent ae)
+	public async Task HandleAsync(NotificationRequestedEvent @event)
 	{
 		List<Notification> notifications = [];
-		if (ae.ReceiverIds is [AccountId receiverId])
+		if (@event.ReceiverIds is [AccountId receiverId])
 		{
 			Notification notification = await writes.AddAsync(
 				entity: Notification.Create(
-					type: ae.Type.ToString(),
-					content: new(ae.Description, ae.Link),
-					authorId: ae.AuthorId,
+					type: @event.Type.ToString(),
+					content: new(@event.Description, @event.Link),
+					authorId: @event.AuthorId,
 					receiverId: receiverId
 				)
 			).ConfigureAwait(false);
@@ -29,17 +29,17 @@ public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfW
 		else notifications = [..
 			await uow.InsertNotificationsAsync(
 				notifications: Notification.CreateBulk(
-					type: ae.Type.ToString(),
-					content: new(ae.Description, ae.Link),
-					authorId: ae.AuthorId,
-					receiverIds: [.. ae.ReceiverIds.Distinct()]
+					type: @event.Type.ToString(),
+					content: new(@event.Description, @event.Link),
+					authorId: @event.AuthorId,
+					receiverIds: [.. @event.ReceiverIds.Distinct()]
 				)
 			).ConfigureAwait(false)
 		];
 
-		string author = await sender.SendQueryAsync(new GetUsernameByIdQuery(ae.AuthorId)).ConfigureAwait(false);
+		string author = await sender.SendQueryAsync(new GetUsernameByIdQuery(@event.AuthorId)).ConfigureAwait(false);
 		await notifier.NotifyUsersAsync(
-			ids: ae.ReceiverIds,
+			ids: @event.ReceiverIds,
 			message: "ReceiveNew",
 			payload: notifications.Select(x => new
 			{

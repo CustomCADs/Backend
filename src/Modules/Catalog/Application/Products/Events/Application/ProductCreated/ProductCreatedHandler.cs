@@ -5,11 +5,11 @@ namespace CustomCADs.Modules.Catalog.Application.Products.Events.Application.Pro
 
 public class ProductCreatedHandler(IProductWrites writes, IUnitOfWork uow)
 {
-	public async Task HandleAsync(ProductCreatedApplicationEvent ae)
+	public async Task HandleAsync(ProductCreatedApplicationEvent @event)
 	{
-		foreach (TagId tagId in ae.TagIds)
+		foreach (TagId tagId in @event.TagIds)
 		{
-			await writes.AddTagAsync(ae.Id, tagId).ConfigureAwait(false);
+			await writes.AddTagAsync(@event.Id, tagId).ConfigureAwait(false);
 		}
 
 		await uow.SaveChangesAsync().ConfigureAwait(false);
