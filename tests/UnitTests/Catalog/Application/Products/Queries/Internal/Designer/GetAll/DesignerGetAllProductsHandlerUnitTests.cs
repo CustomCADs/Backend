@@ -40,12 +40,12 @@ public class DesignerGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		)).ReturnsAsync(result);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids == products.Select(x => x.CreatorId)),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == products.Select(x => x.CreatorId)),
 			ct
 		)).ReturnsAsync(products.ToDictionary(x => x.CreatorId, x => "Username123"));
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCategoryNamesByIdsQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
 			ct
 		)).ReturnsAsync(products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
 	}
@@ -92,11 +92,11 @@ public class DesignerGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids == products.Select(x => x.CreatorId)),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == products.Select(x => x.CreatorId)),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCategoryNamesByIdsQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
 			ct
 		), Times.Once());
 	}

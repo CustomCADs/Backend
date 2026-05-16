@@ -1,16 +1,16 @@
-﻿using CustomCADs.Modules.Files.Application.Cads.Commands.Shared.DuplicateByIds;
+﻿using CustomCADs.Modules.Files.Application.Cads.Commands.Shared.BatchDuplicateById;
 using CustomCADs.Modules.Files.Domain.Repositories;
 using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Cads.Commands;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.UnitTests.Files.Application.Cads.Commands.Shared.DuplicateByIds;
+namespace CustomCADs.UnitTests.Files.Application.Cads.Commands.Shared.BatchDuplicateById;
 
 using static CadsData;
 
-public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
+public class BatchDuplicateCadByIdHandlerUnitTests : CadsBaseUnitTests
 {
-	private readonly DuplicateCadsByIdsHandler handler;
+	private readonly BatchDuplicateCadByIdHandler handler;
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<IWrites<Cad>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -23,7 +23,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	private readonly CadQuery query;
 	private readonly Result<Cad> result;
 
-	public DuplicateCadsByIdsHandlerUnitTests()
+	public BatchDuplicateCadByIdHandlerUnitTests()
 	{
 		handler = new(reads.Object, writes.Object, uow.Object, cache.Object);
 
@@ -38,7 +38,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DuplicateCadsByIdsCommand command = new(Ids, ValidOwnerId);
+		BatchDuplicateCadByIdCommand command = new(Ids, ValidOwnerId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -51,7 +51,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DuplicateCadsByIdsCommand command = new(Ids, ValidOwnerId);
+		BatchDuplicateCadByIdCommand command = new(Ids, ValidOwnerId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -65,7 +65,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		DuplicateCadsByIdsCommand command = new(Ids, ValidOwnerId);
+		BatchDuplicateCadByIdCommand command = new(Ids, ValidOwnerId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -84,7 +84,7 @@ public class DuplicateCadsByIdsHandlerUnitTests : CadsBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		DuplicateCadsByIdsCommand command = new(Ids, ValidOwnerId);
+		BatchDuplicateCadByIdCommand command = new(Ids, ValidOwnerId);
 
 		// Act
 		var result = await handler.Handle(command, ct);

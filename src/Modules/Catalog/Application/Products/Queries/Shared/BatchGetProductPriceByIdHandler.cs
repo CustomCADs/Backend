@@ -4,10 +4,10 @@ using CustomCADs.Shared.Domain.Querying;
 
 namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Shared;
 
-public sealed class GetProductPricesByIdsHandler(IProductReads reads)
-	: IQueryHandler<GetProductPricesByIdsQuery, Dictionary<ProductId, decimal>>
+public sealed class BatchGetProductPriceByIdHandler(IProductReads reads)
+	: IQueryHandler<BatchGetProductPriceByIdQuery, Dictionary<ProductId, decimal>>
 {
-	public async Task<Dictionary<ProductId, decimal>> Handle(GetProductPricesByIdsQuery req, CancellationToken ct)
+	public async Task<Dictionary<ProductId, decimal>> Handle(BatchGetProductPriceByIdQuery req, CancellationToken ct)
 	{
 		Result<Product> result = await reads.AllAsync(
 			query: new(

@@ -3,12 +3,12 @@ using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
 namespace CustomCADs.Modules.Catalog.Application.Categories.Queries.Shared;
 
-public sealed class GetCategoryNamesByIdsHandler(
+public sealed class BatchGetCategoryByIdHandler(
 	ICategoryReads reads,
 	BaseCachingService<CategoryId, Category> cache
-) : IQueryHandler<GetCategoryNamesByIdsQuery, Dictionary<CategoryId, string>>
+) : IQueryHandler<BatchGetCategorByIdQuery, Dictionary<CategoryId, string>>
 {
-	public async Task<Dictionary<CategoryId, string>> Handle(GetCategoryNamesByIdsQuery req, CancellationToken ct)
+	public async Task<Dictionary<CategoryId, string>> Handle(BatchGetCategorByIdQuery req, CancellationToken ct)
 	{
 		IEnumerable<Category> categories = await cache.GetOrCreateAsync(
 			factory: async () => [.. await reads.AllAsync(track: false, ct: ct).ConfigureAwait(false)]

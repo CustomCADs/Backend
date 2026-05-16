@@ -4,16 +4,16 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Commands;
 using CustomCADs.Shared.Application.UseCases.Cads.Commands;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.Modules.Files.Application.Cads.Commands.Shared.DuplicateByIds;
+namespace CustomCADs.Modules.Files.Application.Cads.Commands.Shared.BatchDuplicateById;
 
-public sealed class DuplicateCadsByIdsHandler(
+public sealed class BatchDuplicateCadByIdHandler(
 	ICadReads reads,
 	IWrites<Cad> writes,
 	IUnitOfWork uow,
 	BaseCachingService<CadId, Cad> cache
-) : ICommandHandler<DuplicateCadsByIdsCommand, Dictionary<CadId, CadId>>
+) : ICommandHandler<BatchDuplicateCadByIdCommand, Dictionary<CadId, CadId>>
 {
-	public async Task<Dictionary<CadId, CadId>> Handle(DuplicateCadsByIdsCommand req, CancellationToken ct)
+	public async Task<Dictionary<CadId, CadId>> Handle(BatchDuplicateCadByIdCommand req, CancellationToken ct)
 	{
 		Result<Cad> result = await reads.AllAsync(
 			query: new(

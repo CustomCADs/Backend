@@ -5,10 +5,10 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Modules.Catalog.Application.Products.Queries.Shared;
 
-public class GetProductCadIdsByIdsHandler(IProductReads reads)
-	: IQueryHandler<GetProductCadIdsByIdsQuery, Dictionary<ProductId, CadId>>
+public class BatchGetProductCadIdByIdHandler(IProductReads reads)
+	: IQueryHandler<BatchGetProductCadIdByIdQuery, Dictionary<ProductId, CadId>>
 {
-	public async Task<Dictionary<ProductId, CadId>> Handle(GetProductCadIdsByIdsQuery req, CancellationToken ct)
+	public async Task<Dictionary<ProductId, CadId>> Handle(BatchGetProductCadIdByIdQuery req, CancellationToken ct)
 	{
 		Result<Product> result = await reads.AllAsync(
 			query: new(

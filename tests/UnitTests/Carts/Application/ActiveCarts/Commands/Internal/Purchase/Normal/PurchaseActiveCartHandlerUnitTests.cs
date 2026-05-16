@@ -44,7 +44,7 @@ public class PurchaseActiveCartHandlerUnitTests : ActiveCartsBaseUnitTests
 			.ReturnsAsync(items);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.IsAny<GetProductPricesByIdsQuery>(),
+			It.IsAny<BatchGetProductPriceByIdQuery>(),
 			ct
 		)).ReturnsAsync(items.ToDictionary(x => x.ProductId, x => 0m));
 	}
@@ -74,7 +74,7 @@ public class PurchaseActiveCartHandlerUnitTests : ActiveCartsBaseUnitTests
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.IsAny<GetProductPricesByIdsQuery>(),
+			It.IsAny<BatchGetProductPriceByIdQuery>(),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(

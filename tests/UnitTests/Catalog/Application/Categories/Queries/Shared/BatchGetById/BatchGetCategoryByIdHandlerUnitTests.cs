@@ -2,13 +2,13 @@
 using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 
-namespace CustomCADs.UnitTests.Catalog.Application.Categories.Queries.Shared.GetByIds;
+namespace CustomCADs.UnitTests.Catalog.Application.Categories.Queries.Shared.BatchGetById;
 
 using static CategoriesData;
 
-public class GetCategoryNamesByIdsHandlerUnitTests : CategoriesBaseUnitTests
+public class BatchGetCategoryByIdHandlerUnitTests : CategoriesBaseUnitTests
 {
-	private readonly GetCategoryNamesByIdsHandler handler;
+	private readonly BatchGetCategoryByIdHandler handler;
 	private readonly Mock<ICategoryReads> reads = new();
 	private readonly Mock<BaseCachingService<CategoryId, Category>> cache = new();
 
@@ -19,7 +19,7 @@ public class GetCategoryNamesByIdsHandlerUnitTests : CategoriesBaseUnitTests
 	];
 	private static readonly Category[] categories = [.. ids.Select(id => CreateCategory(id, ValidName, ValidDescription))];
 
-	public GetCategoryNamesByIdsHandlerUnitTests()
+	public BatchGetCategoryByIdHandlerUnitTests()
 	{
 		handler = new(reads.Object, cache.Object);
 		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Category>>>>())).ReturnsAsync(categories);
@@ -29,7 +29,7 @@ public class GetCategoryNamesByIdsHandlerUnitTests : CategoriesBaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetCategoryNamesByIdsQuery query = new(ids);
+		BatchGetCategorByIdQuery query = new(ids);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -42,7 +42,7 @@ public class GetCategoryNamesByIdsHandlerUnitTests : CategoriesBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetCategoryNamesByIdsQuery query = new(ids);
+		BatchGetCategorByIdQuery query = new(ids);
 
 		// Act
 		var actualCategories = (await handler.Handle(query, ct)).Select(x => (x.Key, x.Value));

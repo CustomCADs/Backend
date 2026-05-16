@@ -20,7 +20,7 @@ public sealed class CalculateActiveCartShipmentHandler(IActiveCartReads reads, I
 		}
 
 		Dictionary<CustomizationId, double> weights = await sender.SendQueryAsync(
-			query: new GetCustomizationsWeightByIdsQuery(
+			query: new BatchGetCustomizationWeightByIdQuery(
 				Ids: [.. items
 					.Where(x => x.ForDelivery && x.CustomizationId is not null)
 					.Select(x => x.CustomizationId!.Value)

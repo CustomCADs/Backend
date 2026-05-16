@@ -105,7 +105,7 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 	private async Task<Dictionary<CustomizationId, double>> SnapshotWeightsAsync(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
 	{
 		Dictionary<CustomizationId, double> weights = await sender.SendQueryAsync(
-			query: new GetCustomizationsWeightByIdsQuery(
+			query: new BatchGetCustomizationWeightByIdQuery(
 				Ids: customizationIds
 			),
 			ct: ct
@@ -126,7 +126,7 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 	private async Task<Dictionary<CustomizationId, decimal>> SnapshotCostsAsync(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
 	{
 		Dictionary<CustomizationId, decimal> costs = await sender.SendQueryAsync(
-			query: new GetCustomizationsCostByIdsQuery(
+			query: new BatchGetCustomizationCostByIdQuery(
 				Ids: customizationIds
 			),
 			ct: ct
@@ -145,7 +145,7 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 	private async Task<Dictionary<ProductId, decimal>> SnapshotPricesAsync(ActiveCartItem[] items, CancellationToken ct)
 	{
 		Dictionary<ProductId, decimal> prices = await sender.SendQueryAsync(
-			query: new GetProductPricesByIdsQuery(
+			query: new BatchGetProductPriceByIdQuery(
 				Ids: [.. items.Select(x => x.ProductId)]
 			),
 			ct: ct

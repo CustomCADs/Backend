@@ -46,12 +46,12 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 		)).ReturnsAsync(true);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetProductCadIdsByIdsQuery>(x => x.Ids == productIds),
+			It.Is<BatchGetProductCadIdByIdQuery>(x => x.Ids == productIds),
 			ct
 		)).ReturnsAsync(cads);
 
 		sender.Setup(x => x.SendCommandAsync(
-			It.Is<DuplicateCadsByIdsCommand>(x => x.Ids == cadIds),
+			It.Is<BatchDuplicateCadByIdCommand>(x => x.Ids == cadIds),
 			ct
 		)).ReturnsAsync([]);
 	}
@@ -94,11 +94,11 @@ public class CreatePurchasedCartHandlerUnitTests : PurchasedCartsBaseUnitTests
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetProductCadIdsByIdsQuery>(x => x.Ids == productIds),
+			It.Is<BatchGetProductCadIdByIdQuery>(x => x.Ids == productIds),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendCommandAsync(
-			It.Is<DuplicateCadsByIdsCommand>(x => x.Ids == cadIds),
+			It.Is<BatchDuplicateCadByIdCommand>(x => x.Ids == cadIds),
 			ct
 		), Times.Once());
 	}

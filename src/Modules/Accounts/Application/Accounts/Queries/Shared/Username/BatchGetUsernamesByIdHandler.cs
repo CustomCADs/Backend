@@ -4,10 +4,10 @@ using CustomCADs.Shared.Domain.Querying;
 
 namespace CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.Username;
 
-public sealed class GetUsernamesByIdsHandler(IAccountReads reads)
-	: IQueryHandler<GetUsernamesByIdsQuery, Dictionary<AccountId, string>>
+public sealed class BatchGetUsernamesByIdHandler(IAccountReads reads)
+	: IQueryHandler<BatchGetUsernamesByIdQuery, Dictionary<AccountId, string>>
 {
-	public async Task<Dictionary<AccountId, string>> Handle(GetUsernamesByIdsQuery req, CancellationToken ct)
+	public async Task<Dictionary<AccountId, string>> Handle(BatchGetUsernamesByIdQuery req, CancellationToken ct)
 	{
 		AccountQuery query = new(
 			Ids: req.Ids,

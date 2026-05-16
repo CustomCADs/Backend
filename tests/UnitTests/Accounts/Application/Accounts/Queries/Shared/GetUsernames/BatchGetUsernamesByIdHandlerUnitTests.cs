@@ -9,16 +9,16 @@ namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.GetU
 using static AccountsData;
 using static DomainConstants.Users;
 
-public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
+public class BatchGetUsernamesByIdHandlerUnitTests : AccountsBaseUnitTests
 {
-	private readonly GetUsernamesByIdsHandler handler;
+	private readonly BatchGetUsernamesByIdHandler handler;
 	private readonly Mock<IAccountReads> reads = new();
 
 	private static readonly AccountId[] ids = [ValidId, ValidId, ValidId, ValidId];
 	private static readonly string[] usernames = [CustomerUsername, ContributorUsername, DesignerUsername, HeadDesignerUsername, AdminUsername];
 	private static readonly AccountQuery accountQuery = new(Pagination: new(1, ids.Length), Ids: ids);
 
-	public GetUsernamesByIdsHandlerUnitTests()
+	public BatchGetUsernamesByIdHandlerUnitTests()
 	{
 		handler = new(reads.Object);
 
@@ -38,7 +38,7 @@ public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetUsernamesByIdsQuery query = new(ids);
+		BatchGetUsernamesByIdQuery query = new(ids);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -51,7 +51,7 @@ public class GetUsernamesByIdsHandlerUnitTests : AccountsBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetUsernamesByIdsQuery query = new(ids);
+		BatchGetUsernamesByIdQuery query = new(ids);
 
 		// Act
 		Dictionary<AccountId, string> result = await handler.Handle(query, ct);

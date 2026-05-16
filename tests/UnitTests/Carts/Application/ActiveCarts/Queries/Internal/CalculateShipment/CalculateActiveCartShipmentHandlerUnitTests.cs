@@ -31,7 +31,7 @@ public class CalculateActiveCartShipmentHandlerUnitTests : ActiveCartsBaseUnitTe
 			]);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.IsAny<GetCustomizationsWeightByIdsQuery>(),
+			It.IsAny<BatchGetCustomizationWeightByIdQuery>(),
 			ct
 		)).ReturnsAsync([]);
 
@@ -65,7 +65,7 @@ public class CalculateActiveCartShipmentHandlerUnitTests : ActiveCartsBaseUnitTe
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.IsAny<GetCustomizationsWeightByIdsQuery>(),
+			It.IsAny<BatchGetCustomizationWeightByIdQuery>(),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(

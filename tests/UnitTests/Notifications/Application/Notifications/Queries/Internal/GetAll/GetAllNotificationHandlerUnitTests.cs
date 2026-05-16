@@ -40,7 +40,7 @@ public class GetAllNotificationHandlerUnitTests : NotificationsBaseUnitTests
 			ct
 		)).ReturnsAsync(result);
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Length == notifications.Length),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Length == notifications.Length),
 			ct
 		)).ReturnsAsync(notifications.ToDictionary(x => x.AuthorId, x => "Username123"));
 	}
@@ -81,7 +81,7 @@ public class GetAllNotificationHandlerUnitTests : NotificationsBaseUnitTests
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Length == notifications.Length),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Length == notifications.Length),
 			ct
 		), Times.Once());
 	}

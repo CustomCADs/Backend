@@ -9,9 +9,9 @@ namespace CustomCADs.UnitTests.Printing.Application.Customizations.Queries.Share
 
 using static CustomizationsData;
 
-public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnitTests
+public class BatchGetCustomizationCostByIdHandlerUnitTests : CustomizationsBaseUnitTests
 {
-	private readonly GetCustomizationsCostByIdsHandler handler;
+	private readonly BatchGetCustomizationCostByIdHandler handler;
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
 	private readonly Mock<IPrintCalculator> calculator = new();
@@ -25,7 +25,7 @@ public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnit
 		[ValidMaterialId] = CreateMaterial(),
 	};
 
-	public GetCustomizationsCostByIdsHandlerUnitTests()
+	public BatchGetCustomizationCostByIdHandlerUnitTests()
 	{
 		handler = new(reads.Object, materialReads.Object, calculator.Object);
 
@@ -43,7 +43,7 @@ public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnit
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetCustomizationsCostByIdsQuery query = new(ids);
+		BatchGetCustomizationCostByIdQuery query = new(ids);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -57,7 +57,7 @@ public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnit
 	public async Task Handle_ShouldCalculateCost()
 	{
 		// Arrange
-		GetCustomizationsCostByIdsQuery query = new(ids);
+		BatchGetCustomizationCostByIdQuery query = new(ids);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -73,7 +73,7 @@ public class GetCustomizationsCostByIdsHandlerUnitTests : CustomizationsBaseUnit
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetCustomizationsCostByIdsQuery query = new(ids);
+		BatchGetCustomizationCostByIdQuery query = new(ids);
 
 		// Act
 		var result = await handler.Handle(query, ct);

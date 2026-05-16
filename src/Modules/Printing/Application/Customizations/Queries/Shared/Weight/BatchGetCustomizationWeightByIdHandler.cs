@@ -2,15 +2,15 @@
 using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
-namespace CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Cost;
+namespace CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Weight;
 
-public sealed class GetCustomizationsCostByIdsHandler(
+public sealed class BatchGetCustomizationWeightByIdHandler(
 	ICustomizationReads customizationReads,
 	IMaterialReads materialReads,
 	IPrintCalculator calculator
-) : IQueryHandler<GetCustomizationsCostByIdsQuery, Dictionary<CustomizationId, decimal>>
+) : IQueryHandler<BatchGetCustomizationWeightByIdQuery, Dictionary<CustomizationId, double>>
 {
-	public async Task<Dictionary<CustomizationId, decimal>> Handle(GetCustomizationsCostByIdsQuery req, CancellationToken ct)
+	public async Task<Dictionary<CustomizationId, double>> Handle(BatchGetCustomizationWeightByIdQuery req, CancellationToken ct)
 	{
 		ICollection<Customization> customizations = await customizationReads.AllAsync(req.Ids, track: false, ct).ConfigureAwait(false);
 		MaterialId[] materialIds = [.. customizations.Select(x => x.MaterialId).Distinct()];
@@ -21,8 +21,10 @@ public sealed class GetCustomizationsCostByIdsHandler(
 			x =>
 			{
 				Customization customization = x;
-				Material material = materials[customization.MaterialId];
-				return calculator.CalculateCost(customization, material);
+				Material material = materials[x.MaterialId];
+
+				decimal weight = calculator.CalculateWeight(customization, material);
+				return Convert.ToDouble(weight);
 			}
 		);
 	}

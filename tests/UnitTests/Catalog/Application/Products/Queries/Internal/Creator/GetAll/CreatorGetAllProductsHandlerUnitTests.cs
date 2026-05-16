@@ -37,7 +37,7 @@ public class CreatorGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 		)).ReturnsAsync(result);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCategoryNamesByIdsQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
 			ct
 		)).ReturnsAsync(products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
 	}
@@ -82,7 +82,7 @@ public class CreatorGetAllProductsHandlerUnitTests : ProductsBaseUnitTests
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCategoryNamesByIdsQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
 			ct
 		), Times.Once());
 	}

@@ -51,12 +51,12 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 			.ReturnsAsync(items);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.IsAny<GetProductPricesByIdsQuery>(),
+			It.IsAny<BatchGetProductPriceByIdQuery>(),
 			ct
 		)).ReturnsAsync(items.ToDictionary(x => x.ProductId, x => 0m));
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.IsAny<GetCustomizationsCostByIdsQuery>(),
+			It.IsAny<BatchGetCustomizationCostByIdQuery>(),
 			ct
 		)).ReturnsAsync(
 			items
@@ -65,7 +65,7 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 		);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.IsAny<GetCustomizationsWeightByIdsQuery>(),
+			It.IsAny<BatchGetCustomizationWeightByIdQuery>(),
 			ct
 		)).ReturnsAsync(
 			items
@@ -111,11 +111,11 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.IsAny<GetProductPricesByIdsQuery>(),
+			It.IsAny<BatchGetProductPriceByIdQuery>(),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
-			It.IsAny<GetCustomizationsCostByIdsQuery>(),
+			It.IsAny<BatchGetCustomizationCostByIdQuery>(),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
@@ -127,7 +127,7 @@ public class PurchaseActiveCartWithDeliveryWithDeliveryHandlerUnitTests : Active
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
-			It.IsAny<GetCustomizationsWeightByIdsQuery>(),
+			It.IsAny<BatchGetCustomizationWeightByIdQuery>(),
 			ct
 		), Times.Once());
 	}

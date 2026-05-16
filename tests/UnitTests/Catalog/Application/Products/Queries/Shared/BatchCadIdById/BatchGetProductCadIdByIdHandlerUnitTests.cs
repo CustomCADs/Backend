@@ -3,13 +3,13 @@ using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.UnitTests.Catalog.Application.Products.Queries.Shared.CadIdsByIds;
+namespace CustomCADs.UnitTests.Catalog.Application.Products.Queries.Shared.BatchCadIdById;
 
 using static ProductsData;
 
-public class GetProductCadIdsByIdsHandlerUnitTests : ProductsBaseUnitTests
+public class BatchGetProductCadIdByIdHandlerUnitTests : ProductsBaseUnitTests
 {
-	private readonly GetProductCadIdsByIdsHandler handler;
+	private readonly BatchGetProductCadIdByIdHandler handler;
 	private readonly Mock<IProductReads> reads = new();
 
 	private readonly ProductId[] ids = [ValidId, ValidId, ValidId];
@@ -20,7 +20,7 @@ public class GetProductCadIdsByIdsHandlerUnitTests : ProductsBaseUnitTests
 		CreateProductWithId(MaxValidName, MaxValidDescription, MaxValidPrice, id: ProductId.New()),
 	];
 
-	public GetProductCadIdsByIdsHandlerUnitTests()
+	public BatchGetProductCadIdByIdHandlerUnitTests()
 	{
 		handler = new(reads.Object);
 
@@ -40,7 +40,7 @@ public class GetProductCadIdsByIdsHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetProductCadIdsByIdsQuery query = new(ids);
+		BatchGetProductCadIdByIdQuery query = new(ids);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -53,7 +53,7 @@ public class GetProductCadIdsByIdsHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetProductCadIdsByIdsQuery query = new(ids);
+		BatchGetProductCadIdByIdQuery query = new(ids);
 
 		// Act
 		var result = await handler.Handle(query, ct);

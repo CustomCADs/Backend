@@ -1,5 +1,5 @@
 ﻿namespace CustomCADs.Shared.Application.UseCases.Products.Queries;
 
-public sealed record GetProductPricesByIdsQuery(
+public sealed record BatchGetProductPriceByIdQuery(
 	ProductId[] Ids
 ) : IQuery<Dictionary<ProductId, decimal>>;

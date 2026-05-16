@@ -3,13 +3,13 @@ using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.Querying;
 
-namespace CustomCADs.UnitTests.Catalog.Application.Products.Queries.Shared.PricesByIds;
+namespace CustomCADs.UnitTests.Catalog.Application.Products.Queries.Shared.BatchPricesById;
 
 using static ProductsData;
 
-public class GetProductPricesByIdsHandlerUnitTests : ProductsBaseUnitTests
+public class BatchGetProductPriceByIdHandlerUnitTests : ProductsBaseUnitTests
 {
-	private readonly GetProductPricesByIdsHandler handler;
+	private readonly BatchGetProductPriceByIdHandler handler;
 	private readonly Mock<IProductReads> reads = new();
 
 	private readonly ProductId[] ids = [ValidId, ValidId, ValidId];
@@ -20,7 +20,7 @@ public class GetProductPricesByIdsHandlerUnitTests : ProductsBaseUnitTests
 		CreateProductWithId(MaxValidName, MaxValidDescription, MaxValidPrice, id: ProductId.New()),
 	];
 
-	public GetProductPricesByIdsHandlerUnitTests()
+	public BatchGetProductPriceByIdHandlerUnitTests()
 	{
 		handler = new(reads.Object);
 
@@ -40,7 +40,7 @@ public class GetProductPricesByIdsHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetProductPricesByIdsQuery query = new(ids);
+		BatchGetProductPriceByIdQuery query = new(ids);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -53,7 +53,7 @@ public class GetProductPricesByIdsHandlerUnitTests : ProductsBaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetProductPricesByIdsQuery query = new(ids);
+		BatchGetProductPriceByIdQuery query = new(ids);
 
 		// Act
 		var result = await handler.Handle(query, ct);

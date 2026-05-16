@@ -31,7 +31,7 @@ public sealed class GetAllCustomsHandler(ICustomReads reads, IRequestSender send
 
 		AccountId[] buyerIds = [.. result.Items.Select(x => x.BuyerId)];
 		Dictionary<AccountId, string> buyers = await sender.SendQueryAsync(
-			query: new GetUsernamesByIdsQuery(buyerIds),
+			query: new BatchGetUsernamesByIdQuery(buyerIds),
 			ct: ct
 		).ConfigureAwait(false);
 
@@ -40,7 +40,7 @@ public sealed class GetAllCustomsHandler(ICustomReads reads, IRequestSender send
 			.Select(x => x.AcceptedCustom!.DesignerId)
 		];
 		Dictionary<AccountId, string> designers = await sender.SendQueryAsync(
-			query: new GetUsernamesByIdsQuery(designerIds),
+			query: new BatchGetUsernamesByIdQuery(designerIds),
 			ct: ct
 		).ConfigureAwait(false);
 
@@ -49,7 +49,7 @@ public sealed class GetAllCustomsHandler(ICustomReads reads, IRequestSender send
 			.Select(x => x.Category!.Id)
 		];
 		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
-			query: new GetCategoryNamesByIdsQuery(categoryIds),
+			query: new BatchGetCategorByIdQuery(categoryIds),
 			ct: ct
 		).ConfigureAwait(false);
 

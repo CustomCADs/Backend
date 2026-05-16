@@ -9,9 +9,9 @@ namespace CustomCADs.UnitTests.Printing.Application.Customizations.Queries.Share
 
 using static CustomizationsData;
 
-public class GetCustomizationsWeightByIdsHandlerUnitTests : CustomizationsBaseUnitTests
+public class BatchGetCustomizationWeightByIdHandlerUnitTests : CustomizationsBaseUnitTests
 {
-	private readonly GetCustomizationsWeightByIdsHandler handler;
+	private readonly BatchGetCustomizationWeightByIdHandler handler;
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
 	private readonly Mock<IPrintCalculator> calculator = new();
@@ -25,7 +25,7 @@ public class GetCustomizationsWeightByIdsHandlerUnitTests : CustomizationsBaseUn
 		[ValidMaterialId] = CreateMaterial(),
 	};
 
-	public GetCustomizationsWeightByIdsHandlerUnitTests()
+	public BatchGetCustomizationWeightByIdHandlerUnitTests()
 	{
 		handler = new(reads.Object, materialReads.Object, calculator.Object);
 
@@ -43,7 +43,7 @@ public class GetCustomizationsWeightByIdsHandlerUnitTests : CustomizationsBaseUn
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetCustomizationsWeightByIdsQuery query = new(ids);
+		BatchGetCustomizationWeightByIdQuery query = new(ids);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -57,7 +57,7 @@ public class GetCustomizationsWeightByIdsHandlerUnitTests : CustomizationsBaseUn
 	public async Task Handle_ShouldCalculateWeight()
 	{
 		// Arrange
-		GetCustomizationsWeightByIdsQuery query = new(ids);
+		BatchGetCustomizationWeightByIdQuery query = new(ids);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -73,7 +73,7 @@ public class GetCustomizationsWeightByIdsHandlerUnitTests : CustomizationsBaseUn
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetCustomizationsWeightByIdsQuery query = new(ids);
+		BatchGetCustomizationWeightByIdQuery query = new(ids);
 
 		// Act
 		var result = await handler.Handle(query, ct);

@@ -53,17 +53,17 @@ public class GetAllCustomsUnitTests : CustomsBaseUnitTests
 			));
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Contains(ValidBuyerId)),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Contains(ValidBuyerId)),
 			ct
 		)).ReturnsAsync(customers);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Contains(ValidDesignerId)),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Contains(ValidDesignerId)),
 			ct
 		)).ReturnsAsync(designers);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetCategoryNamesByIdsQuery>(x => x.Ids.Contains(ValidCategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids.Contains(ValidCategoryId)),
 			ct
 		)).ReturnsAsync(categories);
 	}
@@ -92,15 +92,15 @@ public class GetAllCustomsUnitTests : CustomsBaseUnitTests
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Contains(ValidBuyerId)),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Contains(ValidBuyerId)),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernamesByIdsQuery>(x => x.Ids.Contains(ValidDesignerId)),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Contains(ValidDesignerId)),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCategoryNamesByIdsQuery>(x => x.Ids.Contains(ValidCategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids.Contains(ValidCategoryId)),
 			ct
 		), Times.Once());
 	}

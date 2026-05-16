@@ -30,13 +30,13 @@ public sealed class DesignerGetAllProductsHandler(IProductReads reads, IRequestS
 
 		AccountId[] userIds = [.. result.Items.Select(x => x.CreatorId).Distinct()];
 		Dictionary<AccountId, string> users = await sender.SendQueryAsync(
-			query: new GetUsernamesByIdsQuery(userIds),
+			query: new BatchGetUsernamesByIdQuery(userIds),
 			ct: ct
 		).ConfigureAwait(false);
 
 		CategoryId[] categoryIds = [.. result.Items.Select(x => x.CategoryId).Distinct()];
 		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
-			query: new GetCategoryNamesByIdsQuery(categoryIds),
+			query: new BatchGetCategorByIdQuery(categoryIds),
 			ct: ct
 		).ConfigureAwait(false);
 
