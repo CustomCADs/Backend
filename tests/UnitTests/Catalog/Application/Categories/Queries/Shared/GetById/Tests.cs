@@ -16,7 +16,7 @@ public class Tests : Data.Categories.BaseUnitTests
 	{
 		handler = new(reads.Object, cache.Object);
 
-		cache.Setup(v => v.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Category>>>()))
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Category>>>()))
 			.ReturnsAsync(CreateCategory(name: ValidName));
 	}
 
@@ -30,7 +30,10 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		cache.Verify(v => v.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Category>>>()), Times.Once());
+		cache.Verify(
+			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Category>>>()),
+			Times.Once()
+		);
 	}
 
 	[Fact]

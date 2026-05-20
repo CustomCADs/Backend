@@ -41,7 +41,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -57,10 +60,16 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.Remove(
-			It.Is<Custom>(x => x.Id == ValidId)
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.Remove(
+				It.Is<Custom>(x => x.Id == ValidId)
+			),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Theory]
@@ -83,8 +92,11 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomDeleted)
-		), Times.Exactly(isPending ? 0 : 1));
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomDeleted)
+			),
+			Times.Exactly(isPending ? 0 : 1)
+		);
 	}
 }

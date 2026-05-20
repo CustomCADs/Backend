@@ -37,10 +37,13 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == MaxValidUsername),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == MaxValidUsername),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -53,11 +56,14 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<UserEditedApplicationEvent>(x =>
-				x.TrackViewedProducts == !InitialTrackViewedProducts
-				&& x.Id == ValidAccountId
-			)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<UserEditedApplicationEvent>(x =>
+					x.TrackViewedProducts == !InitialTrackViewedProducts
+					&& x.Id == ValidAccountId
+				)
+			),
+			Times.Once()
+		);
 	}
 }

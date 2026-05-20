@@ -64,7 +64,10 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -77,7 +80,10 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -90,18 +96,27 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidCreatorId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == Username),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountViewedProductQuery>(x => x.Id == ValidCreatorId && x.ProductId == ValidId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUsernameByIdQuery>(x => x.Id == ValidCreatorId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == Username),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountViewedProductQuery>(x => x.Id == ValidCreatorId && x.ProductId == ValidId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -114,9 +129,12 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<ProductViewedApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<ProductViewedApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -146,11 +164,20 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Never());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Never());
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<ProductViewedApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
-		), Times.Never());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Never()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Never()
+		);
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<ProductViewedApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
+			),
+			Times.Never()
+		);
 		Assert.Equal(0, product.Counts.Views);
 	}
 
@@ -168,17 +195,29 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == Username),
-			ct
-		), Times.Never());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == Username),
+				ct
+			),
+			Times.Never()
+		);
 
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Never());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Never());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Never()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Never()
+		);
 
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<ProductViewedApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
-		), Times.Never());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<ProductViewedApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
+			),
+			Times.Never()
+		);
 		Assert.Equal(0, product.Counts.Views);
 	}
 

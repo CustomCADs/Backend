@@ -32,11 +32,17 @@ public class Tests : Data.Images.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<Image>(x => x.Key == ValidKey && x.ContentType == ValidContentType),
-			ct
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Image>(x => x.Key == ValidKey && x.ContentType == ValidContentType),
+				ct
+			),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

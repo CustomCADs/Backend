@@ -68,11 +68,17 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<PurchasedCart>(x => x.BuyerId == ValidBuyerId),
-			ct
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<PurchasedCart>(x => x.BuyerId == ValidBuyerId),
+				ct
+			),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -88,18 +94,27 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidBuyerId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<BatchGetProductCadIdByIdQuery>(x => x.Ids == productIds),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendCommandAsync(
-			It.Is<BatchDuplicateCadByIdCommand>(x => x.Ids == cadIds),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidBuyerId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<BatchGetProductCadIdByIdQuery>(x => x.Ids == productIds),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendCommandAsync(
+				It.Is<BatchDuplicateCadByIdCommand>(x => x.Ids == cadIds),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -115,9 +130,12 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<ProductsPurchasedApplicationEvent>(x => x.Ids == productIds)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<ProductsPurchasedApplicationEvent>(x => x.Ids == productIds)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

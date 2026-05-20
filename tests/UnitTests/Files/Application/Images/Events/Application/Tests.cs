@@ -40,7 +40,10 @@ public class Tests : Data.Images.BaseUnitTests
 		await handler.HandleAsync(ie);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -57,8 +60,14 @@ public class Tests : Data.Images.BaseUnitTests
 		await handler.HandleAsync(ie);
 
 		// Assert
-		writes.Verify(x => x.Remove(image), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.Remove(image),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -95,7 +104,10 @@ public class Tests : Data.Images.BaseUnitTests
 		await handler.HandleAsync(ie);
 
 		// Assert
-		storage.Verify(x => x.DeleteFileAsync(image.Key, ct), Times.Once());
+		storage.Verify(
+			x => x.DeleteFileAsync(image.Key, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

@@ -29,6 +29,9 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		service.Verify(x => x.CreateAsync(ValidRole), Times.Once());
+		service.Verify(
+			x => x.CreateAsync(ValidRole),
+			Times.Once()
+		);
 	}
 }

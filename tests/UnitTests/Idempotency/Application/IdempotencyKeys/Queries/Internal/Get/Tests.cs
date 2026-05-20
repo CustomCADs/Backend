@@ -34,12 +34,15 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(
-			ValidId,
-			ValidRequestHash,
-			false,
-			ct
-		), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(
+				ValidId,
+				ValidRequestHash,
+				false,
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Theory]

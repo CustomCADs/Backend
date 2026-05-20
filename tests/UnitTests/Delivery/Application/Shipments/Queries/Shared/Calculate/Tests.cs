@@ -42,15 +42,18 @@ public class Tests : Data.Shipments.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		delivery.Verify(x => x.CalculateAsync(
-			It.Is<CalculateRequest>(x =>
-				x.Country == address.Country
-				&& x.City == address.City
-				&& x.Street == address.Street
-				&& x.Weights.Length == weights.Length
+		delivery.Verify(
+			x => x.CalculateAsync(
+				It.Is<CalculateRequest>(x =>
+					x.Country == address.Country
+					&& x.City == address.City
+					&& x.Street == address.Street
+					&& x.Weights.Length == weights.Length
+				),
+				ct
 			),
-			ct
-		), Times.Once());
+			Times.Once()
+		);
 	}
 
 	[Fact]

@@ -48,7 +48,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		uow.Verify(x => x.SaveChangesAsync(ct));
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Theory]
@@ -67,17 +70,23 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetProductExistsByIdQuery>(x => x.Id == ValidProductId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetProductExistsByIdQuery>(x => x.Id == ValidProductId),
+				ct
+			),
+			Times.Once()
+		);
 
 		if (customizationId is not null)
 		{
-			sender.Verify(x => x.SendQueryAsync(
-				It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == customizationId),
-				ct
-			), Times.Once());
+			sender.Verify(
+				x => x.SendQueryAsync(
+					It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == customizationId),
+					ct
+				),
+				Times.Once()
+			);
 		}
 	}
 

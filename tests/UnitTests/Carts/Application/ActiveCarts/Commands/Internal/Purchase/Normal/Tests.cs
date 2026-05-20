@@ -59,8 +59,14 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.ExistsAsync(ValidBuyerId, ct), Times.Once());
-		reads.Verify(x => x.AllAsync(ValidBuyerId, false, ct), Times.Once());
+		reads.Verify(
+			x => x.ExistsAsync(ValidBuyerId, ct),
+			Times.Once()
+		);
+		reads.Verify(
+			x => x.AllAsync(ValidBuyerId, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -73,18 +79,27 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.IsAny<BatchGetProductPriceByIdQuery>(),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidBuyerId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendCommandAsync(
-			It.Is<CreatePurchasedCartCommand>(x => x.BuyerId == ValidBuyerId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.IsAny<BatchGetProductPriceByIdQuery>(),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUsernameByIdQuery>(x => x.Id == ValidBuyerId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendCommandAsync(
+				It.Is<CreatePurchasedCartCommand>(x => x.BuyerId == ValidBuyerId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -97,12 +112,18 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CartPurchased)
-		), Times.Once());
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.IsAny<CartPaymentStartedApplicationEvent>()
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CartPurchased)
+			),
+			Times.Once()
+		);
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.IsAny<CartPaymentStartedApplicationEvent>()
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -115,14 +136,17 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		payment.Verify(x => x.InitializeCartPayment(
-			It.Is<string>(x => x == paymentMethodId),
-			It.Is<AccountId>(x => x == ValidBuyerId),
-			It.IsAny<PurchasedCartId>(),
-			It.IsAny<decimal>(),
-			It.IsAny<(string, int)>(),
-			ct
-		), Times.Once());
+		payment.Verify(
+			x => x.InitializeCartPayment(
+				It.Is<string>(x => x == paymentMethodId),
+				It.Is<AccountId>(x => x == ValidBuyerId),
+				It.IsAny<PurchasedCartId>(),
+				It.IsAny<decimal>(),
+				It.IsAny<(string, int)>(),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

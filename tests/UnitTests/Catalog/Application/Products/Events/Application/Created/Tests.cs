@@ -33,6 +33,9 @@ public class Tests : Data.Products.BaseUnitTests
 			x => x.AddTagAsync(ValidId, It.Is<TagId>(x => TagIds.Contains(x)), ct),
 			Times.Exactly(TagIds.Length)
 		);
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 }

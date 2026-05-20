@@ -60,16 +60,22 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<Custom>(x =>
-				x.Name == MaxValidName &&
-				x.Description == MaxValidDescription &&
-				x.ForDelivery &&
-				x.BuyerId == ValidBuyerId
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Custom>(x =>
+					x.Name == MaxValidName &&
+					x.Description == MaxValidDescription &&
+					x.ForDelivery &&
+					x.BuyerId == ValidBuyerId
+				),
+				ct
 			),
-			ct
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -88,14 +94,20 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidBuyerId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountIdsByRoleQuery>(x => x.Role == "Designer"),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidBuyerId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountIdsByRoleQuery>(x => x.Role == "Designer"),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -114,9 +126,12 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomCreated)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomCreated)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

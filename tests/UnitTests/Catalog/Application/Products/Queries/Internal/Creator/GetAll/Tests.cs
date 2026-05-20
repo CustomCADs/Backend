@@ -58,11 +58,14 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.AllAsync(
-			It.IsAny<ProductQuery>(),
-			false,
-			ct
-		), Times.Once());
+		reads.Verify(
+			x => x.AllAsync(
+				It.IsAny<ProductQuery>(),
+				false,
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -81,10 +84,13 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

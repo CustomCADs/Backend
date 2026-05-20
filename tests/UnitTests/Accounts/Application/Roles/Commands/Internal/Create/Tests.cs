@@ -40,11 +40,17 @@ public class Tests : Data.Roles.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<Role>(x => x.Name == ValidName && x.Description == ValidDescription),
-			ct
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Role>(x => x.Name == ValidName && x.Description == ValidDescription),
+				ct
+			),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -57,7 +63,10 @@ public class Tests : Data.Roles.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		cache.Verify(x => x.UpdateAsync(ValidId, role), Times.Once());
+		cache.Verify(
+			x => x.UpdateAsync(ValidId, role),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -70,9 +79,12 @@ public class Tests : Data.Roles.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<RoleCreatedApplicationEvent>(x => x.Name == ValidName && x.Description == ValidDescription)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<RoleCreatedApplicationEvent>(x => x.Name == ValidName && x.Description == ValidDescription)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

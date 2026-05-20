@@ -37,7 +37,10 @@ public class Tests : Data.Notifications.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.CountByStatusAsync(ValidReceiverId, ct), Times.Once());
+		reads.Verify(
+			x => x.CountByStatusAsync(ValidReceiverId, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

@@ -32,6 +32,9 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.ResetPasswordAsync(user.Email.Value, Token, MinValidPassword), Times.Once());
+		service.Verify(
+			x => x.ResetPasswordAsync(user.Email.Value, Token, MinValidPassword),
+			Times.Once()
+		);
 	}
 }

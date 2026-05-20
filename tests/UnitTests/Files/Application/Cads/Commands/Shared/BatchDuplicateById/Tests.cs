@@ -44,7 +44,10 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.AllAsync(query, false, ct), Times.Once());
+		reads.Verify(
+			x => x.AllAsync(query, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -57,8 +60,14 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddRangeAsync(It.Is<ICollection<Cad>>(x => x.Count == result.Count), ct), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.AddRangeAsync(It.Is<ICollection<Cad>>(x => x.Count == result.Count), ct),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

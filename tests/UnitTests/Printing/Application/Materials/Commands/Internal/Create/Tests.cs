@@ -47,10 +47,13 @@ public class Tests : Data.Materials.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<ImageExistsByIdQuery>(x => x.Id == ValidTextureId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<ImageExistsByIdQuery>(x => x.Id == ValidTextureId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -68,8 +71,14 @@ public class Tests : Data.Materials.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(It.Is<Material>(x => x.Id == material.Id), ct), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.AddAsync(It.Is<Material>(x => x.Id == material.Id), ct),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -105,6 +114,9 @@ public class Tests : Data.Materials.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		cache.Verify(x => x.UpdateAsync(ValidId, It.Is<Material>(x => x.Id == material.Id)), Times.Once());
+		cache.Verify(
+			x => x.UpdateAsync(ValidId, It.Is<Material>(x => x.Id == material.Id)),
+			Times.Once()
+		);
 	}
 }

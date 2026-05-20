@@ -45,7 +45,10 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -58,7 +61,10 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -71,14 +77,20 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidDesignerId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidDesignerId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidDesignerId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUsernameByIdQuery>(x => x.Id == ValidDesignerId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -91,11 +103,14 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(
-				x => x.Type == NotificationType.ProductReported
-			)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<NotificationRequestedEvent>(
+					x => x.Type == NotificationType.ProductReported
+				)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

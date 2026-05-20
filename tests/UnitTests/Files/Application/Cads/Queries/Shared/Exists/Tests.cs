@@ -27,7 +27,10 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.ExistsByIdAsync(ValidId, ct), Times.Once());
+		reads.Verify(
+			x => x.ExistsByIdAsync(ValidId, ct),
+			Times.Once()
+		);
 	}
 
 	[Theory]

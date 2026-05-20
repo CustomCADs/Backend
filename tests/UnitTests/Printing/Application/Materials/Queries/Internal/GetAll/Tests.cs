@@ -36,7 +36,10 @@ public class Tests : Data.Materials.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		cache.Verify(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Material>>>>()), Times.Once());
+		cache.Verify(
+			x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Material>>>>()),
+			Times.Once()
+		);
 	}
 
 	[Fact]

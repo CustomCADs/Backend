@@ -26,6 +26,9 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		email.Verify(x => x.SendVerificationEmailAsync(Email, Endpoint, ct), Times.Once());
+		email.Verify(
+			x => x.SendVerificationEmailAsync(Email, Endpoint, ct),
+			Times.Once()
+		);
 	}
 }

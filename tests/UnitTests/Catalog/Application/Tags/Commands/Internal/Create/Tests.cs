@@ -19,7 +19,7 @@ public class Tests : Data.Tags.BaseUnitTests
 	{
 		handler = new(writes.Object, uow.Object, cache.Object);
 
-		writes.Setup(v => v.AddAsync(
+		writes.Setup(x => x.AddAsync(
 			It.Is<Tag>(x => x.Name == MaxValidName),
 			ct
 		)).ReturnsAsync(tag);
@@ -35,11 +35,17 @@ public class Tests : Data.Tags.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(v => v.AddAsync(
-			It.Is<Tag>(x => x.Name == MaxValidName),
-			ct
-		), Times.Once());
-		uow.Verify(v => v.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Tag>(x => x.Name == MaxValidName),
+				ct
+			),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

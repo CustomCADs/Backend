@@ -33,10 +33,13 @@ public class Tests : Data.Roles.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		cache.Verify(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Role>>>()
-		), Times.Once());
+		cache.Verify(
+			x => x.GetOrCreateAsync(
+				ValidId,
+				It.IsAny<Func<Task<Role>>>()
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

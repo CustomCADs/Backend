@@ -35,7 +35,10 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		cache.Verify(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Category>>>>()), Times.Once());
+		cache.Verify(
+			x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Category>>>>()),
+			Times.Once()
+		);
 	}
 
 	[Fact]

@@ -48,7 +48,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -61,14 +64,20 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCustomizationWeightByIdQuery>(x => x.Id == ValidCustomizationId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<CalculateShipmentQuery>(x => x.Address == address),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetCustomizationWeightByIdQuery>(x => x.Id == ValidCustomizationId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<CalculateShipmentQuery>(x => x.Address == address),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

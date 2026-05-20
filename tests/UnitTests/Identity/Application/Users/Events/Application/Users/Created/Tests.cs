@@ -34,14 +34,17 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		service.Verify(x => x.CreateAsync(
-			It.Is<User>(x =>
-				x.Role == @event.Role
-				&& x.Username == @event.Username
-				&& x.Email.Value == @event.Email
-				&& x.AccountId == @event.Id
+		service.Verify(
+			x => x.CreateAsync(
+				It.Is<User>(x =>
+					x.Role == @event.Role
+					&& x.Username == @event.Username
+					&& x.Email.Value == @event.Email
+					&& x.AccountId == @event.Id
+				),
+				@event.Password
 			),
-			@event.Password
-		), Times.Once());
+			Times.Once()
+		);
 	}
 }

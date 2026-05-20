@@ -29,10 +29,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 	{
 		handler = new(reads.Object, materialReads.Object, calculator.Object);
 
-		reads.Setup(v => v.AllAsync(ids, false, ct))
+		reads.Setup(x => x.AllAsync(ids, false, ct))
 			.ReturnsAsync(customizations);
 
-		materialReads.Setup(v => v.AllByIdsAsync(materialIds, false, ct))
+		materialReads.Setup(x => x.AllByIdsAsync(materialIds, false, ct))
 			.ReturnsAsync(materials);
 
 		calculator.Setup(x => x.CalculateWeight(It.IsAny<Customization>(), It.IsAny<Material>()))
@@ -49,8 +49,14 @@ public class Tests : Data.Customizations.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(v => v.AllAsync(ids, false, ct), Times.Once());
-		materialReads.Verify(v => v.AllByIdsAsync(materialIds, false, ct), Times.Once());
+		reads.Verify(
+			x => x.AllAsync(ids, false, ct),
+			Times.Once()
+		);
+		materialReads.Verify(
+			x => x.AllByIdsAsync(materialIds, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -63,10 +69,13 @@ public class Tests : Data.Customizations.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		calculator.Verify(v => v.CalculateWeight(
-			It.Is<Customization>(x => customizations.Contains(x)),
-			It.Is<Material>(x => materials.Values.Contains(x))
-		), Times.Exactly(customizations.Length));
+		calculator.Verify(
+			x => x.CalculateWeight(
+				It.Is<Customization>(x => customizations.Contains(x)),
+				It.Is<Material>(x => materials.Values.Contains(x))
+			),
+			Times.Exactly(customizations.Length)
+		);
 	}
 
 	[Fact]

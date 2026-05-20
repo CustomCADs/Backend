@@ -41,13 +41,16 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.CreateAsync(
-			It.Is<User>(x =>
-				x.Username == command.Username
-				&& x.AccountId == ValidAccountId
+		service.Verify(
+			x => x.CreateAsync(
+				It.Is<User>(x =>
+					x.Username == command.Username
+					&& x.AccountId == ValidAccountId
+				),
+				command.Password
 			),
-			command.Password
-		), Times.Once());
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -67,16 +70,19 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendCommandAsync(
-			It.Is<CreateAccountCommand>(x =>
-				x.Role == command.Role
-				&& x.Username == command.Username
-				&& x.Email == command.Email
-				&& x.FirstName == command.FirstName
-				&& x.LastName == command.LastName
+		sender.Verify(
+			x => x.SendCommandAsync(
+				It.Is<CreateAccountCommand>(x =>
+					x.Role == command.Role
+					&& x.Username == command.Username
+					&& x.Email == command.Email
+					&& x.FirstName == command.FirstName
+					&& x.LastName == command.LastName
+				),
+				ct
 			),
-			ct
-		), Times.Once());
+			Times.Once()
+		);
 	}
 
 	[Fact]

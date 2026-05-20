@@ -92,20 +92,26 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<Product>(x =>
-				x.Name == MinValidName &&
-				x.Description == MinValidDescription &&
-				x.Price == MinValidPrice &&
-				x.Status == ProductStatus.Unchecked &&
-				x.CreatorId == ValidCreatorId &&
-				x.CategoryId == ValidCategoryId &&
-				x.ImageId == ValidImageId &&
-				x.CadId == ValidCadId
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Product>(x =>
+					x.Name == MinValidName &&
+					x.Description == MinValidDescription &&
+					x.Price == MinValidPrice &&
+					x.Status == ProductStatus.Unchecked &&
+					x.CreatorId == ValidCreatorId &&
+					x.CategoryId == ValidCategoryId &&
+					x.ImageId == ValidImageId &&
+					x.CadId == ValidCadId
+				),
+				ct
 			),
-			ct
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -126,31 +132,48 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCategoryExistsByIdQuery>(x => x.Id == ValidCategoryId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidCreatorId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<ImageExistsByIdQuery>(x => x.Id == ValidImageId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<CadExistsByIdQuery>(x => x.Id == ValidCadId),
-			ct
-		), Times.Once());
-
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUserRoleByIdQuery>(x => x.Id == ValidCreatorId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<IsCadPrintableByIdQuery>(x => x.Id == ValidCadId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetCategoryExistsByIdQuery>(x => x.Id == ValidCategoryId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidCreatorId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<ImageExistsByIdQuery>(x => x.Id == ValidImageId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<CadExistsByIdQuery>(x => x.Id == ValidCadId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUserRoleByIdQuery>(x => x.Id == ValidCreatorId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<IsCadPrintableByIdQuery>(x => x.Id == ValidCadId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -171,12 +194,15 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<ProductCreatedApplicationEvent>(x =>
-				x.Id == ValidId
-				&& x.TagIds.Contains(DomainConstants.Tags.NewId)
-			)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<ProductCreatedApplicationEvent>(x =>
+					x.Id == ValidId
+					&& x.TagIds.Contains(DomainConstants.Tags.NewId)
+				)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -228,9 +254,12 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<ProductCreatedApplicationEvent>(x => x.TagIds.Contains(DomainConstants.Tags.ProfessionalId))
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<ProductCreatedApplicationEvent>(x => x.TagIds.Contains(DomainConstants.Tags.ProfessionalId))
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -256,9 +285,12 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<ProductCreatedApplicationEvent>(x => x.TagIds.Contains(DomainConstants.Tags.PrintableId))
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<ProductCreatedApplicationEvent>(x => x.TagIds.Contains(DomainConstants.Tags.PrintableId))
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

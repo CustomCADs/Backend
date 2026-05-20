@@ -78,7 +78,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.AllAsync(this.query, false, ct), Times.Once());
+		reads.Verify(
+			x => x.AllAsync(this.query, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -91,18 +94,27 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Contains(ValidBuyerId)),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Contains(ValidDesignerId)),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<BatchGetCategorByIdQuery>(x => x.Ids.Contains(ValidCategoryId)),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Contains(ValidBuyerId)),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Contains(ValidDesignerId)),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<BatchGetCategorByIdQuery>(x => x.Ids.Contains(ValidCategoryId)),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

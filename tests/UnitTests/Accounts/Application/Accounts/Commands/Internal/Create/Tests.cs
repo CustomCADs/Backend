@@ -49,17 +49,23 @@ public class Tests : Data.Accounts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<Account>(x =>
-				x.RoleName == ValidRole
-				&& x.Username == ValidUsername
-				&& x.Email == ValidEmail1
-				&& x.FirstName == ValidFirstName
-				&& x.LastName == ValidLastName
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Account>(x =>
+					x.RoleName == ValidRole
+					&& x.Username == ValidUsername
+					&& x.Email == ValidEmail1
+					&& x.FirstName == ValidFirstName
+					&& x.LastName == ValidLastName
+				),
+				ct
 			),
-			ct
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -79,14 +85,17 @@ public class Tests : Data.Accounts.BaseUnitTests
 		await handler.Handle(command, CancellationToken.None);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<AccountCreatedApplicationEvent>(x =>
-				x.Id == ValidId
-				&& x.Username == ValidUsername
-				&& x.Email == ValidEmail1
-				&& x.Password == ValidPassword
-			)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<AccountCreatedApplicationEvent>(x =>
+					x.Id == ValidId
+					&& x.Username == ValidUsername
+					&& x.Email == ValidEmail1
+					&& x.Password == ValidPassword
+				)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

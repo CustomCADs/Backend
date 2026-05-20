@@ -36,7 +36,10 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -49,14 +52,20 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernameByIdQuery>(x => x.Id == product.CreatorId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCategoryNameByIdQuery>(x => x.Id == product.CategoryId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUsernameByIdQuery>(x => x.Id == product.CreatorId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetCategoryNameByIdQuery>(x => x.Id == product.CategoryId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

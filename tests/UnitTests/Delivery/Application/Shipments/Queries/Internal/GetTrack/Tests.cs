@@ -52,7 +52,10 @@ public class Tests : Data.Shipments.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		delivery.Verify(x => x.TrackAsync(ValidReferenceId, ct), Times.Once());
+		delivery.Verify(
+			x => x.TrackAsync(ValidReferenceId, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

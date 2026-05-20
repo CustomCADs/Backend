@@ -23,10 +23,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 	{
 		handler = new(reads.Object, materialReads.Object, calculator.Object);
 
-		reads.Setup(v => v.SingleByIdAsync(ValidId, false, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(customization);
 
-		materialReads.Setup(v => v.SingleByIdAsync(ValidMaterialId, false, ct))
+		materialReads.Setup(x => x.SingleByIdAsync(ValidMaterialId, false, ct))
 			.ReturnsAsync(material);
 	}
 
@@ -40,8 +40,14 @@ public class Tests : Data.Customizations.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(v => v.SingleByIdAsync(ValidId, false, ct), Times.Once());
-		materialReads.Verify(v => v.SingleByIdAsync(ValidMaterialId, false, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+		materialReads.Verify(
+			x => x.SingleByIdAsync(ValidMaterialId, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -54,8 +60,14 @@ public class Tests : Data.Customizations.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		calculator.Verify(v => v.CalculateWeight(customization, material), Times.Once());
-		calculator.Verify(v => v.CalculateCost(customization, material), Times.Once());
+		calculator.Verify(
+			x => x.CalculateWeight(customization, material),
+			Times.Once()
+		);
+		calculator.Verify(
+			x => x.CalculateCost(customization, material),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -75,7 +87,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenCustomizationNotFound()
 	{
 		// Arrange
-		reads.Setup(v => v.SingleByIdAsync(ValidId, false, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as Customization);
 
 		GetCustomizationByIdQuery query = new(ValidId);
@@ -91,7 +103,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenMaterialNotFound()
 	{
 		// Arrange
-		materialReads.Setup(v => v.SingleByIdAsync(ValidMaterialId, false, ct))
+		materialReads.Setup(x => x.SingleByIdAsync(ValidMaterialId, false, ct))
 			.ReturnsAsync(null as Material);
 
 		GetCustomizationByIdQuery query = new(ValidId);

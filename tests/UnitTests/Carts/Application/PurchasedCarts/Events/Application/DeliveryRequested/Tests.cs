@@ -57,7 +57,10 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -77,14 +80,20 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernameByIdQuery>(x => x.Id == cart.BuyerId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendCommandAsync(
-			It.Is<CreateShipmentCommand>(x => x.BuyerId == cart.BuyerId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUsernameByIdQuery>(x => x.Id == cart.BuyerId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendCommandAsync(
+				It.Is<CreateShipmentCommand>(x => x.BuyerId == cart.BuyerId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

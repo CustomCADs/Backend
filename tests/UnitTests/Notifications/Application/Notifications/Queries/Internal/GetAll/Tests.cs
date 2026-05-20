@@ -59,11 +59,14 @@ public class Tests : Data.Notifications.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.AllAsync(
-			It.IsAny<NotificationQuery>(),
-			false,
-			ct
-		), Times.Once());
+		reads.Verify(
+			x => x.AllAsync(
+				It.IsAny<NotificationQuery>(),
+				false,
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -80,10 +83,13 @@ public class Tests : Data.Notifications.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Length == notifications.Length),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Length == notifications.Length),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

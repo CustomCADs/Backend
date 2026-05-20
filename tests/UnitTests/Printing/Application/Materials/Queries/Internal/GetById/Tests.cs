@@ -34,7 +34,10 @@ public class Tests : Data.Materials.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		cache.Verify(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Material>>>()), Times.Once());
+		cache.Verify(
+			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Material>>>()),
+			Times.Once()
+		);
 	}
 
 	[Fact]

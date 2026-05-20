@@ -36,7 +36,10 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		storage.Verify(x => x.GetPresignedPostUrlAsync(Name, req), Times.Once());
+		storage.Verify(
+			x => x.GetPresignedPostUrlAsync(Name, req),
+			Times.Once()
+		);
 	}
 
 	[Fact]

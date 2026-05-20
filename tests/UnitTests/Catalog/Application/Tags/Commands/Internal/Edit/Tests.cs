@@ -34,7 +34,10 @@ public class Tests : Data.Tags.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(v => v.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -63,8 +66,14 @@ public class Tests : Data.Tags.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(v => v.SingleByIdAsync(ValidId, true, ct), Times.Once());
-		uow.Verify(v => v.SaveChangesAsync(ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 

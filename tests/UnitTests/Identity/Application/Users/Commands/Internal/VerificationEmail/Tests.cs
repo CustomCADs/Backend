@@ -36,8 +36,14 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.GetByUsernameAsync(user.Username), Times.Once());
-		service.Verify(x => x.GenerateEmailConfirmationTokenAsync(user.Username), Times.Once());
+		service.Verify(
+			x => x.GetByUsernameAsync(user.Username),
+			Times.Once()
+		);
+		service.Verify(
+			x => x.GenerateEmailConfirmationTokenAsync(user.Username),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -50,10 +56,13 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<EmailVerificationRequestedApplicationEvent>(x =>
-				x.Email == user.Email.Value
-			)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<EmailVerificationRequestedApplicationEvent>(x =>
+					x.Email == user.Email.Value
+				)
+			),
+			Times.Once()
+		);
 	}
 }

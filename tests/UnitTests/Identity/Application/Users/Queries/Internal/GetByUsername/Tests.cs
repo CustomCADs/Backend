@@ -39,7 +39,10 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		service.Verify(x => x.GetByAccountIdAsync(user.AccountId), Times.Once());
+		service.Verify(
+			x => x.GetByAccountIdAsync(user.AccountId),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -52,14 +55,20 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == user.Username),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountViewedProductsByUsernameQuery>(x => x.Username == user.Username),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == user.Username),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountViewedProductsByUsernameQuery>(x => x.Username == user.Username),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

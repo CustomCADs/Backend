@@ -50,7 +50,10 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -63,8 +66,14 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
-		uow.Verify(x => x.BulkDeleteItemsByBuyerIdAsync(ValidBuyerId, ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.BulkDeleteItemsByBuyerIdAsync(ValidBuyerId, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -77,14 +86,20 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUserEmailByIdQuery>(x => x.Id == ValidBuyerId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.IsAny<GetClientUrlQuery>(),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUserEmailByIdQuery>(x => x.Id == ValidBuyerId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.IsAny<GetClientUrlQuery>(),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -97,11 +112,14 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		email.Verify(x => x.SendRewardGrantedEmailAsync(
-			To,
-			$"{Url}/carts/{ValidId}",
-			ct
-		), Times.Once());
+		email.Verify(
+			x => x.SendRewardGrantedEmailAsync(
+				To,
+				$"{Url}/carts/{ValidId}",
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -122,11 +140,14 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		email.Verify(x => x.SendRewardGrantedEmailAsync(
-			To,
-			$"{Url}/shipments/{ValidShipmentId}",
-			ct
-		), Times.Once());
+		email.Verify(
+			x => x.SendRewardGrantedEmailAsync(
+				To,
+				$"{Url}/shipments/{ValidShipmentId}",
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

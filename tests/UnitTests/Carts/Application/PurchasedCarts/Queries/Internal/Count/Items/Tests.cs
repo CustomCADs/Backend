@@ -34,7 +34,10 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.CountItemsAsync(ValidBuyerId, ct), Times.Once());
+		reads.Verify(
+			x => x.CountItemsAsync(ValidBuyerId, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

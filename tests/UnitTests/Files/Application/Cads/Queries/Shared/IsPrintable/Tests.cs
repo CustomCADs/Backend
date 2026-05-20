@@ -34,10 +34,13 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		cache.Verify(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Cad>>>()
-		), Times.Once());
+		cache.Verify(
+			x => x.GetOrCreateAsync(
+				ValidId,
+				It.IsAny<Func<Task<Cad>>>()
+			),
+			Times.Once()
+		);
 	}
 
 	[Theory]

@@ -37,8 +37,14 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.GetByAccountIdAsync(user.AccountId), Times.Once());
-		service.Verify(x => x.UpdateUsernameAsync(user.Id, MinValidUsername), Times.Once());
+		service.Verify(
+			x => x.GetByAccountIdAsync(user.AccountId),
+			Times.Once()
+		);
+		service.Verify(
+			x => x.UpdateUsernameAsync(user.Id, MinValidUsername),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -56,11 +62,14 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<UserEditedApplicationEvent>(x =>
-				x.Username == user.Username
-				&& x.Id == user.AccountId
-			)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<UserEditedApplicationEvent>(x =>
+					x.Username == user.Username
+					&& x.Id == user.AccountId
+				)
+			),
+			Times.Once()
+		);
 	}
 }

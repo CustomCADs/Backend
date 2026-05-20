@@ -26,7 +26,10 @@ public class Tests : Data.Accounts.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.ExistsByUsernameAsync(ValidUsername, ct), Times.Once());
+		reads.Verify(
+			x => x.ExistsByUsernameAsync(ValidUsername, ct),
+			Times.Once()
+		);
 	}
 
 	[Theory]

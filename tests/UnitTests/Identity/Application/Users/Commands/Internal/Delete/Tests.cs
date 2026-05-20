@@ -30,7 +30,10 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.DeleteAsync(user.AccountId), Times.Once());
+		service.Verify(
+			x => x.DeleteAsync(user.AccountId),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -43,8 +46,11 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<UserDeletedApplicationEvent>(x => x.Id == user.AccountId)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<UserDeletedApplicationEvent>(x => x.Id == user.AccountId)
+			),
+			Times.Once()
+		);
 	}
 }

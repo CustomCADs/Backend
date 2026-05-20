@@ -26,6 +26,9 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.HandleAsync(@event, ct);
 
 		// Assert
-		uow.Verify(x => x.AddProductsPurchasesAsync(ids, 1, ct), Times.Once());
+		uow.Verify(
+			x => x.AddProductsPurchasesAsync(ids, 1, ct),
+			Times.Once()
+		);
 	}
 }

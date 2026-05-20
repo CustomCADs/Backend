@@ -17,7 +17,7 @@ public class Tests : Data.Categories.BaseUnitTests
 	{
 		handler = new(writes.Object, uow.Object, cache.Object);
 
-		writes.Setup(v => v.AddAsync(
+		writes.Setup(x => x.AddAsync(
 			It.Is<Category>(x => x.Name == ValidName && x.Description == ValidDescription),
 			ct
 		)).ReturnsAsync(CreateCategory(id: ValidId));
@@ -33,11 +33,17 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(v => v.AddAsync(
-			It.Is<Category>(x => x.Name == ValidName && x.Description == ValidDescription),
-			ct
-		), Times.Once());
-		uow.Verify(v => v.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Category>(x => x.Name == ValidName && x.Description == ValidDescription),
+				ct
+			),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -50,10 +56,13 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		cache.Verify(v => v.UpdateAsync(
-			ValidId,
-			It.Is<Category>(x => x.Name == ValidName && x.Description == ValidDescription)
-		), Times.Once());
+		cache.Verify(
+			x => x.UpdateAsync(
+				ValidId,
+				It.Is<Category>(x => x.Name == ValidName && x.Description == ValidDescription)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

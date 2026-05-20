@@ -44,17 +44,23 @@ public class Tests : Data.Customizations.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<Customization>(x =>
-				x.Scale == MaxValidScale
-				&& x.Infill == MaxValidInfill
-				&& x.Volume == MaxValidVolume
-				&& x.Color == ValidColor
-				&& x.MaterialId == ValidMaterialId
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Customization>(x =>
+					x.Scale == MaxValidScale
+					&& x.Infill == MaxValidInfill
+					&& x.Volume == MaxValidVolume
+					&& x.Color == ValidColor
+					&& x.MaterialId == ValidMaterialId
+				),
+				ct
 			),
-			ct
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

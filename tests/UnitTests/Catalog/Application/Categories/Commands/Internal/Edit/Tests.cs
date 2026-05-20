@@ -18,7 +18,7 @@ public class Tests : Data.Categories.BaseUnitTests
 	public Tests()
 	{
 		handler = new(reads.Object, uow.Object, cache.Object);
-		reads.Setup(v => v.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(category);
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(category);
 	}
 
 	[Fact]
@@ -31,7 +31,10 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(v => v.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -44,7 +47,10 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		uow.Verify(v => v.SaveChangesAsync(ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -74,9 +80,12 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		cache.Verify(v => v.UpdateAsync(
-			ValidId,
-			category
-		), Times.Once());
+		cache.Verify(
+			x => x.UpdateAsync(
+				ValidId,
+				category
+			),
+			Times.Once()
+		);
 	}
 }

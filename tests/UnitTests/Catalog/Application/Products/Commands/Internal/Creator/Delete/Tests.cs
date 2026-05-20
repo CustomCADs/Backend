@@ -48,7 +48,10 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -61,8 +64,14 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.Remove(product), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.Remove(product),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -75,10 +84,13 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountsWithProductInCartQuery>(x => x.ProductId == ValidId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetAccountsWithProductInCartQuery>(x => x.ProductId == ValidId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -91,12 +103,18 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.IsAny<ProductDeletedApplicationEvent>()
-		), Times.Once());
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.ProductDeleted)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.IsAny<ProductDeletedApplicationEvent>()
+			),
+			Times.Once()
+		);
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.ProductDeleted)
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

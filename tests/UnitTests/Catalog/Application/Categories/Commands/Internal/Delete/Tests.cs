@@ -19,7 +19,7 @@ public class Tests : Data.Categories.BaseUnitTests
 	{
 		handler = new(reads.Object, writes.Object, uow.Object, cache.Object);
 
-		reads.Setup(v => v.SingleByIdAsync(ValidId, true, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(CreateCategory(ValidName, ValidDescription));
 	}
 
@@ -33,7 +33,10 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(v => v.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -46,10 +49,16 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(v => v.Remove(
-			It.Is<Category>(x => x.Id == ValidId)
-		), Times.Once());
-		uow.Verify(v => v.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.Remove(
+				It.Is<Category>(x => x.Id == ValidId)
+			),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -62,6 +71,9 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		cache.Verify(x => x.ClearAsync(ValidId));
+		cache.Verify(
+			x => x.ClearAsync(ValidId),
+			Times.Once()
+		);
 	}
 }

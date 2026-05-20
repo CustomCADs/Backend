@@ -57,7 +57,10 @@ public class Tests : Data.Images.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		storage.Verify(x => x.GetPresignedGetUrlAsync(image.Key), Times.Once());
+		storage.Verify(
+			x => x.GetPresignedGetUrlAsync(image.Key),
+			Times.Once()
+		);
 	}
 
 	[Fact]

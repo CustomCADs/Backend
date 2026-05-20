@@ -52,7 +52,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleAsync(ValidBuyerId, productId1, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleAsync(ValidBuyerId, productId1, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -69,7 +72,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -86,7 +92,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -103,10 +112,13 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendCommandAsync(
-			It.Is<DeleteCustomizationByIdCommand>(x => x.Id == ValidCustomizationId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendCommandAsync(
+				It.Is<DeleteCustomizationByIdCommand>(x => x.Id == ValidCustomizationId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -123,10 +135,13 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == ValidCustomizationId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == ValidCustomizationId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

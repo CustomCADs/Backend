@@ -51,7 +51,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -64,10 +67,13 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidBuyerId || x.Id == ValidDesignerId),
-			ct
-		), Times.Exactly(2));
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUsernameByIdQuery>(x => x.Id == ValidBuyerId || x.Id == ValidDesignerId),
+				ct
+			),
+			Times.Exactly(2)
+		);
 	}
 
 	[Fact]
@@ -80,12 +86,18 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomCompleted)
-		), Times.Once());
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.IsAny<CustomPaymentStartedApplicationEvent>()
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomCompleted)
+			),
+			Times.Once()
+		);
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.IsAny<CustomPaymentStartedApplicationEvent>()
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -98,14 +110,17 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		payment.Verify(x => x.InitializeCustomPayment(
-			It.Is<string>(x => x == PaymentMethodId),
-			It.Is<AccountId>(x => x == custom.BuyerId),
-			It.Is<CustomId>(x => x == custom.Id),
-			It.Is<decimal>(x => x == ValidPrice),
-			It.Is<(string, string Name, string)>(x => x.Name == custom.Name),
-			ct
-		), Times.Once());
+		payment.Verify(
+			x => x.InitializeCustomPayment(
+				It.Is<string>(x => x == PaymentMethodId),
+				It.Is<AccountId>(x => x == custom.BuyerId),
+				It.Is<CustomId>(x => x == custom.Id),
+				It.Is<decimal>(x => x == ValidPrice),
+				It.Is<(string, string Name, string)>(x => x.Name == custom.Name),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]

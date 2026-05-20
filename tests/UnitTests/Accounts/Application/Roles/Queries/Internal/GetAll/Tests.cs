@@ -37,8 +37,10 @@ public class Tests : Data.Roles.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		cache.Verify(x => x.GetOrCreateAsync(
-			It.IsAny<Func<Task<ICollection<Role>>>>()),
+		cache.Verify(
+			x => x.GetOrCreateAsync(
+				It.IsAny<Func<Task<ICollection<Role>>>>()
+			),
 			Times.Once()
 		);
 	}

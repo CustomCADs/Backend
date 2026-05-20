@@ -31,7 +31,13 @@ public class Tests : Data.Accounts.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		writes.Verify(x => x.ViewProductAsync(ValidId, ValidProductId, viewedAt, ct), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		writes.Verify(
+			x => x.ViewProductAsync(ValidId, ValidProductId, viewedAt, ct),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 }

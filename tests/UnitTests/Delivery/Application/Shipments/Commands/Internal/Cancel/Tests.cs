@@ -68,7 +68,10 @@ public class Tests : Data.Shipments.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		delivery.Verify(x => x.CancelAsync(ValidReferenceId, Comment, ct), Times.Once());
+		delivery.Verify(
+			x => x.CancelAsync(ValidReferenceId, Comment, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

@@ -30,6 +30,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.HandleAsync(ie);
 
 		// Assert
-		uow.Verify(x => x.BulkDeleteItemsByProductIdAsync(ValidProductId, ct), Times.Once());
+		uow.Verify(
+			x => x.BulkDeleteItemsByProductIdAsync(ValidProductId, ct),
+			Times.Once()
+		);
 	}
 }

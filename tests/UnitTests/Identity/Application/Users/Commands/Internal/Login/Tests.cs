@@ -51,9 +51,18 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.GetByUsernameAsync(MaxValidUsername), Times.Once());
-		service.Verify(x => x.GetIsLockedOutAsync(MaxValidUsername), Times.Once());
-		service.Verify(x => x.CheckPasswordAsync(User.Username, MinValidPassword), Times.Once());
+		service.Verify(
+			x => x.GetByUsernameAsync(MaxValidUsername),
+			Times.Once()
+		);
+		service.Verify(
+			x => x.GetIsLockedOutAsync(MaxValidUsername),
+			Times.Once()
+		);
+		service.Verify(
+			x => x.CheckPasswordAsync(User.Username, MinValidPassword),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -71,10 +80,16 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		tokenService.Verify(x => x.IssueRefreshToken(
-			It.IsAny<Func<string, RefreshToken>>()
-		), Times.Once());
-		tokenService.Verify(x => x.IssueTokens(User, RefreshToken), Times.Once());
+		tokenService.Verify(
+			x => x.IssueRefreshToken(
+				It.IsAny<Func<string, RefreshToken>>()
+			),
+			Times.Once()
+		);
+		tokenService.Verify(
+			x => x.IssueTokens(User, RefreshToken),
+			Times.Once()
+		);
 	}
 
 	[Fact]

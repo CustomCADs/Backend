@@ -32,7 +32,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleAsync(ValidBuyerId, ValidProductId, false, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleAsync(ValidBuyerId, ValidProductId, false, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]

@@ -39,7 +39,10 @@ public class Tests : Data.Materials.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -57,7 +60,10 @@ public class Tests : Data.Materials.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -75,6 +81,9 @@ public class Tests : Data.Materials.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		cache.Verify(x => x.UpdateAsync(ValidId, material), Times.Once());
+		cache.Verify(
+			x => x.UpdateAsync(ValidId, material),
+			Times.Once()
+		);
 	}
 }

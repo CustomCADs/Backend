@@ -36,7 +36,10 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		service.Verify(x => x.GeneratePasswordResetTokenAsync(user.Email.Value), Times.Once());
+		service.Verify(
+			x => x.GeneratePasswordResetTokenAsync(user.Email.Value),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -49,13 +52,16 @@ public class Tests : Data.Users.BaseUnitTests
 		await handler.Handle(command, ct);
 
 		// Assert
-		raiser.Verify(x => x.RaiseApplicationEventAsync(
-			It.Is<PasswordResetRequestedApplicationEvent>(x =>
-				x.Email == user.Email.Value
-				&& x.Endpoint.Contains(user.Email.Value)
-				&& x.Endpoint.Contains(Token)
-				&& x.Endpoint.Contains(PreferredUrl)
-			)
-		), Times.Once());
+		raiser.Verify(
+			x => x.RaiseApplicationEventAsync(
+				It.Is<PasswordResetRequestedApplicationEvent>(x =>
+					x.Email == user.Email.Value
+					&& x.Endpoint.Contains(user.Email.Value)
+					&& x.Endpoint.Contains(Token)
+					&& x.Endpoint.Contains(PreferredUrl)
+				)
+			),
+			Times.Once()
+		);
 	}
 }

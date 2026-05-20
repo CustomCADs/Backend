@@ -55,16 +55,22 @@ public class Tests : Data.Notifications.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		writes.Verify(x => x.AddAsync(
-			It.Is<Notification>(x =>
-				x.Type == @event.Type.ToString()
-				&& x.Content == new NotificationContent(@event.Description, @event.Link)
-				&& x.AuthorId == @event.AuthorId
-				&& x.ReceiverId == @event.ReceiverIds.First()
+		writes.Verify(
+			x => x.AddAsync(
+				It.Is<Notification>(x =>
+					x.Type == @event.Type.ToString()
+					&& x.Content == new NotificationContent(@event.Description, @event.Link)
+					&& x.AuthorId == @event.AuthorId
+					&& x.ReceiverId == @event.ReceiverIds.First()
+				),
+				ct
 			),
-			ct
-		), Times.Once());
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -83,10 +89,13 @@ public class Tests : Data.Notifications.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		uow.Verify(x => x.InsertNotificationsAsync(
-			It.IsAny<Notification[]>(),
-			ct
-		), Times.Once());
+		uow.Verify(
+			x => x.InsertNotificationsAsync(
+				It.IsAny<Notification[]>(),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -105,10 +114,13 @@ public class Tests : Data.Notifications.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidAuthorId),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUsernameByIdQuery>(x => x.Id == ValidAuthorId),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -127,11 +139,14 @@ public class Tests : Data.Notifications.BaseUnitTests
 		await handler.HandleAsync(@event);
 
 		// Assert
-		notifier.Verify(x => x.NotifyUsersAsync(
-			@event.ReceiverIds,
-			It.IsAny<string>(),
-			It.IsAny<object>(),
-			ct
-		), Times.Once());
+		notifier.Verify(
+			x => x.NotifyUsersAsync(
+				@event.ReceiverIds,
+				It.IsAny<string>(),
+				It.IsAny<object>(),
+				ct
+			),
+			Times.Once()
+		);
 	}
 }

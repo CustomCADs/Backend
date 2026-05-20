@@ -57,7 +57,10 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(query, ct);
 
 		// Assert
-		storage.Verify(x => x.GetPresignedGetUrlAsync(cad.Key, cad.ContentType), Times.Once());
+		storage.Verify(
+			x => x.GetPresignedGetUrlAsync(cad.Key, cad.ContentType),
+			Times.Once()
+		);
 	}
 
 	[Fact]
