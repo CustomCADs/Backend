@@ -1,0 +1,16 @@
+﻿using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Files;
+
+namespace CustomCADs.UnitTests.Files.Data.Images;
+
+public class TestData
+{
+	public const string ValidKey = "key-to-image";
+	public const string InvalidKey = "";
+
+	public const string ValidContentType = "image/jpeg";
+	public const string InvalidContentType = "";
+
+	public static readonly ImageId ValidId = ImageId.New();
+	public static readonly AccountId ValidOwnerId = AccountId.New();
+}

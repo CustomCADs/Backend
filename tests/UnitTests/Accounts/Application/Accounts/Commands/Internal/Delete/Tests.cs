@@ -1,0 +1,84 @@
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Commands.Internal.Delete;
+using CustomCADs.Modules.Accounts.Domain.Repositories;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
+using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Events.Account.Accounts;
+using CustomCADs.Shared.Application.Exceptions;
+
+namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Commands.Internal.Delete;
+
+using static Data.Accounts.TestData;
+
+public class Tests : Data.Accounts.BaseUnitTests
+{
+	private readonly DeleteAccountHandler handler;
+	private readonly Mock<IEventRaiser> raiser = new();
+	private readonly Mock<IUnitOfWork> uow = new();
+	private readonly Mock<IAccountWrites> writes = new();
+	private readonly Mock<IAccountReads> reads = new();
+
+	public Tests()
+	{
+		handler = new(reads.Object, writes.Object, uow.Object, raiser.Object);
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
+			.ReturnsAsync(CreateAccount());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+		DeleteAccountCommand command = new(ValidId);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldPersistToDatabase()
+	{
+		// Arrange
+		DeleteAccountCommand command = new(ValidId);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		writes.Verify(x => x.Remove(It.Is<Account>(x => x.Id == ValidId)), Times.Once());
+		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		DeleteAccountCommand command = new(ValidId);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<AccountDeletedApplicationEvent>(x => x.Id == ValidId)
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenAccountNotFound()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Account);
+		DeleteAccountCommand command = new(ValidId);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
+			// Act
+			async () => await handler.Handle(command, ct)
+		);
+	}
+}

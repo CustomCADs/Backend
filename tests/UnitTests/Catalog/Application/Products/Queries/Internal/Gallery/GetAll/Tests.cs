@@ -1,0 +1,118 @@
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+using CustomCADs.Shared.Application.UseCases.Categories.Queries;
+using CustomCADs.Shared.Domain.Querying;
+
+namespace CustomCADs.UnitTests.Catalog.Application.Products.Queries.Internal.Gallery.GetAll;
+
+using static Data.Products.TestData;
+
+public class Tests : Data.Products.BaseUnitTests
+{
+	private readonly GalleryGetAllProductsHandler handler;
+	private readonly Mock<IProductReads> reads = new();
+	private readonly Mock<IRequestSender> sender = new();
+
+	private readonly Product[] products = [];
+	private readonly ProductQuery query;
+	private readonly Result<Product> result;
+
+	public Tests()
+	{
+		handler = new(reads.Object, sender.Object);
+
+		query = new(
+			Pagination: new(1, products.Length)
+		);
+		result = new(
+			Count: products.Length,
+			Items: products
+		);
+
+		reads.Setup(x => x.AllAsync(
+			It.IsAny<ProductQuery>(),
+			false,
+			ct
+		)).ReturnsAsync(result);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == products.Select(x => x.CreatorId)),
+			ct
+		)).ReturnsAsync(products.ToDictionary(x => x.CreatorId, x => "Username123"));
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+			ct
+		)).ReturnsAsync(products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+		GalleryGetAllProductsQuery query = new(
+			Pagination: this.query.Pagination,
+			CallerId: ValidCreatorId,
+			CategoryId: this.query.CategoryId,
+			Name: this.query.Name,
+			Sorting: this.query.Sorting
+		);
+
+		// Act
+		await handler.Handle(query, ct);
+
+		// Assert
+		reads.Verify(x => x.AllAsync(
+			It.IsAny<ProductQuery>(),
+			false,
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldSendRequests()
+	{
+		// Arrange
+		GalleryGetAllProductsQuery query = new(
+			Pagination: this.query.Pagination,
+			CallerId: ValidCreatorId,
+			CategoryId: this.query.CategoryId,
+			Name: this.query.Name,
+			Sorting: this.query.Sorting
+		);
+
+		// Act
+		await handler.Handle(query, ct);
+
+		// Assert
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == products.Select(x => x.CreatorId)),
+			ct
+		), Times.Once());
+		sender.Verify(x => x.SendQueryAsync(
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+			ct
+		), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldReturnResult()
+	{
+		// Arrange
+		GalleryGetAllProductsQuery query = new(
+			Pagination: this.query.Pagination,
+			CallerId: ValidCreatorId,
+			CategoryId: this.query.CategoryId,
+			Name: this.query.Name,
+			Sorting: this.query.Sorting
+		);
+
+		// Act
+		var result = await handler.Handle(query, ct);
+
+		// Assert
+		Assert.Equal(result.Count, products.Length);
+	}
+}

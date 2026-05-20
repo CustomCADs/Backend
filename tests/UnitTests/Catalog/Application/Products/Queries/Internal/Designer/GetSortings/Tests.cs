@@ -1,0 +1,22 @@
+﻿using CustomCADs.Modules.Catalog.Application.Products.Enums;
+using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Designer.GetSortings;
+
+namespace CustomCADs.UnitTests.Catalog.Application.Products.Queries.Internal.Designer.GetSortings;
+
+public class Tests : Data.Products.BaseUnitTests
+{
+	private readonly GetProductDesignerSortingsHandler handler = new();
+
+	[Fact]
+	public async Task Handle_ShouldReturnResult()
+	{
+		// Arrange
+		GetProductDesignerSortingsQuery query = new();
+
+		// Act
+		ProductDesignerSortingType[] sortings = await handler.Handle(query, ct);
+
+		// Assert
+		Assert.Equal(sortings, Enum.GetValues<ProductDesignerSortingType>());
+	}
+}

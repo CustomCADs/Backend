@@ -1,0 +1,54 @@
+﻿using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Internal.GetAll;
+using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Domain.Querying;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
+
+namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Internal.GetAll;
+
+public class Tests : Data.Accounts.BaseUnitTests
+{
+	private readonly GetAllAccountsHandler handler;
+	private readonly Mock<IAccountReads> reads = new();
+
+	private readonly Account[] accounts = [
+		CreateAccount(id: AccountId.New()),
+		CreateAccount(id: AccountId.New()),
+		CreateAccount(id: AccountId.New()),
+		CreateAccount(id: AccountId.New()),
+	];
+	private readonly AccountQuery query = new(Pagination: new(1, 1));
+
+	public Tests()
+	{
+		handler = new(reads.Object);
+
+		reads.Setup(x => x.AllAsync(query, false, ct))
+			.ReturnsAsync(new Result<Account>(1, accounts));
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+		GetAllAccountsQuery query = new(this.query.Pagination);
+
+		// Act
+		await handler.Handle(query, ct);
+
+		// Assert
+		reads.Verify(x => x.AllAsync(this.query, false, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldReturnResult()
+	{
+		// Arrange
+		GetAllAccountsQuery query = new(this.query.Pagination);
+
+		// Act
+		Result<GetAllAccountsDto> accounts = await handler.Handle(query, ct);
+
+		// Assert
+		Assert.Equal(accounts.Items.Select(r => r.Id), this.accounts.Select(r => r.Id));
+	}
+}

@@ -51,7 +51,7 @@ public class Account : BaseAggregateRoot, ISoftDeletable<Account>
 			.ValidateFirstName()
 			.ValidateLastName();
 
-	public static Account CreateWithId(
+	internal static Account CreateWithId(
 		AccountId id,
 		string role,
 		string username,

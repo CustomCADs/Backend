@@ -1,0 +1,48 @@
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.Count;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
+
+namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Queries.Internal.Count;
+
+using static Data.ActiveCarts.TestData;
+
+public class Tests : Data.ActiveCarts.BaseUnitTests
+{
+	private readonly CountActiveCartItemsHandler handler;
+	private readonly Mock<IActiveCartReads> reads = new();
+
+	private const int Count = 5;
+
+	public Tests()
+	{
+		handler = new(reads.Object);
+
+		reads.Setup(x => x.CountAsync(ValidBuyerId, ct))
+			.ReturnsAsync(Count);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+		CountActiveCartItemsQuery query = new(ValidBuyerId);
+
+		// Act
+		await handler.Handle(query, ct);
+
+		// Assert
+		reads.Verify(x => x.CountAsync(ValidBuyerId, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldReturnResult()
+	{
+		// Arrange
+		CountActiveCartItemsQuery query = new(ValidBuyerId);
+
+		// Act
+		int count = await handler.Handle(query, ct);
+
+		// Assert
+		Assert.Equal(Count, count);
+	}
+}

@@ -1,0 +1,97 @@
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Edit;
+using CustomCADs.Modules.Customs.Domain.Repositories;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Dtos.Notifications;
+using CustomCADs.Shared.Application.Events.Notifications;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
+
+namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Edit;
+
+using static Data.Customs.TestData;
+
+public class Tests : Data.Customs.BaseUnitTests
+{
+	private readonly EditCustomHandler handler;
+	private readonly Mock<ICustomReads> reads = new();
+	private readonly Mock<IUnitOfWork> uow = new();
+	private readonly Mock<IEventRaiser> raiser = new();
+
+	private static readonly CustomId id = CustomId.New();
+	private static readonly AccountId buyerId = AccountId.New();
+	private readonly Custom custom = CreateCustom(buyerId: buyerId);
+
+	public Tests()
+	{
+		handler = new(reads.Object, uow.Object, raiser.Object);
+
+		reads.Setup(x => x.SingleByIdAsync(id, true, ct))
+			.ReturnsAsync(custom);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+		EditCustomCommand command = new(
+			Id: id,
+			Name: MaxValidName,
+			Description: MaxValidDescription,
+			CategoryId: ValidCategoryId,
+			CallerId: buyerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		reads.Verify(x => x.SingleByIdAsync(id, true, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldPersistToDatabase()
+	{
+		// Arrange
+		EditCustomCommand command = new(
+			Id: id,
+			Name: MaxValidName,
+			Description: MaxValidDescription,
+			CategoryId: ValidCategoryId,
+			CallerId: buyerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+	}
+
+	[Theory]
+	[InlineData(true)]
+	[InlineData(false)]
+	public async Task Handle_ShouldRaiseEvents(bool isPending)
+	{
+		// Arrange
+		if (!isPending)
+		{
+			custom.Accept(ValidDesignerId);
+		}
+
+		EditCustomCommand command = new(
+			Id: id,
+			Name: MaxValidName,
+			Description: MaxValidDescription,
+			CategoryId: ValidCategoryId,
+			CallerId: buyerId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<NotificationRequestedEvent>(x => x.Type == NotificationType.CustomEdited)
+		), Times.Exactly(isPending ? 0 : 1));
+	}
+}

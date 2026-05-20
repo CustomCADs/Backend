@@ -1,0 +1,96 @@
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Admin.SetCategory;
+using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Modules.Customs.Domain.Repositories;
+using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Exceptions;
+
+namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Admin.SetCategory;
+
+using static Data.Customs.TestData;
+
+public class Tests : Data.Customs.BaseUnitTests
+{
+	private readonly AdminSetCustomCategoryHandler handler;
+	private readonly Mock<ICustomReads> reads = new();
+	private readonly Mock<IUnitOfWork> uow = new();
+
+	private readonly Custom custom = CreateCustom();
+
+	public Tests()
+	{
+		handler = new(reads.Object, uow.Object);
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
+			.ReturnsAsync(custom);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+		AdminSetCustomCategoryCommand command = new(
+			Id: ValidId,
+			CategoryId: ValidCategoryId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldPersistToDatabase()
+	{
+		// Arrange
+		AdminSetCustomCategoryCommand command = new(
+			Id: ValidId,
+			CategoryId: ValidCategoryId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldPopulateProperties()
+	{
+		// Arrange
+		AdminSetCustomCategoryCommand command = new(
+			Id: ValidId,
+			CategoryId: ValidCategoryId
+		);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		Assert.Multiple(
+			() => Assert.Equal(ValidCategoryId, custom.Category?.Id),
+			() => Assert.Equal(CustomCategorySetter.Admin, custom.Category?.Setter)
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
+			.ReturnsAsync(null as Custom);
+
+		AdminSetCustomCategoryCommand command = new(
+			Id: ValidId,
+			CategoryId: ValidCategoryId
+		);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
+			// Act
+			async () => await handler.Handle(command, ct)
+		);
+	}
+}

@@ -45,7 +45,7 @@ public class Customization : BaseAggregateRoot
 	.ValidateVolume()
 	.ValidateColor();
 
-	public static Customization CreateWithId(
+	internal static Customization Create(
 		CustomizationId id,
 		decimal scale,
 		decimal infill,

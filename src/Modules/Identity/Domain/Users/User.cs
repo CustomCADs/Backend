@@ -37,7 +37,7 @@ public class User : BaseAggregateRoot
 			.ValidateUsername()
 			.ValidateEmail();
 
-	public static User Create(UserId id, string role, string username, Email email, AccountId accountId, ICollection<RefreshToken> refreshTokens)
+	internal static User Create(UserId id, string role, string username, Email email, AccountId accountId, ICollection<RefreshToken> refreshTokens)
 		=> new User(role, username, email, accountId)
 		{
 			Id = id,

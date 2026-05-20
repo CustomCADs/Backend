@@ -10,9 +10,9 @@ using CustomCADs.Shared.Application.UseCases.Identity.Queries;
 
 namespace CustomCADs.UnitTests.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 
-using static PurchasedCartsData;
+using static Data.PurchasedCarts.TestData;
 
-public class CartPaymentCompletedApplicationEventHandlerUnitTests : PurchasedCartsBaseUnitTests
+public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
 	private readonly CartPaymentCompletedApplicationEventHandler handler;
 	private readonly Mock<IPurchasedCartReads> reads = new();
@@ -23,12 +23,12 @@ public class CartPaymentCompletedApplicationEventHandlerUnitTests : PurchasedCar
 	private const string To = "someone@gmail.com";
 	private const string Url = "www.somewhere.com";
 
-	public CartPaymentCompletedApplicationEventHandlerUnitTests()
+	public Tests()
 	{
 		handler = new(reads.Object, uow.Object, sender.Object, email.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
-			.ReturnsAsync(CreateCartWithId());
+			.ReturnsAsync(CreateCart());
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserEmailByIdQuery>(x => x.Id == ValidBuyerId),

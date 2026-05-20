@@ -1,0 +1,59 @@
+using CustomCADs.Modules.Identity.Application.Contracts;
+using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.VerificationEmail;
+using CustomCADs.Modules.Identity.Application.Users.Dtos;
+using CustomCADs.Modules.Identity.Application.Users.Events.Application.Emails.EmailVerification;
+using CustomCADs.Shared.Application.Abstractions.Events;
+using Microsoft.Extensions.Options;
+
+namespace CustomCADs.UnitTests.Identity.Application.Users.Commands.Internal.VerificationEmail;
+
+public class Tests : Data.Users.BaseUnitTests
+{
+	private readonly VerificationEmailHandler handler;
+	private readonly Mock<IUserService> service = new();
+	private readonly Mock<IEventRaiser> raiser = new();
+	private readonly Mock<IOptions<ClientUrlSettings>> settings = new();
+
+	private const string Token = "email-token";
+	private readonly User user = CreateUser();
+
+	public Tests()
+	{
+		settings.Setup(x => x.Value).Returns(new ClientUrlSettings());
+		handler = new(service.Object, raiser.Object, settings.Object);
+
+		service.Setup(x => x.GetByUsernameAsync(user.Username)).ReturnsAsync(user);
+		service.Setup(x => x.GenerateEmailConfirmationTokenAsync(user.Username)).ReturnsAsync(Token);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldCallService()
+	{
+		// Arrange
+		VerificationEmailCommand command = new(user.Username);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		service.Verify(x => x.GetByUsernameAsync(user.Username), Times.Once());
+		service.Verify(x => x.GenerateEmailConfirmationTokenAsync(user.Username), Times.Once());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldRaiseEvents()
+	{
+		// Arrange
+		VerificationEmailCommand command = new(user.Username);
+
+		// Act
+		await handler.Handle(command, ct);
+
+		// Assert
+		raiser.Verify(x => x.RaiseApplicationEventAsync(
+			It.Is<EmailVerificationRequestedApplicationEvent>(x =>
+				x.Email == user.Email.Value
+			)
+		), Times.Once());
+	}
+}
