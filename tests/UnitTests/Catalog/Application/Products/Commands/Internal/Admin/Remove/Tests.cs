@@ -117,7 +117,7 @@ public class Tests : Data.Products.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 
@@ -132,7 +132,7 @@ public class Tests : Data.Products.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 }

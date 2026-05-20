@@ -87,7 +87,7 @@ public class Tests : Data.Users.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 
@@ -111,7 +111,7 @@ public class Tests : Data.Users.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 }

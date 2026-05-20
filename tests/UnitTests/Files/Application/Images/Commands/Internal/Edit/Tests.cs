@@ -99,7 +99,7 @@ public class Tests : Data.Images.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 }

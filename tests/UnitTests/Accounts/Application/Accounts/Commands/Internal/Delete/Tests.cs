@@ -90,7 +90,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 }

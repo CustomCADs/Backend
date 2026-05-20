@@ -81,7 +81,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Shipment>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 
@@ -95,7 +95,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 
@@ -109,7 +109,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 }

@@ -64,7 +64,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Notification>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 
@@ -78,7 +78,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Notification>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 }

@@ -95,7 +95,7 @@ public class Tests : Data.Products.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 
@@ -110,7 +110,7 @@ public class Tests : Data.Products.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 }

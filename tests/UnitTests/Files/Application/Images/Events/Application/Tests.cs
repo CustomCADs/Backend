@@ -126,7 +126,7 @@ public class Tests : Data.Images.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(
 			// Act
-			async () => await handler.HandleAsync(ie)
+			() => handler.HandleAsync(ie)
 		);
 	}
 }

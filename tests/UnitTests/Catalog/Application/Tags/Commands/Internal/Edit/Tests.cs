@@ -88,7 +88,7 @@ public class Tests : Data.Tags.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Tag>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 }

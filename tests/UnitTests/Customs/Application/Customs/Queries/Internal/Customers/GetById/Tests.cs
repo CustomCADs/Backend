@@ -121,7 +121,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 
@@ -134,7 +134,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 }

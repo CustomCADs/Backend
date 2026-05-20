@@ -170,7 +170,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			async () => await handler.HandleAsync(@event)
+			() => handler.HandleAsync(@event)
 		);
 	}
 }

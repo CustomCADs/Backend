@@ -95,7 +95,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 
@@ -111,7 +111,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Material>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 }

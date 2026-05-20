@@ -92,7 +92,7 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<IdempotencyKey>>(
 			// Act
-			async () => await handler.Handle(query, ct)
+			() => handler.Handle(query, ct)
 		);
 	}
 }

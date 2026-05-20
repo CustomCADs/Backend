@@ -99,7 +99,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
 			// Act
-			async () => await handler.Handle(command, ct)
+			() => handler.Handle(command, ct)
 		);
 	}
 }

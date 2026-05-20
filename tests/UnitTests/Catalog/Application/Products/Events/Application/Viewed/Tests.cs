@@ -233,7 +233,7 @@ public class Tests : Data.Products.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			async () => await handler.HandleAsync(@event)
+			() => handler.HandleAsync(@event)
 		);
 	}
 }

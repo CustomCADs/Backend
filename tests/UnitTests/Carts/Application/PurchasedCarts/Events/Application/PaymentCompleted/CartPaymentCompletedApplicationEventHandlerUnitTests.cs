@@ -160,7 +160,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
 			// Act
-			async () => await handler.HandleAsync(@event)
+			() => handler.HandleAsync(@event)
 		);
 	}
 }
