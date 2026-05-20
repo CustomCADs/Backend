@@ -5,7 +5,6 @@ using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.SetDelivery;
 
@@ -18,16 +17,14 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly CustomId id = CustomId.New();
-	private static readonly bool value = true;
-	private static readonly AccountId buyerId = AccountId.New();
-	private readonly Custom custom = CreateCustom(forDelivery: !value);
+	private static readonly bool NewValue = true;
+	private readonly Custom custom = CreateCustom(forDelivery: !NewValue);
 
 	public Tests()
 	{
 		handler = new(reads.Object, uow.Object, raiser.Object);
 
-		reads.Setup(x => x.SingleByIdAsync(id, true, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 	}
 
@@ -36,16 +33,16 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		SetCustomDeliveryCommand command = new(
-			Id: id,
-			Value: value,
-			BuyerId: buyerId
+			Id: ValidId,
+			Value: NewValue,
+			BuyerId: ValidBuyerId
 		);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(id, true, ct), Times.Once());
+		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
 	}
 
 	[Fact]
@@ -53,9 +50,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		SetCustomDeliveryCommand command = new(
-			Id: id,
-			Value: value,
-			BuyerId: buyerId
+			Id: ValidId,
+			Value: NewValue,
+			BuyerId: ValidBuyerId
 		);
 
 		// Act
@@ -77,9 +74,9 @@ public class Tests : Data.Customs.BaseUnitTests
 		}
 
 		SetCustomDeliveryCommand command = new(
-			Id: id,
-			Value: value,
-			BuyerId: buyerId
+			Id: ValidId,
+			Value: NewValue,
+			BuyerId: ValidBuyerId
 		);
 
 		// Act
@@ -96,29 +93,29 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		SetCustomDeliveryCommand command = new(
-			Id: id,
-			Value: value,
-			BuyerId: buyerId
+			Id: ValidId,
+			Value: NewValue,
+			BuyerId: ValidBuyerId
 		);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		Assert.Equal(value, custom.ForDelivery);
+		Assert.Equal(NewValue, custom.ForDelivery);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
 	{
 		// Arrange
-		reads.Setup(x => x.SingleByIdAsync(id, true, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Custom);
 
 		SetCustomDeliveryCommand command = new(
-			Id: id,
-			Value: value,
-			BuyerId: buyerId
+			Id: ValidId,
+			Value: NewValue,
+			BuyerId: ValidBuyerId
 		);
 
 		// Assert

@@ -22,7 +22,6 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly AccountId designerId = AccountId.New();
 	private readonly Custom custom = CreateCustom();
 
 	public Tests()
@@ -143,7 +142,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		var custom = CreateCustom();
-		custom.Accept(designerId);
+		custom.Accept(AccountId.New());
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 

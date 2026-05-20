@@ -27,7 +27,6 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<IPaymentService> payment = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly AccountId buyerId = AccountId.New();
 	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
 	private static readonly ContactDto contact = new(null, null);
 	private readonly Custom custom = CreateCustom(forDelivery: true);
@@ -207,7 +206,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			CustomizationId: ValidCustomizationId,
 			PaymentMethodId: string.Empty,
 			ShipmentService: string.Empty,
-			CallerId: buyerId,
+			CallerId: AccountId.New(),
 			Address: address,
 			Contact: contact
 		);

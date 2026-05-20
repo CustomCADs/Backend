@@ -25,7 +25,6 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<IEventRaiser> raiser = new();
 
 	private const string PaymentMethodId = "payment-method-id";
-	private static readonly AccountId buyerId = AccountId.New();
 	private readonly Custom custom = CreateCustom(
 		buyerId: ValidBuyerId
 	);
@@ -135,7 +134,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
-		PurchaseCustomCommand command = new(ValidId, string.Empty, buyerId);
+		PurchaseCustomCommand command = new(ValidId, string.Empty, AccountId.New());
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(

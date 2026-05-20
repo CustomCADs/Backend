@@ -7,7 +7,6 @@ using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Commands.Internal.Admin.Remove;
 
@@ -21,8 +20,6 @@ public class Tests : Data.Products.BaseUnitTests
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private readonly AccountId AdminId = AccountId.New();
-
 	public Tests()
 	{
 		handler = new(reads.Object, uow.Object, sender.Object, raiser.Object);
@@ -31,7 +28,7 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(CreateProduct().Report(ValidDesignerId));
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == AdminId),
+			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidAdminId),
 			ct
 		)).ReturnsAsync(true);
 	}
@@ -40,7 +37,7 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		RemoveProductCommand command = new(ValidId, AdminId);
+		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -53,7 +50,7 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		RemoveProductCommand command = new(ValidId, AdminId);
+		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -66,14 +63,14 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		RemoveProductCommand command = new(ValidId, AdminId);
+		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == AdminId),
+			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidAdminId),
 			ct
 		), Times.Once());
 	}
@@ -82,7 +79,7 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		RemoveProductCommand command = new(ValidId, AdminId);
+		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -100,10 +97,10 @@ public class Tests : Data.Products.BaseUnitTests
 	{
 		// Arrange
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == AdminId),
+			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidAdminId),
 			ct
 		)).ReturnsAsync(false);
-		RemoveProductCommand command = new(ValidId, AdminId);
+		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
@@ -118,7 +115,7 @@ public class Tests : Data.Products.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Product);
-		RemoveProductCommand command = new(ValidId, AdminId);
+		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(

@@ -11,14 +11,12 @@ public class Tests : Data.Tags.BaseUnitTests
 	private readonly Mock<ITagReads> reads = new();
 	private readonly Mock<BaseCachingService<TagId, Tag>> cache = new();
 
-	private readonly static TagId id = ValidId;
-
 	public Tests()
 	{
 		handler = new(reads.Object, cache.Object);
 
 		cache.Setup(x => x.GetOrCreateAsync(
-			id,
+			ValidId,
 			It.IsAny<Func<Task<Tag>>>()
 		)).ReturnsAsync(CreateTag());
 	}
@@ -27,14 +25,14 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetTagByIdQuery query = new(id);
+		GetTagByIdQuery query = new(ValidId);
 
 		// Act
 		await handler.Handle(query, ct);
 
 		// Assert
 		cache.Verify(
-			x => x.GetOrCreateAsync(id, It.IsAny<Func<Task<Tag>>>()),
+			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Tag>>>()),
 			Times.Once()
 		);
 	}
@@ -43,12 +41,12 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetTagByIdQuery query = new(id);
+		GetTagByIdQuery query = new(ValidId);
 
 		// Act
 		var result = await handler.Handle(query, ct);
 
 		// Assert
-		Assert.Equal(ValidId, result.Id);
+		Assert.Equal(Data.Tags.TestData.ValidId, result.Id);
 	}
 }

@@ -25,7 +25,6 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly AccountId buyerId = AccountId.New();
 	private static readonly Dictionary<ActiveCartItemDto, decimal> items = [];
 	private static readonly ProductId[] productIds = [.. items.Keys.Select(x => x.ProductId)];
 	private static readonly Dictionary<ProductId, CadId> cads = [];
@@ -36,12 +35,12 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		handler = new(writes.Object, uow.Object, sender.Object, raiser.Object);
 
 		writes.Setup(x => x.AddAsync(
-			It.Is<PurchasedCart>(x => x.BuyerId == buyerId),
+			It.Is<PurchasedCart>(x => x.BuyerId == ValidBuyerId),
 			ct
 		)).ReturnsAsync(CreateCart(id: ValidId));
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == buyerId),
+			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidBuyerId),
 			ct
 		)).ReturnsAsync(true);
 
@@ -61,7 +60,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	{
 		// Arrange
 		CreatePurchasedCartCommand command = new(
-			BuyerId: buyerId,
+			BuyerId: ValidBuyerId,
 			Items: items
 		);
 
@@ -70,7 +69,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 
 		// Assert
 		writes.Verify(x => x.AddAsync(
-			It.Is<PurchasedCart>(x => x.BuyerId == buyerId),
+			It.Is<PurchasedCart>(x => x.BuyerId == ValidBuyerId),
 			ct
 		), Times.Once());
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
@@ -81,7 +80,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	{
 		// Arrange
 		CreatePurchasedCartCommand command = new(
-			BuyerId: buyerId,
+			BuyerId: ValidBuyerId,
 			Items: items
 		);
 
@@ -90,7 +89,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 
 		// Assert
 		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetAccountExistsByIdQuery>(x => x.Id == buyerId),
+			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidBuyerId),
 			ct
 		), Times.Once());
 		sender.Verify(x => x.SendQueryAsync(
@@ -108,7 +107,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	{
 		// Arrange
 		CreatePurchasedCartCommand command = new(
-			BuyerId: buyerId,
+			BuyerId: ValidBuyerId,
 			Items: items
 		);
 
@@ -126,7 +125,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	{
 		// Arrange
 		CreatePurchasedCartCommand command = new(
-			BuyerId: buyerId,
+			BuyerId: ValidBuyerId,
 			Items: items
 		);
 
@@ -147,7 +146,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		)).ReturnsAsync(false);
 
 		CreatePurchasedCartCommand command = new(
-			BuyerId: buyerId,
+			BuyerId: ValidBuyerId,
 			Items: items
 		);
 

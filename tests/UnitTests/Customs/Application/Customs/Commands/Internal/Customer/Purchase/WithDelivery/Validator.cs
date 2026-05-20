@@ -1,17 +1,13 @@
 ﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
-using CustomCADs.Shared.Domain.TypedIds.Printing;
 using FluentValidation.TestHelper;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Purchase.WithDelivery;
 
+using static Data.Customs.TestData;
+
 public class Validator : Data.Customs.BaseUnitTests
 {
 	private readonly PurchaseCustomWithDeliveryValidator validator = new();
-
-	private static readonly CustomId id = CustomId.New();
-	private static readonly AccountId buyerId = AccountId.New();
-	private static readonly CustomizationId customizationId = CustomizationId.New();
 
 	[Theory]
 	[ClassData(typeof(ValidData))]
@@ -19,10 +15,10 @@ public class Validator : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		PurchaseCustomWithDeliveryCommand command = new(
-			Id: id,
+			Id: ValidId,
 			PaymentMethodId: paymentMethodId,
-			CallerId: buyerId,
-			CustomizationId: customizationId,
+			CallerId: ValidBuyerId,
+			CustomizationId: ValidCustomizationId,
 			Count: count,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
@@ -46,10 +42,10 @@ public class Validator : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		PurchaseCustomWithDeliveryCommand command = new(
-			Id: id,
+			Id: ValidId,
 			PaymentMethodId: paymentMethodId,
-			CallerId: buyerId,
-			CustomizationId: customizationId,
+			CallerId: ValidBuyerId,
+			CustomizationId: ValidCustomizationId,
 			Count: count,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
@@ -69,10 +65,10 @@ public class Validator : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		PurchaseCustomWithDeliveryCommand command = new(
-			Id: id,
+			Id: ValidId,
 			PaymentMethodId: paymentMethodId,
-			CallerId: buyerId,
-			CustomizationId: customizationId,
+			CallerId: ValidBuyerId,
+			CustomizationId: ValidCustomizationId,
 			Count: count,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
@@ -92,10 +88,10 @@ public class Validator : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		PurchaseCustomWithDeliveryCommand command = new(
-			Id: id,
+			Id: ValidId,
 			PaymentMethodId: paymentMethodId,
-			CallerId: buyerId,
-			CustomizationId: customizationId,
+			CallerId: ValidBuyerId,
+			CustomizationId: ValidCustomizationId,
 			Count: count,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
@@ -115,10 +111,10 @@ public class Validator : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		PurchaseCustomWithDeliveryCommand command = new(
-			Id: id,
+			Id: ValidId,
 			PaymentMethodId: paymentMethodId,
-			CallerId: buyerId,
-			CustomizationId: customizationId,
+			CallerId: ValidBuyerId,
+			CustomizationId: ValidCustomizationId,
 			Count: count,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
@@ -138,10 +134,10 @@ public class Validator : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		PurchaseCustomWithDeliveryCommand command = new(
-			Id: id,
+			Id: ValidId,
 			PaymentMethodId: paymentMethodId,
-			CallerId: buyerId,
-			CustomizationId: customizationId,
+			CallerId: ValidBuyerId,
+			CustomizationId: ValidCustomizationId,
 			Count: count,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),
@@ -161,10 +157,10 @@ public class Validator : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		PurchaseCustomWithDeliveryCommand command = new(
-			Id: id,
+			Id: ValidId,
 			PaymentMethodId: paymentMethodId,
-			CallerId: buyerId,
-			CustomizationId: customizationId,
+			CallerId: ValidBuyerId,
+			CustomizationId: ValidCustomizationId,
 			Count: count,
 			ShipmentService: shipmentService,
 			Address: new(country, city, street),

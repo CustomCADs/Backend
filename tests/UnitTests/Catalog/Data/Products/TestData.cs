@@ -27,7 +27,9 @@ public static class TestData
 	public static readonly ProductId ValidId = ProductId.New();
 	public static readonly AccountId ValidCreatorId = AccountId.New();
 	public static readonly AccountId ValidDesignerId = AccountId.New();
+	public static readonly AccountId ValidAdminId = AccountId.New();
 	public static readonly CategoryId ValidCategoryId = CategoryId.New();
 	public static readonly ImageId ValidImageId = ImageId.New();
 	public static readonly CadId ValidCadId = CadId.New();
+	public static readonly TagId ValidTagId = TagId.New();
 }

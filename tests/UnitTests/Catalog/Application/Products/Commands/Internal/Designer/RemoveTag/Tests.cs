@@ -6,7 +6,6 @@ using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Commands.Internal.Designer.RemoveTag;
 
@@ -20,41 +19,37 @@ public class Tests : Data.Products.BaseUnitTests
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private readonly static ProductId id = ValidId;
-	private readonly static TagId tagId = TagId.New();
-	private readonly static AccountId callerId = AccountId.New();
-
 	public Tests()
 	{
 		handler = new(reads.Object, writes.Object, uow.Object, raiser.Object);
 
-		reads.Setup(x => x.SingleByIdAsync(id, false, ct)).ReturnsAsync(CreateProduct());
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(CreateProduct());
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		RemoveProductTagCommand command = new(id, tagId, callerId);
+		RemoveProductTagCommand command = new(ValidId, ValidTagId, ValidCreatorId);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(id, false, ct), Times.Once());
+		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
 	}
 
 	[Fact]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		RemoveProductTagCommand command = new(id, tagId, callerId);
+		RemoveProductTagCommand command = new(ValidId, ValidTagId, ValidCreatorId);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		writes.Verify(x => x.RemoveTagAsync(id, tagId), Times.Once());
+		writes.Verify(x => x.RemoveTagAsync(ValidId, ValidTagId), Times.Once());
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
 	}
 
@@ -62,7 +57,7 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		RemoveProductTagCommand command = new(id, tagId, callerId);
+		RemoveProductTagCommand command = new(ValidId, ValidTagId, ValidCreatorId);
 
 		// Act
 		await handler.Handle(command, ct);
@@ -77,8 +72,8 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldThrow_WhenProductNotFound()
 	{
 		// Arrange
-		reads.Setup(x => x.SingleByIdAsync(id, false, ct)).ReturnsAsync(null as Product);
-		RemoveProductTagCommand command = new(id, tagId, callerId);
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Product);
+		RemoveProductTagCommand command = new(ValidId, ValidTagId, ValidCreatorId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(

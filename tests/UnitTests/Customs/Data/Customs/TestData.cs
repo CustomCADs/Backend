@@ -30,6 +30,7 @@ public static class TestData
 	public static readonly CustomId ValidId = CustomId.New();
 	public static readonly AccountId ValidBuyerId = AccountId.New();
 	public static readonly AccountId ValidDesignerId = AccountId.New();
+	public static readonly AccountId ValidAdminId = AccountId.New();
 	public static readonly CategoryId ValidCategoryId = CategoryId.New();
 	public static readonly CadId ValidCadId = CadId.New();
 	public static readonly ShipmentId ValidShipmentId = ShipmentId.New();

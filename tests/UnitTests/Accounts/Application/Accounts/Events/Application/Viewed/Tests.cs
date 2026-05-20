@@ -2,10 +2,11 @@
 using CustomCADs.Modules.Accounts.Domain.Repositories;
 using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Events.Catalog;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Events.Application.Viewed;
+
+using static Data.Accounts.TestData;
 
 public class Tests : Data.Accounts.BaseUnitTests
 {
@@ -13,8 +14,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 	private readonly Mock<IAccountWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
-	private static readonly AccountId id = AccountId.New();
-	private static readonly ProductId productId = ProductId.New();
 	private static readonly DateTimeOffset viewedAt = DateTimeOffset.UtcNow;
 
 	public Tests()
@@ -26,13 +25,13 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductViewedApplicationEvent @event = new(productId, id, viewedAt);
+		ProductViewedApplicationEvent @event = new(ValidProductId, ValidId, viewedAt);
 
 		// Act
 		await handler.HandleAsync(@event);
 
 		// Assert
-		writes.Verify(x => x.ViewProductAsync(id, productId, viewedAt, ct), Times.Once());
+		writes.Verify(x => x.ViewProductAsync(ValidId, ValidProductId, viewedAt, ct), Times.Once());
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
 	}
 }

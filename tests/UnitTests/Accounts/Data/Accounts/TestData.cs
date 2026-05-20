@@ -1,6 +1,7 @@
 using CustomCADs.Modules.Accounts.Domain.Accounts;
 using CustomCADs.Shared.Domain;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Accounts.Data.Accounts;
 
@@ -38,4 +39,5 @@ public static class TestData
 	public const string ValidRole = "role123";
 	public const string ValidPassword = "password123";
 	public static readonly AccountId ValidId = AccountId.New();
+	public static readonly ProductId ValidProductId = ProductId.New();
 }

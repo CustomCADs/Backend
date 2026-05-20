@@ -22,7 +22,6 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly AccountId designerId = AccountId.New();
 	private readonly Custom custom = CreateCustom();
 
 	public Tests()
@@ -128,7 +127,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Arrange
 		ReportCustomCommand command = new(
 			Id: ValidId,
-			CallerId: designerId
+			CallerId: AccountId.New()
 		);
 
 		// Assert
@@ -145,7 +144,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		custom.Cancel();
 		ReportCustomCommand command = new(
 			Id: ValidId,
-			CallerId: designerId
+			CallerId: AccountId.New()
 		);
 
 		// Assert

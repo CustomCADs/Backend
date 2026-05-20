@@ -12,8 +12,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 	private readonly GetAccountViewedProductHandler handler;
 	private readonly Mock<IAccountReads> reads = new();
 
-	private static readonly ProductId productId = ProductId.New();
-
 	public Tests()
 	{
 		handler = new(reads.Object);
@@ -25,7 +23,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAccountViewedProductQuery query = new(ValidId, productId);
+		GetAccountViewedProductQuery query = new(ValidId, ValidProductId);
 
 		// Act
 		await handler.Handle(query, ct);
@@ -43,9 +41,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 		if (expected)
 		{
 			reads.Setup(x => x.ViewedProductsByIdAsync(ValidId, ct))
-				.ReturnsAsync([productId]);
+				.ReturnsAsync([ValidProductId]);
 		}
-		GetAccountViewedProductQuery query = new(ValidId, productId);
+		GetAccountViewedProductQuery query = new(ValidId, ValidProductId);
 
 		// Act
 		bool actual = await handler.Handle(query, ct);

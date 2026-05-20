@@ -6,7 +6,6 @@ using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Admin.Remove;
 
@@ -19,7 +18,6 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly AccountId adminId = AccountId.New();
 	private readonly Custom custom = CreateCustom();
 
 	public Tests()
@@ -37,7 +35,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Arrange
 		RemoveCustomCommand command = new(
 			Id: ValidId,
-			CallerId: adminId
+			CallerId: ValidAdminId
 		);
 
 		// Act
@@ -53,7 +51,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Arrange
 		RemoveCustomCommand command = new(
 			Id: ValidId,
-			CallerId: adminId
+			CallerId: ValidAdminId
 		);
 
 		// Act
@@ -69,7 +67,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Arrange
 		RemoveCustomCommand command = new(
 			Id: ValidId,
-			CallerId: adminId
+			CallerId: ValidAdminId
 		);
 
 		// Act
@@ -87,7 +85,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Arrange
 		RemoveCustomCommand command = new(
 			Id: ValidId,
-			CallerId: adminId
+			CallerId: ValidAdminId
 		);
 
 		// Act
@@ -106,7 +104,7 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		RemoveCustomCommand command = new(
 			Id: ValidId,
-			CallerId: adminId
+			CallerId: ValidAdminId
 		);
 
 		// Assert

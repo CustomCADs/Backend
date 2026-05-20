@@ -18,15 +18,13 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly CustomId id = CustomId.New();
-	private static readonly AccountId buyerId = AccountId.New();
-	private readonly Custom custom = CreateCustom(id: id, buyerId: buyerId);
+	private readonly Custom custom = CreateCustom();
 
 	public Tests()
 	{
 		handler = new(reads.Object, writes.Object, uow.Object, raiser.Object);
 
-		reads.Setup(x => x.SingleByIdAsync(id, true, ct))
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 	}
 
@@ -35,15 +33,15 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		DeleteCustomCommand command = new(
-			Id: id,
-			CallerId: buyerId
+			Id: ValidId,
+			CallerId: ValidBuyerId
 		);
 
 		// Act
 		await handler.Handle(command, ct);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(id, true, ct), Times.Once());
+		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
 	}
 
 	[Fact]
@@ -51,8 +49,8 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		DeleteCustomCommand command = new(
-			Id: id,
-			CallerId: buyerId
+			Id: ValidId,
+			CallerId: ValidBuyerId
 		);
 
 		// Act
@@ -60,7 +58,7 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		// Assert
 		writes.Verify(x => x.Remove(
-			It.Is<Custom>(x => x.Id == id)
+			It.Is<Custom>(x => x.Id == ValidId)
 		), Times.Once());
 		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
 	}
@@ -77,8 +75,8 @@ public class Tests : Data.Customs.BaseUnitTests
 		}
 
 		DeleteCustomCommand command = new(
-			Id: id,
-			CallerId: buyerId
+			Id: ValidId,
+			CallerId: ValidBuyerId
 		);
 
 		// Act
