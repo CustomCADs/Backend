@@ -8,40 +8,37 @@ namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.G
 public class Tests : Data.Shipments.BaseUnitTests
 {
 	private readonly GetAllShipmentsHandler handler;
+	private readonly GetAllShipmentsQuery request = new(new(), null, null);
+
 	private readonly Mock<IShipmentReads> reads = new();
 
-	private static readonly Shipment[] shipments = [
+	private static readonly Shipment[] Shipments = [
 		CreateShipment(),
 		CreateShipment(),
 		CreateShipment(),
 		CreateShipment(),
 	];
-	private readonly ShipmentQuery shipmentQuery = new(new(), null, null);
+	private static readonly ShipmentQuery Query = new(new(), null, null);
 
 	public Tests()
 	{
 		handler = new(reads.Object);
 
-		reads.Setup(x => x.AllAsync(shipmentQuery, false, ct))
-			.ReturnsAsync(new Result<Shipment>(shipments.Length, shipments));
+		reads.Setup(x => x.AllAsync(Query, false, ct))
+			.ReturnsAsync(new Result<Shipment>(Shipments.Length, Shipments));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAllShipmentsQuery query = new(
-			Pagination: new(),
-			CallerId: null,
-			Sorting: null
-		);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.AllAsync(shipmentQuery, false, ct),
+			x => x.AllAsync(Query, false, ct),
 			Times.Once()
 		);
 	}
@@ -50,16 +47,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllShipmentsQuery query = new(
-			Pagination: new(),
-			CallerId: null,
-			Sorting: null
-		);
 
 		// Act
-		Result<GetAllShipmentsDto> result = await handler.Handle(query, ct);
+		Result<GetAllShipmentsDto> result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(result.Items.Select(r => r.Address), shipments.Select(r => r.Address));
+		Assert.Equal(result.Items.Select(r => r.Address), Shipments.Select(r => r.Address));
 	}
 }

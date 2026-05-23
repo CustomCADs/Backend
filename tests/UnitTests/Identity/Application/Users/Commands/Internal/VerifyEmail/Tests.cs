@@ -11,11 +11,13 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly VerifyUserEmailHandler handler;
+	private readonly VerifyUserEmailCommand request = new(MinValidUsername, Token, ValidFingerprint);
+
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<ITokenService> tokenService = new();
 
 	private const string Token = "email-token";
-	private readonly User User = CreateUser(email: ValidEmail, isVerified: false);
+	private readonly User User = CreateUser(isVerified: false);
 	private static readonly RefreshToken RefreshToken = RefreshToken.Create(Token, ValidFingerprint, ValidId, false);
 	private static readonly TokensDto Tokens = new(
 		Role: "role",
@@ -40,10 +42,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		VerifyUserEmailCommand command = new(User.Username, Token, ValidFingerprint);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
@@ -60,10 +61,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldIssueTokens()
 	{
 		// Arrange
-		VerifyUserEmailCommand command = new(User.Username, Token, ValidFingerprint);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		tokenService.Verify(
@@ -82,10 +82,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		VerifyUserEmailCommand command = new(User.Username, Token, ValidFingerprint);
 
 		// Act
-		TokensDto tokens = await handler.Handle(command, ct);
+		TokensDto tokens = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(Tokens, tokens);
@@ -98,12 +97,10 @@ public class Tests : Data.Users.BaseUnitTests
 		User verifiedUser = CreateUser(email: ValidEmail, isVerified: true);
 		service.Setup(x => x.GetByUsernameAsync(verifiedUser.Username)).ReturnsAsync(verifiedUser);
 
-		VerifyUserEmailCommand command = new(verifiedUser.Username, Token, ValidFingerprint);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { Username = verifiedUser.Username }, ct)
 		);
 	}
 }

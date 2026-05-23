@@ -10,9 +10,11 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly GetAccountInfoByUsernameHandler handler;
+	private readonly GetAccountInfoByUsernameQuery request = new(ValidUsername);
+
 	private readonly Mock<IAccountReads> reads = new();
 
-	private static readonly Account account = CreateAccount();
+	private readonly Account account = CreateAccount();
 
 	public Tests()
 	{
@@ -25,10 +27,10 @@ public class Tests : Data.Accounts.BaseUnitTests
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
-		GetAccountInfoByUsernameQuery query = new(ValidUsername);
+		// Arrange
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -41,10 +43,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAccountInfoByUsernameQuery query = new(ValidUsername);
 
 		// Act
-		AccountInfoDto info = await handler.Handle(query, ct);
+		AccountInfoDto info = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -61,12 +62,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByUsernameAsync(ValidUsername, false, ct)).ReturnsAsync(null as Account);
-		GetAccountInfoByUsernameQuery query = new(ValidUsername);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

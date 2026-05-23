@@ -9,6 +9,8 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly GetAccountExistsByUsernameHandler handler;
+	private readonly GetAccountExistsByUsernameQuery request = new(ValidUsername);
+
 	private readonly Mock<IAccountReads> reads = new();
 
 	public Tests()
@@ -20,10 +22,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAccountExistsByUsernameQuery query = new(ValidUsername);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -39,10 +40,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.ExistsByUsernameAsync(ValidUsername, ct)).ReturnsAsync(exists);
-		GetAccountExistsByUsernameQuery query = new(ValidUsername);
 
 		// Act
-		bool result = await handler.Handle(query, ct);
+		bool result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(exists, result);

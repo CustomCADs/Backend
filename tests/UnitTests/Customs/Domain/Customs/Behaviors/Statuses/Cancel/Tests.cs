@@ -6,9 +6,6 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	private static readonly Func<Action, InvalidOperationException> expectValidationException
-		= Assert.Throws<InvalidOperationException>;
-
 	[Fact]
 	public void Cancel_ShouldSucceed_WhenAccepted()
 	{
@@ -56,7 +53,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Fact]
 	public void Cancel_ShouldFail_WhenPending()
 	{
-		expectValidationException(() =>
+		ExpectValidationException(() =>
 		{
 			Custom custom = CreateCustom();
 
@@ -67,7 +64,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Fact]
 	public void Cancel_ShouldFail_WhenFinished()
 	{
-		expectValidationException(() =>
+		ExpectValidationException(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -81,7 +78,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Fact]
 	public void Cancel_ShouldFail_WhenCompleted()
 	{
-		expectValidationException(() =>
+		ExpectValidationException(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -95,7 +92,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Fact]
 	public void Cancel_ShouldFail_WhenRemoved()
 	{
-		expectValidationException(() =>
+		ExpectValidationException(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Report();

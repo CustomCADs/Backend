@@ -12,6 +12,8 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly UserDeletedHandler handler;
+	private readonly UserDeletedApplicationEvent request = new(ValidId);
+
 	private readonly Mock<IAccountReads> reads = new();
 	private readonly Mock<IAccountWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -30,10 +32,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShoulQueryDatabase()
 	{
 		// Arrange
-		UserDeletedApplicationEvent @event = new(ValidId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		reads.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShoulPersistToDatabase()
 	{
 		// Arrange
-		UserDeletedApplicationEvent @event = new(ValidId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		writes.Verify(
@@ -67,12 +67,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Account);
-		UserDeletedApplicationEvent @event = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			() => handler.HandleAsync(@event)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

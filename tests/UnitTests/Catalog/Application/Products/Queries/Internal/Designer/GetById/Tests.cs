@@ -12,6 +12,8 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly DesignerGetProductByIdHandler handler;
+	private readonly DesignerGetProductByIdQuery request = new(ValidId, ValidDesignerId);
+
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
@@ -28,10 +30,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DesignerGetProductByIdQuery query = new(ValidId, ValidDesignerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -44,10 +45,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		DesignerGetProductByIdQuery query = new(ValidId, ValidDesignerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -70,10 +70,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		DesignerGetProductByIdQuery query = new(ValidId, ValidDesignerId);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -86,16 +85,29 @@ public class Tests : Data.Products.BaseUnitTests
 	}
 
 	[Fact]
-	public async Task Handle_ShouldThrowException_WhenUnauthorizedAndChecked()
+	public async Task Handle_ShouldNotThrowException_WhenUnauthorizedAccess()
+	{
+		// Arrange
+
+		// Act
+		Exception? ex = await Record.ExceptionAsync(
+			() => handler.Handle(request with { CallerId = ValidCreatorId }, ct)
+		);
+
+		// Assert
+		Assert.Null(ex);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccessButValidated()
 	{
 		// Arrange
 		product.Validate(ValidDesignerId);
-		DesignerGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request with { CallerId = ValidCreatorId }, ct)
 		);
 	}
 
@@ -105,12 +117,11 @@ public class Tests : Data.Products.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as Product);
-		DesignerGetProductByIdQuery query = new(ValidId, ValidDesignerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

@@ -14,23 +14,34 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly ToggleActiveCartItemForDeliveryHandler handler;
+	private readonly ToggleActiveCartItemForDeliveryCommand request = new(
+		CallerId: ValidBuyerId,
+		ProductId: ProductId1,
+		CustomizationId: null
+	);
+	private readonly ToggleActiveCartItemForDeliveryCommand requestForDelivery = new(
+		CallerId: ValidBuyerId,
+		ProductId: ProductId2,
+		CustomizationId: ValidCustomizationId
+	);
+
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
 
 
-	private static readonly ProductId productId1 = ProductId.New();
-	private static readonly ProductId productId2 = ProductId.New();
+	private static readonly ProductId ProductId1 = ProductId.New();
+	private static readonly ProductId ProductId2 = ProductId.New();
 
 	public Tests()
 	{
 		handler = new(reads.Object, uow.Object, sender.Object);
 
-		reads.Setup(x => x.SingleAsync(ValidBuyerId, productId1, true, ct))
-			.ReturnsAsync(CreateItemWithDelivery(ValidBuyerId, productId1));
+		reads.Setup(x => x.SingleAsync(ValidBuyerId, ProductId1, true, ct))
+			.ReturnsAsync(CreateItemWithDelivery(ValidBuyerId, ProductId1));
 
-		reads.Setup(x => x.SingleAsync(ValidBuyerId, productId2, true, ct))
-			.ReturnsAsync(CreateItem(ValidBuyerId, productId2));
+		reads.Setup(x => x.SingleAsync(ValidBuyerId, ProductId2, true, ct))
+			.ReturnsAsync(CreateItem(ValidBuyerId, ProductId2));
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == ValidCustomizationId),
@@ -42,18 +53,13 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: productId1,
-			CustomizationId: null
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.SingleAsync(ValidBuyerId, productId1, true, ct),
+			x => x.SingleAsync(ValidBuyerId, ProductId1, true, ct),
 			Times.Once()
 		);
 	}
@@ -62,14 +68,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase_WhenTurningDeliveryOff()
 	{
 		// Arrange
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: productId1,
-			CustomizationId: null
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -82,14 +83,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase_WhenTurningDeliveryOn()
 	{
 		// Arrange
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: productId2,
-			CustomizationId: ValidCustomizationId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(requestForDelivery, ct);
 
 		// Assert
 		uow.Verify(
@@ -102,14 +98,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests_WhenTurningDeliveryOff()
 	{
 		// Arrange
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: productId1,
-			CustomizationId: null
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -125,14 +116,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests_WhenTurningDeliveryOn()
 	{
 		// Arrange
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: productId2,
-			CustomizationId: ValidCustomizationId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(requestForDelivery, ct);
 
 		// Assert
 		sender.Verify(
@@ -148,19 +134,13 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
-		reads.Setup(x => x.SingleAsync(ValidBuyerId, productId1, true, ct))
+		reads.Setup(x => x.SingleAsync(ValidBuyerId, ProductId1, true, ct))
 			.ReturnsAsync(null as ActiveCartItem);
-
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: productId1,
-			CustomizationId: null
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -168,16 +148,11 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenItemNotFound()
 	{
 		// Arrange
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ValidProductId,
-			CustomizationId: null
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { ProductId = ValidProductId }, ct)
 		);
 	}
 
@@ -190,16 +165,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			ct
 		)).ReturnsAsync(false);
 
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: productId2,
-			CustomizationId: ValidCustomizationId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(requestForDelivery, ct)
 		);
 	}
 
@@ -207,16 +176,11 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenDeliveryMismatch()
 	{
 		// Arrange
-		ToggleActiveCartItemForDeliveryCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: productId2,
-			CustomizationId: null
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomException>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(requestForDelivery with { CustomizationId = null }, ct)
 		);
 	}
 }

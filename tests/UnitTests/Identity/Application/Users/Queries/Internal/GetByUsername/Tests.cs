@@ -10,13 +10,16 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly GetUserByUsernameHandler handler;
+	private readonly GetUserByUsernameQuery request = new(ValidAccountId, "refresh-token");
+
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IRequestSender> sender = new();
+
 	private readonly User user = CreateUser();
 
 	public Tests()
 	{
-		user.AddRefreshToken("refresh-token", ValidFingerprint, false);
+		user.AddRefreshToken(request.RefreshToken!, ValidFingerprint, false);
 
 		handler = new(service.Object, sender.Object);
 
@@ -33,10 +36,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(user.AccountId, "refresh-token");
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
@@ -49,10 +51,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(user.AccountId, "refresh-token");
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -75,10 +76,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetUserByUsernameQuery query = new(user.AccountId, "refresh-token");
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, result.Id);

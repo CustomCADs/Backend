@@ -4,7 +4,7 @@ using CustomCADs.Shared.Application.Events.Catalog;
 
 namespace CustomCADs.Modules.Accounts.Application.Accounts.Events.Application;
 
-public class UserViewedProductHandler(IAccountWrites writes, IUnitOfWork uow)
+public class ProductViewedHandler(IAccountWrites writes, IUnitOfWork uow)
 {
 	public async Task HandleAsync(ProductViewedApplicationEvent @event)
 	{

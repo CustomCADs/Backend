@@ -4,7 +4,7 @@ namespace CustomCADs.UnitTests.Identity.Domain.Users.Behaviors.RemoveRefreshToke
 
 public class Tests : Data.Users.BaseUnitTests
 {
-	private static readonly User user = CreateUser();
+	private readonly User user = CreateUser();
 	private readonly RefreshToken rt;
 
 	public Tests()

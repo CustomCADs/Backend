@@ -11,14 +11,15 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly GetCadPresignedUrlPutHandler handler;
+	private readonly GetCadPresignedUrlPutQuery request = new(ValidId, UploadRequest, Type, ValidOwnerId);
+
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<ICadStorageService> storage = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
 	private const string PresignedUrl = "presigned-url";
 	private const FileContextType Type = FileContextType.Product;
-	private static readonly Cad cad = CreateCad();
-	private static readonly UploadFileRequest req = new(ValidContentType, "Batman.glb");
+	private static readonly UploadFileRequest UploadRequest = new(ValidContentType, "Batman.glb");
 
 	public Tests()
 	{
@@ -29,17 +30,16 @@ public class Tests : Data.Cads.BaseUnitTests
 			It.IsAny<Func<Task<Cad>>>()
 		)).ReturnsAsync(CreateCad());
 
-		storage.Setup(x => x.GetPresignedPutUrlAsync(cad.Key, req)).ReturnsAsync(PresignedUrl);
+		storage.Setup(x => x.GetPresignedPutUrlAsync(ValidKey, UploadRequest)).ReturnsAsync(PresignedUrl);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetCadPresignedUrlPutQuery query = new(ValidId, req, Type, ValidOwnerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -52,14 +52,13 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
-		GetCadPresignedUrlPutQuery query = new(ValidId, req, Type, ValidOwnerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		storage.Verify(
-			x => x.GetPresignedPutUrlAsync(cad.Key, req),
+			x => x.GetPresignedPutUrlAsync(ValidKey, UploadRequest),
 			Times.Once()
 		);
 	}
@@ -68,10 +67,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetCadPresignedUrlPutQuery query = new(ValidId, req, Type, ValidOwnerId);
 
 		// Act
-		string url = await handler.Handle(query, ct);
+		string url = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(PresignedUrl, url);

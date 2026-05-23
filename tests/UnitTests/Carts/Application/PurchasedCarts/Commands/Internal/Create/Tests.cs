@@ -8,7 +8,6 @@ using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Cads.Commands;
 using CustomCADs.Shared.Application.UseCases.Products.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Carts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Files;
@@ -20,15 +19,17 @@ using static Data.PurchasedCarts.TestData;
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
 	private readonly CreatePurchasedCartHandler handler;
+	private readonly CreatePurchasedCartCommand request = new(ValidBuyerId, Items);
+
 	private readonly Mock<IWrites<PurchasedCart>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly Dictionary<ActiveCartItemDto, decimal> items = [];
-	private static readonly ProductId[] productIds = [.. items.Keys.Select(x => x.ProductId)];
-	private static readonly Dictionary<ProductId, CadId> cads = [];
-	private static readonly CadId[] cadIds = [.. cads.Select(x => x.Value)];
+	private static readonly Dictionary<ActiveCartItemDto, decimal> Items = [];
+	private static readonly ProductId[] ProductIds = [.. Items.Keys.Select(x => x.ProductId)];
+	private static readonly Dictionary<ProductId, CadId> Cads = [];
+	private static readonly CadId[] CadIds = [.. Cads.Select(x => x.Value)];
 
 	public Tests()
 	{
@@ -45,12 +46,12 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		)).ReturnsAsync(true);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<BatchGetProductCadIdByIdQuery>(x => x.Ids == productIds),
+			It.Is<BatchGetProductCadIdByIdQuery>(x => x.Ids == ProductIds),
 			ct
-		)).ReturnsAsync(cads);
+		)).ReturnsAsync(Cads);
 
 		sender.Setup(x => x.SendCommandAsync(
-			It.Is<BatchDuplicateCadByIdCommand>(x => x.Ids == cadIds),
+			It.Is<BatchDuplicateCadByIdCommand>(x => x.Ids == CadIds),
 			ct
 		)).ReturnsAsync([]);
 	}
@@ -59,13 +60,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreatePurchasedCartCommand command = new(
-			BuyerId: ValidBuyerId,
-			Items: items
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -85,13 +82,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CreatePurchasedCartCommand command = new(
-			BuyerId: ValidBuyerId,
-			Items: items
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -103,14 +96,14 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		);
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<BatchGetProductCadIdByIdQuery>(x => x.Ids == productIds),
+				It.Is<BatchGetProductCadIdByIdQuery>(x => x.Ids == ProductIds),
 				ct
 			),
 			Times.Once()
 		);
 		sender.Verify(
 			x => x.SendCommandAsync(
-				It.Is<BatchDuplicateCadByIdCommand>(x => x.Ids == cadIds),
+				It.Is<BatchDuplicateCadByIdCommand>(x => x.Ids == CadIds),
 				ct
 			),
 			Times.Once()
@@ -121,18 +114,14 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		CreatePurchasedCartCommand command = new(
-			BuyerId: ValidBuyerId,
-			Items: items
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
 			x => x.RaiseApplicationEventAsync(
-				It.Is<ProductsPurchasedApplicationEvent>(x => x.Ids == productIds)
+				It.Is<ProductsPurchasedApplicationEvent>(x => x.Ids == ProductIds)
 			),
 			Times.Once()
 		);
@@ -142,13 +131,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreatePurchasedCartCommand command = new(
-			BuyerId: ValidBuyerId,
-			Items: items
-		);
 
 		// Act
-		PurchasedCartId result = await handler.Handle(command, ct);
+		PurchasedCartId result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, result);
@@ -163,15 +148,10 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 			ct
 		)).ReturnsAsync(false);
 
-		CreatePurchasedCartCommand command = new(
-			BuyerId: ValidBuyerId,
-			Items: items
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

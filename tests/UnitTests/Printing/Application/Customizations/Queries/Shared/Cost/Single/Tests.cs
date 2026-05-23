@@ -13,6 +13,8 @@ using static Data.Customizations.TestData;
 public class Tests : Data.Customizations.BaseUnitTests
 {
 	private readonly GetCustomizationCostByIdHandler handler;
+	private readonly GetCustomizationCostByIdQuery request = new(ValidId);
+
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
 	private readonly Mock<IPrintCalculator> calculator = new();
@@ -39,10 +41,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetCustomizationCostByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -59,10 +60,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldCalculateCost()
 	{
 		// Arrange
-		GetCustomizationCostByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		calculator.Verify(
@@ -75,10 +75,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetCustomizationCostByIdQuery query = new(ValidId);
 
 		// Act
-		decimal result = await handler.Handle(query, ct);
+		decimal result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(Cost, result);
@@ -91,12 +90,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as Customization);
 
-		GetCustomizationCostByIdQuery query = new(ValidId);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -107,12 +104,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 		materialReads.Setup(x => x.SingleByIdAsync(ValidMaterialId, false, ct))
 			.ReturnsAsync(null as Material);
 
-		GetCustomizationCostByIdQuery query = new(ValidId);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Material>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

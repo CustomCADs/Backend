@@ -21,14 +21,25 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly PurchaseCustomWithDeliveryHandler handler;
+	private readonly PurchaseCustomWithDeliveryCommand request = new(
+		Id: ValidId,
+		Count: 1,
+		CustomizationId: ValidCustomizationId,
+		PaymentMethodId: string.Empty,
+		ShipmentService: string.Empty,
+		CallerId: ValidBuyerId,
+		Address: Address,
+		Contact: Contact
+	);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IPaymentService> payment = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
-	private static readonly ContactDto contact = new(null, null);
+	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
+	private static readonly ContactDto Contact = new(null, null);
 	private readonly Custom custom = CreateCustom(forDelivery: true);
 
 	public Tests()
@@ -57,19 +68,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -82,19 +83,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -124,19 +115,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldCallPayment()
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		payment.Verify(
@@ -156,19 +137,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -205,19 +176,8 @@ public class Tests : Data.Customs.BaseUnitTests
 			ct
 		)).ReturnsAsync(expected);
 
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
-
 		// Act
-		PaymentDto actual = await handler.Handle(command, ct);
+		PaymentDto actual = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(expected, actual);
@@ -227,21 +187,11 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: AccountId.New(),
-			Address: address,
-			Contact: contact
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { CallerId = new() }, ct)
 		);
 	}
 
@@ -253,21 +203,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(custom);
 
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomException>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -280,21 +219,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(custom);
 
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomException>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -305,21 +233,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(CreateCustom(buyerId: ValidBuyerId, forDelivery: false));
 
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomException>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -330,21 +247,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as Custom);
 
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			Count: 1,
-			CustomizationId: ValidCustomizationId,
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

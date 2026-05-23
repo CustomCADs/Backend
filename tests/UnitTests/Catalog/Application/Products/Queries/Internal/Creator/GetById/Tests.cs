@@ -13,6 +13,8 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly CreatorGetProductByIdHandler handler;
+	private readonly CreatorGetProductByIdQuery request = new(ValidId, ValidCreatorId);
+
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
@@ -30,10 +32,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CreatorGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CreatorGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -72,10 +72,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreatorGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -93,12 +92,11 @@ public class Tests : Data.Products.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(CreateProduct(creatorId: AccountId.New()));
-		CreatorGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -108,12 +106,11 @@ public class Tests : Data.Products.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as Product);
-		CreatorGetProductByIdQuery query = new(ValidId, ValidCreatorId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

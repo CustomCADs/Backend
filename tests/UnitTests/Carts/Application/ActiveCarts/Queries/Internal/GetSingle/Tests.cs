@@ -2,7 +2,6 @@
 using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Queries.Internal.GetSingle;
 
@@ -11,6 +10,8 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly GetActiveCartItemHandler handler;
+	private readonly GetActiveCartItemQuery request = new(ValidBuyerId, ValidProductId);
+
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
@@ -26,10 +27,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetActiveCartItemQuery query = new(ValidBuyerId, ValidProductId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -42,10 +42,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetActiveCartItemQuery query = new(ValidBuyerId, ValidProductId);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidProductId, result.ProductId);
@@ -55,12 +54,11 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenCartItemNotFound()
 	{
 		// Arrange
-		GetActiveCartItemQuery query = new(ValidBuyerId, ProductId.New());
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request with { ProductId = new() }, ct)
 		);
 	}
 
@@ -68,12 +66,11 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
-		GetActiveCartItemQuery query = new(ValidBuyerId, ProductId.New());
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request with { ProductId = new() }, ct)
 		);
 	}
 }

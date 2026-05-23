@@ -10,32 +10,31 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly LogoutUserHandler handler;
+	private readonly LogoutUserCommand request = new("refresh-token");
+
 	private readonly Mock<IUserService> service = new();
 
-	private static readonly RefreshToken token = RefreshToken.Create("refresh-token", ValidFingerprint, ValidId, longerSession: false);
+	private static readonly RefreshToken Token = RefreshToken.Create("refresh-token", ValidFingerprint, ValidId, longerSession: false);
 	private readonly User user = CreateUser(username: MaxValidUsername);
 
 	public Tests()
 	{
 		handler = new(service.Object);
 
-		service.Setup(x => x.GetByRefreshTokenAsync(token.Value)).ReturnsAsync((user, token));
+		service.Setup(x => x.GetByRefreshTokenAsync(Token.Value)).ReturnsAsync((user, Token));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		LogoutUserCommand command = new(
-			RefreshToken: token.Value
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
-			x => x.RevokeRefreshTokenAsync(token.Value),
+			x => x.RevokeRefreshTokenAsync(Token.Value),
 			Times.Once()
 		);
 	}
@@ -44,12 +43,11 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenMissingToken()
 	{
 		// Arrange
-		LogoutUserCommand command = new(RefreshToken: null);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { RefreshToken = null }, ct)
 		);
 	}
 }

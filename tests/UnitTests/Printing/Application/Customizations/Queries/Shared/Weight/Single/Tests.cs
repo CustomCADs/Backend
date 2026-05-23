@@ -13,6 +13,8 @@ using static Data.Customizations.TestData;
 public class Tests : Data.Customizations.BaseUnitTests
 {
 	private readonly GetCustomizationWeightByIdHandler handler;
+	private readonly GetCustomizationWeightByIdQuery request = new(ValidId);
+
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
 	private readonly Mock<IPrintCalculator> calculator = new();
@@ -39,10 +41,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetCustomizationWeightByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -59,10 +60,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldCalculateWeight()
 	{
 		// Arrange
-		GetCustomizationWeightByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		calculator.Verify(
@@ -75,10 +75,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetCustomizationWeightByIdQuery query = new(ValidId);
 
 		// Act
-		double result = await handler.Handle(query, ct);
+		double result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(Weight, result);
@@ -91,12 +90,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as Customization);
 
-		GetCustomizationWeightByIdQuery query = new(ValidId);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -107,12 +104,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 		materialReads.Setup(x => x.SingleByIdAsync(ValidMaterialId, false, ct))
 			.ReturnsAsync(null as Material);
 
-		GetCustomizationWeightByIdQuery query = new(ValidId);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Material>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

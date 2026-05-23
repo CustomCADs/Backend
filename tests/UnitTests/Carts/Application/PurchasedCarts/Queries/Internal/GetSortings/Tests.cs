@@ -6,15 +6,15 @@ namespace CustomCADs.UnitTests.Carts.Application.PurchasedCarts.Queries.Internal
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
 	private readonly GetPurchasedCartSortingsHandler handler = new();
+	private readonly GetPurchasedCartSortingsQuery request = new();
 
 	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetPurchasedCartSortingsQuery query = new();
 
 		// Act
-		PurchasedCartSortingType[] sortings = await handler.Handle(query, ct);
+		PurchasedCartSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(sortings, Enum.GetValues<PurchasedCartSortingType>());

@@ -9,6 +9,8 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly RoleDeletedHandler handler;
+	private readonly RoleDeletedApplicationEvent request = new(ValidRole);
+
 	private readonly Mock<IRoleService> service = new();
 
 	public Tests()
@@ -20,10 +22,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		RoleDeletedApplicationEvent @event = new(ValidRole);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		service.Verify(

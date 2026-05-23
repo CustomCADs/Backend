@@ -8,25 +8,29 @@ using static Data.Customs.TestData;
 public class Validator : Data.Customs.BaseUnitTests
 {
 	private readonly PurchaseCustomWithDeliveryValidator validator = new();
+	private static PurchaseCustomWithDeliveryCommand Request(string paymentMethodId, int count, string shipmentService, string country, string city, string street, string? phone, string? email)
+		=> new(
+			Id: ValidId,
+			Count: count,
+			CustomizationId: ValidCustomizationId,
+			PaymentMethodId: paymentMethodId,
+			ShipmentService: shipmentService,
+			CallerId: ValidBuyerId,
+			Address: new(country, city, street),
+			Contact: new(phone, email)
+		);
 
 	[Theory]
 	[ClassData(typeof(ValidData))]
 	public async Task Validate_ShouldBeValid_WhenCartIsValid(string paymentMethodId, int count, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			CustomizationId: ValidCustomizationId,
-			Count: count,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, count, shipmentService, country, city, street, phone, email),
+			cancellationToken: ct
+		);
 
 		// Assert
 		Assert.True(result.IsValid);
@@ -41,19 +45,12 @@ public class Validator : Data.Customs.BaseUnitTests
 	public async Task Validate_ShouldBeInvalid_WhenCartIsNotValid(string paymentMethodId, int count, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			CustomizationId: ValidCustomizationId,
-			Count: count,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, count, shipmentService, country, city, street, phone, email),
+			cancellationToken: ct
+		);
 
 		// Assert
 		Assert.False(result.IsValid);
@@ -64,19 +61,12 @@ public class Validator : Data.Customs.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenShipmentServiceIsNotValid(string paymentMethodId, int count, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			CustomizationId: ValidCustomizationId,
-			Count: count,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, count, shipmentService, country, city, street, phone, email),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.ShipmentService);
@@ -87,19 +77,12 @@ public class Validator : Data.Customs.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenCountryIsNotValid(string paymentMethodId, int count, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			CustomizationId: ValidCustomizationId,
-			Count: count,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, count, shipmentService, country, city, street, phone, email),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.Address.Country);
@@ -110,19 +93,12 @@ public class Validator : Data.Customs.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenCityIsNotValid(string paymentMethodId, int count, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			CustomizationId: ValidCustomizationId,
-			Count: count,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, count, shipmentService, country, city, street, phone, email),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.Address.City);
@@ -133,19 +109,12 @@ public class Validator : Data.Customs.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenPhoneIsNotValid(string paymentMethodId, int count, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			CustomizationId: ValidCustomizationId,
-			Count: count,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, count, shipmentService, country, city, street, phone, email),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.Contact.Phone);
@@ -156,19 +125,12 @@ public class Validator : Data.Customs.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenEmailIsNotValid(string paymentMethodId, int count, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseCustomWithDeliveryCommand command = new(
-			Id: ValidId,
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			CustomizationId: ValidCustomizationId,
-			Count: count,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, count, shipmentService, country, city, street, phone, email),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.Contact.Email);

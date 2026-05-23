@@ -11,6 +11,8 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly AdminSetCustomCategoryHandler handler;
+	private readonly AdminSetCustomCategoryCommand request = new(ValidId, ValidCategoryId);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
@@ -28,13 +30,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		AdminSetCustomCategoryCommand command = new(
-			Id: ValidId,
-			CategoryId: ValidCategoryId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -47,13 +45,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		AdminSetCustomCategoryCommand command = new(
-			Id: ValidId,
-			CategoryId: ValidCategoryId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -66,13 +60,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
-		AdminSetCustomCategoryCommand command = new(
-			Id: ValidId,
-			CategoryId: ValidCategoryId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -88,15 +78,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Custom);
 
-		AdminSetCustomCategoryCommand command = new(
-			Id: ValidId,
-			CategoryId: ValidCategoryId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

@@ -10,26 +10,27 @@ using static Data.PurchasedCarts.TestData;
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
 	private readonly GetAllPurchasedCartsHandler handler;
+	private readonly GetAllPurchasedCartsQuery request = new(Query.Pagination);
+
 	private readonly Mock<IPurchasedCartReads> reads = new();
 
-	private readonly PurchasedCart[] carts = [
+	private static readonly PurchasedCart[] Carts = [
 		CreateCart(id: ValidId),
 		CreateCart(id: ValidId),
 	];
-	private readonly PurchasedCartQuery query;
+	private static readonly PurchasedCartQuery Query = new(
+		Pagination: new(1, Carts.Length)
+	);
+
 
 	public Tests()
 	{
 		handler = new(reads.Object);
 
-		query = new(
-			Pagination: new(1, carts.Length)
-		);
-
-		reads.Setup(x => x.AllAsync(query, false, ct))
+		reads.Setup(x => x.AllAsync(Query, false, ct))
 			.ReturnsAsync(new Result<PurchasedCart>(
-				carts.Length,
-				carts
+				Carts.Length,
+				Carts
 			));
 	}
 
@@ -37,14 +38,13 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAllPurchasedCartsQuery query = new(this.query.Pagination);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.AllAsync(this.query, false, ct),
+			x => x.AllAsync(Query, false, ct),
 			Times.Once()
 		);
 	}
@@ -53,14 +53,13 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllPurchasedCartsQuery query = new(this.query.Pagination);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
-		int expectedCount = carts.Length, actualCount = result.Count;
-		PurchasedCartId[] expectedIds = [.. carts.Select(x => x.Id)],
+		int expectedCount = Carts.Length, actualCount = result.Count;
+		PurchasedCartId[] expectedIds = [.. Carts.Select(x => x.Id)],
 			actualIds = [.. result.Items.Select(x => x.Id)];
 
 		Assert.Multiple(

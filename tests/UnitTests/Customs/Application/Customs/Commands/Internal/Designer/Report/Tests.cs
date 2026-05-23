@@ -8,7 +8,6 @@ using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Designer.Report;
 
@@ -17,6 +16,8 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly ReportCustomHandler handler;
+	private readonly ReportCustomCommand request = new(ValidId, ValidDesignerId);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -37,13 +38,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ReportCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -56,13 +53,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ReportCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -75,13 +68,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		ReportCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -97,13 +86,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		ReportCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -118,13 +103,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
-		ReportCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -137,15 +118,11 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
-		ReportCustomCommand command = new(
-			Id: ValidId,
-			CallerId: AccountId.New()
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { CallerId = new() }, ct)
 		);
 	}
 
@@ -154,14 +131,14 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		custom.Cancel();
-		ReportCustomCommand command = new(
-			Id: ValidId,
-			CallerId: AccountId.New()
+
+		// Act
+		Exception? ex = await Record.ExceptionAsync(
+			() => handler.Handle(request with { CallerId = new() }, ct)
 		);
 
 		// Assert
-		// Act
-		await handler.Handle(command, ct);
+		Assert.Null(ex);
 	}
 
 	[Fact]
@@ -171,15 +148,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Custom);
 
-		ReportCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

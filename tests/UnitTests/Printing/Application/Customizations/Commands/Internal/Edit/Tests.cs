@@ -11,6 +11,15 @@ using static Data.Customizations.TestData;
 public class Tests : Data.Customizations.BaseUnitTests
 {
 	private readonly EditCustomizationHandler handler;
+	private readonly EditCustomizationCommand request = new(
+		Id: ValidId,
+		Scale: MaxValidScale,
+		Infill: MaxValidInfill,
+		Volume: MaxValidVolume,
+		Color: ValidColor,
+		MaterialId: ValidMaterialId
+	);
+
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
@@ -28,17 +37,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		EditCustomizationCommand command = new(
-			Id: ValidId,
-			Scale: MaxValidScale,
-			Infill: MaxValidInfill,
-			Volume: MaxValidVolume,
-			Color: ValidColor,
-			MaterialId: ValidMaterialId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -51,17 +52,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		EditCustomizationCommand command = new(
-			Id: ValidId,
-			Scale: MaxValidScale,
-			Infill: MaxValidInfill,
-			Volume: MaxValidVolume,
-			Color: ValidColor,
-			MaterialId: ValidMaterialId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -75,19 +68,11 @@ public class Tests : Data.Customizations.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Customization);
-		EditCustomizationCommand command = new(
-			Id: ValidId,
-			Scale: MaxValidScale,
-			Infill: MaxValidInfill,
-			Volume: MaxValidVolume,
-			Color: ValidColor,
-			MaterialId: ValidMaterialId
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

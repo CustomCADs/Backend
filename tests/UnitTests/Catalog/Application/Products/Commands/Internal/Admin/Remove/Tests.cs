@@ -15,6 +15,8 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly RemoveProductHandler handler;
+	private readonly RemoveProductCommand request = new(ValidId, ValidAdminId);
+
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -37,10 +39,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -53,10 +54,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -69,10 +69,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -88,10 +87,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -112,12 +110,11 @@ public class Tests : Data.Products.BaseUnitTests
 			It.Is<GetAccountExistsByIdQuery>(x => x.Id == ValidAdminId),
 			ct
 		)).ReturnsAsync(false);
-		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -127,12 +124,11 @@ public class Tests : Data.Products.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Product);
-		RemoveProductCommand command = new(ValidId, ValidAdminId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

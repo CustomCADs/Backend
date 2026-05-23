@@ -11,6 +11,15 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly RegisterUserHandler handler;
+	private readonly RegisterUserCommand request = new(
+		Role: ValidRole,
+		Username: MaxValidUsername,
+		Email: ValidEmail,
+		Password: MinValidPassword,
+		FirstName: null,
+		LastName: null
+	);
+
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IRequestSender> sender = new();
 
@@ -28,26 +37,18 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		RegisterUserCommand command = new(
-			Role: ValidRole,
-			Username: MaxValidUsername,
-			Email: ValidEmail,
-			Password: MinValidPassword,
-			FirstName: null,
-			LastName: null
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
 			x => x.CreateAsync(
 				It.Is<User>(x =>
-					x.Username == command.Username
+					x.Username == request.Username
 					&& x.AccountId == ValidAccountId
 				),
-				command.Password
+				request.Password
 			),
 			Times.Once()
 		);
@@ -57,27 +58,19 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		RegisterUserCommand command = new(
-			Role: ValidRole,
-			Username: MaxValidUsername,
-			Email: ValidEmail,
-			Password: MinValidPassword,
-			FirstName: null,
-			LastName: null
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
 			x => x.SendCommandAsync(
 				It.Is<CreateAccountCommand>(x =>
-					x.Role == command.Role
-					&& x.Username == command.Username
-					&& x.Email == command.Email
-					&& x.FirstName == command.FirstName
-					&& x.LastName == command.LastName
+					x.Role == request.Role
+					&& x.Username == request.Username
+					&& x.Email == request.Email
+					&& x.FirstName == request.FirstName
+					&& x.LastName == request.LastName
 				),
 				ct
 			),
@@ -94,19 +87,10 @@ public class Tests : Data.Users.BaseUnitTests
 			MinValidPassword
 		)).ThrowsAsync(new CustomException("CreationErrorMessage"));
 
-		RegisterUserCommand command = new(
-			Role: ValidRole,
-			Username: MaxValidUsername,
-			Email: ValidEmail,
-			Password: MinValidPassword,
-			FirstName: null,
-			LastName: null
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomException>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

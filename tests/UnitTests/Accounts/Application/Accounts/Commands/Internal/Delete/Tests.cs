@@ -13,6 +13,8 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly DeleteAccountHandler handler;
+	private readonly DeleteAccountCommand request = new(ValidId);
+
 	private readonly Mock<IEventRaiser> raiser = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IAccountWrites> writes = new();
@@ -30,10 +32,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DeleteAccountCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteAccountCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -66,10 +66,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		DeleteAccountCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -85,12 +84,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Account);
-		DeleteAccountCommand command = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

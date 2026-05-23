@@ -11,6 +11,13 @@ using static Data.Materials.TestData;
 public class Tests : Data.Materials.BaseUnitTests
 {
 	private readonly EditMaterialHandler handler;
+	private readonly EditMaterialCommand request = new(
+		Id: ValidId,
+		Name: MaxValidName,
+		Density: MaxValidDensity,
+		Cost: MaxValidCost
+	);
+
 	private readonly Mock<IMaterialReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<MaterialId, Material>> cache = new();
@@ -28,15 +35,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		EditMaterialCommand command = new(
-			Id: ValidId,
-			Name: MaxValidName,
-			Density: MaxValidDensity,
-			Cost: MaxValidCost
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -49,15 +50,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		EditMaterialCommand command = new(
-			Id: ValidId,
-			Name: MaxValidName,
-			Density: MaxValidDensity,
-			Cost: MaxValidCost
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -70,15 +65,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange
-		EditMaterialCommand command = new(
-			Id: ValidId,
-			Name: MaxValidName,
-			Density: MaxValidDensity,
-			Cost: MaxValidCost
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(

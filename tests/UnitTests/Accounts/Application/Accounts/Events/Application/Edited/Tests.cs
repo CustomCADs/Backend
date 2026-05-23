@@ -11,6 +11,12 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly UserEditedHandler handler;
+	private readonly UserEditedApplicationEvent request = new(
+		Id: ValidId,
+		Username: null,
+		TrackViewedProducts: null
+	);
+
 	private readonly Mock<IAccountReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
@@ -26,14 +32,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShoulQueryDatabase()
 	{
 		// Arrange
-		UserEditedApplicationEvent @event = new(
-			Id: ValidId,
-			Username: null,
-			TrackViewedProducts: null
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		reads.Verify(
@@ -46,14 +47,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShoulPersistToDatabase()
 	{
 		// Arrange
-		UserEditedApplicationEvent @event = new(
-			Id: ValidId,
-			Username: null,
-			TrackViewedProducts: null
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		uow.Verify(
@@ -67,16 +63,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Account);
-		UserEditedApplicationEvent @event = new(
-			Id: ValidId,
-			Username: null,
-			TrackViewedProducts: null
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			() => handler.HandleAsync(@event)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

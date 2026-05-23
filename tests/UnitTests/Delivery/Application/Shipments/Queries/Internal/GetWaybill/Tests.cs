@@ -12,10 +12,12 @@ using static Data.Shipments.TestData;
 public class Tests : Data.Shipments.BaseUnitTests
 {
 	private readonly GetShipmentWaybillHandler handler;
+	private readonly GetShipmentWaybillQuery request = new(ValidId, HeadDesignerAccountId);
+
 	private readonly Mock<IShipmentReads> reads = new();
 	private readonly Mock<IDeliveryService> delivery = new();
 
-	private static readonly byte[] bytes = [1, 2, 3, 4, 5, 6];
+	private static readonly byte[] Bytes = [1, 2, 3, 4, 5, 6];
 
 	public Tests()
 	{
@@ -24,17 +26,16 @@ public class Tests : Data.Shipments.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(CreateShipment().Activate(ValidReferenceId));
 
-		delivery.Setup(x => x.PrintAsync(ValidReferenceId, ct)).ReturnsAsync(bytes);
+		delivery.Setup(x => x.PrintAsync(ValidReferenceId, ct)).ReturnsAsync(Bytes);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetShipmentWaybillQuery query = new(ValidId, HeadDesignerAccountId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -47,10 +48,9 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
-		GetShipmentWaybillQuery query = new(ValidId, HeadDesignerAccountId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		delivery.Verify(
@@ -63,25 +63,23 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetShipmentWaybillQuery query = new(ValidId, HeadDesignerAccountId);
 
 		// Act
-		byte[] result = await handler.Handle(query, ct);
+		byte[] result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(result, bytes);
+		Assert.Equal(result, Bytes);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldThrowException_WhenCallerNotHeadDesigner()
 	{
 		// Arrange
-		GetShipmentWaybillQuery query = new(ValidId, ValidBuyerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Shipment>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request with { CallerId = ValidBuyerId }, ct)
 		);
 	}
 
@@ -90,12 +88,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(CreateShipment());
-		GetShipmentWaybillQuery query = new(ValidId, HeadDesignerAccountId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -104,12 +101,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Shipment);
-		GetShipmentWaybillQuery query = new(ValidId, ValidBuyerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

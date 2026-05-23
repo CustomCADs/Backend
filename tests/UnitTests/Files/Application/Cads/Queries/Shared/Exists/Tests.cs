@@ -9,6 +9,8 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly CadExistsByIdHandler handler;
+	private readonly CadExistsByIdQuery request = new(ValidId);
+
 	private readonly Mock<ICadReads> reads = new();
 
 	public Tests()
@@ -21,10 +23,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CadExistsByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -40,10 +41,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.ExistsByIdAsync(ValidId, ct)).ReturnsAsync(exists);
-		CadExistsByIdQuery query = new(ValidId);
 
 		// Act
-		bool result = await handler.Handle(query, ct);
+		bool result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(exists, result);

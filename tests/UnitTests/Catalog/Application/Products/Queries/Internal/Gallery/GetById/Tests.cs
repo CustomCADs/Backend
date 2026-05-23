@@ -17,6 +17,8 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly GalleryGetProductByIdHandler handler;
+	private readonly GalleryGetProductByIdQuery request = new(ValidId, ValidCreatorId, Viewed: false);
+
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
@@ -38,10 +40,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -54,10 +55,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -83,13 +83,11 @@ public class Tests : Data.Products.BaseUnitTests
 	[InlineData(true, true)]
 	public async Task Handle_ShouldRaiseEvents(bool authenticatedUser, bool viewed)
 	{
-		AccountId creatorId = authenticatedUser ? ValidCreatorId : AccountId.New(Guid.Empty);
-
 		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, creatorId, Viewed: viewed);
+		AccountId creatorId = authenticatedUser ? ValidCreatorId : new();
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request with { CallerId = creatorId }, ct);
 
 		// Assert
 		raiser.Verify(
@@ -104,10 +102,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -124,12 +121,11 @@ public class Tests : Data.Products.BaseUnitTests
 	{
 		// Arrange
 		product.Report(ValidDesignerId);
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomStatusException<Product>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -139,12 +135,11 @@ public class Tests : Data.Products.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as Product);
-		GalleryGetProductByIdQuery query = new(ValidId, ValidCreatorId, Viewed: false);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

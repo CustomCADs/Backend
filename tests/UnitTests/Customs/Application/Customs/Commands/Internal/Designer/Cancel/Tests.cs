@@ -15,6 +15,8 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly CancelCustomHandler handler;
+	private readonly CancelCustomCommand request = new(ValidId, ValidDesignerId);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IEventRaiser> raiser = new();
@@ -34,13 +36,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CancelCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -53,13 +51,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CancelCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -72,13 +66,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		CancelCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -93,13 +83,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
-		CancelCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -117,15 +103,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 
-		CancelCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -136,15 +117,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Custom);
 
-		CancelCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidDesignerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

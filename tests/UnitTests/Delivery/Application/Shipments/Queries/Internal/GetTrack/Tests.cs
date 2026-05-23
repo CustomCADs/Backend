@@ -11,10 +11,12 @@ using static Data.Shipments.TestData;
 public class Tests : Data.Shipments.BaseUnitTests
 {
 	private readonly GetShipmentTracksHandler handler;
+	private readonly GetShipmentTracksQuery request = new(ValidId);
+
 	private readonly Mock<IShipmentReads> reads = new();
 	private readonly Mock<IDeliveryService> delivery = new();
 
-	private static readonly ShipmentTrackDto[] statuses = CreateShipmentTracksDtos();
+	private static readonly ShipmentTrackDto[] Statuses = CreateShipmentTracksDtos();
 
 	public Tests()
 	{
@@ -23,17 +25,16 @@ public class Tests : Data.Shipments.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(CreateShipment().Activate(ValidReferenceId));
 
-		delivery.Setup(x => x.TrackAsync(ValidReferenceId, ct)).ReturnsAsync(statuses);
+		delivery.Setup(x => x.TrackAsync(ValidReferenceId, ct)).ReturnsAsync(Statuses);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetShipmentTracksQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
-		GetShipmentTracksQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		delivery.Verify(
@@ -62,13 +62,12 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetShipmentTracksQuery query = new(ValidId);
 
 		// Act
-		Dictionary<DateTimeOffset, GetShipmentTracksDto> tracks = await handler.Handle(query, ct);
+		Dictionary<DateTimeOffset, GetShipmentTracksDto> tracks = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(tracks, statuses.ToDictionary(x => x.DateTime, x => new GetShipmentTracksDto(x.Message, x.Place)));
+		Assert.Equal(tracks, Statuses.ToDictionary(x => x.DateTime, x => new GetShipmentTracksDto(x.Message, x.Place)));
 	}
 
 	[Fact]
@@ -77,12 +76,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(CreateShipment());
-		GetShipmentTracksQuery query = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -91,12 +89,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Shipment);
-		GetShipmentTracksQuery query = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 

@@ -18,6 +18,16 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly CreateProductHandler handler;
+	private readonly CreateProductCommand request = new(
+		Name: MinValidName,
+		Description: MinValidDescription,
+		Price: MinValidPrice,
+		CategoryId: ValidCategoryId,
+		ImageId: ValidImageId,
+		CadId: ValidCadId,
+		CallerId: ValidCreatorId
+	);
+
 	private readonly Mock<IProductWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -78,18 +88,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -118,18 +119,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -180,18 +172,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -214,18 +197,8 @@ public class Tests : Data.Products.BaseUnitTests
 			ct
 		)).ReturnsAsync(DomainConstants.Users.DesignerRole);
 
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
-
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ProductStatus.Validated, product.Status);
@@ -240,18 +213,8 @@ public class Tests : Data.Products.BaseUnitTests
 			ct
 		)).ReturnsAsync(DomainConstants.Users.DesignerRole);
 
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
-
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -271,18 +234,8 @@ public class Tests : Data.Products.BaseUnitTests
 			ct
 		)).ReturnsAsync(true);
 
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
-
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -297,18 +250,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
 
 		// Act
-		ProductId id = await handler.Handle(command, ct);
+		ProductId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);
@@ -323,20 +267,10 @@ public class Tests : Data.Products.BaseUnitTests
 			ct
 		)).ReturnsAsync(false);
 
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -349,20 +283,10 @@ public class Tests : Data.Products.BaseUnitTests
 			ct
 		)).ReturnsAsync(false);
 
-		CreateProductCommand command = new(
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			ImageId: ValidImageId,
-			CadId: ValidCadId,
-			CallerId: ValidCreatorId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

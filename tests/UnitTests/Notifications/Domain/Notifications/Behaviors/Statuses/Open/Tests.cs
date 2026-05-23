@@ -4,9 +4,6 @@ namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Behaviors.Stat
 
 public class Tests : Data.Notifications.BaseUnitTests
 {
-	private static readonly Func<Action, CustomValidationException<Notification>> expectValidationException
-		= Assert.Throws<CustomValidationException<Notification>>;
-
 	[Fact]
 	public void Open_ShouldSucceed_WhenRead()
 	{
@@ -21,37 +18,37 @@ public class Tests : Data.Notifications.BaseUnitTests
 	[Fact]
 	public void Open_ShouldFail_WhenUnread()
 	{
-		expectValidationException((Action)(() =>
+		ExpectValidationException(() =>
 		{
-			Notification notification = Data.Notifications.BaseUnitTests.CreateNotification();
+			Notification notification = CreateNotification();
 
 			notification.Open();
-		}));
+		});
 	}
 
 	[Fact]
 	public void Open_ShouldFail_WhenOpened()
 	{
-		expectValidationException((Action)(() =>
+		ExpectValidationException(() =>
 		{
-			Notification notification = Data.Notifications.BaseUnitTests.CreateNotification();
+			Notification notification = CreateNotification();
 			notification.Read();
 			notification.Open();
 
 			notification.Open();
-		}));
+		});
 	}
 
 	[Fact]
 	public void Open_ShouldFail_WhenHidden()
 	{
-		expectValidationException((Action)(() =>
+		ExpectValidationException(() =>
 		{
-			Notification notification = Data.Notifications.BaseUnitTests.CreateNotification();
+			Notification notification = CreateNotification();
 			notification.Read();
 			notification.Hide();
 
 			notification.Open();
-		}));
+		});
 	}
 }

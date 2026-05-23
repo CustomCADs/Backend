@@ -10,25 +10,26 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly GetAccountViewedProductsByUsernameHandler handler;
+	private readonly GetAccountViewedProductsByUsernameQuery request = new(ValidUsername);
+
 	private readonly Mock<IAccountReads> reads = new();
 
-	private static readonly ViewedProduct[] expected = [];
+	private static readonly ViewedProduct[] Expected = [];
 
 	public Tests()
 	{
 		handler = new(reads.Object);
 		reads.Setup(x => x.ViewedProductsByUsernameAsync(ValidUsername, ct))
-			.ReturnsAsync(expected);
+			.ReturnsAsync(Expected);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAccountViewedProductsByUsernameQuery query = new(ValidUsername);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -41,12 +42,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAccountViewedProductsByUsernameQuery query = new(ValidUsername);
 
 		// Act
-		ViewedProductDto[] products = await handler.Handle(query, ct);
+		ViewedProductDto[] products = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(expected.Select(x => x.ProductId), products.Select(x => x.Id));
+		Assert.Equal(Expected.Select(x => x.ProductId), products.Select(x => x.Id));
 	}
 }

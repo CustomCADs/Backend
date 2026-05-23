@@ -7,9 +7,13 @@ using Microsoft.Extensions.Options;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Commands.Internal.ResetPasswordEmail;
 
+using static Data.Users.TestData;
+
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly ResetPasswordEmailHandler handler;
+	private readonly ResetPasswordEmailCommand request = new(ValidEmail);
+
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 	private readonly Mock<IOptions<ClientUrlSettings>> settings = new();
@@ -30,10 +34,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		ResetPasswordEmailCommand command = new(user.Email.Value);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
@@ -46,10 +49,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		ResetPasswordEmailCommand command = new(user.Email.Value);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(

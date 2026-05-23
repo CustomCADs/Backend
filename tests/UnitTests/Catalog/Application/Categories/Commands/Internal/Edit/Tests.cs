@@ -9,6 +9,8 @@ using static Data.Categories.TestData;
 public class Tests : Data.Categories.BaseUnitTests
 {
 	private readonly EditCategoryHandler handler;
+	private readonly EditCategoryCommand request = new(ValidId, Dto: new(ValidName, ValidDescription));
+
 	private readonly Mock<ICategoryReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<CategoryId, Category>> cache = new();
@@ -25,10 +27,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		EditCategoryCommand command = new(ValidId, new(ValidName, ValidDescription));
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -41,10 +42,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		EditCategoryCommand command = new(ValidId, new(ValidName, ValidDescription));
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -57,10 +57,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldModifyCategory()
 	{
 		// Arrange
-		EditCategoryCommand command = new(ValidId, new(ValidName, ValidDescription));
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(() =>
@@ -74,10 +73,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange
-		EditCategoryCommand command = new(ValidId, new(ValidName, ValidDescription));
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(

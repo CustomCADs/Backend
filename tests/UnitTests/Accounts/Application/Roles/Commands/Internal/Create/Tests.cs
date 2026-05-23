@@ -13,12 +13,14 @@ using static Data.Roles.TestData;
 public class Tests : Data.Roles.BaseUnitTests
 {
 	private readonly CreateRoleHandler handler;
+	private readonly CreateRoleCommand request = new(ValidName, ValidDescription);
+
 	private readonly Mock<IEventRaiser> raiser = new();
 	private readonly Mock<BaseCachingService<RoleId, Role>> cache = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRoleWrites> writes = new();
 
-	private static readonly Role role = CreateRole(id: ValidId);
+	private readonly Role role = CreateRole(id: ValidId);
 
 	public Tests()
 	{
@@ -34,10 +36,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateRoleCommand command = new(ValidName, ValidDescription);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -57,10 +58,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange
-		CreateRoleCommand command = new(ValidName, ValidDescription);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -73,10 +73,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		CreateRoleCommand command = new(ValidName, ValidDescription);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -91,10 +90,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateRoleCommand command = new(ValidName, ValidDescription);
 
 		// Act
-		RoleId id = await handler.Handle(command, ct);
+		RoleId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);

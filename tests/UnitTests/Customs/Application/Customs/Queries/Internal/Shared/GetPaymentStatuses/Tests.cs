@@ -6,15 +6,15 @@ namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.Internal.Shar
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly GetCustomPaymentStatusesHandler handler = new();
+	private readonly GetCustomPaymentStatusesQuery request = new();
 
 	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetCustomPaymentStatusesQuery query = new();
 
 		// Act
-		PaymentStatus[] sortings = await handler.Handle(query, ct);
+		PaymentStatus[] sortings = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(sortings, Enum.GetValues<PaymentStatus>());

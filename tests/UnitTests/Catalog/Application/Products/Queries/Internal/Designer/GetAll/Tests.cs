@@ -13,58 +13,57 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly DesignerGetAllProductsHandler handler;
+	private readonly DesignerGetAllProductsQuery request = new(
+		Pagination: Query.Pagination,
+		CallerId: ValidDesignerId,
+		CategoryId: Query.CategoryId,
+		Status: Status,
+		Name: Query.Name,
+		Sorting: Query.Sorting
+	);
+
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private readonly Product[] products = [];
-	private readonly ProductQuery query;
-	private readonly Result<Product> result;
-	private readonly ProductStatus Status = ProductStatus.Unchecked;
+	private static readonly ProductStatus Status = ProductStatus.Unchecked;
+	private static readonly Product[] Products = [];
+	private static readonly ProductQuery Query = new(
+		Pagination: new(1, Products.Length)
+	);
+	private static readonly Result<Product> Result = new(
+		Count: Products.Length,
+		Items: Products
+	);
+
 
 	public Tests()
 	{
 		handler = new(reads.Object, sender.Object);
 
-		query = new(
-			Pagination: new(1, products.Length)
-		);
-		result = new(
-			Count: products.Length,
-			Items: products
-		);
-
 		reads.Setup(x => x.AllAsync(
 			It.IsAny<ProductQuery>(),
 			false,
 			ct
-		)).ReturnsAsync(result);
+		)).ReturnsAsync(Result);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == products.Select(x => x.CreatorId)),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == Products.Select(x => x.CreatorId)),
 			ct
-		)).ReturnsAsync(products.ToDictionary(x => x.CreatorId, x => "Username123"));
+		)).ReturnsAsync(Products.ToDictionary(x => x.CreatorId, x => "Username123"));
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == Products.Select(x => x.CategoryId)),
 			ct
-		)).ReturnsAsync(products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
+		)).ReturnsAsync(Products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DesignerGetAllProductsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidDesignerId,
-			CategoryId: this.query.CategoryId,
-			Status: Status,
-			Name: this.query.Name,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -81,29 +80,21 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		DesignerGetAllProductsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidDesignerId,
-			CategoryId: this.query.CategoryId,
-			Status: Status,
-			Name: this.query.Name,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == products.Select(x => x.CreatorId)),
+				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == Products.Select(x => x.CreatorId)),
 				ct
 			),
 			Times.Once()
 		);
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+				It.Is<BatchGetCategorByIdQuery>(x => x.Ids == Products.Select(x => x.CategoryId)),
 				ct
 			),
 			Times.Once()
@@ -114,19 +105,11 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		DesignerGetAllProductsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidDesignerId,
-			CategoryId: this.query.CategoryId,
-			Status: Status,
-			Name: this.query.Name,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(result.Count, products.Length);
+		Assert.Equal(result.Count, Products.Length);
 	}
 }

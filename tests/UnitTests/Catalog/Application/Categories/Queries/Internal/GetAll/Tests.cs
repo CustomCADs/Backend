@@ -9,6 +9,8 @@ using static Data.Categories.TestData;
 public class Tests : Data.Categories.BaseUnitTests
 {
 	private readonly GetAllCategoriesHandler handler;
+	private readonly GetAllCategoriesQuery request = new();
+
 	private readonly Mock<ICategoryReads> reads = new();
 	private readonly Mock<BaseCachingService<CategoryId, Category>> cache = new();
 
@@ -30,10 +32,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetAllCategoriesQuery query = new();
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllCategoriesQuery query = new();
 
 		// Act
-		IEnumerable<CategoryReadDto> categories = await handler.Handle(query, ct);
+		IEnumerable<CategoryReadDto> categories = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(categories.Select(r => r.Id), this.categories.Select(r => r.Id));

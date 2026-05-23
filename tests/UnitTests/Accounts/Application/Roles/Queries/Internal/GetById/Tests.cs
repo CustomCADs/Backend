@@ -10,6 +10,8 @@ using static Data.Roles.TestData;
 public class Tests : Data.Roles.BaseUnitTests
 {
 	private readonly GetRoleByIdHandler handler;
+	private readonly GetRoleByIdQuery request = new(ValidId);
+
 	private readonly Mock<IRoleReads> reads = new();
 	private readonly Mock<BaseCachingService<RoleId, Role>> cache = new();
 
@@ -27,10 +29,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetRoleByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetRoleByIdQuery query = new(ValidId);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, result.Id);

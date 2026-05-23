@@ -8,36 +8,37 @@ namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Internal.Ge
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly GetAllAccountsHandler handler;
+	private readonly GetAllAccountsQuery request = new(Query.Pagination);
+
 	private readonly Mock<IAccountReads> reads = new();
 
-	private readonly Account[] accounts = [
+	private static readonly Account[] Accounts = [
 		CreateAccount(id: AccountId.New()),
 		CreateAccount(id: AccountId.New()),
 		CreateAccount(id: AccountId.New()),
 		CreateAccount(id: AccountId.New()),
 	];
-	private readonly AccountQuery query = new(Pagination: new(1, 1));
+	private static readonly AccountQuery Query = new(Pagination: new(1, Accounts.Length));
 
 	public Tests()
 	{
 		handler = new(reads.Object);
 
-		reads.Setup(x => x.AllAsync(query, false, ct))
-			.ReturnsAsync(new Result<Account>(1, accounts));
+		reads.Setup(x => x.AllAsync(Query, false, ct))
+			.ReturnsAsync(new Result<Account>(1, Accounts));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAllAccountsQuery query = new(this.query.Pagination);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.AllAsync(this.query, false, ct),
+			x => x.AllAsync(Query, false, ct),
 			Times.Once()
 		);
 	}
@@ -46,12 +47,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllAccountsQuery query = new(this.query.Pagination);
 
 		// Act
-		Result<GetAllAccountsDto> accounts = await handler.Handle(query, ct);
+		Result<GetAllAccountsDto> accounts = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(accounts.Items.Select(r => r.Id), this.accounts.Select(r => r.Id));
+		Assert.Equal(accounts.Items.Select(r => r.Id), Accounts.Select(r => r.Id));
 	}
 }

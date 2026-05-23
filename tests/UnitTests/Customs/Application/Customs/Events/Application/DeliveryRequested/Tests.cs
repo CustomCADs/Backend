@@ -13,7 +13,17 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	private readonly CustomDeliveryRequestedApplicationEventHandler handler;
+	private readonly CustomDeliveryRequestedHandler handler;
+	private readonly CustomDeliveryRequestedApplicationEvent request = new(
+		CustomId: ValidId,
+		ShipmentService: ShipmentService,
+		Weight: Weight,
+		Count: Count,
+		Address: Address,
+		Contact: Contact
+	);
+
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -21,8 +31,8 @@ public class Tests : Data.Customs.BaseUnitTests
 	private const string ShipmentService = "shipment-service";
 	private const double Weight = 5.2;
 	private const int Count = 3;
-	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
-	private static readonly ContactDto contact = new("0123456789", null);
+	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
+	private static readonly ContactDto Contact = new("0123456789", null);
 	private readonly Custom custom = CreateCustom(forDelivery: true);
 
 	public Tests()
@@ -52,17 +62,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CustomDeliveryRequestedApplicationEvent @event = new(
-			CustomId: ValidId,
-			ShipmentService: ShipmentService,
-			Weight: Weight,
-			Count: Count,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		reads.Verify(
@@ -75,17 +77,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CustomDeliveryRequestedApplicationEvent @event = new(
-			CustomId: ValidId,
-			ShipmentService: ShipmentService,
-			Weight: Weight,
-			Count: Count,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		uow.Verify(
@@ -98,17 +92,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CustomDeliveryRequestedApplicationEvent @event = new(
-			CustomId: ValidId,
-			ShipmentService: ShipmentService,
-			Weight: Weight,
-			Count: Count,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		sender.Verify(
@@ -131,17 +117,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
-		CustomDeliveryRequestedApplicationEvent @event = new(
-			CustomId: ValidId,
-			ShipmentService: ShipmentService,
-			Weight: Weight,
-			Count: Count,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		Assert.Equal(ValidShipmentId, custom.CompletedCustom?.ShipmentId);
@@ -154,19 +132,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Custom);
 
-		CustomDeliveryRequestedApplicationEvent @event = new(
-			CustomId: ValidId,
-			ShipmentService: ShipmentService,
-			Weight: Weight,
-			Count: Count,
-			Address: address,
-			Contact: contact
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.HandleAsync(@event)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

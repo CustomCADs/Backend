@@ -17,6 +17,8 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly DeleteProductHandler handler;
+	private readonly DeleteProductCommand request = new(ValidId, ValidCreatorId);
+
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IProductWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -42,10 +44,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DeleteProductCommand command = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -58,10 +59,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteProductCommand command = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -78,10 +78,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		DeleteProductCommand command = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -97,10 +96,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		DeleteProductCommand command = new(ValidId, ValidCreatorId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -121,12 +119,11 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
-		DeleteProductCommand command = new(ValidId, ValidDesignerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { CallerId = ValidDesignerId }, ct)
 		);
 	}
 
@@ -136,12 +133,11 @@ public class Tests : Data.Products.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Product);
-		DeleteProductCommand command = new(ValidId, ValidCreatorId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

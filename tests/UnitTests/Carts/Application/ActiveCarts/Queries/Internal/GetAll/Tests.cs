@@ -10,11 +10,13 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly GetActiveCartItemsHandler handler;
+	private readonly GetActiveCartItemsQuery request = new(ValidBuyerId);
+
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
 	private const string Buyer = "For7a7a";
-	private static readonly ActiveCartItem[] items = [
+	private static readonly ActiveCartItem[] Items = [
 		CreateItem(),
 		CreateItemWithDelivery(),
 	];
@@ -24,7 +26,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		handler = new(reads.Object, sender.Object);
 
 		reads.Setup(x => x.AllAsync(ValidBuyerId, false, ct))
-			.ReturnsAsync(items);
+			.ReturnsAsync(Items);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidBuyerId),
@@ -36,10 +38,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetActiveCartItemsQuery query = new(ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -52,10 +53,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GetActiveCartItemsQuery query = new(ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -71,12 +71,11 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetActiveCartItemsQuery query = new(ValidBuyerId);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(items.Select(x => x.ProductId), result.Select(x => x.ProductId));
+		Assert.Equal(Items.Select(x => x.ProductId), result.Select(x => x.ProductId));
 	}
 }

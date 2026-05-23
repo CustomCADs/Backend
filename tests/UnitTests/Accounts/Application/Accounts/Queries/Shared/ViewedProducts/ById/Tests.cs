@@ -1,7 +1,6 @@
 ﻿using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProducts;
 using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.ViewedProducts.ById;
 
@@ -10,6 +9,8 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly GetAccountViewedProductHandler handler;
+	private readonly GetAccountViewedProductQuery request = new(ValidId, ValidProductId);
+
 	private readonly Mock<IAccountReads> reads = new();
 
 	public Tests()
@@ -23,10 +24,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAccountViewedProductQuery query = new(ValidId, ValidProductId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -46,10 +46,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 			reads.Setup(x => x.ViewedProductsByIdAsync(ValidId, ct))
 				.ReturnsAsync([ValidProductId]);
 		}
-		GetAccountViewedProductQuery query = new(ValidId, ValidProductId);
 
 		// Act
-		bool actual = await handler.Handle(query, ct);
+		bool actual = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(expected, actual);

@@ -4,7 +4,6 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.Internal.Designers.GetById;
 
@@ -13,6 +12,8 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly DesignerGetCustomByIdHandler handler;
+	private readonly DesignerGetCustomByIdQuery request = new(ValidId, ValidDesignerId);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
@@ -30,10 +31,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DesignerGetCustomByIdQuery query = new(ValidId, ValidDesignerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -47,10 +47,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		custom.SetCategory(null);
-		DesignerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -73,10 +72,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests_WhenHasCategory()
 	{
 		// Arrange
-		DesignerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request with { CallerId = ValidBuyerId }, ct);
 
 		// Assert
 		sender.Verify(
@@ -92,13 +90,12 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		DesignerGetCustomByIdQuery query = new(ValidId, ValidDesignerId);
 
 		// Act
-		DesignerGetCustomByIdDto custom = await handler.Handle(query, ct);
+		DesignerGetCustomByIdDto custom = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(this.custom.Id, custom.Id);
+		Assert.Equal(ValidId, custom.Id);
 	}
 
 	[Fact]
@@ -106,38 +103,35 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Custom);
-		DesignerGetCustomByIdQuery query = new(ValidId, ValidDesignerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
 	[Fact]
-	public async Task Handle_ShouldThrowException_WhenUnauthorized()
+	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
 		custom.Accept(ValidDesignerId);
-		DesignerGetCustomByIdQuery query = new(ValidId, AccountId.New());
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request with { CallerId = new() }, ct)
 		);
 	}
 
 	[Fact]
-	public async Task Handle_ShouldNotThrowException_WhenPending()
+	public async Task Handle_ShouldNotThrowException_WhenUnauthorizedAccessButPending()
 	{
 		// Arrange
-		DesignerGetCustomByIdQuery query = new(ValidId, AccountId.New());
 
 		// Act
 		Exception? ex = await Record.ExceptionAsync(
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request with { CallerId = new() }, ct)
 		);
 
 		// Assert

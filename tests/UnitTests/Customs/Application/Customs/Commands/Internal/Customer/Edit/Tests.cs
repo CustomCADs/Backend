@@ -4,7 +4,6 @@ using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Edit;
 
@@ -13,6 +12,14 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly EditCustomHandler handler;
+	private readonly EditCustomCommand request = new(
+		Id: ValidId,
+		Name: MaxValidName,
+		Description: MaxValidDescription,
+		CategoryId: ValidCategoryId,
+		CallerId: ValidBuyerId
+	);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IEventRaiser> raiser = new();
@@ -31,16 +38,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		EditCustomCommand command = new(
-			Id: ValidId,
-			Name: MaxValidName,
-			Description: MaxValidDescription,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidBuyerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -53,16 +53,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		EditCustomCommand command = new(
-			Id: ValidId,
-			Name: MaxValidName,
-			Description: MaxValidDescription,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidBuyerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -77,21 +70,10 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents(bool isPending)
 	{
 		// Arrange
-		if (!isPending)
-		{
-			custom.Accept(ValidDesignerId);
-		}
-
-		EditCustomCommand command = new(
-			Id: ValidId,
-			Name: MaxValidName,
-			Description: MaxValidDescription,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidBuyerId
-		);
+		if (!isPending) custom.Accept(ValidDesignerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(

@@ -2,7 +2,6 @@
 using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Quantity.Increase;
 
@@ -11,10 +10,16 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly IncreaseActiveCartItemQuantityHandler handler;
+	private readonly IncreaseActiveCartItemQuantityCommand request = new(
+		CallerId: ValidBuyerId,
+		ProductId: ValidProductId,
+		Amount: MinValidQuantity
+	);
+
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
-	private int oldQuantity;
+	private readonly int oldQuantity;
 
 	public Tests()
 	{
@@ -31,14 +36,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		IncreaseActiveCartItemQuantityCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ValidProductId,
-			Amount: MinValidQuantity
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -51,14 +51,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		IncreaseActiveCartItemQuantityCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ValidProductId,
-			Amount: MinValidQuantity
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -71,17 +66,12 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		IncreaseActiveCartItemQuantityCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ValidProductId,
-			Amount: MinValidQuantity
-		);
 
 		// Act
-		int result = await handler.Handle(command, ct);
+		int result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(oldQuantity + command.Amount, result);
+		Assert.Equal(oldQuantity + request.Amount, result);
 	}
 
 	[Fact]
@@ -91,16 +81,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		reads.Setup(x => x.SingleAsync(ValidBuyerId, ValidProductId, true, ct))
 			.ReturnsAsync(null as ActiveCartItem);
 
-		IncreaseActiveCartItemQuantityCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ValidProductId,
-			Amount: MinValidQuantity
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -108,16 +92,11 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenItemNotFound()
 	{
 		// Arrange
-		IncreaseActiveCartItemQuantityCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ProductId.New(),
-			Amount: MinValidQuantity
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { ProductId = new() }, ct)
 		);
 	}
 }

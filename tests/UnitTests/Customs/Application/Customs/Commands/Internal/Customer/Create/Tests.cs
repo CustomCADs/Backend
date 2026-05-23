@@ -14,6 +14,15 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly CreateCustomHandler handler;
+	private readonly CreateCustomCommand request = new(
+		Name: MaxValidName,
+		Description: MaxValidDescription,
+		ForDelivery: true,
+		CallerId: ValidBuyerId,
+		CategoryId: ValidCategoryId
+	);
+
+
 	private readonly Mock<IWrites<Custom>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -48,16 +57,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateCustomCommand command = new(
-			Name: MaxValidName,
-			Description: MaxValidDescription,
-			ForDelivery: true,
-			CallerId: ValidBuyerId,
-			CategoryId: ValidCategoryId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -82,16 +84,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CreateCustomCommand command = new(
-			Name: MaxValidName,
-			Description: MaxValidDescription,
-			ForDelivery: true,
-			CallerId: ValidBuyerId,
-			CategoryId: ValidCategoryId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -114,16 +109,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		CreateCustomCommand command = new(
-			Name: MaxValidName,
-			Description: MaxValidDescription,
-			ForDelivery: true,
-			CallerId: ValidBuyerId,
-			CategoryId: ValidCategoryId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -138,16 +126,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateCustomCommand command = new(
-			Name: MaxValidName,
-			Description: MaxValidDescription,
-			ForDelivery: true,
-			CallerId: ValidBuyerId,
-			CategoryId: ValidCategoryId
-		);
 
 		// Act
-		CustomId id = await handler.Handle(command, ct);
+		CustomId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);
@@ -162,18 +143,10 @@ public class Tests : Data.Customs.BaseUnitTests
 			ct
 		)).ReturnsAsync(false);
 
-		CreateCustomCommand command = new(
-			Name: MaxValidName,
-			Description: MaxValidDescription,
-			ForDelivery: true,
-			CallerId: ValidBuyerId,
-			CategoryId: ValidCategoryId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

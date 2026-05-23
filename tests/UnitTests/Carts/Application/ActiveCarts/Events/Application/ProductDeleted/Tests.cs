@@ -9,6 +9,12 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly ProductDeletedHandler handler;
+	private readonly ProductDeletedApplicationEvent request = new(
+		Id: ValidProductId,
+		ImageId: default,
+		CadId: default
+	);
+
 	private readonly Mock<IUnitOfWork> uow = new();
 
 	public Tests()
@@ -20,14 +26,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldBulkDelete_WhenThresholdReached()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
-			Id: ValidProductId,
-			ImageId: default,
-			CadId: default
-		);
 
 		// Act
-		await handler.HandleAsync(ie);
+		await handler.HandleAsync(request);
 
 		// Assert
 		uow.Verify(

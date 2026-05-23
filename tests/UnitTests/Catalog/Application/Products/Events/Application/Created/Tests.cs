@@ -9,6 +9,8 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly ProductCreatedHandler handler;
+	private readonly ProductCreatedApplicationEvent request = new(ValidId, TagIds);
+
 	private readonly Mock<IProductWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
@@ -23,10 +25,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductCreatedApplicationEvent @event = new(ValidId, TagIds);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		writes.Verify(

@@ -8,6 +8,12 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly ResetUserPasswordHandler handler;
+	private readonly ResetUserPasswordCommand request = new(
+		Email: ValidEmail,
+		Token: Token,
+		NewPassword: MinValidPassword
+	);
+
 	private readonly Mock<IUserService> service = new();
 
 	private const string Token = "email-token";
@@ -22,14 +28,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		ResetUserPasswordCommand command = new(
-			Email: user.Email.Value,
-			Token: Token,
-			NewPassword: MinValidPassword
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(

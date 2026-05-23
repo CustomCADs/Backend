@@ -10,7 +10,7 @@ using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 
-public class CartPaymentCompletedApplicationEventHandler(
+public class CartPaymentCompletedHandler(
 	IPurchasedCartReads reads,
 	IUnitOfWork uow,
 	IRequestSender sender,

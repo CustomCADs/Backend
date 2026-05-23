@@ -11,12 +11,19 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly SetCadCoordsHandler handler;
+	private readonly SetCadCoordsCommand request = new(
+		Id: ValidId,
+		CamCoordinates: CamCoords,
+		PanCoordinates: PanCoords,
+		CallerId: ValidOwnerId
+	);
+
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
-	private static readonly CoordinatesDto camCoords = new(MinValidCoord, MinValidCoord, MinValidCoord);
-	private static readonly CoordinatesDto panCoords = new(MaxValidCoord, MaxValidCoord, MaxValidCoord);
+	private static readonly CoordinatesDto CamCoords = new(MinValidCoord, MinValidCoord, MinValidCoord);
+	private static readonly CoordinatesDto PanCoords = new(MaxValidCoord, MaxValidCoord, MaxValidCoord);
 	private readonly Cad cad = CreateCad();
 
 	public Tests()
@@ -30,15 +37,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		SetCadCoordsCommand command = new(
-			Id: ValidId,
-			CamCoordinates: camCoords,
-			PanCoordinates: panCoords,
-			CallerId: ValidOwnerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -51,15 +52,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		SetCadCoordsCommand command = new(
-			Id: ValidId,
-			CamCoordinates: camCoords,
-			PanCoordinates: panCoords,
-			CallerId: ValidOwnerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -72,15 +67,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		SetCadCoordsCommand command = new(
-			Id: ValidId,
-			CamCoordinates: camCoords,
-			PanCoordinates: panCoords,
-			CallerId: ValidOwnerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -93,24 +82,18 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldModifyCad()
 	{
 		// Arrange
-		SetCadCoordsCommand command = new(
-			Id: ValidId,
-			CamCoordinates: camCoords,
-			PanCoordinates: panCoords,
-			CallerId: ValidOwnerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
-			() => Assert.Equal(camCoords.X, cad.CamCoordinates.X),
-			() => Assert.Equal(camCoords.Y, cad.CamCoordinates.Y),
-			() => Assert.Equal(camCoords.Z, cad.CamCoordinates.Z),
-			() => Assert.Equal(panCoords.X, cad.PanCoordinates.X),
-			() => Assert.Equal(panCoords.Y, cad.PanCoordinates.Y),
-			() => Assert.Equal(panCoords.Z, cad.PanCoordinates.Z)
+			() => Assert.Equal(CamCoords.X, cad.CamCoordinates.X),
+			() => Assert.Equal(CamCoords.Y, cad.CamCoordinates.Y),
+			() => Assert.Equal(CamCoords.Z, cad.CamCoordinates.Z),
+			() => Assert.Equal(PanCoords.X, cad.PanCoordinates.X),
+			() => Assert.Equal(PanCoords.Y, cad.PanCoordinates.Y),
+			() => Assert.Equal(PanCoords.Z, cad.PanCoordinates.Z)
 		);
 	}
 
@@ -121,17 +104,10 @@ public class Tests : Data.Cads.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Cad);
 
-		SetCadCoordsCommand command = new(
-			Id: ValidId,
-			CamCoordinates: camCoords,
-			PanCoordinates: panCoords,
-			CallerId: ValidOwnerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

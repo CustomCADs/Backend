@@ -9,6 +9,8 @@ using static Data.Tags.TestData;
 public class Tests : Data.Tags.BaseUnitTests
 {
 	private readonly CreateTagHandler handler;
+	private readonly CreateTagCommand request = new(MaxValidName);
+
 	private readonly Mock<ITagWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<TagId, Tag>> cache = new();
@@ -29,10 +31,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateTagCommand command = new(MaxValidName);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -52,10 +53,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		CreateTagCommand command = new(MaxValidName);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -68,10 +68,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateTagCommand command = new(MaxValidName);
 
 		// Act
-		TagId id = await handler.Handle(command, ct);
+		TagId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);

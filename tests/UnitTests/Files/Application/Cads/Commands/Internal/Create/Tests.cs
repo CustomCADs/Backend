@@ -8,6 +8,8 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly CreateCadHandler handler;
+	private readonly CreateCadCommand request = new(ValidKey, ValidContentType, ValidVolume, ValidOwnerId);
+
 	private readonly Mock<IWrites<Cad>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
@@ -26,10 +28,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateCadCommand command = new(ValidKey, ValidContentType, ValidVolume, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -49,10 +50,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		CreateCadCommand command = new(ValidKey, ValidContentType, ValidVolume, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -68,10 +68,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateCadCommand command = new(ValidKey, ValidContentType, ValidVolume, ValidOwnerId);
 
 		// Act
-		CadId id = await handler.Handle(command, ct);
+		CadId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);

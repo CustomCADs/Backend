@@ -9,9 +9,15 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly AccountCreatedHandler handler;
-	private readonly Mock<IUserService> service = new();
+	private readonly AccountCreatedApplicationEvent request = new(
+		Id: ValidAccountId,
+		Role: ValidRole,
+		Username: MinValidUsername,
+		Email: ValidEmail,
+		Password: MinValidPassword
+	);
 
-	private readonly User user = CreateUser();
+	private readonly Mock<IUserService> service = new();
 
 	public Tests()
 	{
@@ -22,27 +28,20 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		AccountCreatedApplicationEvent @event = new(
-			Id: user.AccountId,
-			Role: user.Role,
-			Username: user.Username,
-			Email: user.Email.Value,
-			Password: MinValidPassword
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		service.Verify(
 			x => x.CreateAsync(
 				It.Is<User>(x =>
-					x.Role == @event.Role
-					&& x.Username == @event.Username
-					&& x.Email.Value == @event.Email
-					&& x.AccountId == @event.Id
+					x.Role == request.Role
+					&& x.Username == request.Username
+					&& x.Email.Value == request.Email
+					&& x.AccountId == request.Id
 				),
-				@event.Password
+				request.Password
 			),
 			Times.Once()
 		);

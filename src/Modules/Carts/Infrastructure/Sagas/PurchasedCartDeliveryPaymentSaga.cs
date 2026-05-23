@@ -16,12 +16,12 @@ public class CartDeliveryPaymentSaga : Saga
 	public static CartDeliveryPaymentSaga Start(CartPaymentStartedApplicationEvent msg)
 		=> new() { Id = msg.Id };
 
-	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent msg, ActiveCartDeliveryRequestedApplicationEventHandler handler)
+	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent msg, ActiveCartDeliveryRequestedHandler handler)
 	{
 		await handler.HandleAsync(msg).ConfigureAwait(false);
 	}
 
-	public async Task Handle(CartPaymentCompletedApplicationEvent msg, CartPaymentCompletedApplicationEventHandler handler)
+	public async Task Handle(CartPaymentCompletedApplicationEvent msg, CartPaymentCompletedHandler handler)
 	{
 		await handler.HandleAsync(msg).ConfigureAwait(false);
 

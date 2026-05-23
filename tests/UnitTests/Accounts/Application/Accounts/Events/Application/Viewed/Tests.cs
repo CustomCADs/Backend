@@ -2,7 +2,6 @@
 using CustomCADs.Modules.Accounts.Domain.Repositories;
 using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
 using CustomCADs.Shared.Application.Events.Catalog;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Events.Application.Viewed;
 
@@ -10,11 +9,13 @@ using static Data.Accounts.TestData;
 
 public class Tests : Data.Accounts.BaseUnitTests
 {
-	private readonly UserViewedProductHandler handler;
+	private readonly ProductViewedHandler handler;
+	private readonly ProductViewedApplicationEvent request = new(ValidProductId, ValidId, ViewedAt);
+
 	private readonly Mock<IAccountWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
-	private static readonly DateTimeOffset viewedAt = DateTimeOffset.UtcNow;
+	private static readonly DateTimeOffset ViewedAt = DateTimeOffset.UtcNow;
 
 	public Tests()
 	{
@@ -25,14 +26,13 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductViewedApplicationEvent @event = new(ValidProductId, ValidId, viewedAt);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		writes.Verify(
-			x => x.ViewProductAsync(ValidId, ValidProductId, viewedAt, ct),
+			x => x.ViewProductAsync(ValidId, ValidProductId, ViewedAt, ct),
 			Times.Once()
 		);
 		uow.Verify(

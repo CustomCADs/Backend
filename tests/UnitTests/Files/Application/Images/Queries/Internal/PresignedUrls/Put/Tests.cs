@@ -11,14 +11,15 @@ using static Data.Images.TestData;
 public class Tests : Data.Images.BaseUnitTests
 {
 	private readonly GetImagePresignedUrlPutHandler handler;
+	private readonly GetImagePresignedUrlPutQuery request = new(ValidId, UploadRequest, Type, ValidOwnerId);
+
 	private readonly Mock<IImageReads> reads = new();
 	private readonly Mock<IImageStorageService> storage = new();
 	private readonly Mock<BaseCachingService<ImageId, Image>> cache = new();
 
 	private const string PresignedUrl = "presigned-url";
 	private const FileContextType Type = FileContextType.Product;
-	private static readonly Image image = CreateImage();
-	private static readonly UploadFileRequest req = new(ValidContentType, "Batman.glb");
+	private static readonly UploadFileRequest UploadRequest = new(ValidContentType, "Batman.glb");
 
 	public Tests()
 	{
@@ -29,17 +30,16 @@ public class Tests : Data.Images.BaseUnitTests
 			It.IsAny<Func<Task<Image>>>()
 		)).ReturnsAsync(CreateImage());
 
-		storage.Setup(x => x.GetPresignedPutUrlAsync(image.Key, req)).ReturnsAsync(PresignedUrl);
+		storage.Setup(x => x.GetPresignedPutUrlAsync(ValidKey, UploadRequest)).ReturnsAsync(PresignedUrl);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetImagePresignedUrlPutQuery query = new(ValidId, req, Type, ValidOwnerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -52,14 +52,13 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
-		GetImagePresignedUrlPutQuery query = new(ValidId, req, Type, ValidOwnerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		storage.Verify(
-			x => x.GetPresignedPutUrlAsync(image.Key, req),
+			x => x.GetPresignedPutUrlAsync(ValidKey, UploadRequest),
 			Times.Once()
 		);
 	}
@@ -68,10 +67,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetImagePresignedUrlPutQuery query = new(ValidId, req, Type, ValidOwnerId);
 
 		// Act
-		string url = await handler.Handle(query, ct);
+		string url = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(PresignedUrl, url);

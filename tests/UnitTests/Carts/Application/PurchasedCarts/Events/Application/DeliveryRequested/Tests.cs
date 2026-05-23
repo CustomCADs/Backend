@@ -13,7 +13,17 @@ using static Data.PurchasedCarts.TestData;
 
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
-	private readonly ActiveCartDeliveryRequestedApplicationEventHandler handler;
+	private readonly ActiveCartDeliveryRequestedHandler handler;
+	private readonly ActiveCartDeliveryRequestedApplicationEvent request = new(
+		PurchasedCartId: ValidId,
+		ShipmentService: string.Empty,
+		Weight: default,
+		Count: default,
+		Address: new(string.Empty, string.Empty, string.Empty),
+		Contact: new(default, default)
+	);
+
+
 	private readonly Mock<IPurchasedCartReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -44,17 +54,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ActiveCartDeliveryRequestedApplicationEvent @event = new(
-			PurchasedCartId: ValidId,
-			ShipmentService: string.Empty,
-			Weight: default,
-			Count: default,
-			Address: new(string.Empty, string.Empty, string.Empty),
-			Contact: new(default, default)
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		reads.Verify(
@@ -67,17 +69,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		ActiveCartDeliveryRequestedApplicationEvent @event = new(
-			PurchasedCartId: ValidId,
-			ShipmentService: string.Empty,
-			Weight: default,
-			Count: default,
-			Address: new(string.Empty, string.Empty, string.Empty),
-			Contact: new(default, default)
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		sender.Verify(
@@ -103,19 +97,10 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as PurchasedCart);
 
-		ActiveCartDeliveryRequestedApplicationEvent @event = new(
-			PurchasedCartId: ValidId,
-			ShipmentService: string.Empty,
-			Weight: default,
-			Count: default,
-			Address: new(string.Empty, string.Empty, string.Empty),
-			Contact: new(default, default)
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
 			// Act
-			() => handler.HandleAsync(@event)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

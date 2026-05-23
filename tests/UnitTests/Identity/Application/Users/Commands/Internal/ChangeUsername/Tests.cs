@@ -10,39 +10,39 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly ChangeUsernameHandler handler;
+	private readonly ChangeUsernameCommand request = new(
+		Id: ValidAccountId,
+		Username: MinValidUsername,
+		FirstName: null,
+		LastName: null
+	);
+
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IEventRaiser> raiser = new();
-
-	private readonly User user = CreateUser();
 
 	public Tests()
 	{
 		handler = new(service.Object, raiser.Object);
 
-		service.Setup(x => x.GetByAccountIdAsync(user.AccountId)).ReturnsAsync(user);
+		service.Setup(x => x.GetByAccountIdAsync(ValidAccountId))
+			.ReturnsAsync(CreateUser());
 	}
 
 	[Fact]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		ChangeUsernameCommand command = new(
-			Id: user.AccountId,
-			Username: MinValidUsername,
-			FirstName: null,
-			LastName: null
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
-			x => x.GetByAccountIdAsync(user.AccountId),
+			x => x.GetByAccountIdAsync(ValidAccountId),
 			Times.Once()
 		);
 		service.Verify(
-			x => x.UpdateUsernameAsync(user.Id, MinValidUsername),
+			x => x.UpdateUsernameAsync(ValidId, MinValidUsername),
 			Times.Once()
 		);
 	}
@@ -51,22 +51,16 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		ChangeUsernameCommand command = new(
-			Id: user.AccountId,
-			Username: MinValidUsername,
-			FirstName: null,
-			LastName: null
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
 			x => x.RaiseApplicationEventAsync(
 				It.Is<UserEditedApplicationEvent>(x =>
-					x.Username == user.Username
-					&& x.Id == user.AccountId
+					x.Username == MinValidUsername
+					&& x.Id == ValidAccountId
 				)
 			),
 			Times.Once()

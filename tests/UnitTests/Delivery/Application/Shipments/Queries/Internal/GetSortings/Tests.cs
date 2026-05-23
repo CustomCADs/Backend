@@ -6,15 +6,15 @@ namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.G
 public class Tests : Data.Shipments.BaseUnitTests
 {
 	private readonly GetShipmentSortingsHandler handler = new();
+	private readonly GetShipmentSortingsQuery request = new();
 
 	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetShipmentSortingsQuery query = new();
 
 		// Act
-		ShipmentSortingType[] sortings = await handler.Handle(query, ct);
+		ShipmentSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(sortings, Enum.GetValues<ShipmentSortingType>());

@@ -70,8 +70,8 @@ public class BaseUnitTests
 		}
 		for (int i = 0; i < forDeliveryCount; i++)
 		{
-			items.Add(ActiveCartItem.Create(ProductId.New(), ValidBuyerId, CartItemsData.ValidCustomizationId));
-			items.Add(ActiveCartItem.Create(ProductId.New(), ValidBuyerId, CartItemsData.ValidCustomizationId));
+			items.Add(ActiveCartItem.Create(ProductId.New(), ValidBuyerId, ValidCustomizationId));
+			items.Add(ActiveCartItem.Create(ProductId.New(), ValidBuyerId, ValidCustomizationId));
 		}
 
 		return [.. items];

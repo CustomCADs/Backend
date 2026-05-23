@@ -7,14 +7,14 @@ using static Data.Cads.TestData;
 
 public class Tests : Data.Cads.BaseUnitTests
 {
-	private static readonly Coordinates coords = new(MinValidCoord, MinValidCoord, MinValidCoord);
+	private static readonly Coordinates Coords = new(MinValidCoord, MinValidCoord, MinValidCoord);
 
 	[Fact]
 	public void SetCamCoordinates_ShouldNotThrowException_WhenCoordinatesAreValid()
 	{
 		var cad = CreateCad();
 
-		cad.SetCamCoordinates(coords);
+		cad.SetCamCoordinates(Coords);
 	}
 
 	[Fact]
@@ -22,9 +22,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	{
 		var cad = CreateCad();
 
-		cad.SetCamCoordinates(coords);
+		cad.SetCamCoordinates(Coords);
 
-		Assert.Equal(coords, cad.CamCoordinates);
+		Assert.Equal(Coords, cad.CamCoordinates);
 	}
 
 	[Fact]
@@ -33,7 +33,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		var cad = CreateCad();
 
 		Assert.Throws<CustomValidationException<Cad>>(
-			() => cad.SetCamCoordinates(coords with { X = MinInvalidCoord })
+			() => cad.SetCamCoordinates(Coords with { X = MinInvalidCoord })
 		);
 	}
 }

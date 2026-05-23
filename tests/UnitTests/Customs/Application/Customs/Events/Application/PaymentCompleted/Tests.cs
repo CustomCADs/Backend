@@ -15,7 +15,8 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	private CustomPaymentCompletedApplicationEventHandler handler;
+	private readonly CustomPaymentCompletedHandler handler;
+	private readonly CustomPaymentCompletedApplicationEvent request = new(ValidId, ValidBuyerId);
 
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -49,10 +50,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CustomPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		reads.Verify(
@@ -65,10 +65,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CustomPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		uow.Verify(
@@ -81,10 +80,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CustomPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		sender.Verify(
@@ -107,10 +105,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendEmail()
 	{
 		// Arrange
-		CustomPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		email.Verify(
@@ -137,10 +134,8 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 
-		CustomPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
-
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		sender.Verify(
@@ -165,12 +160,11 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Custom);
-		CustomPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.HandleAsync(@event)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

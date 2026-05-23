@@ -10,10 +10,10 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly DeleteUserHandler handler;
+	private readonly DeleteUserCommand request = new(ValidAccountId);
+
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IEventRaiser> raiser = new();
-
-	private readonly User user = CreateUser(username: MaxValidUsername);
 
 	public Tests()
 	{
@@ -24,14 +24,13 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		DeleteUserCommand command = new(user.AccountId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
-			x => x.DeleteAsync(user.AccountId),
+			x => x.DeleteAsync(ValidAccountId),
 			Times.Once()
 		);
 	}
@@ -40,15 +39,14 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		DeleteUserCommand command = new(user.AccountId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
 			x => x.RaiseApplicationEventAsync(
-				It.Is<UserDeletedApplicationEvent>(x => x.Id == user.AccountId)
+				It.Is<UserDeletedApplicationEvent>(x => x.Id == ValidAccountId)
 			),
 			Times.Once()
 		);

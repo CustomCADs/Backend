@@ -12,18 +12,20 @@ using static DomainConstants.Users;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly BatchGetUsernamesByIdHandler handler;
+	private readonly BatchGetUsernamesByIdQuery request = new(Ids);
+
 	private readonly Mock<IAccountReads> reads = new();
 
-	private static readonly AccountId[] ids = [ValidId, ValidId, ValidId, ValidId];
-	private static readonly string[] usernames = [CustomerUsername, ContributorUsername, DesignerUsername, HeadDesignerUsername, AdminUsername];
-	private static readonly AccountQuery accountQuery = new(Pagination: new(1, ids.Length), Ids: ids);
+	private static readonly AccountId[] Ids = [ValidId, ValidId, ValidId, ValidId];
+	private static readonly string[] Usernames = [CustomerUsername, ContributorUsername, DesignerUsername, HeadDesignerUsername, AdminUsername];
+	private static readonly AccountQuery Query = new(Pagination: new(1, Ids.Length), Ids: Ids);
 
 	public Tests()
 	{
 		handler = new(reads.Object);
 
-		reads.Setup(x => x.AllAsync(accountQuery, false, ct)).ReturnsAsync(new Result<Account>(
-				Count: ids.Length,
+		reads.Setup(x => x.AllAsync(Query, false, ct)).ReturnsAsync(new Result<Account>(
+				Count: Ids.Length,
 				Items: [
 					CreateAccount(id: AccountId.New(), username: CustomerUsername),
 					CreateAccount(id: AccountId.New(), username: ContributorUsername),
@@ -38,14 +40,13 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		BatchGetUsernamesByIdQuery query = new(ids);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.AllAsync(accountQuery, false, ct),
+			x => x.AllAsync(Query, false, ct),
 			Times.Once()
 		);
 	}
@@ -54,13 +55,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		BatchGetUsernamesByIdQuery query = new(ids);
 
 		// Act
-		Dictionary<AccountId, string> result = await handler.Handle(query, ct);
-		string[] actualUsernames = [.. result.Select(kvp => kvp.Value)];
+		Dictionary<AccountId, string> result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(usernames, actualUsernames);
+		Assert.Equal(Usernames, result.Select(kvp => kvp.Value));
 	}
 }

@@ -16,13 +16,18 @@ using static DomainConstants.Users;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly GetAllCustomsHandler handler;
+	private readonly GetAllCustomsQuery request = new(Query.Pagination);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private readonly Custom[] customs = [
+	private static readonly Custom[] Customs = [
 		CreateCustom(id: ValidId),
 		CreateCustom(id: ValidId),
 	];
+	private static readonly CustomQuery Query = new(
+		Pagination: new(1, Customs.Length)
+	);
 	private readonly Dictionary<AccountId, string> customers = new()
 	{
 		[ValidBuyerId] = CustomerUsername,
@@ -35,21 +40,17 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		[ValidCategoryId] = "Category123",
 	};
-	private readonly CustomQuery query;
 
 	public Tests()
 	{
 		handler = new(reads.Object, sender.Object);
 
-		query = new(
-			Pagination: new(1, customs.Length)
-		);
-		customs.First().Accept(ValidDesignerId);
+		Customs.First().Accept(ValidDesignerId);
 
-		reads.Setup(x => x.AllAsync(query, false, ct))
+		reads.Setup(x => x.AllAsync(Query, false, ct))
 			.ReturnsAsync(new Result<Custom>(
-				customs.Length,
-				customs
+				Customs.Length,
+				Customs
 			));
 
 		sender.Setup(x => x.SendQueryAsync(
@@ -72,14 +73,13 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAllCustomsQuery query = new(this.query.Pagination);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.AllAsync(this.query, false, ct),
+			x => x.AllAsync(Query, false, ct),
 			Times.Once()
 		);
 	}
@@ -88,10 +88,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GetAllCustomsQuery query = new(this.query.Pagination);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -121,14 +120,13 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllCustomsQuery query = new(this.query.Pagination);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
-		int expectedCount = customs.Length, actualCount = result.Count;
-		CustomId[] expectedIds = [.. customs.Select(x => x.Id)],
+		int expectedCount = Customs.Length, actualCount = result.Count;
+		CustomId[] expectedIds = [.. Customs.Select(x => x.Id)],
 			actualIds = [.. result.Items.Select(x => x.Id)];
 
 		Assert.Multiple(

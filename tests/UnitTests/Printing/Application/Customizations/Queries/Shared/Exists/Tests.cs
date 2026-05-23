@@ -9,6 +9,8 @@ using static Data.Customizations.TestData;
 public class Tests : Data.Customizations.BaseUnitTests
 {
 	private readonly GetCustomizationExistsByIdHandler handler;
+	private readonly GetCustomizationExistsByIdQuery request = new(ValidId);
+
 	private readonly Mock<ICustomizationReads> reads = new();
 
 	public Tests()
@@ -23,10 +25,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetCustomizationExistsByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -43,10 +44,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.ExistsByIdAsync(ValidId, ct))
 			.ReturnsAsync(exists);
-		GetCustomizationExistsByIdQuery query = new(ValidId);
 
 		// Act
-		bool result = await handler.Handle(query, ct);
+		bool result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(exists, result);

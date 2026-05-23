@@ -11,41 +11,39 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly BatchDuplicateCadByIdHandler handler;
+	private readonly BatchDuplicateCadByIdCommand request = new(Ids, ValidOwnerId);
+
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<IWrites<Cad>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
-	private readonly Cad[] cads = [
+	private static readonly Cad[] Cads = [
 		CreateCad(),
 	];
-	private readonly CadId[] Ids = [ValidId];
-	private readonly CadQuery query;
-	private readonly Result<Cad> result;
+	private static readonly CadId[] Ids = [ValidId];
+	private static readonly CadQuery Query = new(new(1, Ids.Length), null, Ids);
+	private static readonly Result<Cad> Result = new(Cads.Length, Cads);
 
 	public Tests()
 	{
 		handler = new(reads.Object, writes.Object, uow.Object, cache.Object);
 
-		query = new(new(1, Ids.Length), null, Ids);
-		result = new Result<Cad>(cads.Length, cads);
-
-		reads.Setup(x => x.AllAsync(query, false, ct))
-			.ReturnsAsync(result);
+		reads.Setup(x => x.AllAsync(Query, false, ct))
+			.ReturnsAsync(Result);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		BatchDuplicateCadByIdCommand command = new(Ids, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.AllAsync(query, false, ct),
+			x => x.AllAsync(Query, false, ct),
 			Times.Once()
 		);
 	}
@@ -54,14 +52,13 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		BatchDuplicateCadByIdCommand command = new(Ids, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
-			x => x.AddRangeAsync(It.Is<ICollection<Cad>>(x => x.Count == result.Count), ct),
+			x => x.AddRangeAsync(It.Is<ICollection<Cad>>(x => x.Count == Result.Count), ct),
 			Times.Once()
 		);
 		uow.Verify(
@@ -74,18 +71,17 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		BatchDuplicateCadByIdCommand command = new(Ids, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
 			x => x.UpdateAsync(
 				CadId.New(Guid.Empty),
-				It.Is<Cad>(x => cads.Any(c => x.Key == c.Key))
+				It.Is<Cad>(x => Cads.Any(c => x.Key == c.Key))
 			),
-			Times.Exactly(cads.Length)
+			Times.Exactly(Cads.Length)
 		);
 	}
 
@@ -93,12 +89,11 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		BatchDuplicateCadByIdCommand command = new(Ids, ValidOwnerId);
 
 		// Act
-		var result = await handler.Handle(command, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(cads.Select(x => x.Id), result.Select(x => x.Key));
+		Assert.Equal(Cads.Select(x => x.Id), result.Select(x => x.Key));
 	}
 }

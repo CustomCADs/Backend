@@ -12,6 +12,15 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly CreateAccountHandler handler;
+	private readonly CreateAccountCommand request = new(
+		Role: ValidRole,
+		Username: ValidUsername,
+		Email: ValidEmail1,
+		Password: ValidPassword,
+		FirstName: ValidFirstName,
+		LastName: ValidLastName
+	);
+
 	private readonly Mock<IAccountWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IEventRaiser> raiser = new();
@@ -36,17 +45,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateAccountCommand command = new(
-			Role: ValidRole,
-			Username: ValidUsername,
-			Email: ValidEmail1,
-			Password: ValidPassword,
-			FirstName: ValidFirstName,
-			LastName: ValidLastName
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -72,17 +73,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		CreateAccountCommand command = new(
-			Role: ValidRole,
-			Username: ValidUsername,
-			Email: ValidEmail1,
-			Password: ValidPassword,
-			FirstName: ValidFirstName,
-			LastName: ValidLastName
-		);
 
 		// Act
-		await handler.Handle(command, CancellationToken.None);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -102,17 +95,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateAccountCommand command = new(
-			Role: ValidRole,
-			Username: ValidUsername,
-			Email: ValidEmail1,
-			Password: ValidPassword,
-			FirstName: ValidFirstName,
-			LastName: ValidLastName
-		);
 
 		// Act
-		AccountId id = await handler.Handle(command, CancellationToken.None);
+		AccountId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);

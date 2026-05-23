@@ -12,6 +12,13 @@ using static Data.Materials.TestData;
 public class Tests : Data.Materials.BaseUnitTests
 {
 	private readonly CreateMaterialHandler handler;
+	private readonly CreateMaterialCommand request = new(
+		Name: MaxValidName,
+		Density: MaxValidDensity,
+		Cost: MaxValidCost,
+		TextureId: ValidTextureId
+	);
+
 	private readonly Mock<IWrites<Material>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<MaterialId, Material>> cache = new();
@@ -36,15 +43,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CreateMaterialCommand command = new(
-			Name: MaxValidName,
-			Density: MaxValidDensity,
-			Cost: MaxValidCost,
-			TextureId: ValidTextureId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -60,15 +61,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateMaterialCommand command = new(
-			Name: MaxValidName,
-			Density: MaxValidDensity,
-			Cost: MaxValidCost,
-			TextureId: ValidTextureId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -85,15 +80,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateMaterialCommand command = new(
-			Name: MaxValidName,
-			Density: MaxValidDensity,
-			Cost: MaxValidCost,
-			TextureId: ValidTextureId
-		);
 
 		// Act
-		MaterialId id = await handler.Handle(command, ct);
+		MaterialId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);
@@ -103,15 +92,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange
-		CreateMaterialCommand command = new(
-			Name: MaxValidName,
-			Density: MaxValidDensity,
-			Cost: MaxValidCost,
-			TextureId: ValidTextureId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(

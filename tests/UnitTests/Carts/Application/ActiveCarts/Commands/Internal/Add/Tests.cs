@@ -13,6 +13,14 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly AddActiveCartItemHandler handler;
+	private static AddActiveCartItemCommand Request(CustomizationId? customizationId)
+		=> new(
+			CallerId: ValidBuyerId,
+			CustomizationId: customizationId,
+			ForDelivery: customizationId is not null,
+			ProductId: ValidProductId
+		);
+
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IWrites<ActiveCartItem>> writes = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -37,15 +45,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase(CustomizationId? customizationId)
 	{
 		// Arrange
-		AddActiveCartItemCommand command = new(
-			CallerId: ValidBuyerId,
-			CustomizationId: customizationId,
-			ForDelivery: customizationId is not null,
-			ProductId: ValidProductId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(Request(customizationId), ct);
 
 		// Assert
 		uow.Verify(
@@ -59,15 +61,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests(CustomizationId? customizationId)
 	{
 		// Arrange
-		AddActiveCartItemCommand command = new(
-			CallerId: ValidBuyerId,
-			CustomizationId: customizationId,
-			ForDelivery: customizationId is not null,
-			ProductId: ValidProductId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(Request(customizationId), ct);
 
 		// Assert
 		sender.Verify(
@@ -100,17 +96,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			ct
 		)).ReturnsAsync(false);
 
-		AddActiveCartItemCommand command = new(
-			CallerId: ValidBuyerId,
-			CustomizationId: customizationId,
-			ForDelivery: customizationId is not null,
-			ProductId: ValidProductId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(Request(customizationId), ct)
 		);
 	}
 }

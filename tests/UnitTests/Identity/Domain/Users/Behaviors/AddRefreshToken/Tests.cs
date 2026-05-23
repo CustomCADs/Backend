@@ -6,7 +6,7 @@ namespace CustomCADs.UnitTests.Identity.Domain.Users.Behaviors.AddRefreshToken;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private const string Value = "refresh-token";
-	private static readonly User user = CreateUser();
+	private readonly User user = CreateUser();
 
 	[Fact]
 	public void AddRefreshToken_ShouldNotThrowException()

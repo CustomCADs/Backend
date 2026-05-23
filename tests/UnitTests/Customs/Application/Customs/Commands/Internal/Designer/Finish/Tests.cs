@@ -17,6 +17,8 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly FinishCustomHandler handler;
+	private readonly FinishCustomCommand request = new(ValidId, ValidPrice, ValidCadId, ValidDesignerId);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -43,15 +45,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		FinishCustomCommand command = new(
-			Id: ValidId,
-			CadId: ValidCadId,
-			Price: ValidPrice,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -64,15 +60,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		FinishCustomCommand command = new(
-			Id: ValidId,
-			CadId: ValidCadId,
-			Price: ValidPrice,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -85,15 +75,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		FinishCustomCommand command = new(
-			Id: ValidId,
-			CadId: ValidCadId,
-			Price: ValidPrice,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -109,15 +93,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		FinishCustomCommand command = new(
-			Id: ValidId,
-			CadId: ValidCadId,
-			Price: ValidPrice,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -132,15 +110,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
-		FinishCustomCommand command = new(
-			Id: ValidId,
-			CadId: ValidCadId,
-			Price: ValidPrice,
-			CallerId: ValidDesignerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -158,17 +130,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(custom);
 
-		FinishCustomCommand command = new(
-			Id: ValidId,
-			CadId: ValidCadId,
-			Price: ValidPrice,
-			CallerId: ValidDesignerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -179,17 +144,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Custom);
 
-		FinishCustomCommand command = new(
-			Id: ValidId,
-			CadId: ValidCadId,
-			Price: ValidPrice,
-			CallerId: ValidDesignerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

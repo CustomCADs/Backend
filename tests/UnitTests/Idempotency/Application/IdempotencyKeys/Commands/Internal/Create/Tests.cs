@@ -9,6 +9,11 @@ using static Data.IdempotencyKeys.TestData;
 public class Tests : Data.IdempotencyKeys.BaseUnitTests
 {
 	private readonly CreateIdempotencyKeyHandler handler;
+	private readonly CreateIdempotencyKeyCommand request = new(
+		IdempotencyKey: ValidId.Value,
+		RequestHash: ValidRequestHash
+	);
+
 	private readonly Mock<IWrites<IdempotencyKey>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
@@ -29,13 +34,9 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateIdempotencyKeyCommand command = new(
-			IdempotencyKey: ValidId.Value,
-			RequestHash: ValidRequestHash
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -58,13 +59,9 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateIdempotencyKeyCommand command = new(
-			IdempotencyKey: ValidId.Value,
-			RequestHash: ValidRequestHash
-		);
 
 		// Act
-		IdempotencyKeyId id = await handler.Handle(command, ct);
+		IdempotencyKeyId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);

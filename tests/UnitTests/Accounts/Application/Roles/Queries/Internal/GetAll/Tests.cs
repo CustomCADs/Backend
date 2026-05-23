@@ -8,6 +8,8 @@ namespace CustomCADs.UnitTests.Accounts.Application.Roles.Queries.Internal.GetAl
 public class Tests : Data.Roles.BaseUnitTests
 {
 	private readonly GetAllRolesHandler handler;
+	private readonly GetAllRolesQuery request = new();
+
 	private readonly Mock<IRoleReads> reads = new();
 	private readonly Mock<BaseCachingService<RoleId, Role>> cache = new();
 
@@ -31,10 +33,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetAllRolesQuery query = new();
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -49,10 +50,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllRolesQuery query = new();
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(roles.Select(x => x.Id), result.Select(x => x.Id));

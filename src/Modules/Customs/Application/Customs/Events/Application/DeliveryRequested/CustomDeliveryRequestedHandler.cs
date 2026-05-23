@@ -7,7 +7,7 @@ using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Modules.Customs.Application.Customs.Events.Application.DeliveryRequested;
 
-public class CustomDeliveryRequestedApplicationEventHandler(
+public class CustomDeliveryRequestedHandler(
 	ICustomReads reads,
 	IUnitOfWork uow,
 	IRequestSender sender

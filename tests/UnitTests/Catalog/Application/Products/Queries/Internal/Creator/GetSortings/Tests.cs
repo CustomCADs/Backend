@@ -6,15 +6,15 @@ namespace CustomCADs.UnitTests.Catalog.Application.Products.Queries.Internal.Cre
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly GetProductCreatorSortingsHandler handler = new();
+	private readonly GetProductCreatorSortingsQuery reqeust = new();
 
 	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetProductCreatorSortingsQuery query = new();
 
 		// Act
-		ProductCreatorSortingType[] sortings = await handler.Handle(query, ct);
+		ProductCreatorSortingType[] sortings = await handler.Handle(reqeust, ct);
 
 		// Assert
 		Assert.Equal(sortings, Enum.GetValues<ProductCreatorSortingType>());

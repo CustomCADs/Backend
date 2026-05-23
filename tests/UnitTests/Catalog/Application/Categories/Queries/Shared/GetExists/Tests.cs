@@ -9,6 +9,8 @@ using static Data.Categories.TestData;
 public class Tests : Data.Categories.BaseUnitTests
 {
 	private readonly GetCategoryExistsByIdHandler handler;
+	private readonly GetCategoryExistsByIdQuery request = new(ValidId);
+
 	private readonly Mock<ICategoryReads> reads = new();
 
 	public Tests()
@@ -21,10 +23,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.ExistsByIdAsync(ValidId, ct)).ReturnsAsync(true);
-		GetCategoryExistsByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -40,10 +41,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.ExistsByIdAsync(ValidId, ct)).ReturnsAsync(exists);
-		GetCategoryExistsByIdQuery query = new(ValidId);
 
 		// Act
-		bool result = await handler.Handle(query, ct);
+		bool result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(exists, result);

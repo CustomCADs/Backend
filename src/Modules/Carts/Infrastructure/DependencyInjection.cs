@@ -10,7 +10,7 @@ public static class DependencyInjection
 	{
 		public void AddCartDeliveryPaymentSagaDependencies()
 			=> services
-				.AddScoped<ActiveCartDeliveryRequestedApplicationEventHandler>()
-				.AddScoped<CartPaymentCompletedApplicationEventHandler>();
+				.AddScoped<ActiveCartDeliveryRequestedHandler>()
+				.AddScoped<CartPaymentCompletedHandler>();
 	}
 }

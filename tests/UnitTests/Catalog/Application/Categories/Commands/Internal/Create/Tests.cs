@@ -9,6 +9,8 @@ using static Data.Categories.TestData;
 public class Tests : Data.Categories.BaseUnitTests
 {
 	private readonly CreateCategoryHandler handler;
+	private readonly CreateCategoryCommand request = new(Dto: new(ValidName, ValidDescription));
+
 	private readonly Mock<ICategoryWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<CategoryId, Category>> cache = new();
@@ -27,10 +29,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateCategoryCommand command = new(Dto: new(ValidName, ValidDescription));
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -50,10 +51,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange
-		CreateCategoryCommand command = new(Dto: new(ValidName, ValidDescription));
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -69,10 +69,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateCategoryCommand command = new(Dto: new(ValidName, ValidDescription));
 
 		// Act
-		CategoryId id = await handler.Handle(command, ct);
+		CategoryId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);

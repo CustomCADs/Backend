@@ -9,6 +9,8 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly AccountDeletedHandler handler;
+	private readonly AccountDeletedApplicationEvent request = new(ValidAccountId);
+
 	private readonly Mock<IUserService> service = new();
 
 	public Tests()
@@ -20,10 +22,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		AccountDeletedApplicationEvent @event = new(ValidAccountId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		service.Verify(

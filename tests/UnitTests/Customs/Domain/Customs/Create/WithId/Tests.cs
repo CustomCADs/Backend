@@ -32,9 +32,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	[ClassData(typeof(InvalidData))]
 	public void Create_ShouldThrowException_WhenCustomIsInvalid(string name, string description, bool delivery)
 	{
-		Assert.Throws<CustomValidationException<Custom>>((Action)(() =>
+		Assert.Throws<CustomValidationException<Custom>>(() =>
 		{
-			Data.Customs.BaseUnitTests.CreateCustom(name, description, (bool?)delivery, ValidBuyerId);
-		}));
+			CreateCustom(name, description, (bool?)delivery, ValidBuyerId);
+		});
 	}
 }

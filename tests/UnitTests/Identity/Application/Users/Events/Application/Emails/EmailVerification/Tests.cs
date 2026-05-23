@@ -6,6 +6,8 @@ namespace CustomCADs.UnitTests.Identity.Application.Users.Events.Application.Ema
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly EmailVerificationRequestedEventHandler handler;
+	private readonly EmailVerificationRequestedApplicationEvent request = new(Email, Endpoint);
+
 	private readonly Mock<IEmailService> email = new();
 
 	private const string Email = "recipient@gmail.com";
@@ -20,10 +22,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldSendEmails()
 	{
 		// Arrange
-		EmailVerificationRequestedApplicationEvent @event = new(Email, Endpoint);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		email.Verify(

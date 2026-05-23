@@ -12,6 +12,8 @@ using static Data.Shipments.TestData;
 public class Tests : Data.Shipments.BaseUnitTests
 {
 	private readonly CancelShipmentHandler handler;
+	private readonly CancelShipmentCommand request = new(ValidId, Comment);
+
 	private readonly Mock<IShipmentReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IDeliveryService> delivery = new();
@@ -30,10 +32,9 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CancelShipmentCommand command = new(ValidId, Comment);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CancelShipmentCommand command = new(ValidId, Comment);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -62,10 +62,9 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
-		CancelShipmentCommand command = new(ValidId, Comment);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		delivery.Verify(
@@ -82,12 +81,10 @@ public class Tests : Data.Shipments.BaseUnitTests
 			CreateShipment().Activate(ValidReferenceId).Deliver()
 		);
 
-		CancelShipmentCommand command = new(ValidId, Comment);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomValidationException<Shipment>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -96,12 +93,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Shipment);
-		CancelShipmentCommand command = new(ValidId, Comment);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

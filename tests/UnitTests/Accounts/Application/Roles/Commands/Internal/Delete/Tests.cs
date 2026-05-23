@@ -14,6 +14,8 @@ using static Data.Roles.TestData;
 public class Tests : Data.Roles.BaseUnitTests
 {
 	private readonly DeleteRoleHandler handler;
+	private readonly DeleteRoleCommand request = new(ValidId);
+
 	private readonly Mock<IEventRaiser> raiser = new();
 	private readonly Mock<BaseCachingService<RoleId, Role>> cache = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -31,10 +33,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DeleteRoleCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -47,10 +48,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteRoleCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -69,10 +69,9 @@ public class Tests : Data.Roles.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		DeleteRoleCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(

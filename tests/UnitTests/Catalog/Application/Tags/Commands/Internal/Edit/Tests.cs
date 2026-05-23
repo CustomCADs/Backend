@@ -10,6 +10,8 @@ using static Data.Tags.TestData;
 public class Tests : Data.Tags.BaseUnitTests
 {
 	private readonly EditTagHandler handler;
+	private readonly EditTagCommand request = new(ValidId, MaxValidName);
+
 	private readonly Mock<ITagReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<TagId, Tag>> cache = new();
@@ -28,10 +30,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		EditTagCommand command = new(ValidId, MaxValidName);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -44,10 +45,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		EditTagCommand command = new(ValidId, MaxValidName);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -60,10 +60,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		EditTagCommand command = new(ValidId, MaxValidName);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -83,12 +82,11 @@ public class Tests : Data.Tags.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Tag);
-		EditTagCommand command = new(ValidId, MaxValidName);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Tag>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

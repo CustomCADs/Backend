@@ -14,7 +14,9 @@ using static Data.PurchasedCarts.TestData;
 
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
-	private readonly CartPaymentCompletedApplicationEventHandler handler;
+	private readonly CartPaymentCompletedHandler handler;
+	private readonly CartPaymentCompletedApplicationEvent request = new(ValidId, ValidBuyerId);
+
 	private readonly Mock<IPurchasedCartReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -44,10 +46,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CartPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		reads.Verify(
@@ -60,10 +61,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CartPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		uow.Verify(
@@ -80,10 +80,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CartPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		sender.Verify(
@@ -106,10 +105,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldSendEmail()
 	{
 		// Arrange
-		CartPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		email.Verify(
@@ -134,10 +132,8 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(cart);
 
-		CartPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
-
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		email.Verify(
@@ -155,12 +151,11 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as PurchasedCart);
-		CartPaymentCompletedApplicationEvent @event = new(ValidId, ValidBuyerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
 			// Act
-			() => handler.HandleAsync(@event)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

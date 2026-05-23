@@ -8,6 +8,8 @@ namespace CustomCADs.UnitTests.Identity.Application.Users.Queries.Shared.ClientU
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly GetClientUrlHandler handler;
+	private readonly GetClientUrlQuery request = new();
+
 	private readonly Mock<IOptions<ClientUrlSettings>> settings = new();
 
 	private const string All = "preferred-url.com,www.preferred-url.com,app.preferred-url.com";
@@ -24,10 +26,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetClientUrlQuery query = new();
 
 		// Act
-		string actual = await handler.Handle(query, ct);
+		string actual = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(Preferred, actual);

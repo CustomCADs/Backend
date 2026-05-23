@@ -8,7 +8,7 @@ using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
 
-public class ActiveCartDeliveryRequestedApplicationEventHandler(
+public class ActiveCartDeliveryRequestedHandler(
 	IPurchasedCartReads reads,
 	IUnitOfWork uow,
 	IRequestSender sender

@@ -8,6 +8,8 @@ using static Data.Tags.TestData;
 public class Tests : Data.Tags.BaseUnitTests
 {
 	private readonly GetTagByIdHandler handler;
+	private readonly GetTagByIdQuery request = new(ValidId);
+
 	private readonly Mock<ITagReads> reads = new();
 	private readonly Mock<BaseCachingService<TagId, Tag>> cache = new();
 
@@ -25,10 +27,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetTagByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -41,12 +42,11 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetTagByIdQuery query = new(ValidId);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Data.Tags.TestData.ValidId, result.Id);
+		Assert.Equal(ValidId, result.Id);
 	}
 }

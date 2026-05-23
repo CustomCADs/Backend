@@ -7,14 +7,14 @@ using static Data.Cads.TestData;
 
 public class Tests : Data.Cads.BaseUnitTests
 {
-	private static readonly Coordinates coords = new(MinValidCoord, MinValidCoord, MinValidCoord);
+	private static readonly Coordinates Coords = new(MinValidCoord, MinValidCoord, MinValidCoord);
 
 	[Fact]
 	public void SetPanCoordinates_ShouldNotThrowException_WhenCoordinatesAreValid()
 	{
 		var cad = CreateCad();
 
-		cad.SetPanCoordinates(coords);
+		cad.SetPanCoordinates(Coords);
 	}
 
 	[Fact]
@@ -22,9 +22,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	{
 		var cad = CreateCad();
 
-		cad.SetPanCoordinates(coords);
+		cad.SetPanCoordinates(Coords);
 
-		Assert.Equal(coords, cad.PanCoordinates);
+		Assert.Equal(Coords, cad.PanCoordinates);
 	}
 
 	[Fact]
@@ -33,7 +33,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		var cad = CreateCad();
 
 		Assert.Throws<CustomValidationException<Cad>>(
-			() => cad.SetPanCoordinates(coords with { X = MaxInvalidCoord })
+			() => cad.SetPanCoordinates(Coords with { X = MaxInvalidCoord })
 		);
 	}
 }

@@ -12,11 +12,13 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly CalculateActiveCartShipmentHandler handler;
+	private readonly CalculateActiveCartShipmentQuery request = new(ValidBuyerId, Address);
+
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
-	private static readonly CalculateShipmentDto[] calculations = [
+	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
+	private static readonly CalculateShipmentDto[] Calculations = [
 		new(default, string.Empty, string.Empty, default, default)
 	];
 
@@ -38,17 +40,16 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.IsAny<CalculateShipmentQuery>(),
 			ct
-		)).ReturnsAsync(calculations);
+		)).ReturnsAsync(Calculations);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CalculateActiveCartShipmentQuery query = new(ValidBuyerId, address);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -61,10 +62,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CalculateActiveCartShipmentQuery query = new(ValidBuyerId, address);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -76,7 +76,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<CalculateShipmentQuery>(x => x.Address == address),
+				It.Is<CalculateShipmentQuery>(x => x.Address == Address),
 				ct
 			),
 			Times.Once()
@@ -87,12 +87,11 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CalculateActiveCartShipmentQuery query = new(ValidBuyerId, address);
 
 		// Act
-		CalculateShipmentDto[] result = await handler.Handle(query, ct);
+		CalculateShipmentDto[] result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(calculations, result);
+		Assert.Equal(Calculations, result);
 	}
 }

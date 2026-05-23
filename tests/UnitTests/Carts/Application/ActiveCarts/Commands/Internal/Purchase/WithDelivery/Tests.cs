@@ -25,15 +25,23 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly PurchaseActiveCartWithDeliveryHandler handler;
+	private readonly PurchaseActiveCartWithDeliveryCommand request = new(
+		PaymentMethodId: PaymentMethodId,
+		ShipmentService: ShipmentService,
+		CallerId: ValidBuyerId,
+		Address: Address,
+		Contact: Contact
+	);
+
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IPaymentService> payment = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly string paymentMethodId = string.Empty;
-	private static readonly string shipmentService = string.Empty;
-	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
-	private static readonly ContactDto contact = new(null, null);
+	private static readonly string PaymentMethodId = string.Empty;
+	private static readonly string ShipmentService = string.Empty;
+	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
+	private static readonly ContactDto Contact = new(null, null);
 
 	public Tests()
 	{
@@ -78,16 +86,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			ShipmentService: shipmentService,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -104,16 +105,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			ShipmentService: shipmentService,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -157,21 +151,14 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldCallPayment()
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: string.Empty,
-			ShipmentService: string.Empty,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		payment.Verify(
 			x => x.InitializeCartPayment(
-				It.Is<string>(x => x == paymentMethodId),
+				It.Is<string>(x => x == PaymentMethodId),
 				It.Is<AccountId>(x => x == ValidBuyerId),
 				It.IsAny<PurchasedCartId>(),
 				It.IsAny<decimal>(),
@@ -186,16 +173,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			ShipmentService: shipmentService,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -224,7 +204,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		// Arrange
 		PaymentDto expected = new(string.Empty, Message: "Payment Status Message");
 		payment.Setup(x => x.InitializeCartPayment(
-			It.Is<string>(x => x == paymentMethodId),
+			It.Is<string>(x => x == PaymentMethodId),
 			It.Is<AccountId>(x => x == ValidBuyerId),
 			It.IsAny<PurchasedCartId>(),
 			It.IsAny<decimal>(),
@@ -232,16 +212,8 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			ct
 		)).ReturnsAsync(expected);
 
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			ShipmentService: shipmentService,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
-
 		// Act
-		PaymentDto actual = await handler.Handle(command, ct);
+		PaymentDto actual = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(expected, actual);
@@ -258,18 +230,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 				CreateItem(productId: ProductId.New()),
 			]);
 
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			ShipmentService: shipmentService,
-			CallerId: ValidBuyerId,
-			Address: address,
-			Contact: contact
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomException>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

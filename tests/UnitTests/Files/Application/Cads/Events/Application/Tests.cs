@@ -12,13 +12,15 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly ProductDeletedHandler handler;
+	private readonly ProductDeletedApplicationEvent request = new(default, default, ValidId);
+
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<IWrites<Cad>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<ICadStorageService> storage = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
-	private static readonly Cad cad = CreateCad();
+	private readonly Cad cad = CreateCad();
 
 	public Tests()
 	{
@@ -30,14 +32,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent @event = new(
-			Id: default,
-			CadId: ValidId,
-			ImageId: default
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		reads.Verify(
@@ -50,14 +47,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent @event = new(
-			Id: default,
-			CadId: ValidId,
-			ImageId: default
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		writes.Verify(
@@ -74,14 +66,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent @event = new(
-			Id: default,
-			CadId: ValidId,
-			ImageId: default
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		cache.Verify(
@@ -94,18 +81,13 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent @event = new(
-			Id: default,
-			CadId: ValidId,
-			ImageId: default
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		storage.Verify(
-			x => x.DeleteFileAsync(cad.Key, ct),
+			x => x.DeleteFileAsync(ValidKey, ct),
 			Times.Once()
 		);
 	}
@@ -117,16 +99,10 @@ public class Tests : Data.Cads.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Cad);
 
-		ProductDeletedApplicationEvent @event = new(
-			Id: default,
-			CadId: ValidId,
-			ImageId: default
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
 			// Act
-			() => handler.HandleAsync(@event)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

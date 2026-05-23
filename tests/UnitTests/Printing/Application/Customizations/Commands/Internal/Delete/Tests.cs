@@ -12,6 +12,8 @@ using static Data.Customizations.TestData;
 public class Tests : Data.Customizations.BaseUnitTests
 {
 	private readonly DeleteCustomizationHandler handler;
+	private readonly DeleteCustomizationByIdCommand request = new(ValidId);
+
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IWrites<Customization>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -30,10 +32,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DeleteCustomizationByIdCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteCustomizationByIdCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -67,12 +67,11 @@ public class Tests : Data.Customizations.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Customization);
-		DeleteCustomizationByIdCommand command = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

@@ -11,6 +11,8 @@ using static Data.Materials.TestData;
 public class Tests : Data.Materials.BaseUnitTests
 {
 	private readonly DeleteMaterialHandler handler;
+	private readonly DeleteMaterialCommand request = new(ValidId);
+
 	private readonly Mock<IMaterialReads> reads = new();
 	private readonly Mock<IWrites<Material>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -29,10 +31,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DeleteMaterialCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -45,10 +46,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteMaterialCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -65,10 +65,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldClearCache()
 	{
 		// Arrange
-		DeleteMaterialCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(

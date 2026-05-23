@@ -12,13 +12,15 @@ using static Data.Images.TestData;
 public class Tests : Data.Images.BaseUnitTests
 {
 	private readonly ProductDeletedHandler handler;
+	private readonly ProductDeletedApplicationEvent request = new(default, ValidId, default);
+
 	private readonly Mock<IImageReads> reads = new();
 	private readonly Mock<IWrites<Image>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IImageStorageService> storage = new();
 	private readonly Mock<BaseCachingService<ImageId, Image>> cache = new();
 
-	private static readonly Image image = CreateImage();
+	private readonly Image image = CreateImage();
 
 	public Tests()
 	{
@@ -30,14 +32,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
-			Id: default,
-			ImageId: ValidId,
-			CadId: default
-		);
 
 		// Act
-		await handler.HandleAsync(ie);
+		await handler.HandleAsync(request);
 
 		// Assert
 		reads.Verify(
@@ -50,14 +47,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
-			Id: default,
-			ImageId: ValidId,
-			CadId: default
-		);
 
 		// Act
-		await handler.HandleAsync(ie);
+		await handler.HandleAsync(request);
 
 		// Assert
 		writes.Verify(
@@ -74,14 +66,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
-			Id: default,
-			ImageId: ValidId,
-			CadId: default
-		);
 
 		// Act
-		await handler.HandleAsync(ie);
+		await handler.HandleAsync(request);
 
 		// Assert
 		cache.Verify(
@@ -94,14 +81,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
-		ProductDeletedApplicationEvent ie = new(
-			Id: default,
-			ImageId: ValidId,
-			CadId: default
-		);
 
 		// Act
-		await handler.HandleAsync(ie);
+		await handler.HandleAsync(request);
 
 		// Assert
 		storage.Verify(
@@ -117,16 +99,10 @@ public class Tests : Data.Images.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Image);
 
-		ProductDeletedApplicationEvent ie = new(
-			Id: default,
-			ImageId: ValidId,
-			CadId: default
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(
 			// Act
-			() => handler.HandleAsync(ie)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

@@ -9,9 +9,11 @@ using static Data.IdempotencyKeys.TestData;
 public class Tests : Data.IdempotencyKeys.BaseUnitTests
 {
 	private readonly GetIdempotencyKeyHandler handler;
+	private readonly GetIdempotencyKeyQuery request = new(ValidId.Value, ValidRequestHash);
+
 	private readonly Mock<IIdempotencyKeyReads> reads = new();
 
-	private static readonly IdempotencyKey idempotencyKey = CreateIdempotencyKey();
+	private readonly IdempotencyKey idempotencyKey = CreateIdempotencyKey();
 
 	public Tests()
 	{
@@ -25,13 +27,9 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetIdempotencyKeyQuery query = new(
-			IdempotencyKey: ValidId.Value,
-			RequestHash: ValidRequestHash
-		);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -57,13 +55,8 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 			idempotencyKey.SetStatusCode(MaxValidStatusCode);
 		}
 
-		GetIdempotencyKeyQuery query = new(
-			IdempotencyKey: ValidId.Value,
-			RequestHash: ValidRequestHash
-		);
-
 		// Act
-		GetIdempotencyKeyDto? result = await handler.Handle(query, ct);
+		GetIdempotencyKeyDto? result = await handler.Handle(request, ct);
 
 		// Assert
 		if (isIdempotencyKeyCompleted)
@@ -84,15 +77,11 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, ValidRequestHash, false, ct)).ReturnsAsync(null as IdempotencyKey);
-		GetIdempotencyKeyQuery query = new(
-			IdempotencyKey: ValidId.Value,
-			RequestHash: ValidRequestHash
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<IdempotencyKey>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

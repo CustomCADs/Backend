@@ -7,9 +7,13 @@ using Microsoft.Extensions.Options;
 
 namespace CustomCADs.UnitTests.Identity.Application.Users.Commands.Internal.VerificationEmail;
 
+using static Data.Users.TestData;
+
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly VerificationEmailHandler handler;
+	private readonly VerificationEmailCommand request = new(MaxValidUsername);
+
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 	private readonly Mock<IOptions<ClientUrlSettings>> settings = new();
@@ -30,10 +34,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		VerificationEmailCommand command = new(user.Username);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
@@ -50,10 +53,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		VerificationEmailCommand command = new(user.Username);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(

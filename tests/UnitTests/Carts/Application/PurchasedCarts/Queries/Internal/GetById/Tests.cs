@@ -11,6 +11,8 @@ using static Data.PurchasedCarts.TestData;
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
 	private readonly GetPurchasedCartByIdHandler handler;
+	private readonly GetPurchasedCartByIdQuery request = new(ValidId, ValidBuyerId);
+
 	private readonly Mock<IPurchasedCartReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
@@ -34,10 +36,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetPurchasedCartByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -50,10 +51,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GetPurchasedCartByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -69,10 +69,9 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetPurchasedCartByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		var cart = await handler.Handle(query, ct);
+		var cart = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(this.cart.Id, cart.Id);
@@ -84,12 +83,11 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(null as PurchasedCart);
-		GetPurchasedCartByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

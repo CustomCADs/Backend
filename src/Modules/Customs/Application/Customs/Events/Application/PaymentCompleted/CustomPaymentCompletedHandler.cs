@@ -10,7 +10,7 @@ using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Modules.Customs.Application.Customs.Events.Application.PaymentCompleted;
 
-public class CustomPaymentCompletedApplicationEventHandler(
+public class CustomPaymentCompletedHandler(
 	ICustomReads reads,
 	IUnitOfWork uow,
 	IRequestSender sender,

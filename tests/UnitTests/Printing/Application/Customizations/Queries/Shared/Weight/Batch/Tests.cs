@@ -12,15 +12,17 @@ using static Data.Customizations.TestData;
 public class Tests : Data.Customizations.BaseUnitTests
 {
 	private readonly BatchGetCustomizationWeightByIdHandler handler;
+	private readonly BatchGetCustomizationWeightByIdQuery request = new(Ids);
+
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
 	private readonly Mock<IPrintCalculator> calculator = new();
 
 	private const double Weight = 10.5;
-	private static readonly CustomizationId[] ids = [];
-	private static readonly Customization[] customizations = [CreateCustomization()];
-	private static readonly MaterialId[] materialIds = [.. customizations.Select(x => x.MaterialId)];
-	private static readonly Dictionary<MaterialId, Material> materials = new()
+	private static readonly CustomizationId[] Ids = [];
+	private static readonly Customization[] Customizations = [CreateCustomization()];
+	private static readonly MaterialId[] MaterialIds = [.. Customizations.Select(x => x.MaterialId)];
+	private static readonly Dictionary<MaterialId, Material> Materials = new()
 	{
 		[ValidMaterialId] = CreateMaterial(),
 	};
@@ -29,11 +31,11 @@ public class Tests : Data.Customizations.BaseUnitTests
 	{
 		handler = new(reads.Object, materialReads.Object, calculator.Object);
 
-		reads.Setup(x => x.AllAsync(ids, false, ct))
-			.ReturnsAsync(customizations);
+		reads.Setup(x => x.AllAsync(Ids, false, ct))
+			.ReturnsAsync(Customizations);
 
-		materialReads.Setup(x => x.AllByIdsAsync(materialIds, false, ct))
-			.ReturnsAsync(materials);
+		materialReads.Setup(x => x.AllByIdsAsync(MaterialIds, false, ct))
+			.ReturnsAsync(Materials);
 
 		calculator.Setup(x => x.CalculateWeight(It.IsAny<Customization>(), It.IsAny<Material>()))
 			.Returns((decimal)Weight);
@@ -43,18 +45,17 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		BatchGetCustomizationWeightByIdQuery query = new(ids);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.AllAsync(ids, false, ct),
+			x => x.AllAsync(Ids, false, ct),
 			Times.Once()
 		);
 		materialReads.Verify(
-			x => x.AllByIdsAsync(materialIds, false, ct),
+			x => x.AllByIdsAsync(MaterialIds, false, ct),
 			Times.Once()
 		);
 	}
@@ -63,18 +64,17 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldCalculateWeight()
 	{
 		// Arrange
-		BatchGetCustomizationWeightByIdQuery query = new(ids);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		calculator.Verify(
 			x => x.CalculateWeight(
-				It.Is<Customization>(x => customizations.Contains(x)),
-				It.Is<Material>(x => materials.Values.Contains(x))
+				It.Is<Customization>(x => Customizations.Contains(x)),
+				It.Is<Material>(x => Materials.Values.Contains(x))
 			),
-			Times.Exactly(customizations.Length)
+			Times.Exactly(Customizations.Length)
 		);
 	}
 
@@ -82,10 +82,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		BatchGetCustomizationWeightByIdQuery query = new(ids);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple([.. result.Select(

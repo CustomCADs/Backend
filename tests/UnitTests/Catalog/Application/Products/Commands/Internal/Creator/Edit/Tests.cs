@@ -16,6 +16,15 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly EditProductHandler handler;
+	private readonly EditProductCommand request = new(
+		Id: ValidId,
+		Name: MinValidName,
+		Description: MinValidDescription,
+		Price: MinValidPrice,
+		CategoryId: ValidCategoryId,
+		CallerId: ValidCreatorId
+	);
+
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -44,17 +53,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		EditProductCommand command = new(
-			Id: ValidId,
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidCreatorId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -67,17 +68,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		EditProductCommand command = new(
-			Id: ValidId,
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidCreatorId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -90,17 +83,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		EditProductCommand command = new(
-			Id: ValidId,
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidCreatorId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -123,17 +108,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		EditProductCommand command = new(
-			Id: ValidId,
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidCreatorId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(
@@ -148,19 +125,11 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
-		EditProductCommand command = new(
-			Id: ValidId,
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidDesignerId
-		);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { CallerId = ValidDesignerId }, ct)
 		);
 	}
 
@@ -173,19 +142,10 @@ public class Tests : Data.Products.BaseUnitTests
 			ct
 		)).ReturnsAsync(false);
 
-		EditProductCommand command = new(
-			Id: ValidId,
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidCreatorId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -196,19 +156,10 @@ public class Tests : Data.Products.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Product);
 
-		EditProductCommand command = new(
-			Id: ValidId,
-			Name: MinValidName,
-			Description: MinValidDescription,
-			Price: MinValidPrice,
-			CategoryId: ValidCategoryId,
-			CallerId: ValidDesignerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

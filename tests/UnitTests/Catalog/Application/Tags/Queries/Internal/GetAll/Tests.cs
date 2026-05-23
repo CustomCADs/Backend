@@ -9,10 +9,12 @@ using static Data.Tags.TestData;
 public class Tests : Data.Tags.BaseUnitTests
 {
 	private readonly GetAllTagsHandler handler;
+	private readonly GetAllTagsQuery request = new();
+
 	private readonly Mock<ITagReads> reads = new();
 	private readonly Mock<BaseCachingService<TagId, Tag>> cache = new();
 
-	private readonly Tag[] tags = [
+	private static readonly Tag[] Tags = [
 		CreateTag(MinValidName),
 		CreateTag(MaxValidName)
 	];
@@ -23,17 +25,16 @@ public class Tests : Data.Tags.BaseUnitTests
 
 		cache.Setup(x => x.GetOrCreateAsync(
 			It.IsAny<Func<Task<ICollection<Tag>>>>()
-		)).ReturnsAsync(tags);
+		)).ReturnsAsync(Tags);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetAllTagsQuery query = new();
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -46,15 +47,14 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllTagsQuery query = new();
 
 		// Act
-		TagDto[] tags = await handler.Handle(query, ct);
+		TagDto[] tags = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
-			() => Assert.Equal(tags.Select(r => r.Id), this.tags.Select(r => r.Id)),
-			() => Assert.Equal(tags.Select(r => r.Name), this.tags.Select(r => r.Name))
+			() => Assert.Equal(tags.Select(r => r.Id), Tags.Select(r => r.Id)),
+			() => Assert.Equal(tags.Select(r => r.Name), Tags.Select(r => r.Name))
 		);
 	}
 }

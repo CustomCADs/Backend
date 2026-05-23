@@ -6,15 +6,15 @@ namespace CustomCADs.UnitTests.Carts.Application.PurchasedCarts.Queries.Internal
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
 	private readonly GetPurchasedCartPaymentStatusesHandler handler = new();
+	private readonly GetPurchasedCartPaymentStatusesQuery request = new();
 
 	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetPurchasedCartPaymentStatusesQuery query = new();
 
 		// Act
-		PaymentStatus[] statuses = await handler.Handle(query, ct);
+		PaymentStatus[] statuses = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(Enum.GetValues<PaymentStatus>(), statuses);

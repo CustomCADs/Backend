@@ -10,7 +10,7 @@ public static class DependencyInjection
 	{
 		public void AddCustomDeliveryPaymentSagaDependencies()
 			=> services
-				.AddScoped<CustomDeliveryRequestedApplicationEventHandler>()
-				.AddScoped<CustomPaymentCompletedApplicationEventHandler>();
+				.AddScoped<CustomDeliveryRequestedHandler>()
+				.AddScoped<CustomPaymentCompletedHandler>();
 	}
 }

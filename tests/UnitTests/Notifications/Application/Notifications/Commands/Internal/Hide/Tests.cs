@@ -11,6 +11,8 @@ using static Data.Notifications.TestData;
 public class Tests : Data.Notifications.BaseUnitTests
 {
 	private readonly HideNotificationHandler handler;
+	private readonly HideNotificationCommand request = new(ValidId, ValidReceiverId);
+
 	private readonly Mock<INotificationReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
@@ -26,10 +28,9 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		HideNotificationCommand command = new(ValidId, ValidReceiverId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -42,10 +43,9 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		HideNotificationCommand command = new(ValidId, ValidReceiverId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -55,16 +55,15 @@ public class Tests : Data.Notifications.BaseUnitTests
 	}
 
 	[Fact]
-	public async Task Handle_ShouldThrow_WhenCallerUnauthorized()
+	public async Task Handle_ShouldThrow_WhenCallerUnauthorizedAccess()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(CreateNotification(receiverId: AccountId.New()));
-		HideNotificationCommand command = new(ValidId, ValidReceiverId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Notification>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -73,12 +72,11 @@ public class Tests : Data.Notifications.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Notification);
-		HideNotificationCommand command = new(ValidId, ValidReceiverId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Notification>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

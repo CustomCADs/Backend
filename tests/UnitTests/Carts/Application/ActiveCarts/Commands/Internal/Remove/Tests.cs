@@ -10,6 +10,8 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly RemoveActiveCartItemHandler handler;
+	private readonly RemoveActiveCartItemCommand request = new(ValidBuyerId, ValidProductId);
+
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IWrites<ActiveCartItem>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -28,13 +30,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		RemoveActiveCartItemCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ValidProductId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -47,13 +45,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		RemoveActiveCartItemCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ValidProductId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -69,15 +63,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		reads.Setup(x => x.SingleAsync(ValidBuyerId, ValidProductId, true, ct))
 			.ReturnsAsync(null as ActiveCartItem);
 
-		RemoveActiveCartItemCommand command = new(
-			CallerId: ValidBuyerId,
-			ProductId: ValidProductId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

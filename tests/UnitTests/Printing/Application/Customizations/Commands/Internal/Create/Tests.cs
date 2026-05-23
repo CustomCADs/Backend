@@ -9,6 +9,14 @@ using static Data.Customizations.TestData;
 public class Tests : Data.Customizations.BaseUnitTests
 {
 	private readonly CreateCustomizationHandler handler;
+	private readonly CreateCustomizationCommand request = new(
+		Scale: MaxValidScale,
+		Infill: MaxValidInfill,
+		Volume: MaxValidVolume,
+		Color: ValidColor,
+		MaterialId: ValidMaterialId
+	);
+
 	private readonly Mock<IWrites<Customization>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
@@ -32,16 +40,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateCustomizationCommand command = new(
-			Scale: MaxValidScale,
-			Infill: MaxValidInfill,
-			Volume: MaxValidVolume,
-			Color: ValidColor,
-			MaterialId: ValidMaterialId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -67,16 +68,9 @@ public class Tests : Data.Customizations.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateCustomizationCommand command = new(
-			Scale: MaxValidScale,
-			Infill: MaxValidInfill,
-			Volume: MaxValidVolume,
-			Color: ValidColor,
-			MaterialId: ValidMaterialId
-		);
 
 		// Act
-		CustomizationId id = await handler.Handle(command, ct);
+		CustomizationId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);

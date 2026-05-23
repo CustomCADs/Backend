@@ -12,6 +12,8 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly ToggleViewedProductsTrackingHandler handler;
+	private readonly ToggleViewedProductsTrackingCommand request = new(MaxValidUsername, ValidAccountId);
+
 	private readonly Mock<IRequestSender> sender = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
@@ -31,10 +33,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		ToggleViewedProductsTrackingCommand command = new(MaxValidUsername, ValidAccountId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -50,10 +51,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
-		ToggleViewedProductsTrackingCommand command = new(MaxValidUsername, ValidAccountId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(

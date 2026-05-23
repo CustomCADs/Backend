@@ -12,51 +12,49 @@ using static Data.Notifications.TestData;
 public class Tests : Data.Notifications.BaseUnitTests
 {
 	private readonly GetAllNotificationsHandler handler;
+	private readonly GetAllNotificationsQuery request = new(
+		Pagination: Query.Pagination,
+		CallerId: ValidReceiverId,
+		Sorting: Query.Sorting
+	);
+
 	private readonly Mock<INotificationReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private readonly Notification[] notifications = [
+	private static readonly Notification[] Notifications = [
 		CreateNotification(id: ValidId, authorId: AccountId.New()),
 		CreateNotification(id: ValidId, authorId: AccountId.New())
 	];
-	private readonly NotificationQuery query;
-	private readonly Result<Notification> result;
+	private static readonly NotificationQuery Query = new(
+		Pagination: new(1, Notifications.Length)
+	);
+	private static readonly Result<Notification> Result = new(
+		Count: Notifications.Length,
+		Items: Notifications
+	);
 
 	public Tests()
 	{
 		handler = new(reads.Object, sender.Object);
 
-		query = new(
-			Pagination: new(1, notifications.Length)
-		);
-		result = new(
-			Count: notifications.Length,
-			Items: notifications
-		);
-
 		reads.Setup(x => x.AllAsync(
 			It.IsAny<NotificationQuery>(),
 			false,
 			ct
-		)).ReturnsAsync(result);
+		)).ReturnsAsync(Result);
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Length == notifications.Length),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Length == Notifications.Length),
 			ct
-		)).ReturnsAsync(notifications.ToDictionary(x => x.AuthorId, x => "Username123"));
+		)).ReturnsAsync(Notifications.ToDictionary(x => x.AuthorId, x => "Username123"));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAllNotificationsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidReceiverId,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -73,19 +71,14 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		GetAllNotificationsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidReceiverId,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Length == notifications.Length),
+				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.Length == Notifications.Length),
 				ct
 			),
 			Times.Once()
@@ -96,19 +89,14 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllNotificationsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidReceiverId,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		Result<GetAllNotificationsDto> result = await handler.Handle(query, ct);
+		Result<GetAllNotificationsDto> res = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
-			() => Assert.Equal(result.Items.Select(r => r.Id), this.result.Items.Select(r => r.Id)),
-			() => Assert.Equal(result.Count, this.result.Count)
+			() => Assert.Equal(res.Items.Select(r => r.Id), Result.Items.Select(r => r.Id)),
+			() => Assert.Equal(res.Count, Result.Count)
 		);
 	}
 }

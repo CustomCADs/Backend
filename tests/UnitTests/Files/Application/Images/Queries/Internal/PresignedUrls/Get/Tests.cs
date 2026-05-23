@@ -10,11 +10,13 @@ using static Data.Images.TestData;
 public class Tests : Data.Images.BaseUnitTests
 {
 	private readonly GetImagePresignedUrlGetHandler handler;
+	private readonly GetImagePresignedUrlGetQuery request = new(ValidId, Type, ValidOwnerId);
+
 	private readonly Mock<IImageReads> reads = new();
 	private readonly Mock<IImageStorageService> storage = new();
 	private readonly Mock<BaseCachingService<ImageId, Image>> cache = new();
 
-	private static readonly Image image = CreateImage();
+	private readonly Image image = CreateImage();
 	private const FileContextType Type = FileContextType.Product;
 	private const string PresignedUrl = "PresignedUrl";
 
@@ -35,10 +37,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetImagePresignedUrlGetQuery query = new(ValidId, Type, ValidOwnerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -51,10 +52,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
-		GetImagePresignedUrlGetQuery query = new(ValidId, Type, ValidOwnerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		storage.Verify(
@@ -67,10 +67,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetImagePresignedUrlGetQuery query = new(ValidId, Type, ValidOwnerId);
 
 		// Act
-		var (Url, ContentType) = await handler.Handle(query, ct);
+		var (Url, ContentType) = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(

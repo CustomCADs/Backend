@@ -9,10 +9,12 @@ namespace CustomCADs.UnitTests.Printing.Application.Materials.Queries.Internal.G
 public class Tests : Data.Materials.BaseUnitTests
 {
 	private readonly GetAllMaterialsHandler handler;
+	private readonly GetAllMaterialsQuery request = new();
+
 	private readonly Mock<IMaterialReads> reads = new();
 	private readonly Mock<BaseCachingService<MaterialId, Material>> cache = new();
 
-	private static readonly ICollection<Material> materials = [
+	private static readonly ICollection<Material> Materials = [
 		CreateMaterial(),
 		CreateMaterial(),
 		CreateMaterial(),
@@ -23,17 +25,16 @@ public class Tests : Data.Materials.BaseUnitTests
 		handler = new(reads.Object, cache.Object);
 
 		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Material>>>>()))
-			.ReturnsAsync(materials);
+			.ReturnsAsync(Materials);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetAllMaterialsQuery query = new();
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -46,12 +47,11 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetAllMaterialsQuery query = new();
 
 		// Act
-		ICollection<MaterialDto> response = await handler.Handle(query, ct);
+		ICollection<MaterialDto> response = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(materials.Count, response.Count);
+		Assert.Equal(Materials.Count, response.Count);
 	}
 }

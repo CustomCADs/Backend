@@ -10,6 +10,8 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly EditCadHandler handler;
+	private readonly EditCadCommand request = new(ValidId, ValidContentType, ValidVolume, ValidOwnerId);
+
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
@@ -28,10 +30,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		EditCadCommand command = new(ValidId, ValidContentType, ValidVolume, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -44,10 +45,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		EditCadCommand command = new(ValidId, ValidContentType, ValidVolume, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -60,10 +60,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		EditCadCommand command = new(ValidId, ValidContentType, ValidVolume, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -76,10 +75,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldModifyCad()
 	{
 		// Arrange
-		EditCadCommand command = new(ValidId, ValidContentType, ValidVolume, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -94,12 +92,11 @@ public class Tests : Data.Cads.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Cad);
-		EditCadCommand command = new(ValidId, ValidContentType, ValidVolume, ValidOwnerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

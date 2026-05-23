@@ -10,6 +10,8 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly GetUsernameByIdHandler handler;
+	private readonly GetUsernameByIdQuery request = new(ValidId);
+
 	private readonly Mock<IAccountReads> reads = new();
 
 	public Tests()
@@ -23,10 +25,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetUsernameByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -39,10 +40,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetUsernameByIdQuery query = new(ValidId);
 
 		// Act
-		string actualUsername = await handler.Handle(query, ct);
+		string actualUsername = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidUsername, actualUsername);
@@ -53,12 +53,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Account);
-		GetUsernameByIdQuery query = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

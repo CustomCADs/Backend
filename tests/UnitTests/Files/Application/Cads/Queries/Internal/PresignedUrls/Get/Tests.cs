@@ -10,11 +10,13 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly GetCadPresignedUrlGetHandler handler;
+	private readonly GetCadPresignedUrlGetQuery request = new(ValidId, Type, ValidOwnerId);
+
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<ICadStorageService> storage = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
-	private static readonly Cad cad = CreateCad();
+	private readonly Cad cad = CreateCad();
 	private const FileContextType Type = FileContextType.Product;
 	private const string PresignedUrl = "PresignedUrl";
 
@@ -35,10 +37,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		GetCadPresignedUrlGetQuery query = new(ValidId, Type, ValidOwnerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -51,10 +52,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
-		GetCadPresignedUrlGetQuery query = new(ValidId, Type, ValidOwnerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		storage.Verify(
@@ -67,10 +67,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetCadPresignedUrlGetQuery query = new(ValidId, Type, ValidOwnerId);
 
 		// Act
-		var (Url, ContentType) = await handler.Handle(query, ct);
+		var (Url, ContentType) = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(

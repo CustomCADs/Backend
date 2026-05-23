@@ -8,6 +8,8 @@ using static Data.Images.TestData;
 public class Tests : Data.Images.BaseUnitTests
 {
 	private readonly CreateImageHandler handler;
+	private readonly CreateImageCommand request = new(ValidKey, ValidContentType, ValidOwnerId);
+
 	private readonly Mock<IWrites<Image>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<ImageId, Image>> cache = new();
@@ -26,10 +28,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateImageCommand command = new(ValidKey, ValidContentType, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -49,10 +50,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		CreateImageCommand command = new(ValidKey, ValidContentType, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -68,10 +68,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateImageCommand command = new(ValidKey, ValidContentType, ValidOwnerId);
 
 		// Act
-		ImageId id = await handler.Handle(command, ct);
+		ImageId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);

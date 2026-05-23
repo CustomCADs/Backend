@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Modules.Notifications.Domain.Notifications;
+using CustomCADs.Shared.Domain.Exceptions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Notifications;
 
@@ -9,6 +10,9 @@ using static TestData;
 public class BaseUnitTests
 {
 	public static readonly CancellationToken ct = CancellationToken.None;
+
+	protected static readonly Func<Action, CustomValidationException<Notification>> ExpectValidationException
+		= Xunit.Assert.Throws<CustomValidationException<Notification>>;
 
 	public static Notification CreateNotification(
 		string? type = null,

@@ -10,6 +10,8 @@ using static Data.Images.TestData;
 public class Tests : Data.Images.BaseUnitTests
 {
 	private readonly EditImageHandler handler;
+	private readonly EditImageCommand request = new(ValidId, ValidContentType, ValidOwnerId);
+
 	private readonly Mock<IImageReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<BaseCachingService<ImageId, Image>> cache = new();
@@ -28,10 +30,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		EditImageCommand command = new(ValidId, ValidContentType, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -44,10 +45,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		EditImageCommand command = new(ValidId, ValidContentType, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		uow.Verify(
@@ -60,10 +60,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		EditImageCommand command = new(ValidId, ValidContentType, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -76,10 +75,9 @@ public class Tests : Data.Images.BaseUnitTests
 	public async Task Handle_ShouldModifyImage()
 	{
 		// Arrange
-		EditImageCommand command = new(ValidId, ValidContentType, ValidOwnerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
@@ -94,12 +92,11 @@ public class Tests : Data.Images.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Image);
-		EditImageCommand command = new(ValidId, ValidContentType, ValidOwnerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

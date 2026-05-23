@@ -8,6 +8,8 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly CountActiveCartItemsHandler handler;
+	private readonly CountActiveCartItemsQuery request = new(ValidBuyerId);
+
 	private readonly Mock<IActiveCartReads> reads = new();
 
 	private const int Count = 5;
@@ -24,10 +26,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CountActiveCartItemsQuery query = new(ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -40,10 +41,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CountActiveCartItemsQuery query = new(ValidBuyerId);
 
 		// Act
-		int count = await handler.Handle(query, ct);
+		int count = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(Count, count);

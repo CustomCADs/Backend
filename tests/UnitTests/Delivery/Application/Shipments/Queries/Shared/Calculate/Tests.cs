@@ -9,13 +9,15 @@ namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Shared.Cal
 public class Tests : Data.Shipments.BaseUnitTests
 {
 	private readonly CalculateShipmentHandler handler;
+	private readonly CalculateShipmentQuery request = new(Weights, Address);
+
 	private readonly Mock<IDeliveryService> delivery = new();
 
-	private static readonly CalculationDto[] calculations = [
+	private static readonly CalculationDto[] Calculations = [
 		new(string.Empty, new(default, default, default, string.Empty), default, default)
 	];
-	private static readonly double[] weights = [0, 1, 2, 3, 4, 5, 6];
-	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
+	private static readonly double[] Weights = [0, 1, 2, 3, 4, 5, 6];
+	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
 
 	public Tests()
 	{
@@ -23,32 +25,31 @@ public class Tests : Data.Shipments.BaseUnitTests
 
 		delivery.Setup(x => x.CalculateAsync(
 			It.Is<CalculateRequest>(x =>
-				x.Country == address.Country
-				&& x.City == address.City
-				&& x.Street == address.Street
-				&& x.Weights.Length == weights.Length
+				x.Country == Address.Country
+				&& x.City == Address.City
+				&& x.Street == Address.Street
+				&& x.Weights.Length == Weights.Length
 			),
 			ct
-		)).ReturnsAsync(calculations);
+		)).ReturnsAsync(Calculations);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
-		CalculateShipmentQuery query = new(weights, address);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		delivery.Verify(
 			x => x.CalculateAsync(
 				It.Is<CalculateRequest>(x =>
-					x.Country == address.Country
-					&& x.City == address.City
-					&& x.Street == address.Street
-					&& x.Weights.Length == weights.Length
+					x.Country == Address.Country
+					&& x.City == Address.City
+					&& x.Street == Address.Street
+					&& x.Weights.Length == Weights.Length
 				),
 				ct
 			),
@@ -60,12 +61,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CalculateShipmentQuery query = new(weights, address);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(calculations.Length, result.Length);
+		Assert.Equal(Calculations.Length, result.Length);
 	}
 }

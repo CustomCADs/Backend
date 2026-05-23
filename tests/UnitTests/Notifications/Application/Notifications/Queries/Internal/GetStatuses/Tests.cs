@@ -6,15 +6,15 @@ namespace CustomCADs.UnitTests.Notifications.Application.Notifications.Queries.I
 public class Tests : Data.Notifications.BaseUnitTests
 {
 	private readonly GetNotificationStatusesHandler handler = new();
+	private readonly GetNotificationStatusesQuery request = new();
 
 	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetNotificationStatusesQuery query = new();
 
 		// Act
-		NotificationStatus[] statuses = await handler.Handle(query, ct);
+		NotificationStatus[] statuses = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(statuses, Enum.GetValues<NotificationStatus>());

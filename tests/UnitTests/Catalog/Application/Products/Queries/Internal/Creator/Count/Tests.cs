@@ -9,6 +9,8 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly ProductsCountHandler handler;
+	private readonly ProductsCountQuery request = new(ValidCreatorId);
+
 	private readonly Mock<IProductReads> reads = new();
 
 	private readonly Dictionary<ProductStatus, int> dict = new()
@@ -31,10 +33,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		ProductsCountQuery query = new(ValidCreatorId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -47,10 +48,9 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		ProductsCountQuery query = new(ValidCreatorId);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(

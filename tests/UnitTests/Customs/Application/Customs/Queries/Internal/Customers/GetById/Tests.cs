@@ -13,6 +13,8 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly CustomerGetCustomByIdHandler handler;
+	private readonly CustomerGetCustomByIdQuery request = new(ValidId, ValidBuyerId);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
@@ -32,10 +34,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CustomerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -49,10 +50,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		custom.SetCategory(null);
-		CustomerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -76,10 +76,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		custom.Cancel();
-		CustomerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -102,10 +101,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CustomerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Act
-		CustomerGetCustomByIdDto custom = await handler.Handle(query, ct);
+		CustomerGetCustomByIdDto custom = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(this.custom.Id, custom.Id);
@@ -116,25 +114,23 @@ public class Tests : Data.Customs.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Custom);
-		CustomerGetCustomByIdQuery query = new(ValidId, ValidBuyerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
 	[Fact]
-	public async Task Handle_ShouldThrowException_WhenUnauthorized()
+	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
-		CustomerGetCustomByIdQuery query = new(ValidId, AccountId.New());
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request with { CallerId = new() }, ct)
 		);
 	}
 }

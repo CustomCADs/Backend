@@ -4,9 +4,6 @@ namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Behaviors.Stat
 
 public class Tests : Data.Notifications.BaseUnitTests
 {
-	private static readonly Func<Action, CustomValidationException<Notification>> expectValidationException
-		= Assert.Throws<CustomValidationException<Notification>>;
-
 	[Fact]
 	public void Hide_ShouldSucceed_WhenUnread()
 	{
@@ -43,13 +40,13 @@ public class Tests : Data.Notifications.BaseUnitTests
 	[Fact]
 	public void Hide_ShouldFail_WhenHidden()
 	{
-		expectValidationException((Action)(() =>
+		ExpectValidationException(() =>
 		{
-			Notification notification = Data.Notifications.BaseUnitTests.CreateNotification();
+			Notification notification = CreateNotification();
 			notification.Read();
 			notification.Hide();
 
 			notification.Hide();
-		}));
+		});
 	}
 }

@@ -11,51 +11,49 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly CreatorGetAllProductsHandler handler;
+	private readonly CreatorGetAllProductsQuery request = new(
+		Pagination: Query.Pagination,
+		CallerId: ValidCreatorId,
+		CategoryId: Query.CategoryId,
+		Name: Query.Name,
+		Sorting: Query.Sorting
+	);
+
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private readonly Product[] products = [];
-	private readonly ProductQuery query;
-	private readonly Result<Product> result;
+	private static readonly Product[] Products = [];
+	private static readonly ProductQuery Query = new(
+		Pagination: new(1, Products.Length)
+	);
+	private static readonly Result<Product> Result = new(
+		Count: Products.Length,
+		Items: Products
+	);
 
 	public Tests()
 	{
 		handler = new(reads.Object, sender.Object);
 
-		query = new(
-			Pagination: new(1, products.Length)
-		);
-		result = new(
-			Count: products.Length,
-			Items: products
-		);
-
 		reads.Setup(x => x.AllAsync(
 			It.IsAny<ProductQuery>(),
 			false,
 			ct
-		)).ReturnsAsync(result);
+		)).ReturnsAsync(Result);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == Products.Select(x => x.CategoryId)),
 			ct
-		)).ReturnsAsync(products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
+		)).ReturnsAsync(Products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CreatorGetAllProductsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidCreatorId,
-			CategoryId: this.query.CategoryId,
-			Name: this.query.Name,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -72,21 +70,14 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CreatorGetAllProductsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidCreatorId,
-			CategoryId: this.query.CategoryId,
-			Name: this.query.Name,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<BatchGetCategorByIdQuery>(x => x.Ids == products.Select(x => x.CategoryId)),
+				It.Is<BatchGetCategorByIdQuery>(x => x.Ids == Products.Select(x => x.CategoryId)),
 				ct
 			),
 			Times.Once()
@@ -97,18 +88,11 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreatorGetAllProductsQuery query = new(
-			Pagination: this.query.Pagination,
-			CallerId: ValidCreatorId,
-			CategoryId: this.query.CategoryId,
-			Name: this.query.Name,
-			Sorting: this.query.Sorting
-		);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(result.Count, products.Length);
+		Assert.Equal(result.Count, Products.Length);
 	}
 }

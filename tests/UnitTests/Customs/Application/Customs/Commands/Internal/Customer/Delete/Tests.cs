@@ -13,6 +13,8 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly DeleteCustomHandler handler;
+	private readonly DeleteCustomCommand request = new(ValidId, ValidBuyerId);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IWrites<Custom>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -32,13 +34,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DeleteCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidBuyerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -51,13 +49,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidBuyerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -78,18 +72,10 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldRaiseEvents(bool isPending)
 	{
 		// Arrange
-		if (!isPending)
-		{
-			custom.Accept(ValidDesignerId);
-		}
-
-		DeleteCustomCommand command = new(
-			Id: ValidId,
-			CallerId: ValidBuyerId
-		);
+		if (!isPending) custom.Accept(ValidDesignerId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		raiser.Verify(

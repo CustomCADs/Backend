@@ -10,6 +10,8 @@ using static Data.Categories.TestData;
 public class Tests : Data.Categories.BaseUnitTests
 {
 	private readonly DeleteCategoryHandler handler;
+	private readonly DeleteCategoryCommand request = new(ValidId);
+
 	private readonly Mock<BaseCachingService<CategoryId, Category>> cache = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<ICategoryWrites> writes = new();
@@ -27,10 +29,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
-		DeleteCategoryCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -43,10 +44,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteCategoryCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -65,10 +65,9 @@ public class Tests : Data.Categories.BaseUnitTests
 	public async Task Handle_ShouldClearCache()
 	{
 		// Arrange
-		DeleteCategoryCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(

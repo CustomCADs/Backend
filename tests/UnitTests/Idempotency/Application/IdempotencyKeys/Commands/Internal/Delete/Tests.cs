@@ -10,6 +10,11 @@ using static Data.IdempotencyKeys.TestData;
 public class Tests : Data.IdempotencyKeys.BaseUnitTests
 {
 	private readonly DeleteIdempotencyKeyHandler handler;
+	private readonly DeleteIdempotencyKeyCommand request = new(
+		IdempotencyKey: ValidId.Value,
+		RequestHash: ValidRequestHash
+	);
+
 	private readonly Mock<IIdempotencyKeyReads> reads = new();
 	private readonly Mock<IWrites<IdempotencyKey>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
@@ -30,13 +35,9 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DeleteIdempotencyKeyCommand command = new(
-			IdempotencyKey: ValidId.Value,
-			RequestHash: ValidRequestHash
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -54,13 +55,9 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteIdempotencyKeyCommand command = new(
-			IdempotencyKey: ValidId.Value,
-			RequestHash: ValidRequestHash
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -79,15 +76,10 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, ValidRequestHash, true, ct)).ReturnsAsync(null as IdempotencyKey);
 
-		DeleteIdempotencyKeyCommand command = new(
-			IdempotencyKey: ValidId.Value,
-			RequestHash: ValidRequestHash
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<IdempotencyKey>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

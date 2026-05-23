@@ -10,6 +10,8 @@ using static Data.Cads.TestData;
 public class Tests : Data.Cads.BaseUnitTests
 {
 	private readonly IsCadPrintableByIdHandler handler;
+	private readonly IsCadPrintableByIdQuery request = new(ValidId);
+
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
@@ -28,10 +30,9 @@ public class Tests : Data.Cads.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		IsCadPrintableByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -53,10 +54,9 @@ public class Tests : Data.Cads.BaseUnitTests
 		{
 			Cad.SetContentType(ApplicationConstants.Cads.PrintableContentTypes.First());
 		}
-		IsCadPrintableByIdQuery query = new(ValidId);
 
 		// Act
-		bool result = await handler.Handle(query, ct);
+		bool result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(exists, result);

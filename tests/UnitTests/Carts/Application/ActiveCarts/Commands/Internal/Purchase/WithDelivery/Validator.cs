@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+using CustomCADs.Shared.Application.Dtos.Delivery;
 using FluentValidation.TestHelper;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
@@ -8,22 +9,26 @@ using static Data.ActiveCarts.TestData;
 public class Validator : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly PurchaseActiveCartWithDeliveryValidator validator = new();
+	private static PurchaseActiveCartWithDeliveryCommand Request(string paymentMethodId, string shipmentService, AddressDto address, ContactDto contact)
+		=> new(
+			PaymentMethodId: paymentMethodId,
+			CallerId: ValidBuyerId,
+			ShipmentService: shipmentService,
+			Address: address,
+			Contact: contact
+		);
 
 	[Theory]
 	[ClassData(typeof(ValidData))]
 	public async Task Validate_ShouldBeValid_WhenCartIsValid(string paymentMethodId, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, shipmentService, new(country, city, street), new(phone, email)),
+			cancellationToken: ct
+		);
 
 		// Assert
 		Assert.True(result.IsValid);
@@ -38,16 +43,12 @@ public class Validator : Data.ActiveCarts.BaseUnitTests
 	public async Task Validate_ShouldBeInvalid_WhenCartIsNotValid(string paymentMethodId, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, shipmentService, new(country, city, street), new(phone, email)),
+			cancellationToken: ct
+		);
 
 		// Assert
 		Assert.False(result.IsValid);
@@ -58,16 +59,12 @@ public class Validator : Data.ActiveCarts.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenShipmentServiceIsNotValid(string paymentMethodId, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, shipmentService, new(country, city, street), new(phone, email)),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.ShipmentService);
@@ -78,16 +75,12 @@ public class Validator : Data.ActiveCarts.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenCountryIsNotValid(string paymentMethodId, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, shipmentService, new(country, city, street), new(phone, email)),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.Address.Country);
@@ -98,16 +91,12 @@ public class Validator : Data.ActiveCarts.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenCityIsNotValid(string paymentMethodId, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, shipmentService, new(country, city, street), new(phone, email)),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.Address.City);
@@ -118,16 +107,12 @@ public class Validator : Data.ActiveCarts.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenPhoneIsNotValid(string paymentMethodId, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, shipmentService, new(country, city, street), new(phone, email)),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.Contact.Phone);
@@ -138,16 +123,12 @@ public class Validator : Data.ActiveCarts.BaseUnitTests
 	public async Task Validate_ShouldReturnProperErrors_WhenEmailIsNotValid(string paymentMethodId, string shipmentService, string country, string city, string street, string? phone, string? email)
 	{
 		// Arrange
-		PurchaseActiveCartWithDeliveryCommand command = new(
-			PaymentMethodId: paymentMethodId,
-			CallerId: ValidBuyerId,
-			ShipmentService: shipmentService,
-			Address: new(country, city, street),
-			Contact: new(phone, email)
-		);
 
 		// Act
-		var result = await validator.TestValidateAsync(command, cancellationToken: ct);
+		var result = await validator.TestValidateAsync(
+			Request(paymentMethodId, shipmentService, new(country, city, street), new(phone, email)),
+			cancellationToken: ct
+		);
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.Contact.Email);

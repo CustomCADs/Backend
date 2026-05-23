@@ -14,6 +14,14 @@ using static Data.Notifications.TestData;
 public class Tests : Data.Notifications.BaseUnitTests
 {
 	private readonly NotificationRequestedHandler handler;
+	private readonly NotificationRequestedEvent request = new(
+		Type: NotificationType.Unkown,
+		Description: MinValidDescription,
+		Link: ValidLink,
+		AuthorId: ValidAuthorId,
+		ReceiverIds: []
+	);
+
 	private readonly Mock<IWrites<Notification>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -43,25 +51,18 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase_WhenSingleReceiver()
 	{
 		// Arrange
-		NotificationRequestedEvent @event = new(
-			Type: NotificationType.Unkown,
-			Description: MinValidDescription,
-			Link: ValidLink,
-			AuthorId: ValidAuthorId,
-			ReceiverIds: [ValidReceiverId]
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request with { ReceiverIds = [ValidReceiverId] });
 
 		// Assert
 		writes.Verify(
 			x => x.AddAsync(
 				It.Is<Notification>(x =>
-					x.Type == @event.Type.ToString()
-					&& x.Content == new NotificationContent(@event.Description, @event.Link)
-					&& x.AuthorId == @event.AuthorId
-					&& x.ReceiverId == @event.ReceiverIds.First()
+					x.Type == request.Type.ToString()
+					&& x.Content == new NotificationContent(request.Description, request.Link)
+					&& x.AuthorId == request.AuthorId
+					&& x.ReceiverId == ValidReceiverId
 				),
 				ct
 			),
@@ -77,16 +78,9 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldBulkInsert_WhenMultipleReceivers()
 	{
 		// Arrange
-		NotificationRequestedEvent @event = new(
-			Type: NotificationType.Unkown,
-			Description: MinValidDescription,
-			Link: ValidLink,
-			AuthorId: ValidAuthorId,
-			ReceiverIds: [ValidReceiverId, ValidAuthorId]
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request with { ReceiverIds = [ValidReceiverId, ValidAuthorId] });
 
 		// Assert
 		uow.Verify(
@@ -102,16 +96,9 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		NotificationRequestedEvent @event = new(
-			Type: NotificationType.Unkown,
-			Description: MinValidDescription,
-			Link: ValidLink,
-			AuthorId: ValidAuthorId,
-			ReceiverIds: [ValidReceiverId, ValidAuthorId]
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		sender.Verify(
@@ -127,21 +114,14 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldNotifySubscribers()
 	{
 		// Arrange
-		NotificationRequestedEvent @event = new(
-			Type: NotificationType.Unkown,
-			Description: MinValidDescription,
-			Link: ValidLink,
-			AuthorId: ValidAuthorId,
-			ReceiverIds: [ValidReceiverId, ValidAuthorId]
-		);
 
 		// Act
-		await handler.HandleAsync(@event);
+		await handler.HandleAsync(request);
 
 		// Assert
 		notifier.Verify(
 			x => x.NotifyUsersAsync(
-				@event.ReceiverIds,
+				request.ReceiverIds,
 				It.IsAny<string>(),
 				It.IsAny<object>(),
 				ct

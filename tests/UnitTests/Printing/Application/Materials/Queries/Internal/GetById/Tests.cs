@@ -11,10 +11,12 @@ using static Data.Materials.TestData;
 public class Tests : Data.Materials.BaseUnitTests
 {
 	private readonly GetMaterialByIdHandler handler;
+	private readonly GetMaterialByIdQuery request = new(ValidId);
+
 	private readonly Mock<IMaterialReads> reads = new();
 	private readonly Mock<BaseCachingService<MaterialId, Material>> cache = new();
 
-	private static readonly Material material = CreateMaterial();
+	private readonly Material material = CreateMaterial();
 
 	public Tests()
 	{
@@ -28,10 +30,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		GetMaterialByIdQuery query = new(ValidId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -44,10 +45,9 @@ public class Tests : Data.Materials.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetMaterialByIdQuery query = new(ValidId);
 
 		// Act
-		MaterialDto response = await handler.Handle(query, ct);
+		MaterialDto response = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(material.Id, response.Id);

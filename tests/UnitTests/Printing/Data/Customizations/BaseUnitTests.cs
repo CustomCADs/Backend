@@ -33,5 +33,5 @@ public class BaseUnitTests
 		decimal? cost = null,
 		ImageId? textureId = null,
 		MaterialId? id = null
-	) => Data.Materials.BaseUnitTests.CreateMaterial(id, name, density, cost, textureId);
+	) => Materials.BaseUnitTests.CreateMaterial(id, name, density, cost, textureId);
 }

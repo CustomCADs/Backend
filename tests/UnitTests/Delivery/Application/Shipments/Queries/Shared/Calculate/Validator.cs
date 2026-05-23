@@ -8,18 +8,18 @@ namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Shared.Cal
 public class Validator : Data.Shipments.BaseUnitTests
 {
 	private readonly CalculateShipmentValidator validator = new();
+	private readonly CalculateShipmentQuery request = new(Weights, Address);
 
-	private static readonly double[] weights = [0, 1, 2, 3, 4, 5, 6];
-	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
+	private static readonly double[] Weights = [0, 1, 2, 3, 4, 5, 6];
+	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
 
 	[Fact]
 	public async Task Validate_ShouldBeValid_WhenAddressIsValid()
 	{
 		// Arrange
-		CalculateShipmentQuery query = new(weights, address);
 
 		// Act
-		var result = await validator.TestValidateAsync(query);
+		var result = await validator.TestValidateAsync(request);
 
 		// Assert
 		Assert.True(result.IsValid);
@@ -30,10 +30,9 @@ public class Validator : Data.Shipments.BaseUnitTests
 	public async Task Validate_ShouldBeInvalid_WhenAddressIsInvalid(string country, string city, string street)
 	{
 		// Arrange
-		CalculateShipmentQuery query = new(weights, Address: new(country, city, street));
 
 		// Act
-		var result = await validator.TestValidateAsync(query);
+		var result = await validator.TestValidateAsync(request with { Address = new(country, city, street) });
 
 		// Assert
 		Assert.False(result.IsValid);

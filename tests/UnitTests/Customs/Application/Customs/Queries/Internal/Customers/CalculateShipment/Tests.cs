@@ -12,11 +12,13 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly CalculateCustomShipmentHandler handler;
+	private readonly CalculateCustomShipmentQuery request = new(ValidId, 0, Address, ValidCustomizationId);
+
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private static readonly AddressDto address = new("Bulgaria", "Burgas", "Slivnitsa");
-	private static readonly CalculateShipmentDto[] calculations = [
+	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
+	private static readonly CalculateShipmentDto[] Calculations = [
 		new(default, string.Empty, string.Empty, default, default)
 	];
 
@@ -35,17 +37,16 @@ public class Tests : Data.Customs.BaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.IsAny<CalculateShipmentQuery>(),
 			ct
-		)).ReturnsAsync(calculations);
+		)).ReturnsAsync(Calculations);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CalculateCustomShipmentQuery query = new(ValidId, 0, address, ValidCustomizationId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -58,10 +59,9 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CalculateCustomShipmentQuery query = new(ValidId, 0, address, ValidCustomizationId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -73,7 +73,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<CalculateShipmentQuery>(x => x.Address == address),
+				It.Is<CalculateShipmentQuery>(x => x.Address == Address),
 				ct
 			),
 			Times.Once()
@@ -84,12 +84,11 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CalculateCustomShipmentQuery query = new(ValidId, 0, address, ValidCustomizationId);
 
 		// Act
-		CalculateShipmentDto[] result = await handler.Handle(query, ct);
+		CalculateShipmentDto[] result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(calculations, result);
+		Assert.Equal(Calculations, result);
 	}
 }

@@ -9,6 +9,8 @@ using static Data.Notifications.TestData;
 public class Tests : Data.Notifications.BaseUnitTests
 {
 	private readonly CountNotificationsHandler handler;
+	private readonly CountNotificationsQuery request = new(ValidReceiverId);
+
 	private readonly Mock<INotificationReads> reads = new();
 
 	private readonly static Dictionary<NotificationStatus, int> expected = new()
@@ -31,10 +33,9 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CountNotificationsQuery query = new(ValidReceiverId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -47,10 +48,9 @@ public class Tests : Data.Notifications.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CountNotificationsQuery query = new(ValidReceiverId);
 
 		// Act
-		CountNotificationsDto counts = await handler.Handle(query, ct);
+		CountNotificationsDto counts = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(

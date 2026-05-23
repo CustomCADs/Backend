@@ -12,6 +12,8 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly RefreshUserHandler handler;
+	private readonly RefreshUserCommand request = new(RefreshToken.Value, ValidFingerprint);
+
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<ITokenService> tokenService = new();
 
@@ -37,10 +39,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
-		RefreshUserCommand command = new(RefreshToken.Value, ValidFingerprint);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		service.Verify(
@@ -53,10 +54,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldIssueTokens()
 	{
 		// Arrange
-		RefreshUserCommand command = new(RefreshToken.Value, ValidFingerprint);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		tokenService.Verify(
@@ -69,10 +69,9 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		RefreshUserCommand command = new(RefreshToken.Value, ValidFingerprint);
 
 		// Act
-		TokensDto tokens = await handler.Handle(command, ct);
+		TokensDto tokens = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(Tokens, tokens);
@@ -82,12 +81,11 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenMissingToken()
 	{
 		// Arrange
-		RefreshUserCommand command = new(Token: null, ValidFingerprint);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { Token = null }, ct)
 		);
 	}
 
@@ -106,12 +104,10 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 		service.Setup(x => x.GetByRefreshTokenAsync(token.Value)).ReturnsAsync((User, token));
 
-		RefreshUserCommand command = new(token.Value, ValidFingerprint);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request with { Token = token.Value }, ct)
 		);
 	}
 }

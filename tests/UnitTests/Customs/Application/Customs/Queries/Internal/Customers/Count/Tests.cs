@@ -9,9 +9,11 @@ using static Data.Customs.TestData;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly CountCustomsHandler handler;
+	private readonly CountCustomsQuery request = new(ValidBuyerId);
+
 	private readonly Mock<ICustomReads> reads = new();
 
-	private readonly static Dictionary<CustomStatus, int> expected = new()
+	private static readonly Dictionary<CustomStatus, int> Expected = new()
 	{
 		[CustomStatus.Pending] = 1,
 		[CustomStatus.Accepted] = 2,
@@ -26,17 +28,16 @@ public class Tests : Data.Customs.BaseUnitTests
 		handler = new(reads.Object);
 
 		reads.Setup(x => x.CountAsync(ValidBuyerId, ct))
-			.ReturnsAsync(expected);
+			.ReturnsAsync(Expected);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CountCustomsQuery query = new(ValidBuyerId);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -49,19 +50,18 @@ public class Tests : Data.Customs.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CountCustomsQuery query = new(ValidBuyerId);
 
 		// Act
-		CountCustomsDto counts = await handler.Handle(query, ct);
+		CountCustomsDto counts = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
-			() => Assert.Equal(expected[CustomStatus.Pending], counts.Pending),
-			() => Assert.Equal(expected[CustomStatus.Accepted], counts.Accepted),
-			() => Assert.Equal(expected[CustomStatus.Begun], counts.Begun),
-			() => Assert.Equal(expected[CustomStatus.Finished], counts.Finished),
-			() => Assert.Equal(expected[CustomStatus.Completed], counts.Completed),
-			() => Assert.Equal(expected[CustomStatus.Reported], counts.Reported)
+			() => Assert.Equal(Expected[CustomStatus.Pending], counts.Pending),
+			() => Assert.Equal(Expected[CustomStatus.Accepted], counts.Accepted),
+			() => Assert.Equal(Expected[CustomStatus.Begun], counts.Begun),
+			() => Assert.Equal(Expected[CustomStatus.Finished], counts.Finished),
+			() => Assert.Equal(Expected[CustomStatus.Completed], counts.Completed),
+			() => Assert.Equal(Expected[CustomStatus.Reported], counts.Reported)
 		);
 	}
 }

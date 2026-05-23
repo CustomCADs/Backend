@@ -6,15 +6,15 @@ namespace CustomCADs.UnitTests.Notifications.Application.Notifications.Queries.I
 public class Tests : Data.Notifications.BaseUnitTests
 {
 	private readonly GetNotificationSortingsHandler handler = new();
+	private readonly GetNotificationSortingsQuery request = new();
 
 	[Fact]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetNotificationSortingsQuery query = new();
 
 		// Act
-		NotificationSortingType[] sortings = await handler.Handle(query, ct);
+		NotificationSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(sortings, Enum.GetValues<NotificationSortingType>());

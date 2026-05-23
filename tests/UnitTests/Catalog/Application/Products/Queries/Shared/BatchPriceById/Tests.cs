@@ -10,44 +10,43 @@ using static Data.Products.TestData;
 public class Tests : Data.Products.BaseUnitTests
 {
 	private readonly BatchGetProductPriceByIdHandler handler;
+	private readonly BatchGetProductPriceByIdQuery request = new(Ids);
+
 	private readonly Mock<IProductReads> reads = new();
 
-	private readonly ProductId[] ids = [ValidId, ValidId, ValidId];
-	private readonly ProductQuery query;
-	private readonly Result<Product> result;
-	private readonly Product[] products = [
+	private static readonly Product[] Products = [
 		CreateProduct(MinValidName, MinValidDescription, MinValidPrice, id: ProductId.New()),
 		CreateProduct(MaxValidName, MaxValidDescription, MaxValidPrice, id: ProductId.New()),
 	];
+	private static readonly ProductId[] Ids = [.. Products.Select(x => x.Id)];
+	private static readonly ProductQuery Query = new(
+		Ids: Ids,
+		Pagination: new(Limit: Ids.Length)
+	);
+	private static readonly Result<Product> Result = new(
+		Count: Products.Length,
+		Items: Products
+	);
 
 	public Tests()
 	{
 		handler = new(reads.Object);
 
-		query = new(
-			Ids: ids,
-			Pagination: new(Limit: ids.Length)
-		);
-		result = new(
-			Count: products.Length,
-			Items: products
-		);
-		reads.Setup(x => x.AllAsync(query, false, ct))
-			.ReturnsAsync(result);
+		reads.Setup(x => x.AllAsync(Query, false, ct))
+			.ReturnsAsync(Result);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		BatchGetProductPriceByIdQuery query = new(ids);
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
-			x => x.AllAsync(this.query, false, ct),
+			x => x.AllAsync(Query, false, ct),
 			Times.Once()
 		);
 	}
@@ -56,15 +55,14 @@ public class Tests : Data.Products.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		BatchGetProductPriceByIdQuery query = new(ids);
 
 		// Act
-		var result = await handler.Handle(query, ct);
+		var result = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Multiple(
-			() => Assert.True(result.ElementAt(0).Value == MinValidPrice),
-			() => Assert.True(result.ElementAt(1).Value == MaxValidPrice)
+			() => Assert.True(result[Ids[0]] == Products[0].Price),
+			() => Assert.True(result[Ids[1]] == Products[1].Price)
 		);
 	}
 }

@@ -11,12 +11,14 @@ using static Data.Tags.TestData;
 public class Tests : Data.Tags.BaseUnitTests
 {
 	private readonly DeleteTagHandler handler;
+	private readonly DeleteTagCommand request = new(ValidId);
+
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<ITagWrites> writes = new();
 	private readonly Mock<ITagReads> reads = new();
 	private readonly Mock<BaseCachingService<TagId, Tag>> cache = new();
 
-	private static readonly Tag tag = CreateTag();
+	private readonly Tag tag = CreateTag();
 
 	public Tests()
 	{
@@ -30,10 +32,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		DeleteTagCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -46,10 +47,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
-		DeleteTagCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		cache.Verify(
@@ -62,10 +62,9 @@ public class Tests : Data.Tags.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		DeleteTagCommand command = new(ValidId);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -84,12 +83,11 @@ public class Tests : Data.Tags.BaseUnitTests
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(null as Tag);
-		DeleteTagCommand command = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Tag>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

@@ -13,6 +13,14 @@ using static Data.Shipments.TestData;
 public class Tests : Data.Shipments.BaseUnitTests
 {
 	private readonly CreateShipmentHandler handler;
+	private readonly CreateShipmentCommand request = new(
+		Service: ValidService,
+		Info: new(MaxValidCount, MaxValidWeight, ValidRecipient),
+		Address: new(ValidCountry, ValidCity, ValidStreet),
+		Contact: new(ValidPhone, ValidEmail),
+		BuyerId: ValidBuyerId
+	);
+
 	private readonly Mock<IWrites<Shipment>> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -40,16 +48,9 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CreateShipmentCommand command = new(
-			Service: ValidService,
-			Info: new(MaxValidCount, MaxValidWeight, ValidRecipient),
-			Address: new(ValidCountry, ValidCity, ValidStreet),
-			Contact: new(ValidPhone, ValidEmail),
-			BuyerId: ValidBuyerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		writes.Verify(
@@ -69,16 +70,9 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CreateShipmentCommand command = new(
-			Service: ValidService,
-			Info: new(MaxValidCount, MaxValidWeight, ValidRecipient),
-			Address: new(ValidCountry, ValidCity, ValidStreet),
-			Contact: new(ValidPhone, ValidEmail),
-			BuyerId: ValidBuyerId
-		);
 
 		// Act
-		await handler.Handle(command, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		sender.Verify(
@@ -94,16 +88,9 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		CreateShipmentCommand command = new(
-			Service: ValidService,
-			Info: new(MaxValidCount, MaxValidWeight, ValidRecipient),
-			Address: new(ValidCountry, ValidCity, ValidStreet),
-			Contact: new(ValidPhone, ValidEmail),
-			BuyerId: ValidBuyerId
-		);
 
 		// Act
-		ShipmentId id = await handler.Handle(command, ct);
+		ShipmentId id = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(ValidId, id);
@@ -116,18 +103,10 @@ public class Tests : Data.Shipments.BaseUnitTests
 		delivery.Setup(x => x.ValidateAsync(ValidCountry, ValidCity, ValidStreet, ValidPhone, ct))
 			.ReturnsAsync(false);
 
-		CreateShipmentCommand command = new(
-			Service: ValidService,
-			Info: new(MaxValidCount, MaxValidWeight, ValidRecipient),
-			Address: new(ValidCountry, ValidCity, ValidStreet),
-			Contact: new(ValidPhone, ValidEmail),
-			BuyerId: ValidBuyerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomException>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 
@@ -140,18 +119,10 @@ public class Tests : Data.Shipments.BaseUnitTests
 			ct
 		)).ReturnsAsync(false);
 
-		CreateShipmentCommand command = new(
-			Service: ValidService,
-			Info: new(MaxValidCount, MaxValidWeight, ValidRecipient),
-			Address: new(ValidCountry, ValidCity, ValidStreet),
-			Contact: new(ValidPhone, ValidEmail),
-			BuyerId: ValidBuyerId
-		);
-
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
 			// Act
-			() => handler.Handle(command, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }

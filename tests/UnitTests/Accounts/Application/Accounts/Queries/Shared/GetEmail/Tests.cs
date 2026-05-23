@@ -10,9 +10,11 @@ using static Data.Accounts.TestData;
 public class Tests : Data.Accounts.BaseUnitTests
 {
 	private readonly GetUserEmailByIdHandler handler;
+	private readonly GetUserEmailByIdQuery request = new(ValidId);
+
 	private readonly Mock<IAccountReads> reads = new();
 
-	private static readonly Account account = CreateAccount();
+	private readonly Account account = CreateAccount();
 
 	public Tests()
 	{
@@ -25,10 +27,10 @@ public class Tests : Data.Accounts.BaseUnitTests
 	[Fact]
 	public async Task Handle_ShouldQueryDatabase()
 	{
-		GetUserEmailByIdQuery query = new(ValidId);
+		// Arrange
 
 		// Act
-		await handler.Handle(query, ct);
+		await handler.Handle(request, ct);
 
 		// Assert
 		reads.Verify(
@@ -41,10 +43,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
-		GetUserEmailByIdQuery query = new(ValidId);
 
 		// Act
-		string email = await handler.Handle(query, ct);
+		string email = await handler.Handle(request, ct);
 
 		// Assert
 		Assert.Equal(account.Email, email);
@@ -55,12 +56,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Account);
-		GetUserEmailByIdQuery query = new(ValidId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
 			// Act
-			() => handler.Handle(query, ct)
+			() => handler.Handle(request, ct)
 		);
 	}
 }
