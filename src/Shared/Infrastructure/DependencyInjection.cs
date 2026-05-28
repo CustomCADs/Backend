@@ -113,26 +113,30 @@ public static class DependencyInjection
 	{
 		public void AddSharedBackgroundJobs()
 		{
-			TimeZoneInfo cet = TimeZoneInfo.FindSystemTimeZoneById(
-				id: RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+			string cet = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
 					? "Central European Standard Time"
-					: "Europe/Berlin"
-			);
+					: "Europe/Berlin";
 
-			configurator.AddTrigger(opts => opts
-				.ForJob(configurator.AddJobAndReturnKey<UpdateExchangeRatesCacheJob>())
-				.WithSchedule(
-					CronScheduleBuilder
-						.DailyAtHourAndMinute(16, 30)
-						.InTimeZone(cet)
-				));
+			configurator.ScheduleJob<UpdateExchangeRatesCacheJob>(
+				schedule: CronScheduleBuilder
+					.DailyAtHourAndMinute(16, 30)
+					.InTimeZone(tz: TimeZoneInfo.FindSystemTimeZoneById(cet))
+			);
 		}
 
-		public JobKey AddJobAndReturnKey<TJob>(string? name = null) where TJob : IJob
+		public void ScheduleJob<TJob>(IScheduleBuilder schedule, string? name = null) where TJob : IJob
 		{
-			JobKey key = new(name ?? typeof(TJob).Name);
-			configurator.AddJob<TJob>(conf => conf.WithIdentity(key));
-			return key;
+			configurator.ScheduleJob<TJob>(
+				trigger => trigger.WithSchedule(schedule),
+				job => job.WithIdentity(name ?? typeof(TJob).Name)
+			);
+		}
+
+		public void ScheduleJob<TJob>(Action<SimpleScheduleBuilder> schedule, string? name = null) where TJob : IJob
+		{
+			var builder = SimpleScheduleBuilder.Create();
+			schedule(builder);
+			ScheduleJob<TJob>(configurator, builder, name);
 		}
 	}
 }

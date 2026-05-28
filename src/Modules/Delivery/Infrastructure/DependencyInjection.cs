@@ -43,13 +43,10 @@ public static class DependencyInjection
 	extension(IServiceCollectionQuartzConfigurator configurator)
 	{
 		public void AddDeliveryBackgroundJobs()
-		 => configurator.AddTrigger(conf => conf
-				.ForJob(configurator.AddJobAndReturnKey<PollShipmentStatusJob>())
-				.WithSimpleSchedule(schedule =>
-					schedule
-						.WithInterval(TimeSpan.FromHours(PollShipmentStatusJob.IntervalHours))
-						.RepeatForever()
-				)
+		 => configurator.ScheduleJob<PollShipmentStatusJob>(
+				schedule => schedule
+					.WithInterval(TimeSpan.FromHours(PollShipmentStatusJob.IntervalHours))
+					.RepeatForever()
 			);
 	}
 

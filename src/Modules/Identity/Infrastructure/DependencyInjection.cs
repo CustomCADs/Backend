@@ -59,24 +59,29 @@ public static class DependencyInjection
 	{
 		public void AddIdentityBackgroundJobs()
 		{
-			configurator.AddTrigger(conf => conf
-				.ForJob(configurator.AddJobAndReturnKey<ClearRefreshTokensJob>())
-				.WithSimpleSchedule(schedule =>
-					schedule
-						.WithInterval(TimeSpan.FromDays(ClearRefreshTokensJob.IntervalDays))
-						.RepeatForever()
-				));
+			configurator.ScheduleJob<ClearRefreshTokensJob>(
+				schedule => schedule
+					.WithInterval(TimeSpan.FromDays(ClearRefreshTokensJob.IntervalDays))
+					.RepeatForever()
+			);
 		}
 	}
 
-	extension(IServiceCollectionQuartzConfigurator q)
+	extension(IServiceCollectionQuartzConfigurator configurator)
 	{
-		private JobKey AddJobAndReturnKey<TJob>(string? name = null)
-		where TJob : IJob
+		public void ScheduleJob<TJob>(IScheduleBuilder schedule, string? name = null) where TJob : IJob
 		{
-			JobKey key = new(name ?? typeof(TJob).Name);
-			q.AddJob<TJob>(conf => conf.WithIdentity(key));
-			return key;
+			configurator.ScheduleJob<TJob>(
+				trigger => trigger.WithSchedule(schedule),
+				job => job.WithIdentity(name ?? typeof(TJob).Name)
+			);
+		}
+
+		public void ScheduleJob<TJob>(Action<SimpleScheduleBuilder> schedule, string? name = null) where TJob : IJob
+		{
+			var builder = SimpleScheduleBuilder.Create();
+			schedule(builder);
+			ScheduleJob<TJob>(configurator, builder, name);
 		}
 	}
 
