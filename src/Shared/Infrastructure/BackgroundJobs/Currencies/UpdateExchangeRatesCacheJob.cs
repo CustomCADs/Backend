@@ -10,7 +10,7 @@ public class UpdateExchangeRatesCacheJob(ICurrencyService service, ICacheService
 	{
 		await cache.SetAsync(
 			key: ICurrencyService.ExchangeRatesCacheKey,
-			item: await service.GetRatesAsync().ConfigureAwait(false)
+			item: await service.GetRatesAsync(ct: context.CancellationToken).ConfigureAwait(false)
 		).ConfigureAwait(false);
 	}
 }
