@@ -16,18 +16,16 @@ using static DomainConstants.Users;
 public class Tests : Data.Customs.BaseUnitTests
 {
 	private readonly GetAllCustomsHandler handler;
-	private readonly GetAllCustomsQuery request = new(Query.Pagination);
+	private readonly GetAllCustomsQuery request;
 
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private static readonly Custom[] Customs = [
-		CreateCustom(id: ValidId),
-		CreateCustom(id: ValidId),
+	private readonly Custom[] customs = [
+		CreateCustom(),
+		CreateCustom(),
 	];
-	private static readonly CustomQuery Query = new(
-		Pagination: new(1, Customs.Length)
-	);
+	private readonly CustomQuery Query;
 	private readonly Dictionary<AccountId, string> customers = new()
 	{
 		[ValidBuyerId] = CustomerUsername,
@@ -44,13 +42,15 @@ public class Tests : Data.Customs.BaseUnitTests
 	public Tests()
 	{
 		handler = new(reads.Object, sender.Object);
+		request = new(Pagination: new(1, customs.Length));
+		Query = new(Pagination: request.Pagination);
 
-		Customs.First().Accept(ValidDesignerId);
+		customs.First().Accept(ValidDesignerId);
 
 		reads.Setup(x => x.AllAsync(Query, false, ct))
 			.ReturnsAsync(new Result<Custom>(
-				Customs.Length,
-				Customs
+				customs.Length,
+				customs
 			));
 
 		sender.Setup(x => x.SendQueryAsync(
@@ -125,8 +125,8 @@ public class Tests : Data.Customs.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		int expectedCount = Customs.Length, actualCount = result.Count;
-		CustomId[] expectedIds = [.. Customs.Select(x => x.Id)],
+		int expectedCount = customs.Length, actualCount = result.Count;
+		CustomId[] expectedIds = [.. customs.Select(x => x.Id)],
 			actualIds = [.. result.Items.Select(x => x.Id)];
 
 		Assert.Multiple(

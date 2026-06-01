@@ -87,14 +87,14 @@ public class Tests : Data.Products.BaseUnitTests
 		AccountId creatorId = authenticatedUser ? ValidCreatorId : new();
 
 		// Act
-		await handler.Handle(request with { CallerId = creatorId }, ct);
+		await handler.Handle(request with { CallerId = creatorId, Viewed = viewed }, ct);
 
 		// Assert
 		raiser.Verify(
 			x => x.RaiseApplicationEventAsync(
 				It.Is<ProductViewedApplicationEvent>(x => x.Id == product.Id)
 			),
-			Times.Exactly(authenticatedUser && viewed ? 1 : 0)
+			Times.Exactly((authenticatedUser && viewed) ? 1 : 0)
 		);
 	}
 

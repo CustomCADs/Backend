@@ -19,7 +19,7 @@ public class Tests : Data.Users.BaseUnitTests
 	private readonly Mock<IOptions<ClientUrlSettings>> settings = new();
 
 	private const string Token = "email-token";
-	private readonly User user = CreateUser();
+	private readonly User user = CreateUser(username: MaxValidUsername);
 
 	public Tests()
 	{
