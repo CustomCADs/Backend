@@ -34,7 +34,7 @@ public sealed class PurchaseActiveCartHandler(
 		}
 
 		Dictionary<ProductId, decimal> prices = await sender.SendQueryAsync(
-			query: new GetProductPricesByIdsQuery(
+			query: new BatchGetProductPriceByIdQuery(
 				Ids: [.. items.Select(x => x.ProductId)]
 			),
 			ct: ct

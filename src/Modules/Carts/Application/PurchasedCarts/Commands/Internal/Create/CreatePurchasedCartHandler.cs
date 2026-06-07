@@ -34,7 +34,7 @@ public sealed class CreatePurchasedCartHandler(
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			@event: new UserPurchasedProductApplicationEvent(
+			@event: new ProductsPurchasedApplicationEvent(
 				Ids: [.. items.Select(x => x.ProductId)]
 			)
 		).ConfigureAwait(false);
@@ -47,12 +47,12 @@ public sealed class CreatePurchasedCartHandler(
 		ProductId[] productIds = [.. items.Select(x => x.Key.ProductId)];
 
 		Dictionary<ProductId, CadId> productCads = await sender.SendQueryAsync(
-			query: new GetProductCadIdsByIdsQuery(productIds),
+			query: new BatchGetProductCadIdByIdQuery(productIds),
 			ct: ct
 		).ConfigureAwait(false);
 
 		Dictionary<CadId, CadId> itemCads = await sender.SendCommandAsync(
-			command: new DuplicateCadsByIdsCommand(
+			command: new BatchDuplicateCadByIdCommand(
 				Ids: [.. productCads.Select(x => x.Value)],
 				CallerId: buyerId
 			),

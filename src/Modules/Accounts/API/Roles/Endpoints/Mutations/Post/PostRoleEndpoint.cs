@@ -1,0 +1,41 @@
+﻿using CustomCADs.Modules.Accounts.API.Roles.Endpoints.Queries.Get.Single;
+using CustomCADs.Modules.Accounts.Application.Roles.Commands.Internal.Create;
+using CustomCADs.Modules.Accounts.Application.Roles.Queries.Internal.GetById;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
+
+namespace CustomCADs.Modules.Accounts.API.Roles.Endpoints.Mutations.Post;
+
+public sealed class PostRoleEndpoint(IRequestSender sender)
+	: Endpoint<PostRoleRequest, RoleResponse>
+{
+	public override void Configure()
+	{
+		Post("");
+		Group<RolesGroup>();
+		Description(x => x
+			.WithSummary("Create")
+			.WithDescription("Create a Role")
+		);
+	}
+
+	public override async Task HandleAsync(PostRoleRequest req, CancellationToken ct)
+	{
+		RoleId id = await sender.SendCommandAsync(
+			command: new CreateRoleCommand(
+				Name: req.Name,
+				Description: req.Description
+			),
+			ct: ct
+		).ConfigureAwait(false);
+
+		RoleDto role = await sender.SendQueryAsync(
+			query: new GetRoleByIdQuery(
+				Id: id
+			),
+			ct: ct
+		).ConfigureAwait(false);
+
+		RoleResponse response = role.ToResponse();
+		await Send.CreatedAtAsync<GetRoleEndpoint>(new { role.Name }, response).ConfigureAwait(false);
+	}
+}

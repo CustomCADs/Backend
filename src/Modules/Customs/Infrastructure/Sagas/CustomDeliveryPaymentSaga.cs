@@ -16,12 +16,12 @@ public class CustomDeliveryPaymentSaga : Saga
 	public static CustomDeliveryPaymentSaga Start(CustomPaymentStartedApplicationEvent msg)
 		=> new() { Id = msg.Id };
 
-	public async Task Handle(CustomDeliveryRequestedApplicationEvent msg, CustomDeliveryRequestedApplicationEventHandler handler)
+	public async Task Handle(CustomDeliveryRequestedApplicationEvent msg, CustomDeliveryRequestedHandler handler)
 	{
 		await handler.HandleAsync(msg).ConfigureAwait(false);
 	}
 
-	public async Task Handle(CustomPaymentCompletedApplicationEvent msg, CustomPaymentCompletedApplicationEventHandler handler)
+	public async Task Handle(CustomPaymentCompletedApplicationEvent msg, CustomPaymentCompletedHandler handler)
 	{
 		await handler.HandleAsync(msg).ConfigureAwait(false);
 

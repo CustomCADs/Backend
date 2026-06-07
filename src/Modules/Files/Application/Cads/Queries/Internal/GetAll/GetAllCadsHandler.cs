@@ -28,7 +28,7 @@ public sealed class GetAllCadsHandler(
 		).ConfigureAwait(false);
 
 		Dictionary<AccountId, string> ownersNames = await sender.SendQueryAsync(
-				query: new GetUsernamesByIdsQuery([.. result.Items.Select(x => x.OwnerId)]),
+				query: new BatchGetUsernamesByIdQuery([.. result.Items.Select(x => x.OwnerId)]),
 				ct: ct
 			).ConfigureAwait(false);
 

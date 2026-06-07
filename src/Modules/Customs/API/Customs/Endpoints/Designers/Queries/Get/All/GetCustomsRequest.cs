@@ -1,0 +1,14 @@
+﻿using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Shared.Domain.Enums;
+
+namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers.Queries.Get.All;
+
+public sealed record GetCustomsRequest(
+	bool? ForDelivery = null,
+	string? Name = null,
+	int? CategoryId = null,
+	CustomSortingType SortingType = CustomSortingType.OrderedAt,
+	SortingDirection SortingDirection = SortingDirection.Descending,
+	int Page = 1,
+	int Limit = 20
+);

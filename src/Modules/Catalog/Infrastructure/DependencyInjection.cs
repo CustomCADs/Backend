@@ -12,13 +12,10 @@ public static class DependencyInjection
 	extension(IServiceCollectionQuartzConfigurator configurator)
 	{
 		public void AddCatalogBackgroundJobs()
-			=> configurator.AddTrigger(conf => conf
-				.ForJob(configurator.AddJobAndReturnKey<ClearTagsJob>())
-				.WithSimpleSchedule(schedule =>
-					schedule
-						.WithInterval(TimeSpan.FromDays(ClearTagsIntervalDays))
-						.RepeatForever()
-				)
+			=> configurator.ScheduleJob<ClearTagsJob>(
+				schedule => schedule
+					.WithInterval(TimeSpan.FromDays(ClearTagsIntervalDays))
+					.RepeatForever()
 			);
 	}
 }

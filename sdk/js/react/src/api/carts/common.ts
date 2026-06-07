@@ -2,7 +2,7 @@ export type ActiveCartItem = {
 	quantity: number;
 	forDelivery: boolean;
 	addedAt: string;
-	customizationId?: string;
+	customizationId: string | null;
 	productId: string;
 };
 
@@ -15,7 +15,7 @@ export type PurchasedCartItem = {
 	productId: string;
 	cartId: string;
 	cadId: string;
-	customizationId?: string;
+	customizationId: string | null;
 };
 
 export const ACTIVE_CART_BASE_PATH = '/carts/active';

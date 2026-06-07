@@ -31,7 +31,7 @@ public class PurchasedCart : BaseAggregateRoot
 	public static PurchasedCart Create(AccountId buyerId)
 		=> new(buyerId);
 
-	public static PurchasedCart CreateWithId(PurchasedCartId id, AccountId buyerId)
+	internal static PurchasedCart CreateWithId(PurchasedCartId id, AccountId buyerId)
 		=> new PurchasedCart(buyerId)
 		{
 			Id = id

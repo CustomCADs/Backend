@@ -1,0 +1,38 @@
+﻿using CustomCADs.Modules.Files.Domain.Cads.ValueObjects;
+using CustomCADs.Shared.Domain.Exceptions;
+
+namespace CustomCADs.UnitTests.Files.Domain.Cads.Create.Normal;
+
+using static Data.Cads.TestData;
+
+public class Tests : Data.Cads.BaseUnitTests
+{
+	[Fact]
+	public void Create_ShouldNotThrowExcepion_WhenCadIsValid()
+	{
+		Cad.Create(ValidKey, ValidContentType, ValidVolume, ValidCoords, ValidCoords, ValidOwnerId);
+	}
+
+	[Fact]
+	public void Create_ShouldPopulateProperties_WhenCadIsValid()
+	{
+		var cad = Cad.Create(ValidKey, ValidContentType, ValidVolume, ValidCoords, ValidCoords, ValidOwnerId);
+
+		Assert.Multiple(
+			() => Assert.Equal(ValidKey, cad.Key),
+			() => Assert.Equal(ValidContentType, cad.ContentType),
+			() => Assert.Equal(ValidVolume, cad.Volume),
+			() => Assert.Equal(ValidCoords, cad.CamCoordinates),
+			() => Assert.Equal(ValidCoords, cad.PanCoordinates)
+		);
+	}
+
+	[Theory]
+	[ClassData(typeof(InvalidData))]
+	public void Create_ShouldThrowException_WhenKeyIsInvalid(string key, string contentType, decimal volume, Coordinates camCoords, Coordinates panCoords)
+	{
+		Assert.Throws<CustomValidationException<Cad>>(
+			() => Cad.Create(key, contentType, volume, camCoords, panCoords, ValidOwnerId)
+		);
+	}
+}

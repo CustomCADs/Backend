@@ -56,7 +56,7 @@ public class Custom : BaseAggregateRoot
 			.ValidateName()
 			.ValidateDescription();
 
-	public static Custom CreateWithId(
+	internal static Custom CreateWithId(
 		CustomId id,
 		string name,
 		string description,

@@ -17,7 +17,7 @@ public class Tag : BaseAggregateRoot
 		=> new Tag(name)
 		.ValidateName();
 
-	public static Tag CreateWithId(TagId? id, string name)
+	internal static Tag CreateWithId(TagId? id, string name)
 		=> new Tag(name)
 		{
 			Id = id ?? TagId.New()

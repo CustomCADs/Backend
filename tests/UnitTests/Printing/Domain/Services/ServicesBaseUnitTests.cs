@@ -4,6 +4,9 @@ using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.UnitTests.Printing.Domain.Services;
 
+using CustomizationsData = Data.Customizations.TestData;
+using MaterialsData = Data.Materials.TestData;
+
 public class ServicesBaseUnitTests
 {
 	protected static Customization CreateCustomization(

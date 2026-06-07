@@ -1,0 +1,11 @@
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
+using CustomCADs.Shared.Domain.Enums;
+
+namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Queries.Get.Shipment;
+
+public record GetShipmentsRequest(
+	ShipmentSortingType SortingType = ShipmentSortingType.RequestedAt,
+	SortingDirection SortingDirection = SortingDirection.Descending,
+	int Page = 1,
+	int Limit = 20
+);

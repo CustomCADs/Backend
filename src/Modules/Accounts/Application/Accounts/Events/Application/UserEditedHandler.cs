@@ -6,33 +6,33 @@ namespace CustomCADs.Modules.Accounts.Application.Accounts.Events.Application;
 
 public class UserEditedHandler(IAccountReads reads, IUnitOfWork uow)
 {
-	public async Task HandleAsync(UserEditedApplicationEvent ae)
+	public async Task HandleAsync(UserEditedApplicationEvent @event)
 	{
-		Account account = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Account>.ById(ae.Id);
+		Account account = await reads.SingleByIdAsync(@event.Id).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Account>.ById(@event.Id);
 
-		if (ae.Username is not null)
+		if (@event.Username is not null)
 		{
-			if (ae.Username != account.Username)
+			if (@event.Username != account.Username)
 			{
-				account.SetUsername(ae.Username);
+				account.SetUsername(@event.Username);
 			}
 		}
 
-		if (ae.TrackViewedProducts is not null)
+		if (@event.TrackViewedProducts is not null)
 		{
-			account.SetTrackViewedProducts(ae.TrackViewedProducts.Value);
+			account.SetTrackViewedProducts(@event.TrackViewedProducts.Value);
 		}
 
-		if (ae.Names is not null)
+		if (@event.Names is not null)
 		{
-			if (ae.Names.FirstName != account.FirstName)
+			if (@event.Names.FirstName != account.FirstName)
 			{
-				account.SetFirstName(ae.Names.FirstName);
+				account.SetFirstName(@event.Names.FirstName);
 			}
-			if (ae.Names.LastName != account.LastName)
+			if (@event.Names.LastName != account.LastName)
 			{
-				account.SetLastName(ae.Names.LastName);
+				account.SetLastName(@event.Names.LastName);
 			}
 		}
 

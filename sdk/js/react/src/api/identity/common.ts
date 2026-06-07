@@ -6,7 +6,7 @@ export type ViewedProduct = {
 export type Fingerprint = {
 	id: string;
 	device: string;
-	location?: string;
+	location: string | null;
 	deleteAllowed: boolean;
 	issuedAt: string;
 };

@@ -1,0 +1,85 @@
+using CustomCADs.Modules.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;
+using CustomCADs.Modules.Idempotency.Domain.Repositories;
+using CustomCADs.Modules.Idempotency.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Exceptions;
+
+namespace CustomCADs.UnitTests.Idempotency.Application.IdempotencyKeys.Commands.Internal.Delete;
+
+using static Data.IdempotencyKeys.TestData;
+
+public class Tests : Data.IdempotencyKeys.BaseUnitTests
+{
+	private readonly DeleteIdempotencyKeyHandler handler;
+	private readonly DeleteIdempotencyKeyCommand request = new(
+		IdempotencyKey: ValidId.Value,
+		RequestHash: ValidRequestHash
+	);
+
+	private readonly Mock<IIdempotencyKeyReads> reads = new();
+	private readonly Mock<IWrites<IdempotencyKey>> writes = new();
+	private readonly Mock<IUnitOfWork> uow = new();
+
+	public Tests()
+	{
+		handler = new(reads.Object, writes.Object, uow.Object);
+
+		reads.Setup(x => x.SingleByIdAsync(
+			ValidId,
+			ValidRequestHash,
+			true,
+			ct
+		)).ReturnsAsync(CreateIdempotencyKey());
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(
+				ValidId,
+				ValidRequestHash,
+				true,
+				ct
+			),
+			Times.Once()
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldPersistToDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		writes.Verify(
+			x => x.Remove(It.Is<IdempotencyKey>(x => x.Id == ValidId)),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenIdempotencyKeyNotFound()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, ValidRequestHash, true, ct)).ReturnsAsync(null as IdempotencyKey);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<IdempotencyKey>>(
+			// Act
+			() => handler.Handle(request, ct)
+		);
+	}
+}

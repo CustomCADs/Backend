@@ -1,0 +1,93 @@
+﻿using CustomCADs.Modules.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
+using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Exceptions;
+using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+
+namespace CustomCADs.UnitTests.Carts.Application.PurchasedCarts.Queries.Internal.GetById;
+
+using static Data.PurchasedCarts.TestData;
+
+public class Tests : Data.PurchasedCarts.BaseUnitTests
+{
+	private readonly GetPurchasedCartByIdHandler handler;
+	private readonly GetPurchasedCartByIdQuery request = new(ValidId, ValidBuyerId);
+
+	private readonly Mock<IPurchasedCartReads> reads = new();
+	private readonly Mock<IRequestSender> sender = new();
+
+	private const string Buyer = "PDMatsaliev20";
+	private readonly PurchasedCart cart = CreateCart();
+
+	public Tests()
+	{
+		handler = new(reads.Object, sender.Object);
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(cart);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<GetUsernameByIdQuery>(x => x.Id == ValidBuyerId),
+			ct
+		)).ReturnsAsync(Buyer);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldSendRequests()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUsernameByIdQuery>(x => x.Id == ValidBuyerId),
+				ct
+			),
+			Times.Once()
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldReturnResult()
+	{
+		// Arrange
+
+		// Act
+		var cart = await handler.Handle(request, ct);
+
+		// Assert
+		Assert.Equal(this.cart.Id, cart.Id);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldThrowException_WhenCartNotFound()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(null as PurchasedCart);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
+			// Act
+			() => handler.Handle(request, ct)
+		);
+	}
+}

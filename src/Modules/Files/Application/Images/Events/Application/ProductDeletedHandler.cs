@@ -1,22 +1,22 @@
 ﻿using CustomCADs.Modules.Files.Application.Images.Storage;
 using CustomCADs.Modules.Files.Domain.Repositories;
 using CustomCADs.Modules.Files.Domain.Repositories.Reads;
-using CustomCADs.Shared.Application.Events.Files;
+using CustomCADs.Shared.Application.Events.Catalog;
 
 namespace CustomCADs.Modules.Files.Application.Images.Events.Application;
 
 public class ProductDeletedHandler(IImageReads reads, IWrites<Image> writes, IUnitOfWork uow, IImageStorageService storage, BaseCachingService<ImageId, Image> cache)
 {
-	public async Task HandleAsync(ProductDeletedApplicationEvent ae)
+	public async Task HandleAsync(ProductDeletedApplicationEvent @event)
 	{
-		Image image = await reads.SingleByIdAsync(ae.ImageId, track: true).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Image>.ById(ae.ImageId);
+		Image image = await reads.SingleByIdAsync(@event.ImageId, track: true).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Image>.ById(@event.ImageId);
 
 		await storage.DeleteFileAsync(image.Key).ConfigureAwait(false);
 
 		writes.Remove(image);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
-		await cache.ClearAsync(ae.ImageId).ConfigureAwait(false);
+		await cache.ClearAsync(@event.ImageId).ConfigureAwait(false);
 	}
 }

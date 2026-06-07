@@ -12,13 +12,10 @@ public static class DependencyInjection
 	extension(IServiceCollectionQuartzConfigurator configurator)
 	{
 		public void AddIdempotencyBackgroundJobs()
-			=> configurator.AddTrigger(conf => conf
-				.ForJob(configurator.AddJobAndReturnKey<ClearIdempotencyKeysJob>())
-				.WithSimpleSchedule(schedule =>
-					schedule
-						.WithInterval(TimeSpan.FromHours(ClearIdempotencyKeysIntervalHours))
-						.RepeatForever()
-				)
+			=> configurator.ScheduleJob<ClearIdempotencyKeysJob>(
+				schedule => schedule
+					.WithInterval(TimeSpan.FromHours(ClearIdempotencyKeysIntervalHours))
+					.RepeatForever()
 			);
 	}
 

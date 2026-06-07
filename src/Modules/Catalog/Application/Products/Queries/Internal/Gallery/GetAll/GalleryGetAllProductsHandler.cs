@@ -31,13 +31,13 @@ public sealed class GalleryGetAllProductsHandler(IProductReads reads, IRequestSe
 
 		AccountId[] userIds = [.. result.Items.Select(x => x.CreatorId).Distinct()];
 		Dictionary<AccountId, string> users = await sender.SendQueryAsync(
-				new GetUsernamesByIdsQuery(userIds),
+				new BatchGetUsernamesByIdQuery(userIds),
 				ct: ct
 			).ConfigureAwait(false);
 
 		CategoryId[] categoryIds = [.. result.Items.Select(x => x.CategoryId).Distinct()];
 		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
-			query: new GetCategoryNamesByIdsQuery(categoryIds),
+			query: new BatchGetCategorByIdQuery(categoryIds),
 			ct: ct
 		).ConfigureAwait(false);
 

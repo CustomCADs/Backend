@@ -46,7 +46,7 @@ public class Cad : BaseAggregateRoot
 		.ValidateCamCoordinates()
 		.ValidatePanCoordinates();
 
-	public static Cad CreateWithId(
+	internal static Cad CreateWithId(
 		CadId id,
 		string key,
 		string contentType,

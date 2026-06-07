@@ -1,0 +1,63 @@
+﻿using CustomCADs.Modules.Notifications.Application.Notifications.Queries.Internal.Count;
+using CustomCADs.Modules.Notifications.Domain.Notifications.Enums;
+using CustomCADs.Modules.Notifications.Domain.Repositories.Reads;
+
+namespace CustomCADs.UnitTests.Notifications.Application.Notifications.Queries.Internal.Count;
+
+using static Data.Notifications.TestData;
+
+public class Tests : Data.Notifications.BaseUnitTests
+{
+	private readonly CountNotificationsHandler handler;
+	private readonly CountNotificationsQuery request = new(ValidReceiverId);
+
+	private readonly Mock<INotificationReads> reads = new();
+
+	private readonly static Dictionary<NotificationStatus, int> expected = new()
+	{
+		[NotificationStatus.Unread] = 1,
+		[NotificationStatus.Read] = 2,
+		[NotificationStatus.Opened] = 3,
+		[NotificationStatus.Hidden] = 4,
+	};
+
+	public Tests()
+	{
+		handler = new(reads.Object);
+
+		reads.Setup(x => x.CountByStatusAsync(ValidReceiverId, ct))
+			.ReturnsAsync(expected);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.CountByStatusAsync(ValidReceiverId, ct),
+			Times.Once()
+		);
+	}
+
+	[Fact]
+	public async Task Handle_ShouldReturnResult()
+	{
+		// Arrange
+
+		// Act
+		CountNotificationsDto counts = await handler.Handle(request, ct);
+
+		// Assert
+		Assert.Multiple(
+			() => Assert.Equal(expected[NotificationStatus.Unread], counts.Unread),
+			() => Assert.Equal(expected[NotificationStatus.Read], counts.Read),
+			() => Assert.Equal(expected[NotificationStatus.Opened], counts.Opened),
+			() => Assert.Equal(expected[NotificationStatus.Hidden], counts.Hidden)
+		);
+	}
+}

@@ -27,7 +27,7 @@ public class Image : BaseAggregateRoot
 		.ValidateKey()
 		.ValidateContentType();
 
-	public static Image CreateWithId(ImageId id, string key, string contentType, AccountId ownerId)
+	internal static Image CreateWithId(ImageId id, string key, string contentType, AccountId ownerId)
 		=> new Image(key, contentType, ownerId) { Id = id }
 		.ValidateKey()
 		.ValidateContentType();

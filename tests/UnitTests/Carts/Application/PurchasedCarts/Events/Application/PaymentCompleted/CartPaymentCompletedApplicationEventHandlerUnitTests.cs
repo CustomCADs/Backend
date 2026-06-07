@@ -10,11 +10,13 @@ using CustomCADs.Shared.Application.UseCases.Identity.Queries;
 
 namespace CustomCADs.UnitTests.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 
-using static PurchasedCartsData;
+using static Data.PurchasedCarts.TestData;
 
-public class CartPaymentCompletedApplicationEventHandlerUnitTests : PurchasedCartsBaseUnitTests
+public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
-	private readonly CartPaymentCompletedApplicationEventHandler handler;
+	private readonly CartPaymentCompletedHandler handler;
+	private readonly CartPaymentCompletedApplicationEvent request = new(ValidId, ValidBuyerId);
+
 	private readonly Mock<IPurchasedCartReads> reads = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 	private readonly Mock<IRequestSender> sender = new();
@@ -23,12 +25,12 @@ public class CartPaymentCompletedApplicationEventHandlerUnitTests : PurchasedCar
 	private const string To = "someone@gmail.com";
 	private const string Url = "www.somewhere.com";
 
-	public CartPaymentCompletedApplicationEventHandlerUnitTests()
+	public Tests()
 	{
 		handler = new(reads.Object, uow.Object, sender.Object, email.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
-			.ReturnsAsync(CreateCartWithId());
+			.ReturnsAsync(CreateCart());
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetUserEmailByIdQuery>(x => x.Id == ValidBuyerId),
@@ -44,64 +46,78 @@ public class CartPaymentCompletedApplicationEventHandlerUnitTests : PurchasedCar
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
-		CartPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(request);
 
 		// Assert
-		reads.Verify(x => x.SingleByIdAsync(ValidId, true, ct), Times.Once());
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, true, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
-		CartPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(request);
 
 		// Assert
-		uow.Verify(x => x.SaveChangesAsync(ct), Times.Once());
-		uow.Verify(x => x.BulkDeleteItemsByBuyerIdAsync(ValidBuyerId, ct), Times.Once());
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
+		uow.Verify(
+			x => x.BulkDeleteItemsByBuyerIdAsync(ValidBuyerId, ct),
+			Times.Once()
+		);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
-		CartPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(request);
 
 		// Assert
-		sender.Verify(x => x.SendQueryAsync(
-			It.Is<GetUserEmailByIdQuery>(x => x.Id == ValidBuyerId),
-			ct
-		), Times.Once());
-		sender.Verify(x => x.SendQueryAsync(
-			It.IsAny<GetClientUrlQuery>(),
-			ct
-		), Times.Once());
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.Is<GetUserEmailByIdQuery>(x => x.Id == ValidBuyerId),
+				ct
+			),
+			Times.Once()
+		);
+		sender.Verify(
+			x => x.SendQueryAsync(
+				It.IsAny<GetClientUrlQuery>(),
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
 	public async Task Handle_ShouldSendEmail()
 	{
 		// Arrange
-		CartPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(request);
 
 		// Assert
-		email.Verify(x => x.SendRewardGrantedEmailAsync(
-			To,
-			$"{Url}/carts/{ValidId}",
-			ct
-		), Times.Once());
+		email.Verify(
+			x => x.SendRewardGrantedEmailAsync(
+				To,
+				$"{Url}/carts/{ValidId}",
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -116,17 +132,18 @@ public class CartPaymentCompletedApplicationEventHandlerUnitTests : PurchasedCar
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
 			.ReturnsAsync(cart);
 
-		CartPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
-
 		// Act
-		await handler.HandleAsync(ae);
+		await handler.HandleAsync(request);
 
 		// Assert
-		email.Verify(x => x.SendRewardGrantedEmailAsync(
-			To,
-			$"{Url}/shipments/{ValidShipmentId}",
-			ct
-		), Times.Once());
+		email.Verify(
+			x => x.SendRewardGrantedEmailAsync(
+				To,
+				$"{Url}/shipments/{ValidShipmentId}",
+				ct
+			),
+			Times.Once()
+		);
 	}
 
 	[Fact]
@@ -134,12 +151,11 @@ public class CartPaymentCompletedApplicationEventHandlerUnitTests : PurchasedCar
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as PurchasedCart);
-		CartPaymentCompletedApplicationEvent ae = new(ValidId, ValidBuyerId);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
 			// Act
-			async () => await handler.HandleAsync(ae)
+			() => handler.HandleAsync(request)
 		);
 	}
 }

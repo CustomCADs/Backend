@@ -67,11 +67,11 @@ internal static class Utilities
 		internal EntityTypeBuilder<Material> SetSeeding()
 		{
 			builder.HasData([
-				Material.CreateWithId(MaterialId.New(1), "PLA", 1.24m, 30m, PLA),
-				Material.CreateWithId(MaterialId.New(2), "ABS", 1.04m, 30m, ABS),
-				Material.CreateWithId(MaterialId.New(3), "Glow in dark", 1.25m, 30m, GlowInDark),
-				Material.CreateWithId(MaterialId.New(4), "TUF", 1.27m, 30m, TUF),
-				Material.CreateWithId(MaterialId.New(5), "Wood", 1.23m, 30m, Wood),
+				Material.Create(MaterialId.New(1), "PLA", 1.24m, 30m, PLA),
+				Material.Create(MaterialId.New(2), "ABS", 1.04m, 30m, ABS),
+				Material.Create(MaterialId.New(3), "Glow in dark", 1.25m, 30m, GlowInDark),
+				Material.Create(MaterialId.New(4), "TUF", 1.27m, 30m, TUF),
+				Material.Create(MaterialId.New(5), "Wood", 1.23m, 30m, Wood),
 			]);
 
 			return builder;

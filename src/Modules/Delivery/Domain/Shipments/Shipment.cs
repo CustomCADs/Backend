@@ -62,7 +62,7 @@ public class Shipment : BaseAggregateRoot
 	.ValidateCity()
 	.ValidateStreet();
 
-	public static Shipment CreateWithId(
+	internal static Shipment CreateWithId(
 		ShipmentId id,
 		AccountId buyerId,
 		string service,

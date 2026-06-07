@@ -1,8 +1,8 @@
-﻿using CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductViewed;
-using CustomCADs.Modules.Catalog.Domain.Products.Enums;
+﻿using CustomCADs.Modules.Catalog.Domain.Products.Enums;
 using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Catalog;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Categories.Queries;
 

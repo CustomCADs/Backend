@@ -7,10 +7,10 @@ namespace CustomCADs.Modules.Accounts.Application.Accounts.Events.Application;
 
 public class UserDeletedHandler(IAccountReads reads, IAccountWrites writes, IUnitOfWork uow)
 {
-	public async Task HandleAsync(UserDeletedApplicationEvent ae)
+	public async Task HandleAsync(UserDeletedApplicationEvent @event)
 	{
-		Account account = await reads.SingleByIdAsync(ae.Id).ConfigureAwait(false)
-			?? throw CustomNotFoundException<Account>.ById(ae.Id);
+		Account account = await reads.SingleByIdAsync(@event.Id).ConfigureAwait(false)
+			?? throw CustomNotFoundException<Account>.ById(@event.Id);
 
 		writes.Remove(account);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
