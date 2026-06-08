@@ -1,7 +1,7 @@
 ﻿using CustomCADs.Modules.Accounts.Application.Accounts.Events.Application;
 using CustomCADs.Modules.Accounts.Domain.Repositories;
 using CustomCADs.Modules.Accounts.Domain.Repositories.Writes;
-using CustomCADs.Shared.Application.Events.Catalog;
+using CustomCADs.Shared.Application.Events.Account.Accounts;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Events.Application.Viewed;
 
@@ -9,8 +9,8 @@ using static Data.Accounts.TestData;
 
 public class Tests : Data.Accounts.BaseUnitTests
 {
-	private readonly ProductViewedHandler handler;
-	private readonly ProductViewedApplicationEvent request = new(ValidProductId, ValidId, ViewedAt);
+	private readonly UserViewedProductHandler handler;
+	private readonly UserViewedProductApplicationEvent request = new(ValidProductId, ValidId, ViewedAt);
 
 	private readonly Mock<IAccountWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();

@@ -2,6 +2,7 @@
 using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Account.Accounts;
 using CustomCADs.Shared.Application.Events.Catalog;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
@@ -33,7 +34,7 @@ public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequest
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			@event: new ProductViewedApplicationEvent(
+			@event: new UserViewedProductApplicationEvent(
 				Id: @event.Id,
 				AccountId: @event.AccountId,
 				ViewedAt: @event.ViewedAt
