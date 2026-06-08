@@ -9,6 +9,7 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 namespace CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductViewed;
 
 public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
+	: IEventHandler<ProductViewedApplicationEvent>
 {
 	public async Task HandleAsync(ProductViewedApplicationEvent @event)
 	{

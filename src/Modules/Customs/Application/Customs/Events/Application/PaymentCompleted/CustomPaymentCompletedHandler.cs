@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Modules.Customs.Domain.Repositories;
 using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Email;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Customs;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
@@ -15,7 +16,7 @@ public class CustomPaymentCompletedHandler(
 	IUnitOfWork uow,
 	IRequestSender sender,
 	IEmailService email
-)
+) : IEventHandler<CustomPaymentCompletedApplicationEvent>
 {
 	public async Task HandleAsync(CustomPaymentCompletedApplicationEvent @event)
 	{

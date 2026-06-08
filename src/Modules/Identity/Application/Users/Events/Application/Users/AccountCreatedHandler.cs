@@ -1,8 +1,10 @@
-﻿using CustomCADs.Shared.Application.Events.Account.Accounts;
+﻿using CustomCADs.Shared.Application.Abstractions.Events;
+using CustomCADs.Shared.Application.Events.Account.Accounts;
 
 namespace CustomCADs.Modules.Identity.Application.Users.Events.Application.Users;
 
 public class AccountCreatedHandler(IUserService service)
+	: IEventHandler<AccountCreatedApplicationEvent>
 {
 	public async Task HandleAsync(AccountCreatedApplicationEvent @event)
 	{

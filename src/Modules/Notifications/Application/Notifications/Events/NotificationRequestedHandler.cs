@@ -1,5 +1,6 @@
 using CustomCADs.Modules.Notifications.Application.Contracts;
 using CustomCADs.Modules.Notifications.Domain.Repositories;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
@@ -8,6 +9,7 @@ using CustomCADs.Shared.Domain.TypedIds.Accounts;
 namespace CustomCADs.Modules.Notifications.Application.Notifications.Events;
 
 public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfWork uow, IRequestSender sender, INotificationsRealTimeNotifier notifier)
+	: IEventHandler<NotificationRequestedEvent>
 {
 	public async Task HandleAsync(NotificationRequestedEvent @event)
 	{

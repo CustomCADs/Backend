@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
 using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
@@ -12,7 +13,7 @@ public class ActiveCartDeliveryRequestedHandler(
 	IPurchasedCartReads reads,
 	IUnitOfWork uow,
 	IRequestSender sender
-)
+) : IEventHandler<ActiveCartDeliveryRequestedApplicationEvent>
 {
 	public async Task HandleAsync(ActiveCartDeliveryRequestedApplicationEvent @event)
 	{
