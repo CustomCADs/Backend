@@ -5,7 +5,7 @@ namespace CustomCADs.UnitTests.Identity.Application.Users.Events.Application.Ema
 
 public class Tests : Data.Users.BaseUnitTests
 {
-	private readonly PasswordResetRequestedEventHandler handler;
+	private readonly PasswordResetRequestedHandler handler;
 	private readonly PasswordResetRequestedApplicationEvent request = new(Email, Endpoint);
 
 	private readonly Mock<IEmailService> email = new();

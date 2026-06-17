@@ -3,7 +3,7 @@ using CustomCADs.Shared.Application.Abstractions.Events;
 
 namespace CustomCADs.Modules.Identity.Application.Users.Events.Application.Emails.EmailVerification;
 
-public class EmailVerificationRequestedEventHandler(IEmailService email)
+public class EmailVerificationRequestedHandler(IEmailService email)
 	: IEventHandler<EmailVerificationRequestedApplicationEvent>
 {
 	public async Task HandleAsync(EmailVerificationRequestedApplicationEvent @event)

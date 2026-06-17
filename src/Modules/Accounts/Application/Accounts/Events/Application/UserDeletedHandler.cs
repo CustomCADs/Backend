@@ -6,8 +6,11 @@ using CustomCADs.Shared.Application.Events.Identity;
 
 namespace CustomCADs.Modules.Accounts.Application.Accounts.Events.Application;
 
-public class UserDeletedHandler(IAccountReads reads, IAccountWrites writes, IUnitOfWork uow)
-	: IEventHandler<UserDeletedApplicationEvent>
+public class UserDeletedHandler(
+	IAccountReads reads,
+	IAccountWrites writes,
+	IUnitOfWork uow
+) : IEventHandler<UserDeletedApplicationEvent>
 {
 	public async Task HandleAsync(UserDeletedApplicationEvent @event)
 	{

@@ -6,8 +6,13 @@ using CustomCADs.Shared.Application.Events.Catalog;
 
 namespace CustomCADs.Modules.Files.Application.Cads.Events.Application;
 
-public class ProductDeletedHandler(ICadReads reads, IWrites<Cad> writes, IUnitOfWork uow, ICadStorageService storage, BaseCachingService<CadId, Cad> cache)
-	: IEventHandler<ProductDeletedApplicationEvent>
+public class ProductDeletedHandler(
+	ICadReads reads,
+	IWrites<Cad> writes,
+	IUnitOfWork uow,
+	ICadStorageService storage,
+	BaseCachingService<CadId, Cad> cache
+) : IEventHandler<ProductDeletedApplicationEvent>
 {
 	public async Task HandleAsync(ProductDeletedApplicationEvent @event)
 	{
