@@ -7,3 +7,4 @@ export * from './files';
 export * from './identity';
 export * from './notifications';
 export * from './printing';
+export * as src from './';

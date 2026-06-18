@@ -17,7 +17,7 @@ export const gallery = {
 		}),
 	single: (params: GallerySingle) =>
 		queryOptions({
-			queryKey: [...GALLERY_BASE_KEY, 'single', params] as const,
+			queryKey: [...GALLERY_BASE_KEY, 'single', params.id] as const,
 			queryFn: () => productsApi.gallery.single(params),
 		}),
 	sortings: queryOptions({

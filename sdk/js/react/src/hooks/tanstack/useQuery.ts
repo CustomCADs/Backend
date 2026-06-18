@@ -3,11 +3,11 @@ import {
 	UseQueryOptions,
 	useQuery as useTanstackQuery,
 } from '@tanstack/react-query';
-import * as customcadsQueries from './';
+import { src } from '../queries';
 
 export const useQuery = <TData, TKey extends readonly unknown[]>(
 	optionsSelector: (
-		queries: typeof customcadsQueries,
+		queries: typeof src,
 	) => UseQueryOptions<
 		AxiosResponse<TData>,
 		Error,
@@ -17,7 +17,7 @@ export const useQuery = <TData, TKey extends readonly unknown[]>(
 	enabled?: boolean,
 ) =>
 	useTanstackQuery({
-		...optionsSelector(customcadsQueries),
+		...optionsSelector(src),
 		enabled,
 		select: ({ data }) => data,
 	});
