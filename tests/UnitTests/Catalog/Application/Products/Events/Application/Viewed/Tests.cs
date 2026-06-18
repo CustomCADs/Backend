@@ -3,6 +3,7 @@ using CustomCADs.Modules.Catalog.Domain.Repositories;
 using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Account.Accounts;
 using CustomCADs.Shared.Application.Events.Catalog;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
@@ -129,7 +130,7 @@ public class Tests : Data.Products.BaseUnitTests
 		// Assert
 		raiser.Verify(
 			x => x.RaiseApplicationEventAsync(
-				It.Is<ProductViewedApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
+				It.Is<UserViewedProductApplicationEvent>(x => x.Id == ValidId && x.AccountId == ValidCreatorId)
 			),
 			Times.Once()
 		);

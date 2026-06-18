@@ -2,12 +2,18 @@
 using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Events.Account.Accounts;
 using CustomCADs.Shared.Application.Events.Catalog;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductViewed;
 
-public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequestSender sender, IEventRaiser raiser)
+public class ProductViewedHandler(
+	IProductReads reads,
+	IUnitOfWork uow,
+	IRequestSender sender,
+	IEventRaiser raiser
+) : IEventHandler<ProductViewedApplicationEvent>
 {
 	public async Task HandleAsync(ProductViewedApplicationEvent @event)
 	{
@@ -16,14 +22,13 @@ public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequest
 		).ConfigureAwait(false);
 		if (userAlreadyViewed) return;
 
-		var account = await sender.SendQueryAsync(
+		AccountInfoDto account = await sender.SendQueryAsync(
 			query: new GetAccountInfoByUsernameQuery(
 				Username: await sender.SendQueryAsync(
 					query: new GetUsernameByIdQuery(@event.AccountId)
 				).ConfigureAwait(false)
 			)
 		).ConfigureAwait(false);
-
 		if (!account.TrackViewedProducts) return;
 
 		Product product = await reads.SingleByIdAsync(@event.Id).ConfigureAwait(false)
@@ -33,7 +38,7 @@ public class ProductViewedHandler(IProductReads reads, IUnitOfWork uow, IRequest
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			@event: new ProductViewedApplicationEvent(
+			@event: new UserViewedProductApplicationEvent(
 				Id: @event.Id,
 				AccountId: @event.AccountId,
 				ViewedAt: @event.ViewedAt

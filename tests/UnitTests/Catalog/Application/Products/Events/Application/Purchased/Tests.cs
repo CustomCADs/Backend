@@ -24,7 +24,7 @@ public class Tests : Data.Products.BaseUnitTests
 		// Arrange
 
 		// Act
-		await handler.HandleAsync(request, ct);
+		await handler.HandleAsync(request);
 
 		// Assert
 		uow.Verify(

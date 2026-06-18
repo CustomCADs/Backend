@@ -5,7 +5,7 @@ namespace CustomCADs.UnitTests.Identity.Application.Users.Events.Application.Ema
 
 public class Tests : Data.Users.BaseUnitTests
 {
-	private readonly EmailVerificationRequestedEventHandler handler;
+	private readonly EmailVerificationRequestedHandler handler;
 	private readonly EmailVerificationRequestedApplicationEvent request = new(Email, Endpoint);
 
 	private readonly Mock<IEmailService> email = new();

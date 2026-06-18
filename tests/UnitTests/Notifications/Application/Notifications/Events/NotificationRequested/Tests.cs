@@ -6,6 +6,7 @@ using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Notifications.Application.Notifications.Events.NotificationRequested;
 
@@ -19,7 +20,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		Description: MinValidDescription,
 		Link: ValidLink,
 		AuthorId: ValidAuthorId,
-		ReceiverIds: []
+		ReceiverIds: [ValidReceiverId, ValidAuthorId, AccountId.New()]
 	);
 
 	private readonly Mock<IWrites<Notification>> writes = new();
@@ -31,11 +32,11 @@ public class Tests : Data.Notifications.BaseUnitTests
 	{
 		handler = new(writes.Object, uow.Object, sender.Object, notifier.Object);
 
-		Notification[] notifications = [CreateNotification(), CreateNotification()];
+		Notification[] notifications = [.. request.ReceiverIds.Select(x => CreateNotification(receiverId: x))];
 		writes.Setup(x => x.AddAsync(
 			It.Is<Notification>(x => x.ReceiverId == ValidReceiverId),
 			ct
-		)).ReturnsAsync(notifications.First());
+		)).ReturnsAsync(notifications.First(x => x.ReceiverId == ValidReceiverId));
 		uow.Setup(x => x.InsertNotificationsAsync(
 			It.IsAny<Notification[]>(),
 			ct
@@ -120,13 +121,13 @@ public class Tests : Data.Notifications.BaseUnitTests
 
 		// Assert
 		notifier.Verify(
-			x => x.NotifyUsersAsync(
-				request.ReceiverIds,
+			x => x.NotifyUserAsync(
+				It.IsAny<AccountId>(),
 				It.IsAny<string>(),
 				It.IsAny<object>(),
 				ct
 			),
-			Times.Once()
+			Times.Exactly(request.ReceiverIds.Length)
 		);
 	}
 }

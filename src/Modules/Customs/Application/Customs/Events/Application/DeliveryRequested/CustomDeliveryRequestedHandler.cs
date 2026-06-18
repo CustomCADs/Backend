@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Modules.Customs.Domain.Repositories;
 using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
@@ -11,7 +12,7 @@ public class CustomDeliveryRequestedHandler(
 	ICustomReads reads,
 	IUnitOfWork uow,
 	IRequestSender sender
-)
+) : IEventHandler<CustomDeliveryRequestedApplicationEvent>
 {
 	public async Task HandleAsync(CustomDeliveryRequestedApplicationEvent @event)
 	{

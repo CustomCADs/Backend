@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Modules.Customs.Domain.Repositories;
 using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Email;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Customs;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
@@ -15,7 +16,7 @@ public class CustomPaymentCompletedHandler(
 	IUnitOfWork uow,
 	IRequestSender sender,
 	IEmailService email
-)
+) : IEventHandler<CustomPaymentCompletedApplicationEvent>
 {
 	public async Task HandleAsync(CustomPaymentCompletedApplicationEvent @event)
 	{
@@ -25,24 +26,31 @@ public class CustomPaymentCompletedHandler(
 		custom.FinishPayment(success: true);
 		await uow.SaveChangesAsync().ConfigureAwait(false);
 
-		string to = await sender.SendQueryAsync(
+		string recipient = await sender.SendQueryAsync(
 			query: new GetUserEmailByIdQuery(@event.BuyerId)
 		).ConfigureAwait(false);
 
-		string url = await sender.SendQueryAsync(
+		string clientUrl = await sender.SendQueryAsync(
 			query: new GetClientUrlQuery()
 		).ConfigureAwait(false);
 
-		await email.SendRewardGrantedEmailAsync(to, $"{url}/customs/{custom.Id}").ConfigureAwait(false);
+		await email.SendRewardGrantedEmailAsync(recipient, $"{clientUrl}/customs/{custom.Id}").ConfigureAwait(false);
 
-		if (custom is { ForDelivery: true, CompletedCustom.ShipmentId: not null })
+		if (custom.ForDelivery)
 		{
-			ShipmentId shipmentId = custom.CompletedCustom.ShipmentId.Value;
-
-			await sender.SendCommandAsync(
-				command: new ActivateShipmentCommand(shipmentId)
-			).ConfigureAwait(false);
-			await email.SendRewardGrantedEmailAsync(to, $"{url}/shipments/{shipmentId}").ConfigureAwait(false);
+			ShipmentId? shipmentId = custom.CompletedCustom?.ShipmentId;
+			await ActivateShipmentAsync(shipmentId).ConfigureAwait(false);
+			await email.SendRewardGrantedEmailAsync(recipient, $"{clientUrl}/shipments/{shipmentId}").ConfigureAwait(false);
 		}
+	}
+
+	private async Task ActivateShipmentAsync(ShipmentId? shipmentId)
+	{
+		if (shipmentId is null)
+			throw new CustomException("Shipment Activation requested, but missing ShipmentId");
+
+		await sender.SendCommandAsync(
+			command: new ActivateShipmentCommand(shipmentId.Value)
+		).ConfigureAwait(false);
 	}
 }
