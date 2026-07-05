@@ -21,7 +21,7 @@ public class Tests : Data.Users.BaseUnitTests
 		handler = new(service.Object);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange

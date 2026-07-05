@@ -1,3 +1,3 @@
 ﻿global using CustomCADs.Modules.Notifications.Domain.Notifications;
 global using CustomCADs.Shared.Domain.Exceptions;
-global using Xunit;
+global using CustomCADs.Tests.Shared;

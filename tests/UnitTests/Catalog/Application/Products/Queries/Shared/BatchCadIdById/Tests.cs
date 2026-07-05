@@ -35,7 +35,7 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(Result);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -50,7 +50,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -59,9 +59,12 @@ public class Tests : Data.Products.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.True(result[Ids[0]] == Products[0].CadId),
-			() => Assert.True(result[Ids[1]] == Products[1].CadId)
-		);
+		using (Assert.Multiple())
+		{
+			for (int i = 0; i < Ids.Length; i++)
+			{
+				await Assert.That(result[Ids[i]] == Products[i].CadId).IsTrue();
+			}
+		}
 	}
 }

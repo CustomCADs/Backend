@@ -33,7 +33,7 @@ public class Tests : Data.Images.BaseUnitTests
 		storage.Setup(x => x.GetPresignedPutUrlAsync(ValidKey, UploadRequest)).ReturnsAsync(PresignedUrl);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -48,7 +48,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
@@ -63,7 +63,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -72,6 +72,6 @@ public class Tests : Data.Images.BaseUnitTests
 		string url = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(PresignedUrl, url);
+		await Assert.That(url).IsEqualTo(PresignedUrl);
 	}
 }

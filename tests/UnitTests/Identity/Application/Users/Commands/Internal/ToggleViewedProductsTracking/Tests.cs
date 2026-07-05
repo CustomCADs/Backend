@@ -29,7 +29,7 @@ public class Tests : Data.Users.BaseUnitTests
 		)).ReturnsAsync(new AccountInfoDto(ValidAccountId, default, InitialTrackViewedProducts, null, null));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -47,7 +47,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange

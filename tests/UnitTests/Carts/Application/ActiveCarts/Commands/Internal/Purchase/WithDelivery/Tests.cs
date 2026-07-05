@@ -82,7 +82,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -101,7 +101,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -147,7 +147,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallPayment()
 	{
 		// Arrange
@@ -169,7 +169,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
@@ -198,7 +198,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -216,10 +216,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		PaymentDto actual = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(expected, actual);
+		await Assert.That(actual).IsEqualTo(expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCartNotForDelivery()
 	{
 		// Arrange
@@ -231,9 +231,6 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			]);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomException>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(request, ct));
 	}
 }

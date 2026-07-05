@@ -23,7 +23,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			.ReturnsAsync(Expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -38,7 +38,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -47,6 +47,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 		ViewedProductDto[] products = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Expected.Select(x => x.ProductId), products.Select(x => x.Id));
+		await Assert.That(products.Select(x => x.Id)).IsEquivalentTo(Expected.Select(x => x.ProductId));
 	}
 }

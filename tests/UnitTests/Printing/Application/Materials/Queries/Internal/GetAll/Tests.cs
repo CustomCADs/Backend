@@ -28,7 +28,7 @@ public class Tests : Data.Materials.BaseUnitTests
 			.ReturnsAsync(Materials);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -52,6 +52,6 @@ public class Tests : Data.Materials.BaseUnitTests
 		ICollection<MaterialDto> response = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Materials.Count, response.Count);
+		await Assert.That(response.Count).IsEqualTo(Materials.Count);
 	}
 }

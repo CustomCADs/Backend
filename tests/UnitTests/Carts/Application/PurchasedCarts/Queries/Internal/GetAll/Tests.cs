@@ -34,7 +34,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 			));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -49,7 +49,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -62,9 +62,10 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		PurchasedCartId[] expectedIds = [.. Carts.Select(x => x.Id)],
 			actualIds = [.. result.Items.Select(x => x.Id)];
 
-		Assert.Multiple(
-			() => Assert.Equal(expectedCount, actualCount),
-			() => Assert.Equal(expectedIds, actualIds)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(actualCount).IsEqualTo(expectedCount);
+			await Assert.That(actualIds).IsEquivalentTo(expectedIds);
+		}
 	}
 }

@@ -49,7 +49,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		)).ReturnsAsync(true);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -64,7 +64,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase_WhenTurningDeliveryOff()
 	{
 		// Arrange
@@ -79,7 +79,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase_WhenTurningDeliveryOn()
 	{
 		// Arrange
@@ -94,7 +94,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests_WhenTurningDeliveryOff()
 	{
 		// Arrange
@@ -112,7 +112,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests_WhenTurningDeliveryOn()
 	{
 		// Arrange
@@ -130,7 +130,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
@@ -138,25 +138,19 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			.ReturnsAsync(null as ActiveCartItem);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenItemNotFound()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(request with { ProductId = ValidProductId }, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(request with { ProductId = ValidProductId }, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCustomizationNotFound()
 	{
 		// Arrange
@@ -166,21 +160,15 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		)).ReturnsAsync(false);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(requestForDelivery, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(requestForDelivery, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenDeliveryMismatch()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomException>(
-			// Act
-			() => handler.Handle(requestForDelivery with { CustomizationId = null }, ct)
-		);
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(requestForDelivery with { CustomizationId = null }, ct));
 	}
 }

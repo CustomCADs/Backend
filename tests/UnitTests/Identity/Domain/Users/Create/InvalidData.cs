@@ -2,19 +2,19 @@ namespace CustomCADs.UnitTests.Identity.Domain.Users.Create;
 
 using static Data.Users.TestData;
 
-public class InvalidData : TheoryData<string, string, string>
+public class InvalidData : ITheoryData<(string, string, string)>
 {
-	public InvalidData()
+	public static IEnumerable<(string, string, string)> GetTestData()
 	{
 		// Role
-		Add(InvalidRole, MaxValidUsername, ValidEmail);
+		yield return (InvalidRole, MaxValidUsername, ValidEmail);
 
 		// Username
-		Add(ValidRole, InvalidUsername, ValidEmail);
-		Add(ValidRole, MaxInvalidUsername, ValidEmail);
-		Add(ValidRole, MinInvalidUsername, ValidEmail);
+		yield return (ValidRole, InvalidUsername, ValidEmail);
+		yield return (ValidRole, MaxInvalidUsername, ValidEmail);
+		yield return (ValidRole, MinInvalidUsername, ValidEmail);
 
 		// Email
-		Add(ValidRole, MaxValidUsername, InvalidEmail);
+		yield return (ValidRole, MaxValidUsername, InvalidEmail);
 	}
 }

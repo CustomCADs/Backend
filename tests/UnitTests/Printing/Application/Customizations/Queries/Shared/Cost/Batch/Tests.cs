@@ -41,7 +41,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 			.Returns(Cost);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -60,7 +60,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCalculateCost()
 	{
 		// Arrange
@@ -78,7 +78,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -87,8 +87,12 @@ public class Tests : Data.Customizations.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple([.. result.Select(
-			x => (Action)(() => Assert.Equal(Cost, x.Value))
-		)]);
+		using (Assert.Multiple())
+		{
+			foreach (var (_, cost) in result)
+			{
+				await Assert.That(cost).IsEqualTo(Cost);
+			}
+		}
 	}
 }

@@ -4,8 +4,8 @@ namespace CustomCADs.UnitTests.Accounts.Domain.Accounts.Behaviors.FirstName;
 
 public class Tests : Data.Accounts.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetFirstName_ShouldNotThrowException_WhenFirstNameIsValid(string firstName)
 	{
 		var account = CreateAccount();
@@ -13,25 +13,23 @@ public class Tests : Data.Accounts.BaseUnitTests
 		account.SetFirstName(firstName);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetFirstName_SetsfirstName_WhenUsernameIsValid(string firstName)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task SetFirstName_SetsfirstName_WhenUsernameIsValid(string firstName)
 	{
 		var account = CreateAccount();
 
 		account.SetFirstName(firstName);
 
-		Assert.Equal(account.FirstName, firstName);
+		await Assert.That(firstName).IsEqualTo(account.FirstName);
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetFirstName_ThrowsException_WhenUsernameIsInvalid(string firstName)
 	{
 		var account = CreateAccount();
 
-		Assert.Throws<CustomValidationException<Account>>(
-			() => account.SetFirstName(firstName)
-		);
+		Assert.Throws<CustomValidationException<Account>>(() => account.SetFirstName(firstName));
 	}
 }

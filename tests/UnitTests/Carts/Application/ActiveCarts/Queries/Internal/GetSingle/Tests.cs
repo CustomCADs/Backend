@@ -23,7 +23,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			.ReturnsAsync(CreateItem());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -38,7 +38,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -47,30 +47,24 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidProductId, result.ProductId);
+		await Assert.That(result.ProductId).IsEqualTo(ValidProductId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCartItemNotFound()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(request with { ProductId = new() }, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(request with { ProductId = new() }, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(request with { ProductId = new() }, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(request with { ProductId = new() }, ct));
 	}
 }

@@ -28,7 +28,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		reads.Setup(x => x.AllAsync(false, ct)).ReturnsAsync(categories);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -52,6 +52,6 @@ public class Tests : Data.Categories.BaseUnitTests
 		IEnumerable<CategoryReadDto> categories = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(categories.Select(r => r.Id), this.categories.Select(r => r.Id));
+		await Assert.That(this.categories.Select(r => r.Id)).IsEquivalentTo(categories.Select(r => r.Id));
 	}
 }

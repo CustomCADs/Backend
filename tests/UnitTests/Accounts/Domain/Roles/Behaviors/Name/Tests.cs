@@ -5,8 +5,8 @@ namespace CustomCADs.UnitTests.Accounts.Domain.Roles.Behaviors.Name;
 
 public class Tests : Data.Roles.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ShouldNotThrowException_WhenNameIsValid(string name)
 	{
 		var role = CreateRole();
@@ -14,25 +14,23 @@ public class Tests : Data.Roles.BaseUnitTests
 		role.SetName(name);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetName_SetsName_WhenNameIsValid(string name)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task SetName_SetsName_WhenNameIsValid(string name)
 	{
 		var role = CreateRole();
 
 		role.SetName(name);
 
-		Assert.Equal(role.Name, name);
+		await Assert.That(name).IsEqualTo(role.Name);
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ThrowsException_WhenNameIsInvalid(string name)
 	{
 		var role = CreateRole();
 
-		Assert.Throws<CustomValidationException<Role>>(
-			() => role.SetName(name)
-		);
+		Assert.Throws<CustomValidationException<Role>>(() => role.SetName(name));
 	}
 }

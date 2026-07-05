@@ -37,7 +37,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 			.ReturnsAsync(material);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -56,7 +56,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCalculateCost()
 	{
 		// Arrange
@@ -71,7 +71,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -80,10 +80,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 		decimal result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Cost, result);
+		await Assert.That(result).IsEqualTo(Cost);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCustomizationNotFound()
 	{
 		// Arrange
@@ -91,13 +91,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 			.ReturnsAsync(null as Customization);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenMaterialNotFound()
 	{
 		// Arrange
@@ -105,9 +102,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 			.ReturnsAsync(null as Material);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Material>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Material>>(() => handler.Handle(request, ct));
 	}
 }

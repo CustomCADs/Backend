@@ -33,7 +33,7 @@ public class Tests : Data.Cads.BaseUnitTests
 			.ReturnsAsync(cad);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -48,7 +48,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -63,7 +63,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
@@ -78,7 +78,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldModifyCad()
 	{
 		// Arrange
@@ -87,17 +87,19 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(CamCoords.X, cad.CamCoordinates.X),
-			() => Assert.Equal(CamCoords.Y, cad.CamCoordinates.Y),
-			() => Assert.Equal(CamCoords.Z, cad.CamCoordinates.Z),
-			() => Assert.Equal(PanCoords.X, cad.PanCoordinates.X),
-			() => Assert.Equal(PanCoords.Y, cad.PanCoordinates.Y),
-			() => Assert.Equal(PanCoords.Z, cad.PanCoordinates.Z)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(cad.CamCoordinates.X).IsEqualTo(CamCoords.X);
+			await Assert.That(cad.CamCoordinates.Y).IsEqualTo(CamCoords.Y);
+			await Assert.That(cad.CamCoordinates.Z).IsEqualTo(CamCoords.Z);
+
+			await Assert.That(cad.PanCoordinates.X).IsEqualTo(PanCoords.X);
+			await Assert.That(cad.PanCoordinates.Y).IsEqualTo(PanCoords.Y);
+			await Assert.That(cad.PanCoordinates.Z).IsEqualTo(PanCoords.Z);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCadNotFound()
 	{
 		// Arrange
@@ -105,9 +107,6 @@ public class Tests : Data.Cads.BaseUnitTests
 			.ReturnsAsync(null as Cad);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(() => handler.Handle(request, ct));
 	}
 }

@@ -28,7 +28,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			.ReturnsAsync(account);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShoulQueryDatabase()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShoulPersistToDatabase()
 	{
 		// Arrange
@@ -62,16 +62,13 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShoulThrowException_WhenNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Account);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
-			// Act
-			() => handler.HandleAsync(request)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(() => handler.HandleAsync(request));
 	}
 }

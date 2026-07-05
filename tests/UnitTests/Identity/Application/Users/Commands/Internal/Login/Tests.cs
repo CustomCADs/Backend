@@ -43,7 +43,7 @@ public class Tests : Data.Users.BaseUnitTests
 		service.Setup(x => x.CheckPasswordAsync(User.Username, MinValidPassword)).ReturnsAsync(true);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -66,7 +66,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldIssueTokens()
 	{
 		// Arrange
@@ -87,7 +87,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -96,36 +96,30 @@ public class Tests : Data.Users.BaseUnitTests
 		TokensDto tokens = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Tokens, tokens);
+		await Assert.That(tokens).IsEqualTo(Tokens);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenPasswordIncorrect()
 	{
 		// Arrange
 		service.Setup(x => x.CheckPasswordAsync(User.Username, MinValidPassword)).ReturnsAsync(false);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenUserLockedOut()
 	{
 		// Arrange
 		service.Setup(x => x.GetIsLockedOutAsync(User.Username)).ReturnsAsync(DateTimeOffset.UtcNow);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenUserNotVerified()
 	{
 		// Arrange
@@ -133,9 +127,6 @@ public class Tests : Data.Users.BaseUnitTests
 		service.Setup(x => x.GetByUsernameAsync(unverifiedUser.Username)).ReturnsAsync(unverifiedUser);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
-			// Act
-			() => handler.Handle(request with { Username = unverifiedUser.Username }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request with { Username = unverifiedUser.Username }, ct));
 	}
 }

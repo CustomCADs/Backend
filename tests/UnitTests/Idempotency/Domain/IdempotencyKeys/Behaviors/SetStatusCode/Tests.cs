@@ -6,27 +6,25 @@ using static Data.IdempotencyKeys.TestData;
 
 public class Tests : Data.IdempotencyKeys.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetStatusCode_ShouldNotThrow()
 	{
 		CreateIdempotencyKey().SetStatusCode(MaxValidStatusCode);
 	}
 
-	[Fact]
-	public void SetStatusCode_ShouldPopulateProperties()
+	[Test]
+	public async Task SetStatusCode_ShouldPopulateProperties()
 	{
 		IdempotencyKey idempotencyKey = CreateIdempotencyKey();
 
 		idempotencyKey.SetStatusCode(MaxValidStatusCode);
 
-		Assert.Equal(MaxValidStatusCode, idempotencyKey.StatusCode);
+		await Assert.That(idempotencyKey.StatusCode).IsEqualTo(MaxValidStatusCode);
 	}
 
-	[Fact]
+	[Test]
 	public void SetStatusCode_ShouldThrow_WhenInvalidStatusCode()
 	{
-		Assert.Throws<CustomValidationException<IdempotencyKey>>(
-			() => CreateIdempotencyKey().SetStatusCode(MaxInvalidStatusCode)
-		);
+		Assert.Throws<CustomValidationException<IdempotencyKey>>(() => CreateIdempotencyKey().SetStatusCode(MaxInvalidStatusCode));
 	}
 }

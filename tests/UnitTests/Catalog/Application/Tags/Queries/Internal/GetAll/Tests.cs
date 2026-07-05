@@ -28,7 +28,7 @@ public class Tests : Data.Tags.BaseUnitTests
 		)).ReturnsAsync(Tags);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Tags.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -52,9 +52,10 @@ public class Tests : Data.Tags.BaseUnitTests
 		TagDto[] tags = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(tags.Select(r => r.Id), Tags.Select(r => r.Id)),
-			() => Assert.Equal(tags.Select(r => r.Name), Tags.Select(r => r.Name))
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(Tags.Select(r => r.Id)).IsEquivalentTo(tags.Select(r => r.Id));
+			await Assert.That(Tags.Select(r => r.Name)).IsEquivalentTo(tags.Select(r => r.Name));
+		}
 	}
 }

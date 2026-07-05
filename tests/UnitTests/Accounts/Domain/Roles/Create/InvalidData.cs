@@ -2,18 +2,18 @@
 
 using static Data.Roles.TestData;
 
-public class InvalidData : TheoryData<string, string>
+public class InvalidData : ITheoryData<(string, string)>
 {
-	public InvalidData()
+	public static IEnumerable<(string, string)> GetTestData()
 	{
 		// Name
-		Add(InvalidName, ValidDescription);
-		Add(MinInvalidName, MinValidDescription);
-		Add(MaxInvalidName, MaxValidDescription);
+		yield return (InvalidName, ValidDescription);
+		yield return (MinInvalidName, MinValidDescription);
+		yield return (MaxInvalidName, MaxValidDescription);
 
 		// Description
-		Add(ValidName, InvalidDescription);
-		Add(MinValidName, MinInvalidDescription);
-		Add(MaxValidName, MaxInvalidDescription);
+		yield return (ValidName, InvalidDescription);
+		yield return (MinValidName, MinInvalidDescription);
+		yield return (MaxValidName, MaxInvalidDescription);
 	}
 }

@@ -8,7 +8,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	private readonly GetPurchasedCartSortingsHandler handler = new();
 	private readonly GetPurchasedCartSortingsQuery request = new();
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -17,6 +17,6 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		PurchasedCartSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetValues<PurchasedCartSortingType>());
+		await Assert.That(Enum.GetValues<PurchasedCartSortingType>()).IsEquivalentTo(sortings);
 	}
 }

@@ -27,7 +27,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(material);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -42,7 +42,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -61,7 +61,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldClearCache()
 	{
 		// Arrange

@@ -32,7 +32,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		)).ReturnsAsync(role);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -54,7 +54,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange
@@ -69,7 +69,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
@@ -86,7 +86,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -95,6 +95,6 @@ public class Tests : Data.Roles.BaseUnitTests
 		RoleId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 }

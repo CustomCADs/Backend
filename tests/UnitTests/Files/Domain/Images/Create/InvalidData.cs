@@ -2,14 +2,14 @@
 
 using static Data.Images.TestData;
 
-public class InvalidData : TheoryData<string, string>
+public class InvalidData : ITheoryData<(string, string)>
 {
-	public InvalidData()
+	public static IEnumerable<(string, string)> GetTestData()
 	{
 		// Key
-		Add(InvalidKey, ValidContentType);
+		yield return (InvalidKey, ValidContentType);
 
 		// Content Type
-		Add(ValidKey, InvalidContentType);
+		yield return (ValidKey, InvalidContentType);
 	}
 }

@@ -30,7 +30,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -45,7 +45,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -60,9 +60,9 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task Handle_ShouldRaiseEvents(bool isPending)
 	{
 		// Arrange
@@ -80,7 +80,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
@@ -89,10 +89,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(NewValue, custom.ForDelivery);
+		await Assert.That(custom.ForDelivery).IsEqualTo(NewValue);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
 	{
 		// Arrange
@@ -100,9 +100,6 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(null as Custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(() => handler.Handle(request, ct));
 	}
 }

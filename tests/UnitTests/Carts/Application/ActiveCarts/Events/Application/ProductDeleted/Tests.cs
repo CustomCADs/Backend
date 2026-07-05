@@ -22,7 +22,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		handler = new(uow.Object);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldBulkDelete_WhenThresholdReached()
 	{
 		// Arrange

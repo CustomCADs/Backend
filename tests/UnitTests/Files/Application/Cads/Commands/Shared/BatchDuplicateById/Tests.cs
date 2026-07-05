@@ -33,7 +33,7 @@ public class Tests : Data.Cads.BaseUnitTests
 			.ReturnsAsync(Result);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -48,7 +48,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -67,7 +67,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
@@ -85,7 +85,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -94,6 +94,6 @@ public class Tests : Data.Cads.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Cads.Select(x => x.Id), result.Select(x => x.Key));
+		await Assert.That(result.Select(x => x.Key)).IsEquivalentTo(Cads.Select(x => x.Id));
 	}
 }

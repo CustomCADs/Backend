@@ -35,7 +35,7 @@ public class Tests : Data.Users.BaseUnitTests
 		service.Setup(x => x.GetByRefreshTokenAsync(RefreshToken.Value)).ReturnsAsync((User, RefreshToken));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -50,7 +50,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldIssueTokens()
 	{
 		// Arrange
@@ -65,7 +65,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -74,22 +74,19 @@ public class Tests : Data.Users.BaseUnitTests
 		TokensDto tokens = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Tokens, tokens);
+		await Assert.That(tokens).IsEqualTo(Tokens);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenMissingToken()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
-			// Act
-			() => handler.Handle(request with { Token = null }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request with { Token = null }, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenTokenExpired()
 	{
 		// Arrange
@@ -105,9 +102,6 @@ public class Tests : Data.Users.BaseUnitTests
 		service.Setup(x => x.GetByRefreshTokenAsync(token.Value)).ReturnsAsync((User, token));
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
-			// Act
-			() => handler.Handle(request with { Token = token.Value }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request with { Token = token.Value }, ct));
 	}
 }

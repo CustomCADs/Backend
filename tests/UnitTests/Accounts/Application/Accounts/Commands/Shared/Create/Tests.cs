@@ -38,7 +38,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		)).ReturnsAsync(CreateAccount(id: ValidId));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -66,7 +66,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -75,6 +75,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 		AccountId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 }

@@ -29,7 +29,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(CreateRole());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -44,7 +44,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -65,7 +65,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange

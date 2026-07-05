@@ -6,7 +6,7 @@ using static Data.Cads.TestData;
 
 public class Tests : Data.Cads.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetContentType_ShouldNotThrowException_WhenContentTypeIsValid()
 	{
 		var cad = CreateCad();
@@ -14,23 +14,21 @@ public class Tests : Data.Cads.BaseUnitTests
 		cad.SetContentType(ValidContentType);
 	}
 
-	[Fact]
-	public void SetContentType_ShouldPopulateProperties_WhenContentTypeIsValid()
+	[Test]
+	public async Task SetContentType_ShouldPopulateProperties_WhenContentTypeIsValid()
 	{
 		var cad = CreateCad();
 
 		cad.SetContentType(ValidContentType);
 
-		Assert.Equal(ValidContentType, cad.ContentType);
+		await Assert.That(cad.ContentType).IsEqualTo(ValidContentType);
 	}
 
-	[Fact]
+	[Test]
 	public void SetContentType_ShouldThrowException_WhenContentTypeIsInvalid()
 	{
 		var cad = CreateCad();
 
-		Assert.Throws<CustomValidationException<Cad>>(
-			() => cad.SetContentType(InvalidContentType)
-		);
+		Assert.Throws<CustomValidationException<Cad>>(() => cad.SetContentType(InvalidContentType));
 	}
 }

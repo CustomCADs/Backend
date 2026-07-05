@@ -6,21 +6,23 @@ using static Data.Products.TestData;
 
 public class Tests : Data.Products.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Uncheck_ShouldNotThrowException_WhenStatusIsValid()
 	{
-		Assert.Multiple(
-			() => CreateProduct().Validate(ValidDesignerId).Uncheck(),
-			() => CreateProduct().Report(ValidDesignerId).Uncheck()
-		);
+		using (Assert.Multiple())
+		{
+			CreateProduct().Validate(ValidDesignerId).Uncheck();
+			CreateProduct().Report(ValidDesignerId).Uncheck();
+		}
 	}
 
-	[Fact]
+	[Test]
 	public void Uncheck_ShouldThrowException_WhenStatusIsNotValid()
 	{
-		Assert.Multiple(
-			() => Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().Uncheck()),
-			() => Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().Report(ValidDesignerId).Remove().Uncheck())
-		);
+		using (Assert.Multiple())
+		{
+			Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().Uncheck());
+			Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().Report(ValidDesignerId).Remove().Uncheck());
+		}
 	}
 }

@@ -12,28 +12,29 @@ public class Tests : Data.Users.BaseUnitTests
 		rt = user.AddRefreshToken("refresh-token", new(), longerSession: false);
 	}
 
-	[Fact]
+	[Test]
 	public void RemoveRefreshToken_ShouldNotThrowException()
 	{
 		user.RemoveRefreshToken(rt);
 	}
 
-	[Fact]
-	public void RemoveRefreshToken_ShouldReturnResult()
+	[Test]
+	public async Task RemoveRefreshToken_ShouldReturnResult()
 	{
 		bool firstResult = user.RemoveRefreshToken(rt);
 		bool secondResult = user.RemoveRefreshToken(rt);
 
-		Assert.Multiple(
-			() => Assert.True(firstResult),
-			() => Assert.False(secondResult)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(firstResult).IsTrue();
+			await Assert.That(secondResult).IsFalse();
+		}
 	}
 
-	[Fact]
-	public void RemoveRefreshToken_PopulatesProperty()
+	[Test]
+	public async Task RemoveRefreshToken_PopulatesProperty()
 	{
 		user.RemoveRefreshToken(rt);
-		Assert.DoesNotContain(rt, user.RefreshTokens);
+		await Assert.That(user.RefreshTokens).DoesNotContain(rt);
 	}
 }

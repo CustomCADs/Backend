@@ -2,14 +2,14 @@
 
 using static Data.Accounts.TestData;
 
-public class InvalidData : TheoryData<string>
+public class InvalidData : ITheoryData<string>
 {
-	public InvalidData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(InvalidEmail);
-		Add(InvalidEmailLocal);
-		Add(InvalidEmailDomain);
-		Add(InvalidEmailTLD);
-		Add(InvalidEmailTLDMin);
+		yield return InvalidEmail;
+		yield return InvalidEmailLocal;
+		yield return InvalidEmailDomain;
+		yield return InvalidEmailTLD;
+		yield return InvalidEmailTLDMin;
 	}
 }

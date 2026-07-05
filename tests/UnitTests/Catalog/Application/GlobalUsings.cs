@@ -6,4 +6,3 @@ global using CustomCADs.Shared.Domain;
 global using CustomCADs.Shared.Domain.TypedIds.Catalog;
 global using CustomCADs.UnitTests.Catalog.Data;
 global using Moq;
-global using Xunit;

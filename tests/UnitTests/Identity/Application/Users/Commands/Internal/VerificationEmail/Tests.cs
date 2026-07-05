@@ -30,7 +30,7 @@ public class Tests : Data.Users.BaseUnitTests
 		service.Setup(x => x.GenerateEmailConfirmationTokenAsync(user.Username)).ReturnsAsync(Token);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -49,7 +49,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange

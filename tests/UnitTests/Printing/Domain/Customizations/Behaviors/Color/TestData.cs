@@ -2,12 +2,12 @@ namespace CustomCADs.UnitTests.Printing.Domain.Customizations.Behaviors.Color;
 
 using static Data.Customizations.TestData;
 
-public class TestData : TheoryData<string>
+public class TestData : ITheoryData<string>
 {
-	public TestData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(InvalidColor);
-		Add(MinInvalidColor);
-		Add(MaxInvalidColor);
+		yield return InvalidColor;
+		yield return MinInvalidColor;
+		yield return MaxInvalidColor;
 	}
 }

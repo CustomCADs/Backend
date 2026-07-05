@@ -28,7 +28,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(cad);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -62,7 +62,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
@@ -77,7 +77,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
@@ -92,7 +92,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCadNotFound()
 	{
 		// Arrange
@@ -100,9 +100,6 @@ public class Tests : Data.Cads.BaseUnitTests
 			.ReturnsAsync(null as Cad);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
-			// Act
-			() => handler.HandleAsync(request)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(() => handler.HandleAsync(request));
 	}
 }

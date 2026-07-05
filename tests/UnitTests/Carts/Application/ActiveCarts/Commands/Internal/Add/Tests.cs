@@ -40,8 +40,8 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		)).ReturnsAsync(true);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public async Task Handle_ShouldPersistToDatabase(CustomizationId? customizationId)
 	{
 		// Arrange
@@ -56,8 +56,8 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public async Task Handle_ShouldSendRequests(CustomizationId? customizationId)
 	{
 		// Arrange
@@ -86,8 +86,8 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		}
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public async Task Handle_ShouldThrowException_WhenProductNotFound(CustomizationId? customizationId)
 	{
 		// Arrange
@@ -97,9 +97,6 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		)).ReturnsAsync(false);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(Request(customizationId), ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(Request(customizationId), ct));
 	}
 }

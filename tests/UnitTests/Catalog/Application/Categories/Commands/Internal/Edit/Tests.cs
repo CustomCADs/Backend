@@ -23,7 +23,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(category);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -38,7 +38,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -53,7 +53,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldModifyCategory()
 	{
 		// Arrange
@@ -62,14 +62,14 @@ public class Tests : Data.Categories.BaseUnitTests
 		await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(() =>
+		using (Assert.Multiple())
 		{
-			Assert.Equal(ValidName, category.Name);
-			Assert.Equal(ValidDescription, category.Description);
-		});
+			await Assert.That(category.Name).IsEqualTo(ValidName);
+			await Assert.That(category.Description).IsEqualTo(ValidDescription);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange

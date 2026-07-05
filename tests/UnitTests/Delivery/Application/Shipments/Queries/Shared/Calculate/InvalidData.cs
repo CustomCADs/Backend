@@ -1,19 +1,19 @@
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Shared.Calculate;
 
-public class InvalidData : TheoryData<string, string, string>
+public class InvalidData : ITheoryData<(string, string, string)>
 {
-	public InvalidData()
+	public static IEnumerable<(string, string, string)> GetTestData()
 	{
 		// Country
-		Add(null!, "Burgas", "Slivnitsa");
-		Add(string.Empty, "Burgas", "Slivnitsa");
+		yield return (null!, "Burgas", "Slivnitsa");
+		yield return (string.Empty, "Burgas", "Slivnitsa");
 
 		// City
-		Add("Bulgaria", null!, "Slivnitsa");
-		Add("Bulgaria", string.Empty, "Slivnitsa");
+		yield return ("Bulgaria", null!, "Slivnitsa");
+		yield return ("Bulgaria", string.Empty, "Slivnitsa");
 
 		// Street
-		Add("Bulgaria", "Burgas", null!);
-		Add("Bulgaria", "Burgas", string.Empty);
+		yield return ("Bulgaria", "Burgas", null!);
+		yield return ("Bulgaria", "Burgas", string.Empty);
 	}
 }

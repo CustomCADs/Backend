@@ -6,35 +6,36 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldNotThrowException_WhenCustomIsValid(string name, string description, bool delivery)
 	{
-		CreateCustom(name, description, delivery, ValidBuyerId);
+		CreateCustom(name, description, delivery);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void Create_ShouldPopulateProperties(string name, string description, bool forDelivery)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task Create_ShouldPopulateProperties(string name, string description, bool forDelivery)
 	{
-		var custom = CreateCustom(name, description, forDelivery, ValidBuyerId);
+		var custom = CreateCustom(name, description, forDelivery);
 
-		Assert.Multiple(
-			() => Assert.Equal(ValidId, custom.Id),
-			() => Assert.Equal(name, custom.Name),
-			() => Assert.Equal(description, custom.Description),
-			() => Assert.Equal(forDelivery, custom.ForDelivery),
-			() => Assert.Equal(ValidBuyerId, custom.BuyerId)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.Id).IsEqualTo(ValidId);
+			await Assert.That(custom.Name).IsEqualTo(name);
+			await Assert.That(custom.Description).IsEqualTo(description);
+			await Assert.That(custom.ForDelivery).IsEqualTo(forDelivery);
+			await Assert.That(custom.BuyerId).IsEqualTo(ValidBuyerId);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
-	public void Create_ShouldThrowException_WhenCustomIsInvalid(string name, string description, bool delivery)
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
+	public void Create_ShouldThrowException_WhenCustomIsInvalid(string name, string description, bool forDelivery)
 	{
 		Assert.Throws<CustomValidationException<Custom>>(() =>
 		{
-			CreateCustom(name, description, (bool?)delivery, ValidBuyerId);
+			CreateCustom(name, description, forDelivery);
 		});
 	}
 }

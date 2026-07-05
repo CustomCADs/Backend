@@ -53,7 +53,7 @@ public class Tests : Data.Products.BaseUnitTests
 		)).ReturnsAsync(Products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -72,7 +72,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -97,7 +97,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -106,6 +106,6 @@ public class Tests : Data.Products.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(result.Count, Products.Length);
+		await Assert.That(Products.Length).IsEqualTo(result.Count);
 	}
 }

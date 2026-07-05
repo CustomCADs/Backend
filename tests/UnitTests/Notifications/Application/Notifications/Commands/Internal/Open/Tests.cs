@@ -24,7 +24,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 			.ReturnsAsync(CreateNotification().Read());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -39,7 +39,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -54,29 +54,23 @@ public class Tests : Data.Notifications.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrow_WhenCallerUnauthorizedAccess()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(CreateNotification(receiverId: AccountId.New()));
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<Notification>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<Notification>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrow_WhenNotificationNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Notification);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Notification>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Notification>>(() => handler.Handle(request, ct));
 	}
 }

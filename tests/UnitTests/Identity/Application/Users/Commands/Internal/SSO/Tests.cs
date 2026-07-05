@@ -54,7 +54,7 @@ public class Tests : Data.Users.BaseUnitTests
 		)).ReturnsAsync(ValidAccountId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -82,7 +82,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallGetByEmail_WhenUsernameDoesNotExist()
 	{
 		// Arrange
@@ -100,7 +100,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallCreateUser_WhenUsernameAndEmailDoNotExist()
 	{
 		// Arrange
@@ -138,7 +138,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldIssueTokens()
 	{
 		// Arrange
@@ -159,7 +159,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -168,6 +168,6 @@ public class Tests : Data.Users.BaseUnitTests
 		TokensDto tokens = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Tokens, tokens);
+		await Assert.That(tokens).IsEqualTo(Tokens);
 	}
 }

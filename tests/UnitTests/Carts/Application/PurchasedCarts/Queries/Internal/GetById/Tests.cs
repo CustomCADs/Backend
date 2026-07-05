@@ -32,7 +32,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		)).ReturnsAsync(Buyer);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -47,7 +47,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -65,7 +65,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -74,10 +74,10 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		var cart = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(this.cart.Id, cart.Id);
+		await Assert.That(cart.Id).IsEqualTo(this.cart.Id);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
@@ -85,9 +85,6 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 			.ReturnsAsync(null as PurchasedCart);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(() => handler.Handle(request, ct));
 	}
 }

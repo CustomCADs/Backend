@@ -28,7 +28,7 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(product);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -68,7 +68,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -77,16 +77,17 @@ public class Tests : Data.Products.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(product.Id, result.Id),
-			() => Assert.Equal(product.Name, result.Name),
-			() => Assert.Equal(product.Description, result.Description),
-			() => Assert.Equal(product.Price, result.Price),
-			() => Assert.Equal(product.CategoryId, result.Category.Id)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(result.Id).IsEqualTo(product.Id);
+			await Assert.That(result.Name).IsEqualTo(product.Name);
+			await Assert.That(result.Description).IsEqualTo(product.Description);
+			await Assert.That(result.Price).IsEqualTo(product.Price);
+			await Assert.That(result.Category.Id).IsEqualTo(product.CategoryId);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
@@ -94,13 +95,10 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(CreateProduct(creatorId: AccountId.New()));
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenProductNotFound()
 	{
 		// Arrange
@@ -108,9 +106,6 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(null as Product);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
 	}
 }

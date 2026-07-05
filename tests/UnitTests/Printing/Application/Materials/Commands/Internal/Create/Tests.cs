@@ -39,7 +39,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		)).ReturnsAsync(true);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -57,7 +57,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -76,7 +76,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -85,10 +85,10 @@ public class Tests : Data.Materials.BaseUnitTests
 		MaterialId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange

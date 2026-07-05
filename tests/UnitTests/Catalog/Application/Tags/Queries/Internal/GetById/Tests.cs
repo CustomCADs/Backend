@@ -23,7 +23,7 @@ public class Tests : Data.Tags.BaseUnitTests
 		)).ReturnsAsync(CreateTag());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -38,7 +38,7 @@ public class Tests : Data.Tags.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -47,6 +47,6 @@ public class Tests : Data.Tags.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, result.Id);
+		await Assert.That(result.Id).IsEqualTo(ValidId);
 	}
 }

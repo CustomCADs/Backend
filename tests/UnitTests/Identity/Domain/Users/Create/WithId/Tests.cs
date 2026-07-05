@@ -6,31 +6,31 @@ using static Data.Users.TestData;
 
 public class Tests : Data.Users.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Create_ShouldNotThrowException()
 	{
 		CreateUser();
 	}
 
-	[Fact]
-	public void Create_ShouldPopulateProperties()
+	[Test]
+	public async Task Create_ShouldPopulateProperties()
 	{
 		User user = CreateUser(ValidRole, MaxValidUsername, ValidEmail, ValidAccountId, id: ValidId);
 
-		Assert.Multiple(
-			() => Assert.Equal(ValidRole, user.Role),
-			() => Assert.Equal(MaxValidUsername, user.Username),
-			() => Assert.Equal(ValidEmail, user.Email.Value),
-			() => Assert.Equal(ValidAccountId, user.AccountId)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(user.Id).IsEqualTo(ValidId);
+			await Assert.That(user.Role).IsEqualTo(ValidRole);
+			await Assert.That(user.Username).IsEqualTo(MaxValidUsername);
+			await Assert.That(user.Email.Value).IsEqualTo(ValidEmail);
+			await Assert.That(user.AccountId).IsEqualTo(ValidAccountId);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowException_WhenUserInvalid(string role, string username, string email)
 	{
-		Assert.Throws<CustomValidationException<User>>(
-			() => CreateUser(role, username, email, ValidAccountId, id: ValidId)
-		);
+		Assert.Throws<CustomValidationException<User>>(() => CreateUser(role, username, email, ValidAccountId, id: ValidId));
 	}
 }

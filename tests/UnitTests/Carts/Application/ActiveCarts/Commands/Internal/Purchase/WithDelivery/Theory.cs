@@ -1,3 +1,11 @@
 ﻿namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
 
-public class Theory : TheoryData<string, string, string, string, string, string?, string?>;
+public record Theory(
+	string PaymentMethodId,
+	string ShipmentService,
+	string Country,
+	string City,
+	string Street,
+	string? Phone,
+	string? Email
+);

@@ -30,7 +30,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -45,7 +45,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests_WhenAccepted()
 	{
 		// Arrange
@@ -71,7 +71,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests_WhenHasCategory()
 	{
 		// Arrange
@@ -97,7 +97,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -106,31 +106,25 @@ public class Tests : Data.Customs.BaseUnitTests
 		CustomerGetCustomByIdDto custom = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(this.custom.Id, custom.Id);
+		await Assert.That(custom.Id).IsEqualTo(this.custom.Id);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
-			// Act
-			() => handler.Handle(request with { CallerId = new() }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(() => handler.Handle(request with { CallerId = new() }, ct));
 	}
 }

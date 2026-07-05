@@ -6,31 +6,30 @@ using static Data.Tags.TestData;
 
 public class Tests : Data.Tags.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldNotThrowException_WhenProductIsValid(string name)
 	{
 		CreateTag(name);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void Create_ShouldPopulateProperties_WhenProductIsValid(string name)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task Create_ShouldPopulateProperties_WhenProductIsValid(string name)
 	{
 		Tag tag = CreateTag(name, ValidId);
 
-		Assert.Multiple(
-			() => Assert.Equal(ValidId, tag.Id),
-			() => Assert.Equal(name, tag.Name)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(tag.Id).IsEqualTo(ValidId);
+			await Assert.That(tag.Name).IsEqualTo(name);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowException_WhenProductIsNotValid(string name)
 	{
-		Assert.Throws<CustomValidationException<Tag>>(
-			() => CreateTag(name)
-		);
+		Assert.Throws<CustomValidationException<Tag>>(() => CreateTag(name));
 	}
 }

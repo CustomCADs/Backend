@@ -2,11 +2,11 @@ namespace CustomCADs.UnitTests.Identity.Domain.Users.Behaviors.SetUsername;
 
 using static Data.Users.TestData;
 
-public class ValidData : TheoryData<string>
+public class ValidData : ITheoryData<string>
 {
-	public ValidData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(MinValidUsername);
-		Add(MaxValidUsername);
+		yield return MinValidUsername;
+		yield return MaxValidUsername;
 	}
 }

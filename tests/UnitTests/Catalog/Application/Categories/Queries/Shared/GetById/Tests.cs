@@ -22,7 +22,7 @@ public class Tests : Data.Categories.BaseUnitTests
 			.ReturnsAsync(CreateCategory(name: ValidName));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -37,7 +37,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -46,6 +46,6 @@ public class Tests : Data.Categories.BaseUnitTests
 		string result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidName, result);
+		await Assert.That(result).IsEqualTo(ValidName);
 	}
 }

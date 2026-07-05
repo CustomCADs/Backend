@@ -6,8 +6,8 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Fact]
-	public void Complete_ShouldSucceed_WhenFinished()
+	[Test]
+	public async Task Complete_ShouldSucceed_WhenFinished()
 	{
 		Custom custom = CreateCustom();
 		custom.Accept(ValidDesignerId);
@@ -16,16 +16,17 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		custom.Complete(customizationId: null);
 
-		Assert.Multiple(
-			() => Assert.Equal(CustomStatus.Completed, custom.CustomStatus),
-			() => Assert.NotNull(custom.AcceptedCustom),
-			() => Assert.NotNull(custom.FinishedCustom),
-			() => Assert.NotNull(custom.CompletedCustom),
-			() => Assert.Null(custom.CompletedCustom!.CustomizationId)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Completed);
+			await Assert.That(custom.AcceptedCustom).IsNotNull();
+			await Assert.That(custom.FinishedCustom).IsNotNull();
+			await Assert.That(custom.CompletedCustom).IsNotNull();
+			await Assert.That(custom.CompletedCustom!.CustomizationId).IsNull();
+		}
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenPending()
 	{
 		ExpectValidationException(() =>
@@ -36,7 +37,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenAccepted()
 	{
 		ExpectValidationException(() =>
@@ -48,7 +49,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenBegun()
 	{
 		ExpectValidationException(() =>
@@ -61,7 +62,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenReported()
 	{
 		ExpectValidationException(() =>
@@ -74,7 +75,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenCompleted()
 	{
 		ExpectValidationException(() =>
@@ -89,7 +90,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenRemoved()
 	{
 		ExpectValidationException(() =>

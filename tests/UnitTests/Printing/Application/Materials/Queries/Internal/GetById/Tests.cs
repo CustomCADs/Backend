@@ -26,7 +26,7 @@ public class Tests : Data.Materials.BaseUnitTests
 			.ReturnsAsync(material);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -41,7 +41,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -50,6 +50,6 @@ public class Tests : Data.Materials.BaseUnitTests
 		MaterialDto response = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(material.Id, response.Id);
+		await Assert.That(response.Id).IsEqualTo(material.Id);
 	}
 }

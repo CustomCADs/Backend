@@ -31,7 +31,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(Expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -46,7 +46,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -55,13 +55,14 @@ public class Tests : Data.Customs.BaseUnitTests
 		CountCustomsDto counts = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(Expected[CustomStatus.Pending], counts.Pending),
-			() => Assert.Equal(Expected[CustomStatus.Accepted], counts.Accepted),
-			() => Assert.Equal(Expected[CustomStatus.Begun], counts.Begun),
-			() => Assert.Equal(Expected[CustomStatus.Finished], counts.Finished),
-			() => Assert.Equal(Expected[CustomStatus.Completed], counts.Completed),
-			() => Assert.Equal(Expected[CustomStatus.Reported], counts.Reported)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(counts.Pending).IsEqualTo(Expected[CustomStatus.Pending]);
+			await Assert.That(counts.Accepted).IsEqualTo(Expected[CustomStatus.Accepted]);
+			await Assert.That(counts.Begun).IsEqualTo(Expected[CustomStatus.Begun]);
+			await Assert.That(counts.Finished).IsEqualTo(Expected[CustomStatus.Finished]);
+			await Assert.That(counts.Completed).IsEqualTo(Expected[CustomStatus.Completed]);
+			await Assert.That(counts.Reported).IsEqualTo(Expected[CustomStatus.Reported]);
+		}
 	}
 }

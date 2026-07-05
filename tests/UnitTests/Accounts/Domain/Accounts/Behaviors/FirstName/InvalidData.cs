@@ -2,11 +2,11 @@
 
 using static Data.Accounts.TestData;
 
-public class InvalidData : TheoryData<string?>
+public class InvalidData : ITheoryData<string?>
 {
-	public InvalidData()
+	public static IEnumerable<string?> GetTestData()
 	{
-		Add(MinInvalidFirstName);
-		Add(MaxInvalidFirstName);
+		yield return MinInvalidFirstName;
+		yield return MaxInvalidFirstName;
 	}
 }

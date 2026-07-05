@@ -6,19 +6,19 @@ using static Data.Customizations.TestData;
 
 public class Tests : Data.Customizations.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetMaterialId_ShouldNotThrowException()
 	{
 		CreateCustomization().SetMaterialId(ValidMaterialId);
 	}
 
-	[Fact]
-	public void SetMaterialId_ShouldPopulateProperties()
+	[Test]
+	public async Task SetMaterialId_ShouldPopulateProperties()
 	{
 		Customization material = CreateCustomization();
 
 		material.SetMaterialId(ValidMaterialId);
 
-		Assert.Equal(ValidMaterialId, material.MaterialId);
+		await Assert.That(material.MaterialId).IsEqualTo(ValidMaterialId);
 	}
 }

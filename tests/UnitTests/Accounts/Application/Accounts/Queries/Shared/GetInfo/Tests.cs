@@ -24,7 +24,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			.ReturnsAsync(account);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -39,7 +39,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -48,25 +48,23 @@ public class Tests : Data.Accounts.BaseUnitTests
 		AccountInfoDto info = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(account.Id, info.Id),
-			() => Assert.Equal(account.CreatedAt, info.CreatedAt),
-			() => Assert.Equal(account.TrackViewedProducts, info.TrackViewedProducts),
-			() => Assert.Equal(account.FirstName, info.FirstName),
-			() => Assert.Equal(account.LastName, info.LastName)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(info.Id).IsEqualTo(account.Id);
+			await Assert.That(account.CreatedAt).IsEqualTo(info.CreatedAt);
+			await Assert.That(account.TrackViewedProducts).IsEqualTo(info.TrackViewedProducts);
+			await Assert.That(account.FirstName).IsEqualTo(info.FirstName);
+			await Assert.That(account.LastName).IsEqualTo(info.LastName);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenAccountNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByUsernameAsync(ValidUsername, false, ct)).ReturnsAsync(null as Account);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(() => handler.Handle(request, ct));
 	}
 }

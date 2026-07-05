@@ -29,7 +29,7 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(dict);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -44,7 +44,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -53,11 +53,12 @@ public class Tests : Data.Products.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(dict[ProductStatus.Unchecked], result.Unchecked),
-			() => Assert.Equal(dict[ProductStatus.Validated], result.Validated),
-			() => Assert.Equal(dict[ProductStatus.Reported], result.Reported),
-			() => Assert.Equal(dict[ProductStatus.Removed], result.Banned)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(result.Unchecked).IsEqualTo(dict[ProductStatus.Unchecked]);
+			await Assert.That(result.Validated).IsEqualTo(dict[ProductStatus.Validated]);
+			await Assert.That(result.Reported).IsEqualTo(dict[ProductStatus.Reported]);
+			await Assert.That(result.Banned).IsEqualTo(dict[ProductStatus.Removed]);
+		}
 	}
 }

@@ -25,7 +25,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Category>>>>())).ReturnsAsync(Categories);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -40,7 +40,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -49,6 +49,6 @@ public class Tests : Data.Categories.BaseUnitTests
 		var actualCategories = (await handler.Handle(request, ct)).Select(x => (x.Key, x.Value));
 
 		// Assert
-		Assert.Equal(actualCategories, [.. Categories.Select(c => (c.Id, c.Name))]);
+		await Assert.That([.. Categories.Select(c => (c.Id, c.Name))]).IsEquivalentTo(actualCategories);
 	}
 }

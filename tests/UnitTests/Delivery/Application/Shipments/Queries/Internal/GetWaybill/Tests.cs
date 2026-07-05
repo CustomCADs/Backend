@@ -29,7 +29,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		delivery.Setup(x => x.PrintAsync(ValidReferenceId, ct)).ReturnsAsync(Bytes);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -44,7 +44,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
@@ -59,7 +59,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -68,44 +68,35 @@ public class Tests : Data.Shipments.BaseUnitTests
 		byte[] result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(result, Bytes);
+		await Assert.That(Bytes).IsEquivalentTo(result);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCallerNotHeadDesigner()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<Shipment>>(
-			// Act
-			() => handler.Handle(request with { CallerId = ValidBuyerId }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<Shipment>>(() => handler.Handle(request with { CallerId = ValidBuyerId }, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenShipmentStatusInvalid()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(CreateShipment());
 
 		// Assert
-		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenShipmentNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Shipment);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(() => handler.Handle(request, ct));
 	}
 }

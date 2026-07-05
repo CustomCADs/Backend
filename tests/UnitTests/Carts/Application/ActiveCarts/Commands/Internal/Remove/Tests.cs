@@ -26,7 +26,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			.ReturnsAsync(item);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -41,7 +41,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -56,7 +56,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
@@ -64,9 +64,6 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			.ReturnsAsync(null as ActiveCartItem);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(request, ct));
 	}
 }

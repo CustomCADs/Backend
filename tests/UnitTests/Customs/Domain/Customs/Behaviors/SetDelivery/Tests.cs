@@ -4,24 +4,26 @@ namespace CustomCADs.UnitTests.Customs.Domain.Customs.Behaviors.SetDelivery;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	public static IEnumerable<bool> GetTestData() => [true, false];
+
+	[Test]
+	[MethodDataSource(nameof(GetTestData))]
 	public void SetDelivery_ShouldNotThrowException_WhenCustomValid(bool forDelivery)
 	{
 		CreateCustom().SetDelivery(forDelivery);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetDelivery_ShouldPopulateProperties(bool forDelivery)
+	[Test]
+	[MethodDataSource(nameof(GetTestData))]
+	public async Task SetDelivery_ShouldPopulateProperties(bool forDelivery)
 	{
-		var Custom = CreateCustom();
-		Custom.SetDelivery(forDelivery);
-		Assert.Equal(forDelivery, Custom.ForDelivery);
+		var custom = CreateCustom();
+		custom.SetDelivery(forDelivery);
+		await Assert.That(custom.ForDelivery).IsEqualTo(forDelivery);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(nameof(GetTestData))]
 	public void SetDelivery_ShouldThrowException_WhenNameInvalid(bool forDelivery)
 	{
 		Assert.Throws<CustomValidationException<Custom>>(() =>

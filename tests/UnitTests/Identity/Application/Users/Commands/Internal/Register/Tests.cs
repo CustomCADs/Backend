@@ -33,7 +33,7 @@ public class Tests : Data.Users.BaseUnitTests
 		)).ReturnsAsync(ValidAccountId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -54,7 +54,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -78,7 +78,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenRegisterUnsuccessfuly()
 	{
 		// Arrange
@@ -88,9 +88,6 @@ public class Tests : Data.Users.BaseUnitTests
 		)).ThrowsAsync(new CustomException("CreationErrorMessage"));
 
 		// Assert
-		await Assert.ThrowsAsync<CustomException>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(request, ct));
 	}
 }

@@ -43,7 +43,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		)).ReturnsAsync(Calculations);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -58,7 +58,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -83,7 +83,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -92,6 +92,6 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		CalculateShipmentDto[] result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Calculations, result);
+		await Assert.That(result).IsEquivalentTo(Calculations);
 	}
 }

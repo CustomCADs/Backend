@@ -43,7 +43,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -58,7 +58,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -76,7 +76,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
@@ -99,7 +99,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallPayment()
 	{
 		// Arrange
@@ -121,7 +121,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -139,22 +139,19 @@ public class Tests : Data.Customs.BaseUnitTests
 		PaymentDto actual = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(expected, actual);
+		await Assert.That(actual).IsEqualTo(expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
-			// Act
-			() => handler.Handle(request with { CallerId = new() }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(() => handler.Handle(request with { CallerId = new() }, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenNotAccepted()
 	{
 		// Arrange
@@ -163,13 +160,10 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomException>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenNotFinished()
 	{
 		// Arrange
@@ -179,13 +173,10 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomException>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenForDelivery()
 	{
 		// Arrange
@@ -194,13 +185,10 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomException>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
 	{
 		// Arrange
@@ -208,9 +196,6 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(null as Custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(() => handler.Handle(request, ct));
 	}
 }

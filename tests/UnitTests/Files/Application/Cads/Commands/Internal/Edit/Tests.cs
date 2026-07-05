@@ -26,7 +26,7 @@ public class Tests : Data.Cads.BaseUnitTests
 			.ReturnsAsync(cad);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -41,7 +41,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -56,7 +56,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
@@ -71,7 +71,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldModifyCad()
 	{
 		// Arrange
@@ -80,13 +80,14 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(ValidKey, cad.Key),
-			() => Assert.Equal(ValidContentType, cad.ContentType)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(cad.Key).IsEqualTo(ValidKey);
+			await Assert.That(cad.ContentType).IsEqualTo(ValidContentType);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCadNotFound()
 	{
 		// Arrange
@@ -94,9 +95,6 @@ public class Tests : Data.Cads.BaseUnitTests
 			.ReturnsAsync(null as Cad);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(() => handler.Handle(request, ct));
 	}
 }

@@ -2,12 +2,12 @@
 
 using static Data.Roles.TestData;
 
-public class InvalidData : TheoryData<string>
+public class InvalidData : ITheoryData<string>
 {
-	public InvalidData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(InvalidDescription);
-		Add(MinInvalidDescription);
-		Add(MaxInvalidDescription);
+		yield return InvalidDescription;
+		yield return MinInvalidDescription;
+		yield return MaxInvalidDescription;
 	}
 }

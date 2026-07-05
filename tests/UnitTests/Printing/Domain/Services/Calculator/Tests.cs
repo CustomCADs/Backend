@@ -2,12 +2,12 @@ using CustomCADs.Modules.Printing.Domain.Services;
 
 namespace CustomCADs.UnitTests.Printing.Domain.Services.Calculator;
 
-public class PrintingCalculatorUnitTests : ServicesBaseUnitTests
+public class Tests : ServicesBaseUnitTests
 {
 	private readonly PrintCalculator calculator = new();
 
-	[Fact]
-	public void CalculateWeight_ShouldReturnExpected()
+	[Test]
+	public async Task CalculateWeight_ShouldReturnExpected()
 	{
 		decimal weight = calculator.CalculateWeight(
 			customization: CreateCustomization(volume: 10_000, infill: 0.2m),
@@ -16,11 +16,11 @@ public class PrintingCalculatorUnitTests : ServicesBaseUnitTests
 
 		// Expected: (10000 / 1000) * 1.25 = 12.5g raw
 		// Final weight = 12.5 * (0.45 + (1 - 0.45) * 0.2) = 12.5 * (0.45 + 0.11) = 12.5 * 0.56 = 7.0
-		Assert.Equal(7m, weight);
+		await Assert.That(weight).IsEqualTo(7m);
 	}
 
-	[Fact]
-	public void CalculateCost_ShouldReturnExpected()
+	[Test]
+	public async Task CalculateCost_ShouldReturnExpected()
 	{
 		decimal cost = calculator.CalculateCost(
 			customization: CreateCustomization(volume: 10000, infill: 0.2m),
@@ -29,6 +29,6 @@ public class PrintingCalculatorUnitTests : ServicesBaseUnitTests
 
 		// Expected: (7 / 1000) * 20.0 = 0.14€ raw
 		// Final cost = 0.14 * 2 + 5 = 0.28 + 5 = 5.28
-		Assert.Equal(5.28m, cost);
+		await Assert.That(cost).IsEqualTo(5.28m);
 	}
 }

@@ -6,7 +6,7 @@ using static Data.Images.TestData;
 
 public class Tests : Data.Images.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetContentType_ShouldNotThrowException_WhenContentTypeIsValid()
 	{
 		var image = CreateImage();
@@ -14,23 +14,21 @@ public class Tests : Data.Images.BaseUnitTests
 		image.SetContentType(ValidContentType);
 	}
 
-	[Fact]
-	public void SetContentType_ShouldPopulateProperties_WhenContentTypeIsValid()
+	[Test]
+	public async Task SetContentType_ShouldPopulateProperties_WhenContentTypeIsValid()
 	{
 		var image = CreateImage();
 
 		image.SetContentType(ValidContentType);
 
-		Assert.Equal(ValidContentType, image.ContentType);
+		await Assert.That(image.ContentType).IsEqualTo(ValidContentType);
 	}
 
-	[Fact]
+	[Test]
 	public void SetContentType_ShouldThrowException_WhenContentTypeIsInvalid()
 	{
 		var image = CreateImage();
 
-		Assert.Throws<CustomValidationException<Image>>(
-			() => image.SetContentType(InvalidContentType)
-		);
+		Assert.Throws<CustomValidationException<Image>>(() => image.SetContentType(InvalidContentType));
 	}
 }

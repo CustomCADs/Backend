@@ -30,7 +30,7 @@ public class Tests : Data.Users.BaseUnitTests
 		service.Setup(x => x.GeneratePasswordResetTokenAsync(user.Email.Value)).ReturnsAsync(Token);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -45,7 +45,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange

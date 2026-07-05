@@ -1,2 +1,2 @@
 global using CustomCADs.Modules.Identity.Domain.Users;
-global using Xunit;
+global using CustomCADs.Tests.Shared;

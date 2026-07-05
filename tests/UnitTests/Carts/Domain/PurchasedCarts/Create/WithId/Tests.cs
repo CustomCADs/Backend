@@ -1,25 +1,27 @@
-﻿namespace CustomCADs.UnitTests.Carts.Domain.PurchasedCarts.Create.WithId;
+﻿
+namespace CustomCADs.UnitTests.Carts.Domain.PurchasedCarts.Create.WithId;
 
 using static Data.PurchasedCarts.TestData;
 
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Create_ShouldNotThrowException()
 	{
 		CreateCart(ValidBuyerId, ValidId);
 	}
 
-	[Fact]
-	public void Create_ShouldPopulateProperties()
+	[Test]
+	public async Task Create_ShouldPopulateProperties()
 	{
 		var cart = CreateCart(ValidBuyerId, ValidId);
 
-		Assert.Multiple(
-			() => Assert.Equal(ValidId, cart.Id),
-			() => Assert.Equal(ValidBuyerId, cart.BuyerId),
-			() => Assert.Empty(cart.Items),
-			() => Assert.True(DateTimeOffset.UtcNow - cart.PurchasedAt < TimeSpan.FromSeconds(1))
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(cart.Id).IsEqualTo(ValidId);
+			await Assert.That(cart.BuyerId).IsEqualTo(ValidBuyerId);
+			await Assert.That(cart.Items).IsEmpty();
+			await Assert.That(DateTimeOffset.UtcNow - cart.PurchasedAt < TimeSpan.FromSeconds(1)).IsTrue();
+		}
 	}
 }

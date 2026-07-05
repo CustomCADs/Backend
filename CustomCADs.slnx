@@ -99,6 +99,11 @@
 	<!-- Test Code -->
 	<Folder Name="/tests/" />
 
+	<!-- Shared -->
+	<Folder Name="/tests/Shared/">
+		<Project DisplayName="Shared" Path="tests/Shared/Tests.Shared.csproj" />
+	</Folder>
+
 	<!-- Unit Tests -->
 	<Folder Name="/tests/UnitTests/Accounts/">
 		<Project DisplayName="Data" Path="tests/UnitTests/Accounts/Data/UnitTests.Accounts.Data.csproj" />

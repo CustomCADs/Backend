@@ -8,7 +8,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly GetCustomSortingsHandler handler = new();
 	private readonly GetCustomSortingsQuery request = new();
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -17,6 +17,6 @@ public class Tests : Data.Customs.BaseUnitTests
 		CustomSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetValues<CustomSortingType>());
+		await Assert.That(Enum.GetValues<CustomSortingType>()).IsEquivalentTo(sortings);
 	}
 }

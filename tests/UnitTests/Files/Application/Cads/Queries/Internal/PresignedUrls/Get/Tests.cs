@@ -33,7 +33,7 @@ public class Tests : Data.Cads.BaseUnitTests
 			.ReturnsAsync(PresignedUrl);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -48,7 +48,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
@@ -63,7 +63,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -72,9 +72,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		var (Url, ContentType) = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(cad.ContentType, ContentType),
-			() => Assert.Equal(PresignedUrl, Url)
-		);
+		await Assert.That(ContentType).IsEqualTo(cad.ContentType);
+		await Assert.That(Url).IsEqualTo(PresignedUrl);
 	}
 }

@@ -7,33 +7,32 @@ using static Data.Cads.TestData;
 
 public class Tests : Data.Cads.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Create_ShouldNotThrowExcepion_WhenCadIsValid()
 	{
 		CreateCad();
 	}
 
-	[Fact]
-	public void Create_ShouldPopulateProperties_WhenCadIsValid()
+	[Test]
+	public async Task Create_ShouldPopulateProperties_WhenCadIsValid()
 	{
 		var cad = CreateCad(ValidKey, ValidContentType, ValidVolume, ValidCoords, ValidCoords, id: ValidId);
 
-		Assert.Multiple(
-			() => Assert.Equal(ValidId, cad.Id),
-			() => Assert.Equal(ValidKey, cad.Key),
-			() => Assert.Equal(ValidContentType, cad.ContentType),
-			() => Assert.Equal(ValidVolume, cad.Volume),
-			() => Assert.Equal(ValidCoords, cad.CamCoordinates),
-			() => Assert.Equal(ValidCoords, cad.PanCoordinates)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(cad.Id).IsEqualTo(ValidId);
+			await Assert.That(cad.Key).IsEqualTo(ValidKey);
+			await Assert.That(cad.ContentType).IsEqualTo(ValidContentType);
+			await Assert.That(cad.Volume).IsEqualTo(ValidVolume);
+			await Assert.That(cad.CamCoordinates).IsEqualTo(ValidCoords);
+			await Assert.That(cad.PanCoordinates).IsEqualTo(ValidCoords);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowException_WhenCadIsInvalid(string key, string contentType, decimal volume, Coordinates camCoords, Coordinates panCoords)
 	{
-		Assert.Throws<CustomValidationException<Cad>>(
-			() => CreateCad(key, contentType, volume, camCoords, panCoords)
-		);
+		Assert.Throws<CustomValidationException<Cad>>(() => CreateCad(key, contentType, volume, camCoords, panCoords));
 	}
 }

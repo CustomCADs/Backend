@@ -2,11 +2,11 @@ namespace CustomCADs.UnitTests.Printing.Domain.Customizations.Behaviors.Scale;
 
 using static Data.Customizations.TestData;
 
-public class TestData : TheoryData<decimal>
+public class TestData : ITheoryData<decimal>
 {
-	public TestData()
+	public static IEnumerable<decimal> GetTestData()
 	{
-		Add(MinInvalidScale);
-		Add(MaxInvalidScale);
+		yield return MinInvalidScale;
+		yield return MaxInvalidScale;
 	}
 }

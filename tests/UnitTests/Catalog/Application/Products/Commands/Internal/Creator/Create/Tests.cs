@@ -84,7 +84,7 @@ public class Tests : Data.Products.BaseUnitTests
 		)).ReturnsAsync(true);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -115,7 +115,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -168,7 +168,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
@@ -188,7 +188,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldValidateStatus_WhenDesignerRole()
 	{
 		// Arrange
@@ -201,10 +201,10 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ProductStatus.Validated, product.Status);
+		await Assert.That(product.Status).IsEqualTo(ProductStatus.Validated);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldTagProfessional_WhenDesignerRole()
 	{
 		// Arrange
@@ -225,7 +225,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldTagPrintable_WhenAppropriateContentType()
 	{
 		// Arrange
@@ -246,7 +246,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -255,10 +255,10 @@ public class Tests : Data.Products.BaseUnitTests
 		ProductId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCategoryNotFound()
 	{
 		// Arrange
@@ -268,13 +268,10 @@ public class Tests : Data.Products.BaseUnitTests
 		)).ReturnsAsync(false);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenAccountNotFound()
 	{
 		// Arrange
@@ -284,9 +281,6 @@ public class Tests : Data.Products.BaseUnitTests
 		)).ReturnsAsync(false);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
 	}
 }

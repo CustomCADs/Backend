@@ -34,7 +34,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		)).ReturnsAsync(Buyer);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -49,7 +49,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -67,7 +67,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -76,6 +76,6 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Items.Select(x => x.ProductId), result.Select(x => x.ProductId));
+		await Assert.That(result.Select(x => x.ProductId)).IsEquivalentTo(Items.Select(x => x.ProductId));
 	}
 }

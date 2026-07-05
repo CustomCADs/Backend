@@ -8,16 +8,16 @@ public class Tests : Data.Users.BaseUnitTests
 	private const string Value = "refresh-token";
 	private readonly User user = CreateUser();
 
-	[Fact]
+	[Test]
 	public void AddRefreshToken_ShouldNotThrowException()
 	{
 		user.AddRefreshToken(Value, new(), longerSession: false);
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public void AddRefreshToken_ShouldReturnResult(bool longerSession)
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
+	public async Task AddRefreshToken_ShouldReturnResult(bool longerSession)
 	{
 		int expectedDurationDays = longerSession
 			? Tokens.LongerRtDurationInDays
@@ -27,17 +27,18 @@ public class Tests : Data.Users.BaseUnitTests
 		RefreshToken rt = user.AddRefreshToken(Value, new(), longerSession);
 		TimeSpan actualDuration = rt.ExpiresAt - rt.IssuedAt;
 
-		Assert.Multiple(
-			() => Assert.Equal(Value, rt.Value),
-			() => Assert.Equal(user.Id, rt.UserId),
-			() => Assert.Equal(expectedDuration, actualDuration)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(rt.Value).IsEqualTo(Value);
+			await Assert.That(rt.UserId).IsEqualTo(user.Id);
+			await Assert.That(actualDuration).IsEqualTo(expectedDuration);
+		}
 	}
 
-	[Fact]
-	public void AddRefreshToken_PopulatesProperty()
+	[Test]
+	public async Task AddRefreshToken_PopulatesProperty()
 	{
 		RefreshToken rt = user.AddRefreshToken(Value, new(), longerSession: false);
-		Assert.Contains(rt, user.RefreshTokens);
+		await Assert.That(user.RefreshTokens).Contains(rt);
 	}
 }

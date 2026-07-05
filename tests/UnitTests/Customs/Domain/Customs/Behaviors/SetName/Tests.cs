@@ -5,28 +5,26 @@ namespace CustomCADs.UnitTests.Customs.Domain.Customs.Behaviors.SetName;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ShouldNotThrowException_WhenCustomValid(string name)
 	{
 		CreateCustom().SetName(name);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetName_ShouldPopulateProperties(string name)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task SetName_ShouldPopulateProperties(string name)
 	{
 		var Custom = CreateCustom();
 		Custom.SetName(name);
-		Assert.Equal(name, Custom.Name);
+		await Assert.That(Custom.Name).IsEqualTo(name);
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ShouldThrowException_WhenNameInvalid(string name)
 	{
-		Assert.Throws<CustomValidationException<Custom>>(
-			() => CreateCustom().SetName(name)
-		);
+		Assert.Throws<CustomValidationException<Custom>>(() => CreateCustom().SetName(name));
 	}
 }

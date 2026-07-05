@@ -12,7 +12,7 @@ public class BaseUnitTests
 	public static readonly CancellationToken ct = CancellationToken.None;
 
 	protected static readonly Func<Action, CustomValidationException<Notification>> ExpectValidationException
-		= Xunit.Assert.Throws<CustomValidationException<Notification>>;
+		= Assert.Throws<CustomValidationException<Notification>>;
 
 	public static Notification CreateNotification(
 		string? type = null,

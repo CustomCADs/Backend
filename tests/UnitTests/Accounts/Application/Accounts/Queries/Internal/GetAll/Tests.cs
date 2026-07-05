@@ -28,7 +28,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			.ReturnsAsync(new Result<Account>(1, Accounts));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -52,6 +52,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 		Result<GetAllAccountsDto> accounts = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(accounts.Items.Select(r => r.Id), Accounts.Select(r => r.Id));
+		await Assert.That(Accounts.Select(r => r.Id)).IsEquivalentTo(accounts.Items.Select(r => r.Id));
 	}
 }

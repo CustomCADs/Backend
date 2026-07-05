@@ -32,7 +32,7 @@ public class Tests : Data.Users.BaseUnitTests
 		)).ReturnsAsync(new AccountInfoDto(ValidAccountId, DateTimeOffset.UtcNow, true, null, null));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -47,7 +47,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -72,7 +72,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -81,6 +81,6 @@ public class Tests : Data.Users.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, result.Id);
+		await Assert.That(result.Id).IsEqualTo(ValidId);
 	}
 }

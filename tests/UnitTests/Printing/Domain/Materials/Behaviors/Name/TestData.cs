@@ -2,12 +2,12 @@ namespace CustomCADs.UnitTests.Printing.Domain.Materials.Behaviors.Name;
 
 using static Data.Materials.TestData;
 
-public class TestData : TheoryData<string>
+public class TestData : ITheoryData<string>
 {
-	public TestData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(InvalidName);
-		Add(MinInvalidName);
-		Add(MaxInvalidName);
+		yield return InvalidName;
+		yield return MinInvalidName;
+		yield return MaxInvalidName;
 	}
 }

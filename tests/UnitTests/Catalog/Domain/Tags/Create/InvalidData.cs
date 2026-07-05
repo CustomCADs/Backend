@@ -2,11 +2,11 @@ namespace CustomCADs.UnitTests.Catalog.Domain.Tags.Create;
 
 using static Data.Tags.TestData;
 
-public class InvalidData : TheoryData<string>
+public class InvalidData : ITheoryData<string>
 {
-	public InvalidData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(MinInvalidName);
-		Add(MaxInvalidName);
+		yield return MinInvalidName;
+		yield return MaxInvalidName;
 	}
 }

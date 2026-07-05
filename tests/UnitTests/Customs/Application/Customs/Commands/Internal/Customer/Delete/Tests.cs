@@ -30,7 +30,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -45,7 +45,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -66,9 +66,9 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task Handle_ShouldRaiseEvents(bool isPending)
 	{
 		// Arrange

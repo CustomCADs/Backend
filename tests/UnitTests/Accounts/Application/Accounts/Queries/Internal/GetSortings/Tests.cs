@@ -8,7 +8,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 	private readonly GetAccountSortingsHandler handler = new();
 	private readonly GetAccountSortingsQuery request = new();
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -17,6 +17,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 		AccountSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetValues<AccountSortingType>());
+		await Assert.That(Enum.GetValues<AccountSortingType>()).IsEquivalentTo(sortings);
 	}
 }

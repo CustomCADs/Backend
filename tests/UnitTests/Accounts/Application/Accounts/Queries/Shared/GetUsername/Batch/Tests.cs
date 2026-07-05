@@ -36,7 +36,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -51,7 +51,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -60,6 +60,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 		Dictionary<AccountId, string> result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Usernames, result.Select(kvp => kvp.Value));
+		await Assert.That(result.Select(kvp => kvp.Value)).IsEquivalentTo(Usernames);
 	}
 }

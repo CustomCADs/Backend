@@ -46,7 +46,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(ClientUrl);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -61,7 +61,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -76,7 +76,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -101,7 +101,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendEmail()
 	{
 		// Arrange
@@ -120,7 +120,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldGrantShipment_WhenForDelivery()
 	{
 		// Arrange
@@ -155,16 +155,13 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
-			// Act
-			() => handler.HandleAsync(request)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(() => handler.HandleAsync(request));
 	}
 }

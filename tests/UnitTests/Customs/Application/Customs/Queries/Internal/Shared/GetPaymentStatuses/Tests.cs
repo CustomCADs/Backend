@@ -8,7 +8,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly GetCustomPaymentStatusesHandler handler = new();
 	private readonly GetCustomPaymentStatusesQuery request = new();
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -17,6 +17,6 @@ public class Tests : Data.Customs.BaseUnitTests
 		PaymentStatus[] sortings = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetValues<PaymentStatus>());
+		await Assert.That(Enum.GetValues<PaymentStatus>()).IsEquivalentTo(sortings);
 	}
 }

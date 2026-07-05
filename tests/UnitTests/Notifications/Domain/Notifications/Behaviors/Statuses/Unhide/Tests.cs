@@ -4,8 +4,8 @@ namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Behaviors.Stat
 
 public class Tests : Data.Notifications.BaseUnitTests
 {
-	[Fact]
-	public void Hide_ShouldSucceed_WhenHidden()
+	[Test]
+	public async Task Hide_ShouldSucceed_WhenHidden()
 	{
 		Notification notification = CreateNotification();
 		notification.Read();
@@ -13,10 +13,10 @@ public class Tests : Data.Notifications.BaseUnitTests
 
 		notification.Unhide();
 
-		Assert.Equal(NotificationStatus.Unread, notification.Status);
+		await Assert.That(notification.Status).IsEqualTo(NotificationStatus.Unread);
 	}
 
-	[Fact]
+	[Test]
 	public void Hide_ShouldFail_WhenUnread()
 	{
 		ExpectValidationException(() =>
@@ -27,7 +27,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Hide_ShouldFail_WhenRead()
 	{
 		ExpectValidationException(() =>
@@ -39,7 +39,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Hide_ShouldFail_WhenOpened()
 	{
 		ExpectValidationException(() =>

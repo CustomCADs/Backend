@@ -21,7 +21,7 @@ public class Tests : Data.Products.BaseUnitTests
 		handler = new(writes.Object, uow.Object);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange

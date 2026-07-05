@@ -8,7 +8,7 @@ public class Tests : Data.Products.BaseUnitTests
 	private readonly GetProductDesignerSortingsHandler handler = new();
 	private readonly GetProductDesignerSortingsQuery request = new();
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -17,6 +17,6 @@ public class Tests : Data.Products.BaseUnitTests
 		ProductDesignerSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetValues<ProductDesignerSortingType>());
+		await Assert.That(Enum.GetValues<ProductDesignerSortingType>()).IsEquivalentTo(sortings);
 	}
 }

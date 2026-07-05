@@ -50,7 +50,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		)).ReturnsAsync(ValidShipmentId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -65,7 +65,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -90,7 +90,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
@@ -98,9 +98,6 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 			.ReturnsAsync(null as PurchasedCart);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(
-			// Act
-			() => handler.HandleAsync(request)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<PurchasedCart>>(() => handler.HandleAsync(request));
 	}
 }

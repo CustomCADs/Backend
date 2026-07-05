@@ -29,7 +29,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		).ReturnsAsync(roles);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -46,7 +46,7 @@ public class Tests : Data.Roles.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -55,6 +55,6 @@ public class Tests : Data.Roles.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(roles.Select(x => x.Id), result.Select(x => x.Id));
+		await Assert.That(result.Select(x => x.Id)).IsEquivalentTo(roles.Select(x => x.Id));
 	}
 }

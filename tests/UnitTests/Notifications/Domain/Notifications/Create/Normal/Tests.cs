@@ -1,37 +1,37 @@
-﻿namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Create.Normal;
+﻿
+namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Create.Normal;
 
 using static Data.Notifications.TestData;
 
 public class Tests : Data.Notifications.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldNotThrowException_WhenNotificationIsValid(string name, string description)
 	{
 		Notification.Create(name, new(description, ValidLink), ValidAuthorId, ValidReceiverId);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void Create_ShouldPopulateProperties(string type, string description)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task Create_ShouldPopulateProperties(string type, string description)
 	{
 		var notification = Notification.Create(type, new(description, ValidLink), ValidAuthorId, ValidReceiverId);
 
-		Assert.Multiple(
-			() => Assert.Equal(type, notification.Type),
-			() => Assert.Equal(description, notification.Content.Description),
-			() => Assert.Equal(ValidLink, notification.Content.Link),
-			() => Assert.Equal(ValidAuthorId, notification.AuthorId),
-			() => Assert.Equal(ValidReceiverId, notification.ReceiverId)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(notification.Type).IsEqualTo(type);
+			await Assert.That(notification.Content.Description).IsEqualTo(description);
+			await Assert.That(notification.Content.Link).IsEqualTo(ValidLink);
+			await Assert.That(notification.AuthorId).IsEqualTo(ValidAuthorId);
+			await Assert.That(notification.ReceiverId).IsEqualTo(ValidReceiverId);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowException_WhenNotificationIsInvalid(string type, string description)
 	{
-		Assert.Throws<CustomValidationException<Notification>>(
-			() => Notification.Create(type, new(description, ValidLink), ValidAuthorId, ValidReceiverId)
-		);
+		Assert.Throws<CustomValidationException<Notification>>(() => Notification.Create(type, new(description, ValidLink), ValidAuthorId, ValidReceiverId));
 	}
 }

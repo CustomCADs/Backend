@@ -28,7 +28,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 			.ReturnsAsync(new Result<Shipment>(Shipments.Length, Shipments));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -52,6 +52,6 @@ public class Tests : Data.Shipments.BaseUnitTests
 		Result<GetAllShipmentsDto> result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(result.Items.Select(r => r.Address), Shipments.Select(r => r.Address));
+		await Assert.That(Shipments.Select(r => r.Address)).IsEquivalentTo(result.Items.Select(r => r.Address));
 	}
 }

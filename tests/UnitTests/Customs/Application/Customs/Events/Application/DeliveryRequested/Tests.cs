@@ -58,7 +58,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		)).ReturnsAsync(ValidShipmentId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -73,7 +73,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -88,7 +88,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -113,7 +113,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
@@ -122,10 +122,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.HandleAsync(request);
 
 		// Assert
-		Assert.Equal(ValidShipmentId, custom.CompletedCustom?.ShipmentId);
+		await Assert.That(custom.CompletedCustom?.ShipmentId).IsEqualTo(ValidShipmentId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
 	{
 		// Arrange
@@ -133,9 +133,6 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(null as Custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
-			// Act
-			() => handler.HandleAsync(request)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(() => handler.HandleAsync(request));
 	}
 }

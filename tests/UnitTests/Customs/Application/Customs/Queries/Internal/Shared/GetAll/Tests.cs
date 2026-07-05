@@ -69,7 +69,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		)).ReturnsAsync(categories);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -84,7 +84,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -116,7 +116,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -129,9 +129,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		CustomId[] expectedIds = [.. customs.Select(x => x.Id)],
 			actualIds = [.. result.Items.Select(x => x.Id)];
 
-		Assert.Multiple(
-			() => Assert.Equal(expectedCount, actualCount),
-			() => Assert.Equal(expectedIds, actualIds)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(actualCount).IsEqualTo(expectedCount);
+			await Assert.That(actualIds).IsEquivalentTo(expectedIds);
+		}
 	}
 }

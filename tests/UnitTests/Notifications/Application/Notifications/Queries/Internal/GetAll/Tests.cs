@@ -48,7 +48,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		)).ReturnsAsync(Notifications.ToDictionary(x => x.AuthorId, x => "Username123"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -67,7 +67,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -85,7 +85,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -94,9 +94,10 @@ public class Tests : Data.Notifications.BaseUnitTests
 		Result<GetAllNotificationsDto> res = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(res.Items.Select(r => r.Id), Result.Items.Select(r => r.Id)),
-			() => Assert.Equal(res.Count, Result.Count)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(Result.Items.Select(r => r.Id)).IsEquivalentTo(res.Items.Select(r => r.Id));
+			await Assert.That(res.Count).IsEqualTo(Result.Count);
+		}
 	}
 }

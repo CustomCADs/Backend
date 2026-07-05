@@ -4,15 +4,15 @@ namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Behaviors.Stat
 
 public class Tests : Data.Notifications.BaseUnitTests
 {
-	[Fact]
-	public void Read_ShouldSucceed_WhenUnread()
+	[Test]
+	public async Task Read_ShouldSucceed_WhenUnread()
 	{
 		Notification notification = CreateNotification();
 		notification.Read();
-		Assert.Equal(NotificationStatus.Read, notification.Status);
+		await Assert.That(notification.Status).IsEqualTo(NotificationStatus.Read);
 	}
 
-	[Fact]
+	[Test]
 	public void Read_ShouldFail_WhenRead()
 	{
 		ExpectValidationException(() =>
@@ -24,7 +24,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Read_ShouldFail_WhenOpened()
 	{
 		ExpectValidationException(() =>
@@ -37,7 +37,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Read_ShouldFail_WhenHidden()
 	{
 		ExpectValidationException(() =>

@@ -25,7 +25,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		)).ReturnsAsync(CreateCategory(id: ValidId));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -47,7 +47,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange
@@ -65,7 +65,7 @@ public class Tests : Data.Categories.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -74,6 +74,6 @@ public class Tests : Data.Categories.BaseUnitTests
 		CategoryId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 }

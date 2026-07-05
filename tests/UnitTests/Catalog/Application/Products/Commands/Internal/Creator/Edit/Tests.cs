@@ -49,7 +49,7 @@ public class Tests : Data.Products.BaseUnitTests
 		)).ReturnsAsync([ValidDesignerId, ValidCreatorId]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -64,7 +64,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -79,7 +79,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -104,7 +104,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
@@ -121,19 +121,16 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(
-			// Act
-			() => handler.Handle(request with { CallerId = ValidDesignerId }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<Product>>(() => handler.Handle(request with { CallerId = ValidDesignerId }, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCategoryNotFound()
 	{
 		// Arrange
@@ -143,13 +140,10 @@ public class Tests : Data.Products.BaseUnitTests
 		)).ReturnsAsync(false);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenProductNotFound()
 	{
 		// Arrange
@@ -157,9 +151,6 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(null as Product);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
 	}
 }

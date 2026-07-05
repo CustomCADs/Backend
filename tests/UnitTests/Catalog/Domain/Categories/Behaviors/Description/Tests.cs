@@ -4,8 +4,8 @@ namespace CustomCADs.UnitTests.Catalog.Domain.Categories.Behaviors.Description;
 
 public class Tests : Data.Categories.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetDescription_ShouldNotThrowException_WhenDescriptionIsValid(string description)
 	{
 		var category = CreateCategory();
@@ -13,25 +13,23 @@ public class Tests : Data.Categories.BaseUnitTests
 		category.SetDescription(description);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetDescription_SetsDescription_WhenDescriptionIsValid(string description)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task SetDescription_SetsDescription_WhenDescriptionIsValid(string description)
 	{
 		var category = CreateCategory();
 
 		category.SetDescription(description);
 
-		Assert.Equal(category.Description, description);
+		await Assert.That(description).IsEqualTo(category.Description);
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetDescription_ThrowsException_WhenDescriptionIsInvalid(string description)
 	{
 		var category = CreateCategory();
 
-		Assert.Throws<CustomValidationException<Category>>(
-			() => category.SetDescription(description)
-		);
+		Assert.Throws<CustomValidationException<Category>>(() => category.SetDescription(description));
 	}
 }

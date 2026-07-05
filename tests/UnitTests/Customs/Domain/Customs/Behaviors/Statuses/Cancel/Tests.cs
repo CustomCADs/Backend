@@ -6,22 +6,23 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Fact]
-	public void Cancel_ShouldSucceed_WhenAccepted()
+	[Test]
+	public async Task Cancel_ShouldSucceed_WhenAccepted()
 	{
 		Custom custom = CreateCustom();
 		custom.Accept(ValidDesignerId);
 
 		custom.Cancel();
 
-		Assert.Multiple(
-			() => Assert.Equal(CustomStatus.Pending, custom.CustomStatus),
-			() => Assert.Null(custom.AcceptedCustom)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Pending);
+			await Assert.That(custom.AcceptedCustom).IsNull();
+		}
 	}
 
-	[Fact]
-	public void Cancel_ShouldSucceed_WhenBegun()
+	[Test]
+	public async Task Cancel_ShouldSucceed_WhenBegun()
 	{
 		Custom custom = CreateCustom();
 		custom.Accept(ValidDesignerId);
@@ -29,14 +30,15 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		custom.Cancel();
 
-		Assert.Multiple(
-			() => Assert.Equal(CustomStatus.Pending, custom.CustomStatus),
-			() => Assert.Null(custom.AcceptedCustom)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Pending);
+			await Assert.That(custom.AcceptedCustom).IsNull();
+		}
 	}
 
-	[Fact]
-	public void Cancel_ShouldSucceed_WhenReported()
+	[Test]
+	public async Task Cancel_ShouldSucceed_WhenReported()
 	{
 		Custom custom = CreateCustom();
 		custom.Accept(ValidDesignerId);
@@ -44,13 +46,14 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		custom.Cancel();
 
-		Assert.Multiple(
-			() => Assert.Equal(CustomStatus.Pending, custom.CustomStatus),
-			() => Assert.Null(custom.AcceptedCustom)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Pending);
+			await Assert.That(custom.AcceptedCustom).IsNull();
+		}
 	}
 
-	[Fact]
+	[Test]
 	public void Cancel_ShouldFail_WhenPending()
 	{
 		ExpectValidationException(() =>
@@ -61,7 +64,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Cancel_ShouldFail_WhenFinished()
 	{
 		ExpectValidationException(() =>
@@ -75,7 +78,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Cancel_ShouldFail_WhenCompleted()
 	{
 		ExpectValidationException(() =>
@@ -89,7 +92,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Cancel_ShouldFail_WhenRemoved()
 	{
 		ExpectValidationException(() =>

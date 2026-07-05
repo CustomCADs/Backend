@@ -4,8 +4,8 @@ namespace CustomCADs.UnitTests.Accounts.Domain.Accounts.Behaviors.Email;
 
 public class Tests : Data.Accounts.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetEmail_ShouldNotThrowException_WhenEmailIsValid(string email)
 	{
 		var account = CreateAccount();
@@ -13,25 +13,23 @@ public class Tests : Data.Accounts.BaseUnitTests
 		account.SetEmail(email);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetEmail_Setsemail_WhenUserameIsValid(string email)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task SetEmail_Setsemail_WhenUserameIsValid(string email)
 	{
 		var account = CreateAccount();
 
 		account.SetEmail(email);
 
-		Assert.Equal(account.Email, email);
+		await Assert.That(email).IsEqualTo(account.Email);
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetEmail_ThrowsException_WhenUserameIsInvalid(string email)
 	{
 		var account = CreateAccount();
 
-		Assert.Throws<CustomValidationException<Account>>(
-			() => account.SetEmail(email)
-		);
+		Assert.Throws<CustomValidationException<Account>>(() => account.SetEmail(email));
 	}
 }

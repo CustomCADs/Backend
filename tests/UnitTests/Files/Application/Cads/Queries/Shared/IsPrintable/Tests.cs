@@ -26,7 +26,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		)).ReturnsAsync(Cad);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -44,9 +44,9 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
 	public async Task Handle_ShouldReturnResult(bool exists)
 	{
 		// Arrange
@@ -59,6 +59,6 @@ public class Tests : Data.Cads.BaseUnitTests
 		bool result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(exists, result);
+		await Assert.That(result).IsEqualTo(exists);
 	}
 }

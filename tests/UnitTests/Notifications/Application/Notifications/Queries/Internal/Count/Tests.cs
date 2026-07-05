@@ -29,7 +29,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 			.ReturnsAsync(expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -44,7 +44,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -53,11 +53,12 @@ public class Tests : Data.Notifications.BaseUnitTests
 		CountNotificationsDto counts = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(expected[NotificationStatus.Unread], counts.Unread),
-			() => Assert.Equal(expected[NotificationStatus.Read], counts.Read),
-			() => Assert.Equal(expected[NotificationStatus.Opened], counts.Opened),
-			() => Assert.Equal(expected[NotificationStatus.Hidden], counts.Hidden)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(counts.Unread).IsEqualTo(expected[NotificationStatus.Unread]);
+			await Assert.That(counts.Read).IsEqualTo(expected[NotificationStatus.Read]);
+			await Assert.That(counts.Opened).IsEqualTo(expected[NotificationStatus.Opened]);
+			await Assert.That(counts.Hidden).IsEqualTo(expected[NotificationStatus.Hidden]);
+		}
 	}
 }

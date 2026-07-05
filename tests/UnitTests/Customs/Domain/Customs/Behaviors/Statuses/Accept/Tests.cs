@@ -6,20 +6,21 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Fact]
-	public void Accept_ShouldSucceed_WhenPending()
+	[Test]
+	public async Task Accept_ShouldSucceed_WhenPending()
 	{
 		Custom custom = CreateCustom();
 
 		custom.Accept(ValidDesignerId);
 
-		Assert.Multiple(
-			() => Assert.Equal(CustomStatus.Accepted, custom.CustomStatus),
-			() => Assert.NotNull(custom.AcceptedCustom)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Accepted);
+			await Assert.That(custom.AcceptedCustom).IsNotNull();
+		}
 	}
 
-	[Fact]
+	[Test]
 	public void Accept_ShouldFail_WhenAccepted()
 	{
 		ExpectValidationException(() =>
@@ -31,7 +32,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Accept_ShouldFail_WhenBegun()
 	{
 		ExpectValidationException(() =>
@@ -44,7 +45,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Accept_ShouldFail_WhenReported()
 	{
 		ExpectValidationException(() =>
@@ -57,7 +58,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Accept_ShouldFail_WhenFinished()
 	{
 		ExpectValidationException(() =>
@@ -71,7 +72,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Accept_ShouldFail_WhenCompleted()
 	{
 		ExpectValidationException(() =>
@@ -85,7 +86,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Accept_ShouldFail_WhenRemoved()
 	{
 		ExpectValidationException(() =>
