@@ -233,4 +233,15 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(request, ct));
 	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenCartEmpty()
+	{
+		// Arrange
+		reads.Setup(x => x.ExistsAsync(ValidBuyerId, ct))
+			.ReturnsAsync(false);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(request, ct));
+	}
 }

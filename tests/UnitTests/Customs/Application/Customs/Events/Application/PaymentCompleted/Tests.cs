@@ -156,7 +156,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	}
 
 	[Test]
-	public async Task Handle_ShouldThrowException_WhenNotFound()
+	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Custom);

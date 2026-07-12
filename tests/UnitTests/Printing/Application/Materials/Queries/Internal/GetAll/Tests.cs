@@ -25,11 +25,13 @@ public class Tests : Data.Materials.BaseUnitTests
 		handler = new(reads.Object, cache.Object);
 
 		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Material>>>>()))
-			.ReturnsAsync(Materials);
+			.Returns(async (Func<Task<ICollection<Material>>> factory) => await factory());
+
+		reads.Setup(x => x.AllAsync(false, ct)).ReturnsAsync(Materials);
 	}
 
 	[Test]
-	public async Task Handle_ShouldQueryDatabase()
+	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
 
@@ -41,6 +43,18 @@ public class Tests : Data.Materials.BaseUnitTests
 			x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Material>>>>()),
 			Times.Once()
 		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(x => x.AllAsync(false, ct), Times.Once());
 	}
 
 	[Test]

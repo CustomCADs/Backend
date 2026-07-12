@@ -24,6 +24,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			await Assert.That(account.Email).IsEqualTo(email);
 			await Assert.That(account.FirstName).IsEqualTo(firstName);
 			await Assert.That(account.LastName).IsEqualTo(lastName);
+			await Assert.That(account.ViewedProducts).IsEmpty();
 		}
 	}
 

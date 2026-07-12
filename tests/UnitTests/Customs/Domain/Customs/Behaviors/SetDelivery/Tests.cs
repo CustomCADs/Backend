@@ -24,7 +24,7 @@ public class Tests : Data.Customs.BaseUnitTests
 
 	[Test]
 	[MethodDataSource(nameof(GetTestData))]
-	public void SetDelivery_ShouldThrowException_WhenNameInvalid(bool forDelivery)
+	public void SetDelivery_ShouldThrowException_WhenInvalidState(bool forDelivery)
 	{
 		Assert.Throws<CustomValidationException<Custom>>(() =>
 		{

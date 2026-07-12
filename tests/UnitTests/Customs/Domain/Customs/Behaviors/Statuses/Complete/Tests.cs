@@ -1,4 +1,5 @@
 using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Shared.Domain.Exceptions;
 
 namespace CustomCADs.UnitTests.Customs.Domain.Customs.Behaviors.Statuses.Complete;
 
@@ -24,6 +25,20 @@ public class Tests : Data.Customs.BaseUnitTests
 			await Assert.That(custom.CompletedCustom).IsNotNull();
 			await Assert.That(custom.CompletedCustom!.CustomizationId).IsNull();
 		}
+	}
+
+	[Test]
+	public void Complete_ShouldFail_WhenForDeliveryButNoCustomization()
+	{
+		Assert.Throws<CustomValidationException<Custom>>(() =>
+		{
+			Custom custom = CreateCustom(forDelivery: true);
+			custom.Accept(ValidDesignerId);
+			custom.Begin();
+			custom.Finish(ValidCadId, ValidPrice);
+
+			custom.Complete(customizationId: null);
+		});
 	}
 
 	[Test]

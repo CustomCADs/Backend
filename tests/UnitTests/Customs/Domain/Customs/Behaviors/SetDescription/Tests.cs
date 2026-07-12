@@ -3,28 +3,37 @@ using CustomCADs.Shared.Domain.Exceptions;
 
 namespace CustomCADs.UnitTests.Customs.Domain.Customs.Behaviors.SetDescription;
 
+using static Data.Customs.TestData;
+
 public class Tests : Data.Customs.BaseUnitTests
 {
 	[Test]
-	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
-	public void SetDescription_ShouldNotThrowException_WhenCustomValid(string description)
+	public void SetDescription_ShouldNotThrowException_WhenDescriptionValid()
 	{
-		CreateCustom().SetDescription(description);
+		CreateCustom().SetDescription(MaxValidDescription);
+		CreateCustom().SetDescription(MinValidDescription);
 	}
 
 	[Test]
-	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
-	public async Task SetDescription_ShouldPopulateProperties(string description)
+	public async Task SetDescription_ShouldPopulateProperties()
 	{
 		var custom = CreateCustom();
-		custom.SetDescription(description);
-		await Assert.That(custom.Description).IsEqualTo(description);
+		custom.SetDescription(MaxValidDescription);
+		await Assert.That(custom.Description).IsEqualTo(MaxValidDescription);
 	}
 
 	[Test]
-	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
-	public void SetDescription_ShouldThrowException_WhenDescriptionInvalid(string description)
+	[Arguments(InvalidDescription)]
+	[Arguments(null)]
+	public void SetDescription_ShouldThrowException_WhenDescriptionInvalid(string? description)
 	{
-		Assert.Throws<CustomValidationException<Custom>>(() => CreateCustom().SetDescription(description));
+		Assert.Throws<CustomValidationException<Custom>>(() => CreateCustom().SetDescription(description!));
+	}
+
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public void SetDescription_ShouldThrowException_WhenInvalidStatus(Custom custom)
+	{
+		Assert.Throws<CustomValidationException<Custom>>(() => custom.SetDescription(MaxValidDescription));
 	}
 }

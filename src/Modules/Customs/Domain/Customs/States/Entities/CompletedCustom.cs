@@ -8,7 +8,7 @@ namespace CustomCADs.Modules.Customs.Domain.Customs.States.Entities;
 public class CompletedCustom : BaseEntity
 {
 	private CompletedCustom() { }
-	private CompletedCustom(CustomId customId, CustomizationId? customizationId)
+	private CompletedCustom(CustomId customId, CustomizationId? customizationId) : this()
 	{
 		CustomId = customId;
 		CustomizationId = customizationId;

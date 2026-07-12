@@ -19,10 +19,4 @@ public class AcceptedCustom : BaseEntity
 
 	public static AcceptedCustom Create(CustomId customId, AccountId designerId)
 		=> new(customId, designerId);
-
-	public AcceptedCustom SetDesignerId(AccountId designerId)
-	{
-		DesignerId = designerId;
-		return this;
-	}
 }

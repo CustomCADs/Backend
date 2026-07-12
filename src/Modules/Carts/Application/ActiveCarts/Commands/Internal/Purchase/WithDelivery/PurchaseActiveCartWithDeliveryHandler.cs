@@ -25,16 +25,7 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 {
 	public async Task<PaymentDto> Handle(PurchaseActiveCartWithDeliveryCommand req, CancellationToken ct)
 	{
-		if (!await reads.ExistsAsync(req.CallerId, ct).ConfigureAwait(false))
-		{
-			throw new CustomException("Cart without Items cannot be purchased.");
-		}
-
-		ActiveCartItem[] items = await reads.AllAsync(req.CallerId, track: false, ct: ct).ConfigureAwait(false);
-		if (!items.Any(x => x.ForDelivery))
-		{
-			throw CustomException.Delivery<ActiveCartItem>(markedForDelivery: false);
-		}
+		var items = await GetCartItemsAsync(req, ct).ConfigureAwait(false);
 
 		CustomizationId[] customizationIds = [..
 			items
@@ -101,6 +92,23 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 
 		return response;
 	}
+
+	private async Task<ActiveCartItem[]> GetCartItemsAsync(PurchaseActiveCartWithDeliveryCommand req, CancellationToken ct)
+	{
+		if (!await reads.ExistsAsync(req.CallerId, ct).ConfigureAwait(false))
+		{
+			throw new CustomException("Cart without Items cannot be purchased.");
+		}
+
+		ActiveCartItem[] items = await reads.AllAsync(req.CallerId, track: false, ct: ct).ConfigureAwait(false);
+		if (!items.Any(x => x.ForDelivery))
+		{
+			throw CustomException.Delivery<ActiveCartItem>(markedForDelivery: false);
+		}
+
+		return items;
+	}
+
 
 	private async Task<Dictionary<CustomizationId, double>> SnapshotWeightsAsync(ActiveCartItem[] items, CustomizationId[] customizationIds, CancellationToken ct)
 	{

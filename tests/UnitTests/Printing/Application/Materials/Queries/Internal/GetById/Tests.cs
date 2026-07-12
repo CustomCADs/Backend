@@ -23,11 +23,14 @@ public class Tests : Data.Materials.BaseUnitTests
 		handler = new(reads.Object, cache.Object);
 
 		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Material>>>()))
+			.Returns(async (MaterialId id, Func<Task<Material>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(material);
 	}
 
 	[Test]
-	public async Task Handle_ShouldQueryDatabase()
+	public async Task Handle_ShouldreadCache()
 	{
 		// Arrange
 
@@ -39,6 +42,18 @@ public class Tests : Data.Materials.BaseUnitTests
 			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Material>>>()),
 			Times.Once()
 		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
 	}
 
 	[Test]

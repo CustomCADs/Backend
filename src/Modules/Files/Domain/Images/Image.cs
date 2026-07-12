@@ -10,7 +10,7 @@ public class Image : BaseAggregateRoot
 		string key,
 		string contentType,
 		AccountId ownerId
-	)
+	) : this()
 	{
 		Key = key;
 		ContentType = contentType;

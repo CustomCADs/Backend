@@ -40,10 +40,11 @@ public class Tests : Data.Users.BaseUnitTests
 	{
 		handler = new(service.Object, tokenService.Object, sender.Object);
 
-		tokenService.Setup(x => x.IssueRefreshToken(
-			It.IsAny<Func<string, RefreshToken>>())
-		).Returns(RefreshToken);
-		tokenService.Setup(x => x.IssueTokens(user, RefreshToken)).Returns(Tokens);
+		tokenService.Setup(x => x.IssueRefreshToken(It.IsAny<Func<string, RefreshToken>>()))
+			.Returns((Func<string, RefreshToken> factory) => factory(RefreshToken.Value));
+
+		tokenService.Setup(x => x.IssueTokens(user, It.Is<RefreshToken>(x => x.Value == RefreshToken.Value)))
+			.Returns(Tokens);
 
 		service.Setup(x => x.GetExistsByUsernameAsync(user.Username)).ReturnsAsync(true);
 		service.Setup(x => x.GetByUsernameAsync(user.Username)).ReturnsAsync(user);
@@ -76,6 +77,23 @@ public class Tests : Data.Users.BaseUnitTests
 			x => x.SaveRefreshTokensAsync(user),
 			Times.Once()
 		);
+		service.Verify(
+			x => x.GetByUsernameAsync(user.Username),
+			Times.Once()
+		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldCallGetByUsername_WhenUsernameAndEmailExists()
+	{
+		// Arrange
+		service.Setup(x => x.GetExistsByUsernameAsync(user.Username)).ReturnsAsync(true);
+		service.Setup(x => x.GetExistsByEmailAsync(user.Email.Value)).ReturnsAsync(true);
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
 		service.Verify(
 			x => x.GetByUsernameAsync(user.Username),
 			Times.Once()
@@ -154,7 +172,7 @@ public class Tests : Data.Users.BaseUnitTests
 			Times.Once()
 		);
 		tokenService.Verify(
-			x => x.IssueTokens(user, RefreshToken),
+			x => x.IssueTokens(user, It.Is<RefreshToken>(x => x.Value == RefreshToken.Value)),
 			Times.Once()
 		);
 	}

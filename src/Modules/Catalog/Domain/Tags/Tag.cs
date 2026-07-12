@@ -5,7 +5,7 @@ namespace CustomCADs.Modules.Catalog.Domain.Tags;
 public class Tag : BaseAggregateRoot
 {
 	private Tag() { }
-	private Tag(string name)
+	private Tag(string name) : this()
 	{
 		Name = name;
 	}

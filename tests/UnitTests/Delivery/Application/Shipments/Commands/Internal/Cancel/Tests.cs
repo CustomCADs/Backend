@@ -74,15 +74,14 @@ public class Tests : Data.Shipments.BaseUnitTests
 	}
 
 	[Test]
-	public async Task Handle_ShouldThrowException_WhenShipmentStatusInvalid()
+	public async Task Handle_ShouldThrowException_WhenNullReferenceId()
 	{
 		// Arrange
-		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(
-			CreateShipment().Activate(ValidReferenceId).Deliver()
-		);
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(CreateShipment());
 
 		// Assert
-		await Assert.ThrowsAsync<CustomValidationException<Shipment>>(() => handler.Handle(request, ct));
+		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(() => handler.Handle(request, ct));
 	}
 
 	[Test]

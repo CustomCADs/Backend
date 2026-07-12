@@ -110,6 +110,21 @@ public class Tests : Data.Customs.BaseUnitTests
 	}
 
 	[Test]
+	public async Task Handle_ShouldNotThrowException_WhenCompleted()
+	{
+		// Arrange
+		this.custom.Begin();
+		this.custom.Finish(ValidCadId, ValidPrice);
+		this.custom.Complete(customizationId: null);
+
+		// Act
+		CustomerGetCustomByIdDto custom = await handler.Handle(request, ct);
+
+		// Assert
+		await Assert.That(custom.Id).IsEqualTo(this.custom.Id);
+	}
+
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenNotFound()
 	{
 		// Arrange

@@ -28,7 +28,7 @@ public class BaseUnitTests
 			id: id ?? ValidId,
 			name: name ?? MinValidName,
 			description: description ?? MinValidDescription,
-			delivery: forDelivery ?? false,
+			forDelivery: forDelivery ?? false,
 			buyerId: buyerId ?? ValidBuyerId,
 			category: (categoryId ?? ValidCategoryId, setter ?? CustomCategorySetter.Customer)
 		);

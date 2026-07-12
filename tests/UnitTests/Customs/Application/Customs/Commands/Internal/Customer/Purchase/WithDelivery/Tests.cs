@@ -238,4 +238,16 @@ public class Tests : Data.Customs.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(() => handler.Handle(request, ct));
 	}
+
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenCustomizationNotFound()
+	{
+		// Arrange
+		sender.Setup(x => x.SendQueryAsync(It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == ValidCustomizationId), ct))
+			.ReturnsAsync(false);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(() => handler.Handle(request, ct));
+	}
 }

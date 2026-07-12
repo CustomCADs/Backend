@@ -13,11 +13,11 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly AddActiveCartItemHandler handler;
-	private static AddActiveCartItemCommand Request(CustomizationId? customizationId)
+	private static AddActiveCartItemCommand Request(CustomizationId? customizationId, bool? forDelivery = null)
 		=> new(
 			CallerId: ValidBuyerId,
 			CustomizationId: customizationId,
-			ForDelivery: customizationId is not null,
+			ForDelivery: forDelivery ?? customizationId is not null,
 			ProductId: ValidProductId
 		);
 
@@ -98,5 +98,25 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(Request(customizationId), ct));
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenForDeliveryButNoCustomizationId()
+	{
+		// Arrange
+
+		// Assert
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(Request(null, forDelivery: true), ct));
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenCustomizationNotFound()
+	{
+		// Arrange
+		sender.Setup(x => x.SendQueryAsync(It.IsAny<GetCustomizationExistsByIdQuery>(), ct))
+			.ReturnsAsync(false);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(Request(ValidCustomizationId), ct));
 	}
 }

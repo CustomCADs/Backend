@@ -24,9 +24,10 @@ public class Tests : Data.Roles.BaseUnitTests
 	{
 		handler = new(reads.Object, cache.Object);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			It.IsAny<Func<Task<ICollection<Role>>>>())
-		).ReturnsAsync(roles);
+		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Role>>>>()))
+			.Returns(async (Func<Task<ICollection<Role>>> factory) => await factory());
+
+		reads.Setup(x => x.AllAsync(false, ct)).ReturnsAsync(roles);
 	}
 
 	[Test]
@@ -39,11 +40,21 @@ public class Tests : Data.Roles.BaseUnitTests
 
 		// Assert
 		cache.Verify(
-			x => x.GetOrCreateAsync(
-				It.IsAny<Func<Task<ICollection<Role>>>>()
-			),
+			x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Role>>>>()),
 			Times.Once()
 		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(x => x.AllAsync(false, ct), Times.Once());
 	}
 
 	[Test]

@@ -2,6 +2,7 @@
 using CustomCADs.Modules.Files.Domain.Repositories;
 using CustomCADs.Modules.Files.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Files.Application.Cads.Commands.Internal.Edit;
 
@@ -96,5 +97,16 @@ public class Tests : Data.Cads.BaseUnitTests
 
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Cad>>(() => handler.Handle(request, ct));
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
+			.ReturnsAsync(CreateCad(ownerId: AccountId.New()));
+
+		// Assert
+		await Assert.ThrowsAsync<CustomAuthorizationException<Cad>>(() => handler.Handle(request, ct));
 	}
 }

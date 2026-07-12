@@ -15,15 +15,32 @@ public class Tests : Data.Cads.BaseUnitTests
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
-	private readonly Cad Cad = CreateCad(contentType: "not-a-printable-content-type");
+	private readonly Cad cad = CreateCad(contentType: "not-a-printable-content-type");
 
 	public Tests()
 	{
 		handler = new(reads.Object, cache.Object);
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Cad>>>()
-		)).ReturnsAsync(Cad);
+
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Cad>>>()))
+			.Returns(async (CadId id, Func<Task<Cad>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(cad);
+	}
+
+	[Test]
+	public async Task Handle_ShouldReadCache()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		cache.Verify(
+			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Cad>>>()),
+			Times.Once()
+		);
 	}
 
 	[Test]
@@ -35,11 +52,8 @@ public class Tests : Data.Cads.BaseUnitTests
 		await handler.Handle(request, ct);
 
 		// Assert
-		cache.Verify(
-			x => x.GetOrCreateAsync(
-				ValidId,
-				It.IsAny<Func<Task<Cad>>>()
-			),
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
 			Times.Once()
 		);
 	}
@@ -52,7 +66,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		// Arrange
 		if (exists)
 		{
-			Cad.SetContentType(ApplicationConstants.Cads.PrintableContentTypes.First());
+			cad.SetContentType(ApplicationConstants.Cads.PrintableContentTypes.First());
 		}
 
 		// Act

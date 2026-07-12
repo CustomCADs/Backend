@@ -24,10 +24,11 @@ public class Tests : Data.Cads.BaseUnitTests
 	{
 		handler = new(reads.Object, storage.Object, cache.Object, policies: [new PolicyMock()]);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Cad>>>()
-		)).ReturnsAsync(cad);
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Cad>>>()))
+			.Returns(async (CadId id, Func<Task<Cad>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(cad);
 
 		storage.Setup(x => x.GetPresignedGetUrlAsync(cad.Key, cad.ContentType))
 			.ReturnsAsync(PresignedUrl);
@@ -44,6 +45,21 @@ public class Tests : Data.Cads.BaseUnitTests
 		// Assert
 		cache.Verify(
 			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Cad>>>()),
+			Times.Once()
+		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
 			Times.Once()
 		);
 	}

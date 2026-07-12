@@ -51,6 +51,17 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	}
 
 	[Test]
+	public async Task Handle_ShouldCalculateIdCorrectly()
+	{
+		// Arrange
+
+		// Act
+
+		// Assert
+		await Assert.That(request.Id).IsEqualTo(request.PurchasedCartId.Value);
+	}
+
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange

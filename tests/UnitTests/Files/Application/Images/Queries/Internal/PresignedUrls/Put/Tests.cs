@@ -25,10 +25,11 @@ public class Tests : Data.Images.BaseUnitTests
 	{
 		handler = new(reads.Object, storage.Object, cache.Object, policies: [new PolicyMock()]);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Image>>>()
-		)).ReturnsAsync(CreateImage());
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Image>>>()))
+			.Returns(async (ImageId id, Func<Task<Image>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(CreateImage());
 
 		storage.Setup(x => x.GetPresignedPutUrlAsync(ValidKey, UploadRequest)).ReturnsAsync(PresignedUrl);
 	}
@@ -44,6 +45,21 @@ public class Tests : Data.Images.BaseUnitTests
 		// Assert
 		cache.Verify(
 			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Image>>>()),
+			Times.Once()
+		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
 			Times.Once()
 		);
 	}

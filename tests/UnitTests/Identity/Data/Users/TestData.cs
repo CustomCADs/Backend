@@ -31,4 +31,5 @@ public static class TestData
 
 	public static readonly UserId ValidId = UserId.New();
 	public static readonly AccountId ValidAccountId = AccountId.New();
+	public static readonly RefreshTokenId ValidRefreshTokenId = RefreshTokenId.New();
 }

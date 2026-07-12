@@ -283,4 +283,30 @@ public class Tests : Data.Products.BaseUnitTests
 		// Assert
 		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
 	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenCadNotFound()
+	{
+		// Arrange
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<CadExistsByIdQuery>(x => x.Id == ValidCadId),
+			ct
+		)).ReturnsAsync(false);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenImageNotFound()
+	{
+		// Arrange
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<ImageExistsByIdQuery>(x => x.Id == ValidImageId),
+			ct
+		)).ReturnsAsync(false);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
+	}
 }

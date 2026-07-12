@@ -14,7 +14,7 @@ public class Cad : BaseAggregateRoot
 		Coordinates camCoordinates,
 		Coordinates panCoordinates,
 		AccountId ownerId
-	)
+	) : this()
 	{
 		Key = key;
 		ContentType = contentType;

@@ -23,9 +23,11 @@ public class Tests : Data.Tags.BaseUnitTests
 	{
 		handler = new(reads.Object, cache.Object);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			It.IsAny<Func<Task<ICollection<Tag>>>>()
-		)).ReturnsAsync(Tags);
+		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Tag>>>>()))
+			.Returns(async (Func<Task<ICollection<Tag>>> factory) => await factory());
+
+		reads.Setup(x => x.AllAsync(false, ct))
+			.ReturnsAsync(Tags);
 	}
 
 	[Test]
@@ -39,6 +41,21 @@ public class Tests : Data.Tags.BaseUnitTests
 		// Assert
 		cache.Verify(
 			x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Tag>>>>()),
+			Times.Once()
+		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.AllAsync(false, ct),
 			Times.Once()
 		);
 	}

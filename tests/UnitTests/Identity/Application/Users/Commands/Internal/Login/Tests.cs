@@ -21,7 +21,7 @@ public class Tests : Data.Users.BaseUnitTests
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<ITokenService> tokenService = new();
 
-	private readonly User User = CreateUser(username: MaxValidUsername);
+	private readonly User user = CreateUser(username: MaxValidUsername);
 	private static readonly RefreshToken RefreshToken = RefreshToken.Create("refresh-token", ValidFingerprint, ValidId, false);
 	private static readonly TokensDto Tokens = new(
 		Role: "role",
@@ -36,11 +36,11 @@ public class Tests : Data.Users.BaseUnitTests
 
 		tokenService.Setup(x => x.IssueRefreshToken(
 			It.IsAny<Func<string, RefreshToken>>())
-		).Returns(RefreshToken);
-		tokenService.Setup(x => x.IssueTokens(User, RefreshToken)).Returns(Tokens);
+		).Returns((Func<string, RefreshToken> factory) => factory(RefreshToken.Value));
+		tokenService.Setup(x => x.IssueTokens(user, It.Is<RefreshToken>(x => x.Value == RefreshToken.Value))).Returns(Tokens);
 
-		service.Setup(x => x.GetByUsernameAsync(User.Username)).ReturnsAsync(User);
-		service.Setup(x => x.CheckPasswordAsync(User.Username, MinValidPassword)).ReturnsAsync(true);
+		service.Setup(x => x.GetByUsernameAsync(user.Username)).ReturnsAsync(user);
+		service.Setup(x => x.CheckPasswordAsync(user.Username, MinValidPassword)).ReturnsAsync(true);
 	}
 
 	[Test]
@@ -61,7 +61,7 @@ public class Tests : Data.Users.BaseUnitTests
 			Times.Once()
 		);
 		service.Verify(
-			x => x.CheckPasswordAsync(User.Username, MinValidPassword),
+			x => x.CheckPasswordAsync(user.Username, MinValidPassword),
 			Times.Once()
 		);
 	}
@@ -82,7 +82,7 @@ public class Tests : Data.Users.BaseUnitTests
 			Times.Once()
 		);
 		tokenService.Verify(
-			x => x.IssueTokens(User, RefreshToken),
+			x => x.IssueTokens(user, It.Is<RefreshToken>(x => x.Value == RefreshToken.Value)),
 			Times.Once()
 		);
 	}
@@ -103,7 +103,7 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenPasswordIncorrect()
 	{
 		// Arrange
-		service.Setup(x => x.CheckPasswordAsync(User.Username, MinValidPassword)).ReturnsAsync(false);
+		service.Setup(x => x.CheckPasswordAsync(user.Username, MinValidPassword)).ReturnsAsync(false);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request, ct));
@@ -113,7 +113,7 @@ public class Tests : Data.Users.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenUserLockedOut()
 	{
 		// Arrange
-		service.Setup(x => x.GetIsLockedOutAsync(User.Username)).ReturnsAsync(DateTimeOffset.UtcNow);
+		service.Setup(x => x.GetIsLockedOutAsync(user.Username)).ReturnsAsync(DateTimeOffset.UtcNow);
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request, ct));
@@ -128,5 +128,16 @@ public class Tests : Data.Users.BaseUnitTests
 
 		// Assert
 		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request with { Username = unverifiedUser.Username }, ct));
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenUserNotFound()
+	{
+		// Arrange
+		service.Setup(x => x.GetByUsernameAsync(request.Username))
+			.ThrowsAsync(new Exception($"{request.Username} does not exist."));
+
+		// Assert
+		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request, ct));
 	}
 }

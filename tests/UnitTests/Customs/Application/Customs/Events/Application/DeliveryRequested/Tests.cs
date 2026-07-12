@@ -59,6 +59,17 @@ public class Tests : Data.Customs.BaseUnitTests
 	}
 
 	[Test]
+	public async Task Handle_ShouldCalculateIdCorrectly()
+	{
+		// Arrange
+
+		// Act
+
+		// Assert
+		await Assert.That(request.Id).IsEqualTo(request.CustomId.Value);
+	}
+
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
