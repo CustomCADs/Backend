@@ -1,5 +1,4 @@
-﻿using CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers;
-using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Report;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Report;
 
 namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers.Mutations.Patch.Report;
 

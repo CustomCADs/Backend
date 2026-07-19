@@ -1,5 +1,4 @@
-﻿using CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductViewed;
-using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;

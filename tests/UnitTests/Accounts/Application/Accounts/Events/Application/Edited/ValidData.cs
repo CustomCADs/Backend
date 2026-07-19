@@ -1,7 +1,5 @@
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Events.Application.Edited;
 
-using static Data.Accounts.TestData;
-
 public class ValidData : ITheoryData<Theory>
 {
 	public static IEnumerable<Theory> GetTestData()

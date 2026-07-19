@@ -18,7 +18,8 @@
 		<IsSharedProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Shared'))">true</IsSharedProject>
 		<IsToolsProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Tools'))">true</IsToolsProject>
 		<IsPresentationProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Presentation'))">true</IsPresentationProject>
-		<IsUnitTestsProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('UnitTests'))">true</IsUnitTestsProject>
+		<IsTestDataProject Condition="$([System.String]::new('$(MSBuildProjectName)').EndsWith('Data'))">true</IsTestDataProject>
+		<IsUnitTestsProject Condition="$(IsTestDataProject) != 'true' AND $([System.String]::new('$(MSBuildProjectName)').StartsWith('UnitTests'))">true</IsUnitTestsProject>
 
 		<!-- Modules -->
 		<IsIdentityProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').Contains('Identity'))">true</IsIdentityProject>

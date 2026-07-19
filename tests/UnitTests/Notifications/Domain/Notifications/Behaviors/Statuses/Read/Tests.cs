@@ -15,7 +15,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 	[Test]
 	public void Read_ShouldFail_WhenRead()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<CustomValidationException<Notification>>(() =>
 		{
 			Notification notification = CreateNotification();
 			notification.Read();
@@ -27,7 +27,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 	[Test]
 	public void Read_ShouldFail_WhenOpened()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<CustomValidationException<Notification>>(() =>
 		{
 			Notification notification = CreateNotification();
 			notification.Read();
@@ -40,7 +40,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 	[Test]
 	public void Read_ShouldFail_WhenHidden()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<CustomValidationException<Notification>>(() =>
 		{
 			Notification notification = CreateNotification();
 			notification.Read();

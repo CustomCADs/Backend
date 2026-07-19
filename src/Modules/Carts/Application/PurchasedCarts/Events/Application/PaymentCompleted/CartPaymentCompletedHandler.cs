@@ -7,7 +7,6 @@ using CustomCADs.Shared.Application.Events.Carts;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Identity.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
-using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
 namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 

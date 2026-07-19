@@ -40,7 +40,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 	[Test]
 	public void Hide_ShouldFail_WhenHidden()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<CustomValidationException<Notification>>(() =>
 		{
 			Notification notification = CreateNotification();
 			notification.Read();

@@ -1,5 +1,4 @@
-﻿using CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers;
-using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Designer.GetById;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Designer.GetById;
 
 namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers.Queries.Get.Single;
 

@@ -4,5 +4,4 @@ global using CustomCADs.Modules.Catalog.Domain.Tags;
 global using CustomCADs.Shared.Application.Abstractions.Cache;
 global using CustomCADs.Shared.Domain;
 global using CustomCADs.Shared.Domain.TypedIds.Catalog;
-global using CustomCADs.UnitTests.Catalog.Data;
 global using Moq;

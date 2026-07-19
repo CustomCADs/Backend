@@ -1,5 +1,4 @@
-﻿using CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers;
-using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Finish;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Finish;
 using CustomCADs.Shared.Domain.TypedIds.Files;
 
 namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers.Mutations.Patch.Finish;

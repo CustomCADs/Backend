@@ -3,7 +3,6 @@ using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Modules.Customs.Domain.Repositories;
 using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Designer.SetCategory;
 

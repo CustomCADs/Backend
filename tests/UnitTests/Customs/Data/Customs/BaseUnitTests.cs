@@ -12,9 +12,6 @@ public class BaseUnitTests
 {
 	public static readonly CancellationToken ct = CancellationToken.None;
 
-	protected static readonly Func<Action, InvalidOperationException> ExpectValidationException
-		= Assert.Throws<InvalidOperationException>;
-
 	public static Custom CreateCustom(
 		string? name = null,
 		string? description = null,

@@ -20,7 +20,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Test]
 	public void Remove_ShouldFail_WhenPending()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 
@@ -31,7 +31,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Test]
 	public void Remove_ShouldFail_WhenAccepted()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -43,7 +43,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Test]
 	public void Remove_ShouldFail_WhenBegun()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -56,7 +56,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Test]
 	public void Remove_ShouldFail_WhenFinished()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -70,7 +70,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	[Test]
 	public void Remove_ShouldFail_WhenCompleted()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);

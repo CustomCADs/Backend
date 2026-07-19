@@ -1,5 +1,4 @@
-﻿using CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers;
-using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Accept;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.Accept;
 
 namespace CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers.Mutations.Patch.Accept;
 
