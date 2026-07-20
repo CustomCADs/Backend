@@ -1,5 +1,4 @@
-﻿using CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductViewed;
-using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
+﻿using CustomCADs.Modules.Catalog.Application.Products.Queries.Internal.Gallery.GetById;
 using CustomCADs.Modules.Catalog.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
@@ -36,7 +35,7 @@ public class Tests : Data.Products.BaseUnitTests
 		CoordinatesDto coords = new(0, 0, 0);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -51,7 +50,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -76,11 +75,11 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Theory]
-	[InlineData(false, false)]
-	[InlineData(true, false)]
-	[InlineData(false, true)]
-	[InlineData(true, true)]
+	[Test]
+	[Arguments(false, false)]
+	[Arguments(true, false)]
+	[Arguments(false, true)]
+	[Arguments(true, true)]
 	public async Task Handle_ShouldRaiseEvents(bool authenticatedUser, bool viewed)
 	{
 		// Arrange
@@ -98,7 +97,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -107,29 +106,27 @@ public class Tests : Data.Products.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(product.Id, result.Id),
-			() => Assert.Equal(product.Name, result.Name),
-			() => Assert.Equal(product.Description, result.Description),
-			() => Assert.Equal(product.Price, result.Price),
-			() => Assert.Equal(product.CategoryId, result.Category.Id)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(result.Id).IsEqualTo(product.Id);
+			await Assert.That(result.Name).IsEqualTo(product.Name);
+			await Assert.That(result.Description).IsEqualTo(product.Description);
+			await Assert.That(result.Price).IsEqualTo(product.Price);
+			await Assert.That(result.Category.Id).IsEqualTo(product.CategoryId);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenStatusIsNotValid()
 	{
 		// Arrange
 		product.Report(ValidDesignerId);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomStatusException<Product>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomStatusException<Product>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenProductNotFound()
 	{
 		// Arrange
@@ -137,9 +134,6 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(null as Product);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.Handle(request, ct));
 	}
 }

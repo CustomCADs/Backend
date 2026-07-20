@@ -1,4 +1,3 @@
-using CustomCADs.Modules.Identity.Application.Contracts;
 using CustomCADs.Modules.Identity.Application.Users.Commands.Internal.ToggleViewedProductsTracking;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
@@ -29,7 +28,7 @@ public class Tests : Data.Users.BaseUnitTests
 		)).ReturnsAsync(new AccountInfoDto(ValidAccountId, default, InitialTrackViewedProducts, null, null));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -47,7 +46,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange

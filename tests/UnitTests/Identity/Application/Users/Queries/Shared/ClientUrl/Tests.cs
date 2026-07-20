@@ -22,7 +22,7 @@ public class Tests : Data.Users.BaseUnitTests
 		settings.Setup(x => x.Value).Returns(new ClientUrlSettings(All, Preferred));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -31,6 +31,6 @@ public class Tests : Data.Users.BaseUnitTests
 		string actual = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Preferred, actual);
+		await Assert.That(actual).IsEqualTo(Preferred);
 	}
 }

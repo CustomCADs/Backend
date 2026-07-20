@@ -7,30 +7,28 @@ using static Data.Materials.TestData;
 
 public class Tests : Data.Materials.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetCost_ShouldNotThrowException()
 	{
 		CreateMaterial().SetCost(MaxValidCost);
 	}
 
-	[Fact]
-	public void SetCost_ShouldPopulateProperties()
+	[Test]
+	public async Task SetCost_ShouldPopulateProperties()
 	{
 		Material material = CreateMaterial();
 
 		material.SetCost(MaxValidCost);
 
-		Assert.Equal(MaxValidCost, material.Cost);
+		await Assert.That(material.Cost).IsEqualTo(MaxValidCost);
 	}
 
-	[Theory]
-	[ClassData(typeof(TestData))]
+	[Test]
+	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
 	public void SetCost_ShouldThrowException_WhenCostInvalid(decimal cost)
 	{
 		Material material = CreateMaterial();
 
-		Assert.Throws<CustomValidationException<Material>>(
-			() => material.SetCost(cost)
-		);
+		Assert.Throws<CustomValidationException<Material>>(() => material.SetCost(cost));
 	}
 }

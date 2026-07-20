@@ -4,14 +4,14 @@ namespace CustomCADs.UnitTests.Idempotency.Domain.IdempotencyKeys.Create;
 
 using static Data.IdempotencyKeys.TestData;
 
-public class InvalidData : TheoryData<IdempotencyKeyId, string>
+public class InvalidData : ITheoryData<(IdempotencyKeyId, string)>
 {
-	public InvalidData()
+	public static IEnumerable<(IdempotencyKeyId, string)> GetTestData()
 	{
 		// Id
-		Add(InvalidId, ValidRequestHash);
+		yield return (InvalidId, ValidRequestHash);
 
 		// RequestHash
-		Add(ValidId, InvalidRequestHash);
+		yield return (ValidId, InvalidRequestHash);
 	}
 }

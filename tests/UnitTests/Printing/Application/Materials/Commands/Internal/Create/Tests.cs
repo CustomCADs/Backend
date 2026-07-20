@@ -3,6 +3,7 @@ using CustomCADs.Modules.Printing.Domain.Materials;
 using CustomCADs.Modules.Printing.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Cache;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
+using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Images.Queries;
 
 namespace CustomCADs.UnitTests.Printing.Application.Materials.Commands.Internal.Create;
@@ -39,7 +40,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		)).ReturnsAsync(true);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -57,7 +58,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -76,7 +77,7 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -85,10 +86,10 @@ public class Tests : Data.Materials.BaseUnitTests
 		MaterialId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldUpdateCache()
 	{
 		// Arrange
@@ -101,5 +102,16 @@ public class Tests : Data.Materials.BaseUnitTests
 			x => x.UpdateAsync(ValidId, It.Is<Material>(x => x.Id == material.Id)),
 			Times.Once()
 		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenImageNotFound()
+	{
+		// Arrange
+		sender.Setup(x => x.SendQueryAsync(It.Is<ImageExistsByIdQuery>(x => x.Id == ValidTextureId), ct))
+			.ReturnsAsync(false);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Material>>(() => handler.Handle(request, ct));
 	}
 }

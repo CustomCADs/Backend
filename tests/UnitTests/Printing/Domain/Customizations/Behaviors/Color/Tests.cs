@@ -7,30 +7,28 @@ using static Data.Customizations.TestData;
 
 public class Tests : Data.Customizations.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetColor_ShouldNotThrowException()
 	{
 		CreateCustomization().SetColor(ValidColor);
 	}
 
-	[Fact]
-	public void SetColor_ShouldPopulateProperties()
+	[Test]
+	public async Task SetColor_ShouldPopulateProperties()
 	{
 		Customization material = CreateCustomization();
 
 		material.SetColor(ValidColor);
 
-		Assert.Equal(ValidColor, material.Color);
+		await Assert.That(material.Color).IsEqualTo(ValidColor);
 	}
 
-	[Theory]
-	[ClassData(typeof(TestData))]
+	[Test]
+	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
 	public void SetColor_ShouldThrowException_WhenColorInvalid(string color)
 	{
 		Customization material = CreateCustomization();
 
-		Assert.Throws<CustomValidationException<Customization>>(
-			() => material.SetColor(color)
-		);
+		Assert.Throws<CustomValidationException<Customization>>(() => material.SetColor(color));
 	}
 }

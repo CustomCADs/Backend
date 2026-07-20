@@ -14,7 +14,7 @@ public class Shipment : BaseAggregateRoot
 		ShipmentInfo info,
 		ShipmentReference reference,
 		ShipmentContact contact
-	)
+	) : this()
 	{
 		Status = ShipmentStatus.Awaiting;
 		RequestedAt = DateTimeOffset.UtcNow;

@@ -26,7 +26,7 @@ public class Tests : Data.Tags.BaseUnitTests
 			.ReturnsAsync(tag);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -41,7 +41,7 @@ public class Tests : Data.Tags.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
@@ -56,7 +56,7 @@ public class Tests : Data.Tags.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -76,7 +76,7 @@ public class Tests : Data.Tags.BaseUnitTests
 	}
 
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenTagNotFound()
 	{
 		// Arrange
@@ -84,9 +84,6 @@ public class Tests : Data.Tags.BaseUnitTests
 			.ReturnsAsync(null as Tag);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Tag>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Tag>>(() => handler.Handle(request, ct));
 	}
 }

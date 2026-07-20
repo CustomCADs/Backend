@@ -14,6 +14,11 @@ public sealed class UnhideNotificationHandler(
 		Notification notification = await reads.SingleByIdAsync(req.Id, track: true, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Notification>.ById(req.Id);
 
+		if (req.CallerId != notification.ReceiverId)
+		{
+			throw CustomAuthorizationException<Notification>.ById(req.Id);
+		}
+
 		notification.Unhide();
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 	}

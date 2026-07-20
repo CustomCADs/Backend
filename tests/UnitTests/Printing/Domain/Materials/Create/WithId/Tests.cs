@@ -7,32 +7,31 @@ using static Data.Materials.TestData;
 
 public class Tests : Data.Materials.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Create_ShouldNotThrowException()
 	{
 		CreateMaterial();
 	}
 
-	[Fact]
-	public void Create_ShouldPopulateProperties()
+	[Test]
+	public async Task Create_ShouldPopulateProperties()
 	{
 		Material material = CreateMaterial(MaxValidName, MaxValidDensity, MaxValidCost, ValidTextureId, ValidId);
 
-		Assert.Multiple(
-			() => Assert.Equal(ValidId, material.Id),
-			() => Assert.Equal(MaxValidName, material.Name),
-			() => Assert.Equal(MaxValidDensity, material.Density),
-			() => Assert.Equal(MaxValidCost, material.Cost),
-			() => Assert.Equal(ValidTextureId, material.TextureId)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(material.Id).IsEqualTo(ValidId);
+			await Assert.That(material.Name).IsEqualTo(MaxValidName);
+			await Assert.That(material.Density).IsEqualTo(MaxValidDensity);
+			await Assert.That(material.Cost).IsEqualTo(MaxValidCost);
+			await Assert.That(material.TextureId).IsEqualTo(ValidTextureId);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(TestData))]
+	[Test]
+	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowExcetion_WhenInvalid(string name, decimal density, decimal cost)
 	{
-		Assert.Throws<CustomValidationException<Material>>(
-			() => CreateMaterial(name, density, cost)
-		);
+		Assert.Throws<CustomValidationException<Material>>(() => CreateMaterial(name, density, cost));
 	}
 }

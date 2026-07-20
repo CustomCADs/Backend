@@ -19,13 +19,14 @@ public class Tests : Data.Roles.BaseUnitTests
 	{
 		handler = new(reads.Object, cache.Object);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Role>>>()
-		)).ReturnsAsync(CreateRole(id: ValidId));
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Role>>>()))
+			.Returns(async (RoleId id, Func<Task<Role>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(CreateRole(id: ValidId));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -35,15 +36,27 @@ public class Tests : Data.Roles.BaseUnitTests
 
 		// Assert
 		cache.Verify(
-			x => x.GetOrCreateAsync(
-				ValidId,
-				It.IsAny<Func<Task<Role>>>()
-			),
+			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Role>>>()),
 			Times.Once()
 		);
 	}
 
-	[Fact]
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+	}
+
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -52,6 +65,6 @@ public class Tests : Data.Roles.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, result.Id);
+		await Assert.That(result.Id).IsEqualTo(ValidId);
 	}
 }

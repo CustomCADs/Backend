@@ -31,7 +31,7 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		)).ReturnsAsync(CreateIdempotencyKey());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -51,7 +51,7 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -70,16 +70,13 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenIdempotencyKeyNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, ValidRequestHash, true, ct)).ReturnsAsync(null as IdempotencyKey);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<IdempotencyKey>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<IdempotencyKey>>(() => handler.Handle(request, ct));
 	}
 }

@@ -2,6 +2,8 @@ using CustomCADs.Modules.Accounts.Application.Accounts.Queries.Shared.ViewedProd
 using CustomCADs.Modules.Accounts.Domain.Accounts.Entities;
 using CustomCADs.Modules.Accounts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Accounts.Application.Accounts.Queries.Shared.ViewedProducts.ByName;
 
@@ -14,7 +16,11 @@ public class Tests : Data.Accounts.BaseUnitTests
 
 	private readonly Mock<IAccountReads> reads = new();
 
-	private static readonly ViewedProduct[] Expected = [];
+	private static readonly ViewedProduct[] Expected = [
+		ViewedProduct.Create(AccountId.New(), ProductId.New(), DateTimeOffset.UtcNow),
+		ViewedProduct.Create(AccountId.New(), ProductId.New(), DateTimeOffset.UtcNow),
+		ViewedProduct.Create(AccountId.New(), ProductId.New(), DateTimeOffset.UtcNow),
+	];
 
 	public Tests()
 	{
@@ -23,7 +29,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			.ReturnsAsync(Expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -38,7 +44,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -47,6 +53,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 		ViewedProductDto[] products = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Expected.Select(x => x.ProductId), products.Select(x => x.Id));
+		await Assert.That(products.Select(x => x.Id)).IsEquivalentTo(Expected.Select(x => x.ProductId));
 	}
 }

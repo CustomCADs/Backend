@@ -2,21 +2,21 @@ namespace CustomCADs.UnitTests.Printing.Domain.Materials.Create;
 
 using static Data.Materials.TestData;
 
-public class TestData : TheoryData<string, decimal, decimal>
+public class TestData : TheoryData<(string, decimal, decimal)>
 {
-	public TestData()
+	public static IEnumerable<(string, decimal, decimal)> GetTestData()
 	{
 		// Name
-		Add(InvalidName, MaxValidDensity, MaxValidCost);
-		Add(MinInvalidName, MinValidDensity, MinValidCost);
-		Add(MaxInvalidName, MaxValidDensity, MaxValidCost);
+		yield return (InvalidName, MaxValidDensity, MaxValidCost);
+		yield return (MinInvalidName, MinValidDensity, MinValidCost);
+		yield return (MaxInvalidName, MaxValidDensity, MaxValidCost);
 
 		// Density
-		Add(MinValidName, MinInvalidDensity, MinValidCost);
-		Add(MaxValidName, MaxInvalidDensity, MaxValidCost);
+		yield return (MinValidName, MinInvalidDensity, MinValidCost);
+		yield return (MaxValidName, MaxInvalidDensity, MaxValidCost);
 
 		// Cost
-		Add(MinValidName, MinValidDensity, MinInvalidCost);
-		Add(MaxValidName, MaxValidDensity, MaxInvalidCost);
+		yield return (MinValidName, MinValidDensity, MinInvalidCost);
+		yield return (MaxValidName, MaxValidDensity, MaxInvalidCost);
 	}
 }

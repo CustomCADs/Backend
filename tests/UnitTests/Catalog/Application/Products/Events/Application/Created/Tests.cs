@@ -14,14 +14,14 @@ public class Tests : Data.Products.BaseUnitTests
 	private readonly Mock<IProductWrites> writes = new();
 	private readonly Mock<IUnitOfWork> uow = new();
 
-	private static readonly TagId[] TagIds = [];
+	private static readonly TagId[] TagIds = [ValidTagId];
 
 	public Tests()
 	{
 		handler = new(writes.Object, uow.Object);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange

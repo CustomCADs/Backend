@@ -6,21 +6,21 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Fact]
-	public void Remove_ShouldSucceed_WhenReported()
+	[Test]
+	public async Task Remove_ShouldSucceed_WhenReported()
 	{
 		Custom custom = CreateCustom();
 		custom.Report();
 
 		custom.Remove();
 
-		Assert.Equal(CustomStatus.Removed, custom.CustomStatus);
+		await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Removed);
 	}
 
-	[Fact]
+	[Test]
 	public void Remove_ShouldFail_WhenPending()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 
@@ -28,10 +28,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Remove_ShouldFail_WhenAccepted()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -40,10 +40,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Remove_ShouldFail_WhenBegun()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -53,10 +53,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Remove_ShouldFail_WhenFinished()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -67,10 +67,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Remove_ShouldFail_WhenCompleted()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);

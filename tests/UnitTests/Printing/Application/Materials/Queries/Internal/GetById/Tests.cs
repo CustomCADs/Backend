@@ -23,11 +23,14 @@ public class Tests : Data.Materials.BaseUnitTests
 		handler = new(reads.Object, cache.Object);
 
 		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Material>>>()))
+			.Returns(async (MaterialId id, Func<Task<Material>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(material);
 	}
 
-	[Fact]
-	public async Task Handle_ShouldQueryDatabase()
+	[Test]
+	public async Task Handle_ShouldreadCache()
 	{
 		// Arrange
 
@@ -41,7 +44,19 @@ public class Tests : Data.Materials.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(x => x.SingleByIdAsync(ValidId, false, ct), Times.Once());
+	}
+
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -50,6 +65,6 @@ public class Tests : Data.Materials.BaseUnitTests
 		MaterialDto response = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(material.Id, response.Id);
+		await Assert.That(response.Id).IsEqualTo(material.Id);
 	}
 }

@@ -28,7 +28,7 @@ public class Tests : Data.Users.BaseUnitTests
 			.ReturnsAsync(CreateUser());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -47,7 +47,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange

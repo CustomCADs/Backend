@@ -7,8 +7,8 @@ using static Data.Products.TestData;
 
 public class Tests : Data.Products.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldNotThrowException_WhenProductIsValid(string name, string description, decimal price)
 	{
 		CreateProduct(
@@ -19,9 +19,9 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void Create_ShouldPopulateProperties_WhenProductIsValid(string name, string description, decimal price)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task Create_ShouldPopulateProperties_WhenProductIsValid(string name, string description, decimal price)
 	{
 		Product product = CreateProduct(
 			id: ValidId,
@@ -30,25 +30,25 @@ public class Tests : Data.Products.BaseUnitTests
 			price: price
 		);
 
-		Assert.Multiple(
-			() => Assert.Equal(name, product.Name),
-			() => Assert.Equal(description, product.Description),
-			() => Assert.Equal(price, product.Price),
-			() => Assert.Equal(ProductStatus.Unchecked, product.Status)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(product.Id).IsEqualTo(ValidId);
+			await Assert.That(product.Name).IsEqualTo(name);
+			await Assert.That(product.Description).IsEqualTo(description);
+			await Assert.That(product.Price).IsEqualTo(price);
+			await Assert.That(product.Status).IsEqualTo(ProductStatus.Unchecked);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowException_WhenProductIsNotValid(string name, string description, decimal price)
 	{
-		Assert.Throws<CustomValidationException<Product>>(
-			() => CreateProduct(
+		Assert.Throws<CustomValidationException<Product>>(() => CreateProduct(
 				id: ValidId,
 				name: name,
 				description: description,
 				price: price
-			)
-		);
+			));
 	}
 }

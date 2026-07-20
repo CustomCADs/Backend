@@ -22,7 +22,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			.ReturnsAsync(Count);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -37,7 +37,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -46,6 +46,6 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		int count = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Count, count);
+		await Assert.That(count).IsEqualTo(Count);
 	}
 }

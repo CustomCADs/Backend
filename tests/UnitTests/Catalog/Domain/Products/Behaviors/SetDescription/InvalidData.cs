@@ -2,11 +2,11 @@
 
 using static Data.Products.TestData;
 
-public class InvalidData : TheoryData<string>
+public class InvalidData : ITheoryData<string>
 {
-	public InvalidData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(MinInvalidDescription);
-		Add(MaxInvalidDescription);
+		yield return MinInvalidDescription;
+		yield return MaxInvalidDescription;
 	}
 }

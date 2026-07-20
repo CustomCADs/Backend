@@ -2,11 +2,11 @@
 
 using static Data.Accounts.TestData;
 
-public class ValidData : TheoryData<string?>
+public class ValidData : ITheoryData<string?>
 {
-	public ValidData()
+	public static IEnumerable<string?> GetTestData()
 	{
-		Add(ValidLastName);
-		Add(ValidLastNameNull);
+		yield return ValidLastName;
+		yield return ValidLastNameNull;
 	}
 }

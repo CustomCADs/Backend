@@ -12,9 +12,9 @@ public class BaseUnitTests
 	protected static readonly CancellationToken ct = CancellationToken.None;
 
 	protected static Cad CreateCad(
-		string? key = null,
-		string? contentType = null,
-		decimal? volume = null,
+		string key = ValidKey,
+		string contentType = ValidContentType,
+		decimal volume = ValidVolume,
 		Coordinates? camCoordinates = null,
 		Coordinates? panCoordinates = null,
 		AccountId? ownerId = null,
@@ -22,9 +22,9 @@ public class BaseUnitTests
 	)
 		=> Cad.CreateWithId(
 			id: id ?? ValidId,
-			key: key ?? ValidKey,
-			contentType: contentType ?? ValidContentType,
-			volume: volume ?? ValidVolume,
+			key: key,
+			contentType: contentType,
+			volume: volume,
 			camCoordinates: camCoordinates ?? new(),
 			panCoordinates: panCoordinates ?? new(),
 			ownerId: ownerId ?? ValidOwnerId

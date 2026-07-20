@@ -24,16 +24,17 @@ public class Tests : Data.Cads.BaseUnitTests
 	{
 		handler = new(reads.Object, storage.Object, cache.Object, policies: [new PolicyMock()]);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Cad>>>()
-		)).ReturnsAsync(cad);
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Cad>>>()))
+			.Returns(async (CadId id, Func<Task<Cad>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(cad);
 
 		storage.Setup(x => x.GetPresignedGetUrlAsync(cad.Key, cad.ContentType))
 			.ReturnsAsync(PresignedUrl);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -48,7 +49,22 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+	}
+
+	[Test]
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
@@ -63,7 +79,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -72,9 +88,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		var (Url, ContentType) = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(cad.ContentType, ContentType),
-			() => Assert.Equal(PresignedUrl, Url)
-		);
+		await Assert.That(ContentType).IsEqualTo(cad.ContentType);
+		await Assert.That(Url).IsEqualTo(PresignedUrl);
 	}
 }

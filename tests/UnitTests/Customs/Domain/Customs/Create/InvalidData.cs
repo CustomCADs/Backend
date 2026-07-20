@@ -2,16 +2,16 @@
 
 using static Data.Customs.TestData;
 
-public class InvalidData : TheoryData<string, string, bool>
+public class InvalidData : ITheoryData<(string, string, bool)>
 {
-	public InvalidData()
+	public static IEnumerable<(string, string, bool)> GetTestData()
 	{
 		// Name
-		Add(MinInvalidName, MinValidDescription, true);
-		Add(MaxInvalidName, MaxValidDescription, false);
+		yield return (MinInvalidName, MinValidDescription, true);
+		yield return (MaxInvalidName, MaxValidDescription, false);
 
 		// Description
-		Add(MinValidName, MinInvalidDescription, true);
-		Add(MaxValidName, MaxInvalidDescription, false);
+		yield return (MinValidName, MinInvalidDescription, true);
+		yield return (MaxValidName, MaxInvalidDescription, false);
 	}
 }

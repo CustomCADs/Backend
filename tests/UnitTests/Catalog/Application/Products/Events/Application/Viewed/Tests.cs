@@ -57,7 +57,7 @@ public class Tests : Data.Products.BaseUnitTests
 		)).ReturnsAsync(false);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -72,7 +72,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -87,7 +87,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -119,7 +119,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
@@ -136,7 +136,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
@@ -145,10 +145,10 @@ public class Tests : Data.Products.BaseUnitTests
 		await handler.HandleAsync(request);
 
 		// Assert
-		Assert.Equal(1, product.Counts.Views);
+		await Assert.That(product.Counts.Views).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnEarly_WhenUserDoesNotTrackViewedProducts()
 	{
 		// Arrange
@@ -175,10 +175,10 @@ public class Tests : Data.Products.BaseUnitTests
 			),
 			Times.Never()
 		);
-		Assert.Equal(0, product.Counts.Views);
+		await Assert.That(product.Counts.Views).IsEqualTo(0);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnEarly_WhenUserAlreadyViewedProduct()
 	{
 		// Arrange
@@ -214,10 +214,10 @@ public class Tests : Data.Products.BaseUnitTests
 			),
 			Times.Never()
 		);
-		Assert.Equal(0, product.Counts.Views);
+		await Assert.That(product.Counts.Views).IsEqualTo(0);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenProductNotFound()
 	{
 		// Arrange
@@ -225,9 +225,6 @@ public class Tests : Data.Products.BaseUnitTests
 			.ReturnsAsync(null as Product);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(
-			// Act
-			() => handler.HandleAsync(request)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Product>>(() => handler.HandleAsync(request));
 	}
 }

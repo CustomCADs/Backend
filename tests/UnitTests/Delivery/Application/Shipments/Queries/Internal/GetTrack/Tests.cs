@@ -28,7 +28,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		delivery.Setup(x => x.TrackAsync(ValidReferenceId, ct)).ReturnsAsync(Statuses);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
@@ -58,7 +58,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -67,10 +67,10 @@ public class Tests : Data.Shipments.BaseUnitTests
 		Dictionary<DateTimeOffset, GetShipmentTracksDto> tracks = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(tracks, Statuses.ToDictionary(x => x.DateTime, x => new GetShipmentTracksDto(x.Message, x.Place)));
+		await Assert.That(Statuses.ToDictionary(x => x.DateTime, x => new GetShipmentTracksDto(x.Message, x.Place))).IsEquivalentTo(tracks);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenShipmentStatusInvalid()
 	{
 		// Arrange
@@ -78,23 +78,17 @@ public class Tests : Data.Shipments.BaseUnitTests
 			.ReturnsAsync(CreateShipment());
 
 		// Assert
-		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomStatusException<Shipment>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenShipmentNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Shipment);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(() => handler.Handle(request, ct));
 	}
 
 	private static ShipmentTrackDto[] CreateShipmentTracksDtos(int count = 4, string message = "Message")

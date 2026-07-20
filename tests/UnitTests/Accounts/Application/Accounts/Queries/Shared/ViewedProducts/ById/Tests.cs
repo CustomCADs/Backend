@@ -20,7 +20,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			.ReturnsAsync([]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -35,9 +35,9 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task Handle_ShouldReturnResult(bool expected)
 	{
 		// Arrange
@@ -51,6 +51,6 @@ public class Tests : Data.Accounts.BaseUnitTests
 		bool actual = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(expected, actual);
+		await Assert.That(actual).IsEqualTo(expected);
 	}
 }

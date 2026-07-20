@@ -12,7 +12,8 @@ public class ActiveCartItem : BaseAggregateRoot
 		ProductId productId,
 		AccountId buyerId,
 		bool forDelivery,
-		CustomizationId? customizationId) : this()
+		CustomizationId? customizationId
+	) : this()
 	{
 		ProductId = productId;
 		BuyerId = buyerId;

@@ -8,8 +8,8 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Fact]
-	public void Finish_ShouldSucceed_WhenBegun()
+	[Test]
+	public async Task Finish_ShouldSucceed_WhenBegun()
 	{
 		Custom custom = CreateCustom();
 		custom.Accept(ValidDesignerId);
@@ -17,16 +17,18 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		custom.Finish(ValidCadId, ValidPrice);
 
-		Assert.Multiple(
-			() => Assert.Equal(CustomStatus.Finished, custom.CustomStatus),
-			() => Assert.NotNull(custom.AcceptedCustom),
-			() => Assert.NotNull(custom.FinishedCustom),
-			() => Assert.Equal(ValidCadId, custom.FinishedCustom!.CadId),
-			() => Assert.Equal(ValidPrice, custom.FinishedCustom!.Price)
-		);
+
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Finished);
+			await Assert.That(custom.AcceptedCustom).IsNotNull();
+			await Assert.That(custom.FinishedCustom).IsNotNull();
+			await Assert.That(custom.FinishedCustom.CadId).IsEqualTo(ValidCadId);
+			await Assert.That(custom.FinishedCustom.Price).IsEqualTo(ValidPrice);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public void Finish_ShouldFail_WhenInvalidPrice()
 	{
 		Assert.Throws<CustomValidationException<FinishedCustom>>(() =>
@@ -38,10 +40,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Finish_ShouldFail_WhenPending()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 
@@ -49,10 +51,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Finish_ShouldFail_WhenAccepted()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -61,10 +63,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Finish_ShouldFail_WhenReported()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -74,10 +76,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Finish_ShouldFail_WhenFinished()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -88,10 +90,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Finish_ShouldFail_WhenCompleted()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -103,10 +105,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Finish_ShouldFail_WhenRemoved()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Report();

@@ -2,11 +2,11 @@
 
 using static Data.Products.TestData;
 
-public class ValidData : TheoryData<decimal>
+public class ValidData : ITheoryData<decimal>
 {
-	public ValidData()
+	public static IEnumerable<decimal> GetTestData()
 	{
-		Add(MinValidPrice);
-		Add(MaxValidPrice);
+		yield return MinValidPrice;
+		yield return MaxValidPrice;
 	}
 }

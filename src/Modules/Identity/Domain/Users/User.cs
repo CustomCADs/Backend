@@ -10,7 +10,7 @@ public class User : BaseAggregateRoot
 	private List<RefreshToken> refreshTokens = [];
 
 	private User() { }
-	private User(string role, string username, Email email, AccountId accountId) : base()
+	private User(string role, string username, Email email, AccountId accountId) : this()
 	{
 		Role = role;
 		Username = username;

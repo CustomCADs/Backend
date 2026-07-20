@@ -23,7 +23,7 @@ public class Tests : Data.Products.BaseUnitTests
 	private readonly Mock<IProductReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private static readonly Product[] Products = [];
+	private static readonly Product[] Products = [CreateProduct()];
 	private static readonly ProductQuery Query = new(
 		Pagination: new(1, Products.Length)
 	);
@@ -36,24 +36,24 @@ public class Tests : Data.Products.BaseUnitTests
 	{
 		handler = new(reads.Object, sender.Object);
 
-		reads.Setup(x => x.AllAsync(
-			It.IsAny<ProductQuery>(),
-			false,
-			ct
-		)).ReturnsAsync(Result);
+		reads.Setup(x => x.AllAsync(It.IsAny<ProductQuery>(), false, ct))
+			.ReturnsAsync(Result);
+
+		reads.Setup(x => x.TagsByIdsAsync(It.Is<ProductId[]>(x => x.SequenceEqual(Products.Select(x => x.Id))), ct))
+			.ReturnsAsync(Products.ToDictionary(x => x.Id, x => new[] { "Tag123" }));
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == Products.Select(x => x.CreatorId)),
+			It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.SequenceEqual(Products.Select(x => x.CreatorId))),
 			ct
 		)).ReturnsAsync(Products.ToDictionary(x => x.CreatorId, x => "Username123"));
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<BatchGetCategorByIdQuery>(x => x.Ids == Products.Select(x => x.CategoryId)),
+			It.Is<BatchGetCategorByIdQuery>(x => x.Ids.SequenceEqual(Products.Select(x => x.CategoryId))),
 			ct
 		)).ReturnsAsync(Products.ToDictionary(x => x.CategoryId, x => "Cateogry123"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -72,7 +72,7 @@ public class Tests : Data.Products.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -83,21 +83,21 @@ public class Tests : Data.Products.BaseUnitTests
 		// Assert
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids == Products.Select(x => x.CreatorId)),
+				It.Is<BatchGetUsernamesByIdQuery>(x => x.Ids.SequenceEqual(Products.Select(x => x.CreatorId))),
 				ct
 			),
 			Times.Once()
 		);
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<BatchGetCategorByIdQuery>(x => x.Ids == Products.Select(x => x.CategoryId)),
+				It.Is<BatchGetCategorByIdQuery>(x => x.Ids.SequenceEqual(Products.Select(x => x.CategoryId))),
 				ct
 			),
 			Times.Once()
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -106,6 +106,6 @@ public class Tests : Data.Products.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(result.Count, Products.Length);
+		await Assert.That(Products.Length).IsEqualTo(result.Count);
 	}
 }

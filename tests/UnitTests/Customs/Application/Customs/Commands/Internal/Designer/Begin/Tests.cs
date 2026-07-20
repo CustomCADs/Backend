@@ -32,7 +32,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -47,7 +47,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -62,7 +62,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldRaiseEvents()
 	{
 		// Arrange
@@ -79,7 +79,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPopulateProperties()
 	{
 		// Arrange
@@ -88,13 +88,14 @@ public class Tests : Data.Customs.BaseUnitTests
 		await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(ValidDesignerId, custom.AcceptedCustom?.DesignerId),
-			() => Assert.Equal(CustomStatus.Begun, custom.CustomStatus)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.AcceptedCustom?.DesignerId).IsEqualTo(ValidDesignerId);
+			await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Begun);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
 	{
 		// Arrange
@@ -104,13 +105,10 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCustomNotFound()
 	{
 		// Arrange
@@ -118,9 +116,6 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(null as Custom);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Custom>>(() => handler.Handle(request, ct));
 	}
 }

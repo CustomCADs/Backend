@@ -2,7 +2,6 @@
 using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Exceptions;
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Quantity.Decrease;
 
@@ -34,7 +33,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			.ReturnsAsync(item);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -49,7 +48,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -64,7 +63,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -73,10 +72,10 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		int result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(oldQuantity - request.Amount, result);
+		await Assert.That(result).IsEqualTo(oldQuantity - request.Amount);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCartNotFound()
 	{
 		// Arrange
@@ -84,21 +83,15 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 			.ReturnsAsync(null as ActiveCartItem);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenItemNotFound()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(
-			// Act
-			() => handler.Handle(request with { ProductId = new() }, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<ActiveCartItem>>(() => handler.Handle(request with { ProductId = new() }, ct));
 	}
 }

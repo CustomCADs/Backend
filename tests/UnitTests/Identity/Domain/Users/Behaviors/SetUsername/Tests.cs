@@ -5,8 +5,8 @@ namespace CustomCADs.UnitTests.Identity.Domain.Users.Behaviors.SetUsername;
 
 public class Tests : Data.Users.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetUsername_ShouldNotThrowException(string username)
 	{
 		var user = CreateUser();
@@ -14,25 +14,23 @@ public class Tests : Data.Users.BaseUnitTests
 		user.SetUsername(username);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetUsername_PopulatesProperty(string username)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task SetUsername_PopulatesProperty(string username)
 	{
 		var user = CreateUser();
 
 		user.SetUsername(username);
 
-		Assert.Equal(user.Username, username);
+		await Assert.That(username).IsEqualTo(user.Username);
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetUsername_ThrowsException_WhenUsernameIsInvalid(string username)
 	{
 		var user = CreateUser();
 
-		Assert.Throws<CustomValidationException<User>>(
-			() => user.SetUsername(username)
-		);
+		Assert.Throws<CustomValidationException<User>>(() => user.SetUsername(username));
 	}
 }

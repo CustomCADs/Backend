@@ -2,12 +2,12 @@
 
 using static Data.Categories.TestData;
 
-public class ValidData : TheoryData<string>
+public class ValidData : ITheoryData<string>
 {
-	public ValidData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(ValidName);
-		Add(MinValidName);
-		Add(MaxValidName);
+		yield return ValidName;
+		yield return MinValidName;
+		yield return MaxValidName;
 	}
 }

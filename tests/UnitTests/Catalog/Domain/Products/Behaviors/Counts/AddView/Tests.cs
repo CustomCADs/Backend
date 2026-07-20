@@ -1,20 +1,21 @@
-﻿namespace CustomCADs.UnitTests.Catalog.Domain.Products.Behaviors.Counts.AddView;
+﻿
+namespace CustomCADs.UnitTests.Catalog.Domain.Products.Behaviors.Counts.AddView;
 
 public class Tests : Data.Products.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Add_ShouldNotThrowException()
 	{
 		var product = CreateProduct();
 		product.AddToViewCount();
 	}
 
-	[Theory]
-	[InlineData(1)]
-	[InlineData(3)]
-	[InlineData(5)]
-	[InlineData(10)]
-	public void Add_ShouldIncreaseViewCountResult(int iterations)
+	[Test]
+	[Arguments(1)]
+	[Arguments(3)]
+	[Arguments(5)]
+	[Arguments(10)]
+	public async Task Add_ShouldIncreaseViewCountResult(int iterations)
 	{
 		var product = CreateProduct();
 
@@ -23,6 +24,6 @@ public class Tests : Data.Products.BaseUnitTests
 			product.AddToViewCount();
 		}
 
-		Assert.Equal(iterations, product.Counts.Views);
+		await Assert.That(product.Counts.Views).IsEqualTo(iterations);
 	}
 }

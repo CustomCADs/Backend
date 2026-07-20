@@ -7,30 +7,28 @@ using static Data.Materials.TestData;
 
 public class Tests : Data.Materials.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetName_ShouldNotThrowException()
 	{
 		CreateMaterial().SetName(MaxValidName);
 	}
 
-	[Fact]
-	public void SetName_ShouldPopulateProperties()
+	[Test]
+	public async Task SetName_ShouldPopulateProperties()
 	{
 		Material material = CreateMaterial();
 
 		material.SetName(MaxValidName);
 
-		Assert.Equal(MaxValidName, material.Name);
+		await Assert.That(material.Name).IsEqualTo(MaxValidName);
 	}
 
-	[Theory]
-	[ClassData(typeof(TestData))]
+	[Test]
+	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ShouldThrowException_WhenNameInvalid(string name)
 	{
 		Material material = CreateMaterial();
 
-		Assert.Throws<CustomValidationException<Material>>(
-			() => material.SetName(name)
-		);
+		Assert.Throws<CustomValidationException<Material>>(() => material.SetName(name));
 	}
 }

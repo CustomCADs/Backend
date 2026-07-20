@@ -13,7 +13,7 @@ public class Validator : Data.Shipments.BaseUnitTests
 	private static readonly double[] Weights = [0, 1, 2, 3, 4, 5, 6];
 	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
 
-	[Fact]
+	[Test]
 	public async Task Validate_ShouldBeValid_WhenAddressIsValid()
 	{
 		// Arrange
@@ -22,11 +22,11 @@ public class Validator : Data.Shipments.BaseUnitTests
 		var result = await validator.TestValidateAsync(request);
 
 		// Assert
-		Assert.True(result.IsValid);
+		await Assert.That(result.IsValid).IsTrue();
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public async Task Validate_ShouldBeInvalid_WhenAddressIsInvalid(string country, string city, string street)
 	{
 		// Arrange
@@ -35,6 +35,6 @@ public class Validator : Data.Shipments.BaseUnitTests
 		var result = await validator.TestValidateAsync(request with { Address = new(country, city, street) });
 
 		// Assert
-		Assert.False(result.IsValid);
+		await Assert.That(result.IsValid).IsFalse();
 	}
 }

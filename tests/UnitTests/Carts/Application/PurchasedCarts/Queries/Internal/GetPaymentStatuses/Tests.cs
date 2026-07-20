@@ -8,7 +8,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 	private readonly GetPurchasedCartPaymentStatusesHandler handler = new();
 	private readonly GetPurchasedCartPaymentStatusesQuery request = new();
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -17,6 +17,6 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		PaymentStatus[] statuses = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Enum.GetValues<PaymentStatus>(), statuses);
+		await Assert.That(statuses).IsEquivalentTo(Enum.GetValues<PaymentStatus>());
 	}
 }

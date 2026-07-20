@@ -18,7 +18,7 @@ public class Tests : Data.Users.BaseUnitTests
 		handler = new(email.Object);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendEmails()
 	{
 		// Arrange

@@ -15,19 +15,21 @@ public class Tests : Data.Cads.BaseUnitTests
 	private readonly Mock<ICadReads> reads = new();
 	private readonly Mock<BaseCachingService<CadId, Cad>> cache = new();
 
-	private readonly Cad Cad = CreateCad(contentType: "not-a-printable-content-type");
+	private readonly Cad cad = CreateCad(contentType: "not-a-printable-content-type");
 
 	public Tests()
 	{
 		handler = new(reads.Object, cache.Object);
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Cad>>>()
-		)).ReturnsAsync(Cad);
+
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Cad>>>()))
+			.Returns(async (CadId id, Func<Task<Cad>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(cad);
 	}
 
-	[Fact]
-	public async Task Handle_ShouldQueryDatabase()
+	[Test]
+	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
 
@@ -36,29 +38,41 @@ public class Tests : Data.Cads.BaseUnitTests
 
 		// Assert
 		cache.Verify(
-			x => x.GetOrCreateAsync(
-				ValidId,
-				It.IsAny<Func<Task<Cad>>>()
-			),
+			x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Cad>>>()),
 			Times.Once()
 		);
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+	}
+
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
 	public async Task Handle_ShouldReturnResult(bool exists)
 	{
 		// Arrange
 		if (exists)
 		{
-			Cad.SetContentType(ApplicationConstants.Cads.PrintableContentTypes.First());
+			cad.SetContentType(ApplicationConstants.Cads.PrintableContentTypes.First());
 		}
 
 		// Act
 		bool result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(exists, result);
+		await Assert.That(result).IsEqualTo(exists);
 	}
 }

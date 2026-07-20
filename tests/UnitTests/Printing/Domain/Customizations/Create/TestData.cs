@@ -2,25 +2,25 @@ namespace CustomCADs.UnitTests.Printing.Domain.Customizations.Create;
 
 using static Data.Customizations.TestData;
 
-public class TestData : TheoryData<decimal, decimal, decimal, string>
+public class TestData : ITheoryData<(decimal, decimal, decimal, string)>
 {
-	public TestData()
+	public static IEnumerable<(decimal, decimal, decimal, string)> GetTestData()
 	{
 		// Scale
-		Add(MaxInvalidScale, MaxValidInfill, MaxValidVolume, ValidColor);
-		Add(MinInvalidScale, MinValidInfill, MinValidVolume, ValidColor);
+		yield return (MaxInvalidScale, MaxValidInfill, MaxValidVolume, ValidColor);
+		yield return (MinInvalidScale, MinValidInfill, MinValidVolume, ValidColor);
 
 		// Infill
-		Add(MaxValidScale, MaxInvalidInfill, MaxValidVolume, ValidColor);
-		Add(MinValidScale, MinInvalidInfill, MinValidVolume, ValidColor);
+		yield return (MaxValidScale, MaxInvalidInfill, MaxValidVolume, ValidColor);
+		yield return (MinValidScale, MinInvalidInfill, MinValidVolume, ValidColor);
 
 		// Volume
-		Add(MaxValidScale, MaxValidInfill, MaxInvalidVolume, ValidColor);
-		Add(MinValidScale, MinValidInfill, MinInvalidVolume, ValidColor);
+		yield return (MaxValidScale, MaxValidInfill, MaxInvalidVolume, ValidColor);
+		yield return (MinValidScale, MinValidInfill, MinInvalidVolume, ValidColor);
 
 		// Color
-		Add(MaxValidScale, MaxValidInfill, MaxValidVolume, InvalidColor);
-		Add(MinValidScale, MinValidInfill, MinValidVolume, MaxInvalidColor);
-		Add(MaxValidScale, MaxValidInfill, MaxValidVolume, MinInvalidColor);
+		yield return (MaxValidScale, MaxValidInfill, MaxValidVolume, InvalidColor);
+		yield return (MinValidScale, MinValidInfill, MinValidVolume, MaxInvalidColor);
+		yield return (MaxValidScale, MaxValidInfill, MaxValidVolume, MinInvalidColor);
 	}
 }

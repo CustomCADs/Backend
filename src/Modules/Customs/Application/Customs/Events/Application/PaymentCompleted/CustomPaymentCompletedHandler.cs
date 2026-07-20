@@ -38,19 +38,13 @@ public class CustomPaymentCompletedHandler(
 
 		if (custom.ForDelivery)
 		{
-			ShipmentId? shipmentId = custom.CompletedCustom?.ShipmentId;
-			await ActivateShipmentAsync(shipmentId).ConfigureAwait(false);
+			ShipmentId shipmentId = (custom.CompletedCustom?.ShipmentId)!.Value;
+
+			await sender.SendCommandAsync(
+				command: new ActivateShipmentCommand(shipmentId)
+			).ConfigureAwait(false);
+
 			await email.SendRewardGrantedEmailAsync(recipient, $"{clientUrl}/shipments/{shipmentId}").ConfigureAwait(false);
 		}
-	}
-
-	private async Task ActivateShipmentAsync(ShipmentId? shipmentId)
-	{
-		if (shipmentId is null)
-			throw new CustomException("Shipment Activation requested, but missing ShipmentId");
-
-		await sender.SendCommandAsync(
-			command: new ActivateShipmentCommand(shipmentId.Value)
-		).ConfigureAwait(false);
 	}
 }

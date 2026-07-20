@@ -4,11 +4,11 @@ namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.A
 
 using static Data.ActiveCarts.TestData;
 
-public class ValidData : TheoryData<CustomizationId?>
+public class ValidData : ITheoryData<CustomizationId?>
 {
-	public ValidData()
+	public static IEnumerable<CustomizationId?> GetTestData()
 	{
-		Add(ValidCustomizationId);
-		Add(null);
+		yield return ValidCustomizationId;
+		yield return null;
 	}
 }

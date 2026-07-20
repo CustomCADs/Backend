@@ -25,10 +25,11 @@ public class BaseUnitTests
 		ActiveCartItem[] items,
 		Dictionary<ProductId, decimal> prices,
 		Dictionary<ProductId, CadId> productCads,
-		Dictionary<CadId, CadId> itemCads
+		Dictionary<CadId, CadId> itemCads,
+		PurchasedCartId? id = null
 	)
 	{
-		var purchasedCart = CreateCart(buyerId);
+		var purchasedCart = id is null ? CreateCart(buyerId) : CreateCart(buyerId, id);
 
 		purchasedCart.AddItems([.. items.Select(item => {
 			decimal price = prices[item.ProductId];

@@ -8,7 +8,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 	private readonly GetShipmentSortingsHandler handler = new();
 	private readonly GetShipmentSortingsQuery request = new();
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -17,6 +17,6 @@ public class Tests : Data.Shipments.BaseUnitTests
 		ShipmentSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetValues<ShipmentSortingType>());
+		await Assert.That(Enum.GetValues<ShipmentSortingType>()).IsEquivalentTo(sortings);
 	}
 }

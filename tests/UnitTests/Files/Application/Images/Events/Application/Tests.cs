@@ -28,7 +28,7 @@ public class Tests : Data.Images.BaseUnitTests
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(image);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -43,7 +43,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -62,7 +62,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
@@ -77,7 +77,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
@@ -92,7 +92,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenImageNotFound()
 	{
 		// Arrange
@@ -100,9 +100,6 @@ public class Tests : Data.Images.BaseUnitTests
 			.ReturnsAsync(null as Image);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(
-			// Act
-			() => handler.HandleAsync(request)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(() => handler.HandleAsync(request));
 	}
 }

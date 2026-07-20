@@ -7,32 +7,31 @@ using static Data.Customizations.TestData;
 
 public class Tests : Data.Customizations.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Create_ShouldNotThrowException()
 	{
 		Customization.Create(MaxValidScale, MaxValidInfill, MaxValidVolume, ValidColor, ValidMaterialId);
 	}
 
-	[Fact]
-	public void Create_ShouldPopulateProperties()
+	[Test]
+	public async Task Create_ShouldPopulateProperties()
 	{
 		Customization customization = Customization.Create(MaxValidScale, MaxValidInfill, MaxValidVolume, ValidColor, ValidMaterialId);
 
-		Assert.Multiple(
-			() => Assert.Equal(MaxValidScale, customization.Scale),
-			() => Assert.Equal(MaxValidInfill, customization.Infill),
-			() => Assert.Equal(MaxValidVolume, customization.Volume),
-			() => Assert.Equal(ValidColor, customization.Color),
-			() => Assert.Equal(ValidMaterialId, customization.MaterialId)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(customization.Scale).IsEqualTo(MaxValidScale);
+			await Assert.That(customization.Infill).IsEqualTo(MaxValidInfill);
+			await Assert.That(customization.Volume).IsEqualTo(MaxValidVolume);
+			await Assert.That(customization.Color).IsEqualTo(ValidColor);
+			await Assert.That(customization.MaterialId).IsEqualTo(ValidMaterialId);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(TestData))]
+	[Test]
+	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowException_WhenInvalid(decimal scale, decimal infill, decimal volume, string color)
 	{
-		Assert.Throws<CustomValidationException<Customization>>(
-			() => Customization.Create(scale, infill, volume, color, ValidMaterialId)
-		);
+		Assert.Throws<CustomValidationException<Customization>>(() => Customization.Create(scale, infill, volume, color, ValidMaterialId));
 	}
 }

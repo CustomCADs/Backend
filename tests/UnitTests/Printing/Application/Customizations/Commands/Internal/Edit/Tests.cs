@@ -33,7 +33,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 			.ReturnsAsync(customization);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -48,7 +48,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -63,16 +63,13 @@ public class Tests : Data.Customizations.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenCustomizationNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct)).ReturnsAsync(null as Customization);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(() => handler.Handle(request, ct));
 	}
 }

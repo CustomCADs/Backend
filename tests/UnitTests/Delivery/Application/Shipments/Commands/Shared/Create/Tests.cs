@@ -44,7 +44,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 			.ReturnsAsync(true);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -66,7 +66,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -84,7 +84,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -93,10 +93,10 @@ public class Tests : Data.Shipments.BaseUnitTests
 		ShipmentId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenDeliveryDetailsInvalid()
 	{
 		// Arrange
@@ -104,13 +104,10 @@ public class Tests : Data.Shipments.BaseUnitTests
 			.ReturnsAsync(false);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomException>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomException>(() => handler.Handle(request, ct));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenDesignerNotFound()
 	{
 		// Arrange
@@ -120,9 +117,6 @@ public class Tests : Data.Shipments.BaseUnitTests
 		)).ReturnsAsync(false);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Shipment>>(() => handler.Handle(request, ct));
 	}
 }

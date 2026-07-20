@@ -10,33 +10,32 @@ public class Tests : Data.Customs.BaseUnitTests
 {
 	private static readonly (CategoryId, CustomCategorySetter) Category = (ValidCategoryId, CustomCategorySetter.Customer);
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldNotThrowException_WhenCustomIsValid(string name, string description, bool delivery)
 	{
 		Custom.Create(name, description, delivery, ValidBuyerId, Category);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void Create_ShouldPopulateProperties(string name, string description, bool forDelivery)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task Create_ShouldPopulateProperties(string name, string description, bool forDelivery)
 	{
 		var custom = Custom.Create(name, description, forDelivery, ValidBuyerId, Category);
 
-		Assert.Multiple(
-			() => Assert.Equal(name, custom.Name),
-			() => Assert.Equal(description, custom.Description),
-			() => Assert.Equal(forDelivery, custom.ForDelivery),
-			() => Assert.Equal(ValidBuyerId, custom.BuyerId)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.Name).IsEqualTo(name);
+			await Assert.That(custom.Description).IsEqualTo(description);
+			await Assert.That(custom.ForDelivery).IsEqualTo(forDelivery);
+			await Assert.That(custom.BuyerId).IsEqualTo(ValidBuyerId);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowException_WhenCustomIsInvalid(string name, string description, bool delivery)
 	{
-		Assert.Throws<CustomValidationException<Custom>>(
-			() => Custom.Create(name, description, delivery, ValidBuyerId, Category)
-		);
+		Assert.Throws<CustomValidationException<Custom>>(() => Custom.Create(name, description, delivery, ValidBuyerId, Category));
 	}
 }

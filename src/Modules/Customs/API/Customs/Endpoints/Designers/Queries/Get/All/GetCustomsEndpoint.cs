@@ -1,5 +1,4 @@
-﻿using CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers;
-using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Shared.GetAll;
 using CustomCADs.Modules.Customs.Domain.Customs.Enums;
 using CustomCADs.Shared.Domain.Querying;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;

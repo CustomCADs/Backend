@@ -30,7 +30,7 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		)).ReturnsAsync(CreateIdempotencyKey());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -55,7 +55,7 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -64,6 +64,6 @@ public class Tests : Data.IdempotencyKeys.BaseUnitTests
 		IdempotencyKeyId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 }

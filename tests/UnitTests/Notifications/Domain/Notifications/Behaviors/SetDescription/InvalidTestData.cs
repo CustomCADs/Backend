@@ -2,11 +2,11 @@ namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Behaviors.SetD
 
 using static Data.Notifications.TestData;
 
-public class InvalidData : TheoryData<string>
+public class InvalidData : ITheoryData<string>
 {
-	public InvalidData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(MinInvalidDescription);
-		Add(MaxInvalidDescription);
+		yield return MinInvalidDescription;
+		yield return MaxInvalidDescription;
 	}
 }

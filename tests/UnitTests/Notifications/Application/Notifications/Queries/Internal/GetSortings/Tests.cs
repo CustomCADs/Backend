@@ -8,7 +8,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 	private readonly GetNotificationSortingsHandler handler = new();
 	private readonly GetNotificationSortingsQuery request = new();
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -17,6 +17,6 @@ public class Tests : Data.Notifications.BaseUnitTests
 		NotificationSortingType[] sortings = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(sortings, Enum.GetValues<NotificationSortingType>());
+		await Assert.That(Enum.GetValues<NotificationSortingType>()).IsEquivalentTo(sortings);
 	}
 }

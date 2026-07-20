@@ -2,11 +2,11 @@ namespace CustomCADs.UnitTests.Printing.Domain.Materials.Behaviors.Density;
 
 using static Data.Materials.TestData;
 
-public class TestData : TheoryData<decimal>
+public class TestData : ITheoryData<decimal>
 {
-	public TestData()
+	public static IEnumerable<decimal> GetTestData()
 	{
-		Add(MinInvalidDensity);
-		Add(MaxInvalidDensity);
+		yield return MinInvalidDensity;
+		yield return MaxInvalidDensity;
 	}
 }

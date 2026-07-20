@@ -2,20 +2,20 @@ namespace CustomCADs.UnitTests.Catalog.Domain.Products.Create;
 
 using static Data.Products.TestData;
 
-public class InvalidData : TheoryData<string, string, decimal>
+public class InvalidData : ITheoryData<(string, string, decimal)>
 {
-	public InvalidData()
+	public static IEnumerable<(string, string, decimal)> GetTestData()
 	{
 		// Name
-		Add(MinInvalidName, MinValidDescription, MinValidPrice);
-		Add(MaxInvalidName, MaxValidDescription, MaxValidPrice);
+		yield return (MinInvalidName, MinValidDescription, MinValidPrice);
+		yield return (MaxInvalidName, MaxValidDescription, MaxValidPrice);
 
 		// Description
-		Add(MinValidName, MinInvalidDescription, MinValidPrice);
-		Add(MaxValidName, MaxInvalidDescription, MaxValidPrice);
+		yield return (MinValidName, MinInvalidDescription, MinValidPrice);
+		yield return (MaxValidName, MaxInvalidDescription, MaxValidPrice);
 
 		// Price
-		Add(MinValidName, MinValidDescription, MinInvalidPrice);
-		Add(MaxValidName, MaxValidDescription, MaxInvalidPrice);
+		yield return (MinValidName, MinValidDescription, MinInvalidPrice);
+		yield return (MaxValidName, MaxValidDescription, MaxInvalidPrice);
 	}
 }

@@ -4,6 +4,7 @@ using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Dtos.Notifications;
 using CustomCADs.Shared.Application.Events.Notifications;
+using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Delete;
@@ -30,7 +31,7 @@ public class Tests : Data.Customs.BaseUnitTests
 			.ReturnsAsync(custom);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -45,7 +46,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -66,9 +67,9 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 	}
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task Handle_ShouldRaiseEvents(bool isPending)
 	{
 		// Arrange
@@ -84,5 +85,16 @@ public class Tests : Data.Customs.BaseUnitTests
 			),
 			Times.Exactly(isPending ? 0 : 1)
 		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenUnauthorizedAccess()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, true, ct))
+			.ReturnsAsync(CreateCustom(buyerId: AccountId.New()));
+
+		// Assert
+		await Assert.ThrowsAsync<CustomAuthorizationException<Custom>>(() => handler.Handle(request, ct));
 	}
 }

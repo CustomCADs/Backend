@@ -11,18 +11,18 @@ using static Data.Users.TestData;
 public class Tests : Data.Users.BaseUnitTests
 {
 	private readonly VerifyUserEmailHandler handler;
-	private readonly VerifyUserEmailCommand request = new(MinValidUsername, Token, ValidFingerprint);
+	private readonly VerifyUserEmailCommand request = new(MinValidUsername, RefreshTokenValue, ValidFingerprint);
 
 	private readonly Mock<IUserService> service = new();
 	private readonly Mock<ITokenService> tokenService = new();
 
-	private const string Token = "email-token";
+	private const string RefreshTokenValue = "refresh-token";
 	private readonly User User = CreateUser(isVerified: false);
-	private static readonly RefreshToken RefreshToken = RefreshToken.Create(Token, ValidFingerprint, ValidId, false);
+	private static readonly RefreshToken RefreshToken = RefreshToken.Create(RefreshTokenValue, ValidFingerprint, ValidId, false);
 	private static readonly TokensDto Tokens = new(
 		Role: "role",
 		AccessToken: new("access-token", DateTimeOffset.UtcNow),
-		RefreshToken: new("refresh-token", DateTimeOffset.UtcNow),
+		RefreshToken: new(RefreshTokenValue, DateTimeOffset.UtcNow),
 		CsrfToken: new("csrf-token", DateTimeOffset.UtcNow)
 	);
 
@@ -30,15 +30,17 @@ public class Tests : Data.Users.BaseUnitTests
 	{
 		handler = new(service.Object, tokenService.Object);
 
-		tokenService.Setup(x => x.IssueRefreshToken(
-			It.IsAny<Func<string, RefreshToken>>()
-		)).Returns(RefreshToken);
-		tokenService.Setup(x => x.IssueTokens(User, RefreshToken)).Returns(Tokens);
+		tokenService.Setup(x => x.IssueRefreshToken(It.IsAny<Func<string, RefreshToken>>()))
+			.Returns((Func<string, RefreshToken> factory) => factory(RefreshToken.Value));
 
-		service.Setup(x => x.GetByUsernameAsync(User.Username)).ReturnsAsync(User);
+		tokenService.Setup(x => x.IssueTokens(User, It.Is<RefreshToken>(x => x.Value == RefreshTokenValue)))
+			.Returns(Tokens);
+
+		service.Setup(x => x.GetByUsernameAsync(User.Username))
+			.ReturnsAsync(User);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -52,12 +54,12 @@ public class Tests : Data.Users.BaseUnitTests
 			Times.Once()
 		);
 		service.Verify(
-			x => x.ConfirmEmailAsync(User.Username, Token),
+			x => x.ConfirmEmailAsync(User.Username, RefreshTokenValue),
 			Times.Once()
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldIssueTokens()
 	{
 		// Arrange
@@ -73,12 +75,12 @@ public class Tests : Data.Users.BaseUnitTests
 			Times.Once()
 		);
 		tokenService.Verify(
-			x => x.IssueTokens(User, RefreshToken),
+			x => x.IssueTokens(User, It.Is<RefreshToken>(x => x.Value == RefreshToken.Value)),
 			Times.Once()
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -87,10 +89,16 @@ public class Tests : Data.Users.BaseUnitTests
 		TokensDto tokens = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Tokens, tokens);
+		using (Assert.Multiple())
+		{
+			await Assert.That(tokens.AccessToken).IsEqualTo(Tokens.AccessToken);
+			await Assert.That(tokens.RefreshToken.Value).IsEqualTo(Tokens.RefreshToken.Value);
+			await Assert.That(tokens.CsrfToken).IsEqualTo(Tokens.CsrfToken);
+			await Assert.That(tokens.Role).IsEqualTo(Tokens.Role);
+		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenEmailVerified()
 	{
 		// Arrange
@@ -98,9 +106,6 @@ public class Tests : Data.Users.BaseUnitTests
 		service.Setup(x => x.GetByUsernameAsync(verifiedUser.Username)).ReturnsAsync(verifiedUser);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
-			// Act
-			() => handler.Handle(request with { Username = verifiedUser.Username }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request with { Username = verifiedUser.Username }, ct));
 	}
 }

@@ -16,9 +16,20 @@ public class Tests : Data.Users.BaseUnitTests
 	private readonly Mock<IRequestSender> sender = new();
 
 	private readonly User user = CreateUser();
+	private static readonly AccountInfoDto Info = new(
+		Id: ValidAccountId,
+		CreatedAt: DateTimeOffset.UtcNow,
+		TrackViewedProducts: true,
+		FirstName: null,
+		LastName: null
+	);
+	private static readonly ViewedProductDto[] ViewedProducts = [];
 
 	public Tests()
 	{
+		user.AddRefreshToken("random-value1", ValidFingerprint, false);
+		user.AddRefreshToken("random-value2", ValidFingerprint, false);
+		user.AddRefreshToken("random-value3", ValidFingerprint, false);
 		user.AddRefreshToken(request.RefreshToken!, ValidFingerprint, false);
 
 		handler = new(service.Object, sender.Object);
@@ -29,10 +40,15 @@ public class Tests : Data.Users.BaseUnitTests
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetAccountInfoByUsernameQuery>(x => x.Username == user.Username),
 			ct
-		)).ReturnsAsync(new AccountInfoDto(ValidAccountId, DateTimeOffset.UtcNow, true, null, null));
+		)).ReturnsAsync(Info);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.Is<GetAccountViewedProductsByUsernameQuery>(x => x.Username == user.Username),
+			ct
+		)).ReturnsAsync(ViewedProducts);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -47,7 +63,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -72,7 +88,7 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -81,6 +97,23 @@ public class Tests : Data.Users.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, result.Id);
+		using (Assert.Multiple())
+		{
+			// user info:
+			await Assert.That(result.Id).IsEqualTo(ValidId);
+			await Assert.That(result.Role).IsEqualTo(user.Role);
+			await Assert.That(result.Username).IsEqualTo(user.Username);
+			await Assert.That(result.Email).IsEqualTo(user.Email);
+
+			// account info:
+			await Assert.That(result.TrackViewedProducts).IsEqualTo(Info.TrackViewedProducts);
+			await Assert.That(result.CreatedAt).IsEqualTo(Info.CreatedAt);
+			await Assert.That(result.FirstName).IsEqualTo(Info.FirstName);
+			await Assert.That(result.LastName).IsEqualTo(Info.LastName);
+
+			// collections:
+			await Assert.That(result.ViewedProducts).IsEquivalentTo(ViewedProducts);
+			await Assert.That(result.Fingerprints.Select(x => x.IssuedAt)).IsEquivalentTo(user.RefreshTokens.OrderByDescending(x => x.IssuedAt).Select(x => x.IssuedAt));
+		}
 	}
 }

@@ -4,28 +4,26 @@ namespace CustomCADs.UnitTests.Catalog.Domain.Products.Behaviors.SetName;
 
 public class Tests : Data.Products.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ShouldNotThrow_WhenNameIsValid(string name)
 	{
 		CreateProduct().SetName(name);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetName_ShouldPopulateProperties_WhenNameIsValid(string name)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task SetName_ShouldPopulateProperties_WhenNameIsValid(string name)
 	{
 		var product = CreateProduct();
 		product.SetName(name);
-		Assert.Equal(name, product.Name);
+		await Assert.That(product.Name).IsEqualTo(name);
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ShouldThrowException_WhenNameIsNotValid(string name)
 	{
-		Assert.Throws<CustomValidationException<Product>>(
-			() => CreateProduct().SetName(name)
-		);
+		Assert.Throws<CustomValidationException<Product>>(() => CreateProduct().SetName(name));
 	}
 }

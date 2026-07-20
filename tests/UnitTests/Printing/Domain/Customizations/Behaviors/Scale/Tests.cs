@@ -7,30 +7,28 @@ using static Data.Customizations.TestData;
 
 public class Tests : Data.Customizations.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetScale_ShouldNotThrowException()
 	{
 		CreateCustomization().SetScale(MaxValidScale);
 	}
 
-	[Fact]
-	public void SetScale_ShouldPopulateProperties()
+	[Test]
+	public async Task SetScale_ShouldPopulateProperties()
 	{
 		Customization material = CreateCustomization();
 
 		material.SetScale(MaxValidScale);
 
-		Assert.Equal(MaxValidScale, material.Scale);
+		await Assert.That(material.Scale).IsEqualTo(MaxValidScale);
 	}
 
-	[Theory]
-	[ClassData(typeof(TestData))]
+	[Test]
+	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
 	public void SetScale_ShouldThrowException_WhenScaleInvalid(decimal scale)
 	{
 		Customization material = CreateCustomization();
 
-		Assert.Throws<CustomValidationException<Customization>>(
-			() => material.SetScale(scale)
-		);
+		Assert.Throws<CustomValidationException<Customization>>(() => material.SetScale(scale));
 	}
 }

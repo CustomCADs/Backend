@@ -29,7 +29,7 @@ public class Tests : Data.Cads.BaseUnitTests
 			.ReturnsAsync(Upload.Response);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
@@ -44,7 +44,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -53,6 +53,6 @@ public class Tests : Data.Cads.BaseUnitTests
 		UploadFileResponse result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Upload.Response, result);
+		await Assert.That(result).IsEqualTo(Upload.Response);
 	}
 }

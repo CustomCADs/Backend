@@ -24,11 +24,14 @@ public class Tests : Data.Categories.BaseUnitTests
 	{
 		handler = new(reads.Object, cache.Object);
 
-		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Category>>>>())).ReturnsAsync(categories);
-		reads.Setup(x => x.AllAsync(false, ct)).ReturnsAsync(categories);
+		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Category>>>>()))
+			.Returns(async (Func<Task<ICollection<Category>>> factory) => await factory());
+
+		reads.Setup(x => x.AllAsync(false, ct))
+			.ReturnsAsync(categories);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -43,7 +46,22 @@ public class Tests : Data.Categories.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.AllAsync(false, ct),
+			Times.Once()
+		);
+	}
+
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -52,6 +70,6 @@ public class Tests : Data.Categories.BaseUnitTests
 		IEnumerable<CategoryReadDto> categories = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(categories.Select(r => r.Id), this.categories.Select(r => r.Id));
+		await Assert.That(this.categories.Select(r => r.Id)).IsEquivalentTo(categories.Select(r => r.Id));
 	}
 }

@@ -7,30 +7,28 @@ using static Data.Materials.TestData;
 
 public class Tests : Data.Materials.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetDensity_ShouldNotThrowException()
 	{
 		CreateMaterial().SetDensity(MaxValidDensity);
 	}
 
-	[Fact]
-	public void SetDensity_ShouldPopulateProperties()
+	[Test]
+	public async Task SetDensity_ShouldPopulateProperties()
 	{
 		Material material = CreateMaterial();
 
 		material.SetDensity(MaxValidDensity);
 
-		Assert.Equal(MaxValidDensity, material.Density);
+		await Assert.That(material.Density).IsEqualTo(MaxValidDensity);
 	}
 
-	[Theory]
-	[ClassData(typeof(TestData))]
+	[Test]
+	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
 	public void SetDensity_ShouldThrowException_WhenDensityInvalid(decimal density)
 	{
 		Material material = CreateMaterial();
 
-		Assert.Throws<CustomValidationException<Material>>(
-			() => material.SetDensity(density)
-		);
+		Assert.Throws<CustomValidationException<Material>>(() => material.SetDensity(density));
 	}
 }

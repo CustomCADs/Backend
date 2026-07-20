@@ -22,7 +22,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		handler = new(writes.Object, uow.Object);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange

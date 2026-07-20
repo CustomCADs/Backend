@@ -8,7 +8,7 @@ using static Constants.Tokens;
 public class RefreshToken : BaseEntity
 {
 	private RefreshToken() { }
-	private RefreshToken(string value, Fingerprint fingerprint, UserId userId, bool longerSession)
+	private RefreshToken(string value, Fingerprint fingerprint, UserId userId, bool longerSession) : this()
 	{
 		Value = value;
 		Fingerprint = fingerprint;
@@ -36,12 +36,6 @@ public class RefreshToken : BaseEntity
 
 	public static RefreshToken Create(string value, Fingerprint fingerprint, UserId userId, bool longerSession)
 		=> new(value, fingerprint, userId, longerSession);
-
-	public static RefreshToken Create(RefreshTokenId id, string value, Fingerprint fingerprint, UserId userId, bool longerSession)
-		=> new(value, fingerprint, userId, longerSession)
-		{
-			Id = id,
-		};
 
 	public static RefreshToken Create(RefreshTokenId id, string value, Fingerprint fingerprint, UserId userId, DateTimeOffset issuedAt, DateTimeOffset expiresAt)
 		=> new(value, fingerprint, userId, issuedAt, expiresAt)

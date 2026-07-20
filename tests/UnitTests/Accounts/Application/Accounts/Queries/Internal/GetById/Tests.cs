@@ -21,7 +21,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 			.ReturnsAsync(CreateAccount(id: ValidId));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -36,7 +36,7 @@ public class Tests : Data.Accounts.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -45,19 +45,16 @@ public class Tests : Data.Accounts.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, result.Id);
+		await Assert.That(result.Id).IsEqualTo(ValidId);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenAccountNotFound()
 	{
 		// Arrange
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct)).ReturnsAsync(null as Account);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Account>>(() => handler.Handle(request, ct));
 	}
 }

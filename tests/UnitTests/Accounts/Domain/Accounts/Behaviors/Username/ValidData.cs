@@ -2,12 +2,12 @@
 
 using static Data.Accounts.TestData;
 
-public class ValidData : TheoryData<string>
+public class ValidData : ITheoryData<string>
 {
-	public ValidData()
+	public static IEnumerable<string> GetTestData()
 	{
-		Add(ValidUsername);
-		Add(MinValidUsername);
-		Add(MaxValidUsername);
+		yield return ValidUsername;
+		yield return MinValidUsername;
+		yield return MaxValidUsername;
 	}
 }

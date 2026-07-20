@@ -24,7 +24,7 @@ public class Tests : Data.Users.BaseUnitTests
 		service.Setup(x => x.GetByRefreshTokenAsync(Token.Value)).ReturnsAsync((user, Token));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallService()
 	{
 		// Arrange
@@ -39,15 +39,12 @@ public class Tests : Data.Users.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenMissingToken()
 	{
 		// Arrange
 
 		// Assert
-		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(
-			// Act
-			() => handler.Handle(request with { RefreshToken = null }, ct)
-		);
+		await Assert.ThrowsAsync<CustomAuthorizationException<User>>(() => handler.Handle(request with { RefreshToken = null }, ct));
 	}
 }

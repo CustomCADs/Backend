@@ -1,20 +1,21 @@
-﻿namespace CustomCADs.UnitTests.Catalog.Domain.Products.Behaviors.Counts.AddPurchase;
+﻿
+namespace CustomCADs.UnitTests.Catalog.Domain.Products.Behaviors.Counts.AddPurchase;
 
 public class Tests : Data.Products.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Add_ShouldNotThrowException()
 	{
 		var product = CreateProduct();
 		product.AddToPurchaseCount();
 	}
 
-	[Theory]
-	[InlineData(1)]
-	[InlineData(3)]
-	[InlineData(5)]
-	[InlineData(10)]
-	public void Add_ShouldIncreasePurchaseCountResult(int iterations)
+	[Test]
+	[Arguments(1)]
+	[Arguments(3)]
+	[Arguments(5)]
+	[Arguments(10)]
+	public async Task Add_ShouldIncreasePurchaseCountResult(int iterations)
 	{
 		var product = CreateProduct();
 
@@ -23,6 +24,6 @@ public class Tests : Data.Products.BaseUnitTests
 			product.AddToPurchaseCount();
 		}
 
-		Assert.Equal(iterations, product.Counts.Purchases);
+		await Assert.That(product.Counts.Purchases).IsEqualTo(iterations);
 	}
 }

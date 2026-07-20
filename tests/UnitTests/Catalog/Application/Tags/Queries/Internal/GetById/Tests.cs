@@ -17,13 +17,14 @@ public class Tests : Data.Tags.BaseUnitTests
 	{
 		handler = new(reads.Object, cache.Object);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Tag>>>()
-		)).ReturnsAsync(CreateTag());
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Tag>>>()))
+			.Returns(async (TagId id, Func<Task<Tag>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(CreateTag());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -38,7 +39,22 @@ public class Tests : Data.Tags.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+	}
+
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -47,6 +63,6 @@ public class Tests : Data.Tags.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, result.Id);
+		await Assert.That(result.Id).IsEqualTo(ValidId);
 	}
 }

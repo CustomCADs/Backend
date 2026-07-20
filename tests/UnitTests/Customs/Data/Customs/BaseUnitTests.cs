@@ -12,9 +12,6 @@ public class BaseUnitTests
 {
 	public static readonly CancellationToken ct = CancellationToken.None;
 
-	protected static readonly Func<Action, InvalidOperationException> ExpectValidationException
-		= Xunit.Assert.Throws<InvalidOperationException>;
-
 	public static Custom CreateCustom(
 		string? name = null,
 		string? description = null,
@@ -28,7 +25,7 @@ public class BaseUnitTests
 			id: id ?? ValidId,
 			name: name ?? MinValidName,
 			description: description ?? MinValidDescription,
-			delivery: forDelivery ?? false,
+			forDelivery: forDelivery ?? false,
 			buyerId: buyerId ?? ValidBuyerId,
 			category: (categoryId ?? ValidCategoryId, setter ?? CustomCategorySetter.Customer)
 		);

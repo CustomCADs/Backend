@@ -1,4 +1,5 @@
 using CustomCADs.Modules.Customs.Domain.Customs.Enums;
+using CustomCADs.Shared.Domain.Exceptions;
 
 namespace CustomCADs.UnitTests.Customs.Domain.Customs.Behaviors.Statuses.Complete;
 
@@ -6,8 +7,8 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Fact]
-	public void Complete_ShouldSucceed_WhenFinished()
+	[Test]
+	public async Task Complete_ShouldSucceed_WhenFinished()
 	{
 		Custom custom = CreateCustom();
 		custom.Accept(ValidDesignerId);
@@ -16,19 +17,34 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		custom.Complete(customizationId: null);
 
-		Assert.Multiple(
-			() => Assert.Equal(CustomStatus.Completed, custom.CustomStatus),
-			() => Assert.NotNull(custom.AcceptedCustom),
-			() => Assert.NotNull(custom.FinishedCustom),
-			() => Assert.NotNull(custom.CompletedCustom),
-			() => Assert.Null(custom.CompletedCustom!.CustomizationId)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.CustomStatus).IsEqualTo(CustomStatus.Completed);
+			await Assert.That(custom.AcceptedCustom).IsNotNull();
+			await Assert.That(custom.FinishedCustom).IsNotNull();
+			await Assert.That(custom.CompletedCustom).IsNotNull();
+			await Assert.That(custom.CompletedCustom!.CustomizationId).IsNull();
+		}
 	}
 
-	[Fact]
+	[Test]
+	public void Complete_ShouldFail_WhenForDeliveryButNoCustomization()
+	{
+		Assert.Throws<CustomValidationException<Custom>>(() =>
+		{
+			Custom custom = CreateCustom(forDelivery: true);
+			custom.Accept(ValidDesignerId);
+			custom.Begin();
+			custom.Finish(ValidCadId, ValidPrice);
+
+			custom.Complete(customizationId: null);
+		});
+	}
+
+	[Test]
 	public void Complete_ShouldFail_WhenPending()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 
@@ -36,10 +52,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenAccepted()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -48,10 +64,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenBegun()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -61,10 +77,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenReported()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -74,10 +90,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenCompleted()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Accept(ValidDesignerId);
@@ -89,10 +105,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Complete_ShouldFail_WhenRemoved()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<InvalidOperationException>(() =>
 		{
 			Custom custom = CreateCustom();
 			custom.Report();

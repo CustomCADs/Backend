@@ -34,7 +34,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		)).ReturnsAsync(Calculations);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldCallDelivery()
 	{
 		// Arrange
@@ -57,7 +57,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -66,6 +66,6 @@ public class Tests : Data.Shipments.BaseUnitTests
 		var result = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(Calculations.Length, result.Length);
+		await Assert.That(result.Length).IsEqualTo(Calculations.Length);
 	}
 }

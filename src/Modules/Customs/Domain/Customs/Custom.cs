@@ -19,7 +19,12 @@ public class Custom : BaseAggregateRoot
 	private ICustomState State { get => field ??= RestoreState(); set; }
 
 	private Custom() { }
-	private Custom(string name, string description, bool delivery, AccountId buyerId, CategoryParam? category) : this()
+	private Custom(string name,
+		string description,
+		bool delivery,
+		AccountId buyerId,
+		CategoryParam? category
+	) : this()
 	{
 		Name = name;
 		Description = description;
@@ -60,10 +65,10 @@ public class Custom : BaseAggregateRoot
 		CustomId id,
 		string name,
 		string description,
-		bool delivery,
+		bool forDelivery,
 		AccountId buyerId,
 		CategoryParam? category
-	) => new Custom(name, description, delivery, buyerId, category)
+	) => new Custom(name, description, forDelivery, buyerId, category)
 	{
 		Id = id
 	}

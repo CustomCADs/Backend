@@ -1,7 +1,6 @@
 ﻿using CustomCADs.Modules.Delivery.Application.Contracts;
 using CustomCADs.Modules.Delivery.Domain.Repositories;
 using CustomCADs.Modules.Delivery.Domain.Repositories.Reads;
-using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 
 namespace CustomCADs.Modules.Delivery.Application.Shipments.Commands.Internal.Cancel;
 

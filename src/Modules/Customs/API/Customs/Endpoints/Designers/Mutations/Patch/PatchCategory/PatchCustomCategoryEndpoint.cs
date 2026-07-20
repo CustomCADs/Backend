@@ -1,4 +1,3 @@
-using CustomCADs.Modules.Customs.API.Customs.Endpoints.Designers;
 using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Designer.SetCategory;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 

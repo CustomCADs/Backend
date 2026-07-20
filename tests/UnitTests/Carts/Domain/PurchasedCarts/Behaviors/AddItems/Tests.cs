@@ -8,7 +8,7 @@ using static Data.PurchasedCarts.TestData.CartItemsData;
 
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void AddItems_ShouldNotThrowException_WhenItemsCountIsValid()
 	{
 		CreateCart().AddItems([
@@ -16,7 +16,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		]);
 	}
 
-	[Fact]
+	[Test]
 	public void AddItems_ShouldThrowException_WhenItemsCountIsNotValid()
 	{
 		var purchasedCart = CreateCart();
@@ -27,10 +27,8 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 			]);
 		}
 
-		Assert.Throws<CustomValidationException<PurchasedCart>>(
-			() => purchasedCart.AddItems([
+		Assert.Throws<CustomValidationException<PurchasedCart>>(() => purchasedCart.AddItems([
 				new(MaxValidPrice, ValidCadId, ProductId.New(), false, null, 1, DateTimeOffset.UtcNow)
-			])
-		);
+			]));
 	}
 }

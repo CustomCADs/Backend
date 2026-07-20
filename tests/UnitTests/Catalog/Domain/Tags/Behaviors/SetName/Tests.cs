@@ -5,28 +5,26 @@ namespace CustomCADs.UnitTests.Catalog.Domain.Tags.Behaviors.SetName;
 
 public class Tests : Data.Tags.BaseUnitTests
 {
-	[Theory]
-	[ClassData(typeof(ValidData))]
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ShouldNotThrow_WhenNameIsValid(string name)
 	{
 		CreateTag().SetName(name);
 	}
 
-	[Theory]
-	[ClassData(typeof(ValidData))]
-	public void SetName_ShouldPopulateProperties_WhenNameIsValid(string name)
+	[Test]
+	[MethodDataSource(typeof(ValidData), nameof(ITheoryData<>.GetTestData))]
+	public async Task SetName_ShouldPopulateProperties_WhenNameIsValid(string name)
 	{
 		var tag = CreateTag();
 		tag.SetName(name);
-		Assert.Equal(name, tag.Name);
+		await Assert.That(tag.Name).IsEqualTo(name);
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void SetName_ShouldThrowException_WhenNameIsNotValid(string name)
 	{
-		Assert.Throws<CustomValidationException<Tag>>(
-			() => CreateTag().SetName(name)
-		);
+		Assert.Throws<CustomValidationException<Tag>>(() => CreateTag().SetName(name));
 	}
 }

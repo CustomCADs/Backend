@@ -25,15 +25,16 @@ public class Tests : Data.Cads.BaseUnitTests
 	{
 		handler = new(reads.Object, storage.Object, cache.Object, policies: [new PolicyMock()]);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			ValidId,
-			It.IsAny<Func<Task<Cad>>>()
-		)).ReturnsAsync(CreateCad());
+		cache.Setup(x => x.GetOrCreateAsync(ValidId, It.IsAny<Func<Task<Cad>>>()))
+			.Returns(async (CadId id, Func<Task<Cad>> factory) => await factory());
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(CreateCad());
 
 		storage.Setup(x => x.GetPresignedPutUrlAsync(ValidKey, UploadRequest)).ReturnsAsync(PresignedUrl);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -48,7 +49,22 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+	}
+
+	[Test]
 	public async Task Handle_ShouldCallStorage()
 	{
 		// Arrange
@@ -63,7 +79,7 @@ public class Tests : Data.Cads.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -72,6 +88,6 @@ public class Tests : Data.Cads.BaseUnitTests
 		string url = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(PresignedUrl, url);
+		await Assert.That(url).IsEqualTo(PresignedUrl);
 	}
 }

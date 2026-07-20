@@ -2,11 +2,11 @@ namespace CustomCADs.UnitTests.Printing.Domain.Customizations.Behaviors.Infill;
 
 using static Data.Customizations.TestData;
 
-public class TestData : TheoryData<decimal>
+public class TestData : ITheoryData<decimal>
 {
-	public TestData()
+	public static IEnumerable<decimal> GetTestData()
 	{
-		Add(MinInvalidInfill);
-		Add(MaxInvalidInfill);
+		yield return MinInvalidInfill;
+		yield return MaxInvalidInfill;
 	}
 }

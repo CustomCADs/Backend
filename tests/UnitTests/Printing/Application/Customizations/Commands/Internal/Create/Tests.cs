@@ -36,7 +36,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		)).ReturnsAsync(CreateCustomization(id: ValidId));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -64,7 +64,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -73,6 +73,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 		CustomizationId id = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Equal(ValidId, id);
+		await Assert.That(id).IsEqualTo(ValidId);
 	}
 }

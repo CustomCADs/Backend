@@ -3,12 +3,10 @@ using CustomCADs.Modules.Printing.Domain.Materials;
 
 namespace CustomCADs.Modules.Printing.Domain.Services;
 
+using static PrintConstants;
+
 public class PrintCalculator : IPrintCalculator
 {
-	private const decimal ProfitMultiplier = 200m / 100;
-	private const decimal ProfitBase = 5.0m;
-	private const decimal WallFactor = 0.45m;
-
 	public decimal CalculateWeight(Customization customization, Material material)
 	{
 		decimal volumeCm3 = customization.Volume / 1000;

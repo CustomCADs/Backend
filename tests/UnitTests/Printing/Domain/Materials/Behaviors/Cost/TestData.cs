@@ -2,11 +2,11 @@ namespace CustomCADs.UnitTests.Printing.Domain.Materials.Behaviors.Cost;
 
 using static Data.Materials.TestData;
 
-public class TestData : TheoryData<decimal>
+public class TestData : ITheoryData<decimal>
 {
-	public TestData()
+	public static IEnumerable<decimal> GetTestData()
 	{
-		Add(MinInvalidCost);
-		Add(MaxInvalidCost);
+		yield return MinInvalidCost;
+		yield return MaxInvalidCost;
 	}
 }

@@ -6,29 +6,28 @@ using static Data.Images.TestData;
 
 public class Tests : Data.Images.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void Create_ShouldNotThrowExcepion_WhenImageIsValid()
 	{
 		Image.Create(ValidKey, ValidContentType, ValidOwnerId);
 	}
 
-	[Fact]
-	public void Create_ShouldPopulateProperties_WhenImageIsValid()
+	[Test]
+	public async Task Create_ShouldPopulateProperties_WhenImageIsValid()
 	{
 		var image = Image.Create(ValidKey, ValidContentType, ValidOwnerId);
 
-		Assert.Multiple(
-			() => Assert.Equal(ValidKey, image.Key),
-			() => Assert.Equal(ValidContentType, image.ContentType)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(image.Key).IsEqualTo(ValidKey);
+			await Assert.That(image.ContentType).IsEqualTo(ValidContentType);
+		}
 	}
 
-	[Theory]
-	[ClassData(typeof(InvalidData))]
+	[Test]
+	[MethodDataSource(typeof(InvalidData), nameof(ITheoryData<>.GetTestData))]
 	public void Create_ShouldThrowException_WhenKeyIsInvalid(string key, string contentType)
 	{
-		Assert.Throws<CustomValidationException<Image>>(
-			() => Image.Create(key, contentType, ValidOwnerId)
-		);
+		Assert.Throws<CustomValidationException<Image>>(() => Image.Create(key, contentType, ValidOwnerId));
 	}
 }

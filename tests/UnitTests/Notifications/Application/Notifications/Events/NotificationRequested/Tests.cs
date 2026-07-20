@@ -48,7 +48,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		)).ReturnsAsync("John_User");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase_WhenSingleReceiver()
 	{
 		// Arrange
@@ -75,7 +75,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldBulkInsert_WhenMultipleReceivers()
 	{
 		// Arrange
@@ -93,7 +93,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldSendRequests()
 	{
 		// Arrange
@@ -111,7 +111,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldNotifySubscribers()
 	{
 		// Arrange

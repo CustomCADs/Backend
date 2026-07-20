@@ -5,7 +5,7 @@ namespace CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
 public class IdempotencyKey : BaseAggregateRoot
 {
 	private IdempotencyKey() { }
-	private IdempotencyKey(IdempotencyKeyId id, string hash)
+	private IdempotencyKey(IdempotencyKeyId id, string hash) : this()
 	{
 		Id = id;
 		RequestHash = hash;

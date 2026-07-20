@@ -26,7 +26,7 @@ public class Tests : Data.Images.BaseUnitTests
 			.ReturnsAsync(image);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldQueryDatabase()
 	{
 		// Arrange
@@ -41,7 +41,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldPersistToDatabase()
 	{
 		// Arrange
@@ -56,7 +56,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldWriteToCache()
 	{
 		// Arrange
@@ -71,7 +71,7 @@ public class Tests : Data.Images.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldModifyImage()
 	{
 		// Arrange
@@ -80,13 +80,11 @@ public class Tests : Data.Images.BaseUnitTests
 		await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(ValidKey, image.Key),
-			() => Assert.Equal(ValidContentType, image.ContentType)
-		);
+		await Assert.That(image.Key).IsEqualTo(ValidKey);
+		await Assert.That(image.ContentType).IsEqualTo(ValidContentType);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldThrowException_WhenImageNotFound()
 	{
 		// Arrange
@@ -94,9 +92,6 @@ public class Tests : Data.Images.BaseUnitTests
 			.ReturnsAsync(null as Image);
 
 		// Assert
-		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(
-			// Act
-			() => handler.Handle(request, ct)
-		);
+		await Assert.ThrowsAsync<CustomNotFoundException<Image>>(() => handler.Handle(request, ct));
 	}
 }

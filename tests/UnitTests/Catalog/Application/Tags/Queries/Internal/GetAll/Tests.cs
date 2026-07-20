@@ -23,12 +23,14 @@ public class Tests : Data.Tags.BaseUnitTests
 	{
 		handler = new(reads.Object, cache.Object);
 
-		cache.Setup(x => x.GetOrCreateAsync(
-			It.IsAny<Func<Task<ICollection<Tag>>>>()
-		)).ReturnsAsync(Tags);
+		cache.Setup(x => x.GetOrCreateAsync(It.IsAny<Func<Task<ICollection<Tag>>>>()))
+			.Returns(async (Func<Task<ICollection<Tag>>> factory) => await factory());
+
+		reads.Setup(x => x.AllAsync(false, ct))
+			.ReturnsAsync(Tags);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Handle_ShouldReadCache()
 	{
 		// Arrange
@@ -43,7 +45,22 @@ public class Tests : Data.Tags.BaseUnitTests
 		);
 	}
 
-	[Fact]
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.AllAsync(false, ct),
+			Times.Once()
+		);
+	}
+
+	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -52,9 +69,10 @@ public class Tests : Data.Tags.BaseUnitTests
 		TagDto[] tags = await handler.Handle(request, ct);
 
 		// Assert
-		Assert.Multiple(
-			() => Assert.Equal(tags.Select(r => r.Id), Tags.Select(r => r.Id)),
-			() => Assert.Equal(tags.Select(r => r.Name), Tags.Select(r => r.Name))
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(Tags.Select(r => r.Id)).IsEquivalentTo(tags.Select(r => r.Id));
+			await Assert.That(Tags.Select(r => r.Name)).IsEquivalentTo(tags.Select(r => r.Name));
+		}
 	}
 }

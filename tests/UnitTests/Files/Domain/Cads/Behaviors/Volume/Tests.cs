@@ -6,7 +6,7 @@ using static Data.Cads.TestData;
 
 public class Tests : Data.Cads.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetKey_ShouldNotThrowException_WhenKeyIsValid()
 	{
 		var cad = CreateCad();
@@ -14,24 +14,21 @@ public class Tests : Data.Cads.BaseUnitTests
 		cad.SetVolume(ValidVolume);
 	}
 
-	[Fact]
-	public void SetKey_ShouldPopulateProperties_WhenKeyIsValid()
+	[Test]
+	public async Task SetKey_ShouldPopulateProperties_WhenKeyIsValid()
 	{
 		var cad = CreateCad();
 
 		cad.SetVolume(ValidVolume);
 
-		Assert.Equal(ValidVolume, cad.Volume);
+		await Assert.That(cad.Volume).IsEqualTo(ValidVolume);
 	}
 
-	[Fact]
+	[Test]
 	public void SetKey_ShouldThrowException_WhenKeyIsInvalid()
 	{
 		var cad = CreateCad();
 
-		Assert.Throws<CustomValidationException<Cad>>(
-			() => cad.SetVolume(InvalidVolume)
-
-		);
+		Assert.Throws<CustomValidationException<Cad>>(() => cad.SetVolume(InvalidVolume));
 	}
 }

@@ -4,21 +4,21 @@ namespace CustomCADs.UnitTests.Notifications.Domain.Notifications.Behaviors.Stat
 
 public class Tests : Data.Notifications.BaseUnitTests
 {
-	[Fact]
-	public void Open_ShouldSucceed_WhenRead()
+	[Test]
+	public async Task Open_ShouldSucceed_WhenRead()
 	{
 		Notification notification = CreateNotification();
 		notification.Read();
 
 		notification.Open();
 
-		Assert.Equal(NotificationStatus.Opened, notification.Status);
+		await Assert.That(notification.Status).IsEqualTo(NotificationStatus.Opened);
 	}
 
-	[Fact]
+	[Test]
 	public void Open_ShouldFail_WhenUnread()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<CustomValidationException<Notification>>(() =>
 		{
 			Notification notification = CreateNotification();
 
@@ -26,10 +26,10 @@ public class Tests : Data.Notifications.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Open_ShouldFail_WhenOpened()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<CustomValidationException<Notification>>(() =>
 		{
 			Notification notification = CreateNotification();
 			notification.Read();
@@ -39,10 +39,10 @@ public class Tests : Data.Notifications.BaseUnitTests
 		});
 	}
 
-	[Fact]
+	[Test]
 	public void Open_ShouldFail_WhenHidden()
 	{
-		ExpectValidationException(() =>
+		Assert.Throws<CustomValidationException<Notification>>(() =>
 		{
 			Notification notification = CreateNotification();
 			notification.Read();

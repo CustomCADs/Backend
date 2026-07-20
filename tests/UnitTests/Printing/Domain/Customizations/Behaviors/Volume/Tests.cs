@@ -7,30 +7,28 @@ using static Data.Customizations.TestData;
 
 public class Tests : Data.Customizations.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetVolume_ShouldNotThrowException()
 	{
 		CreateCustomization().SetVolume(MaxValidVolume);
 	}
 
-	[Fact]
-	public void SetVolume_ShouldPopulateProperties()
+	[Test]
+	public async Task SetVolume_ShouldPopulateProperties()
 	{
 		Customization material = CreateCustomization();
 
 		material.SetVolume(MaxValidVolume);
 
-		Assert.Equal(MaxValidVolume, material.Volume);
+		await Assert.That(material.Volume).IsEqualTo(MaxValidVolume);
 	}
 
-	[Theory]
-	[ClassData(typeof(TestData))]
+	[Test]
+	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
 	public void SetVolume_ShouldThrowException_WhenVolumeInvalid(decimal volume)
 	{
 		Customization material = CreateCustomization();
 
-		Assert.Throws<CustomValidationException<Customization>>(
-			() => material.SetVolume(volume)
-		);
+		Assert.Throws<CustomValidationException<Customization>>(() => material.SetVolume(volume));
 	}
 }

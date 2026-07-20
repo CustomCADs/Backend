@@ -8,72 +8,69 @@ using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	[Fact]
+	[Test]
 	public void SetCategory_ShouldNotThrowException()
 	{
 		Custom custom = CreateCustom();
 		custom.SetCategory((ValidCategoryId, CustomCategorySetter.Customer));
 	}
 
-	[Fact]
-	public void SetCategory_ShouldPersistProperties()
+	[Test]
+	public async Task SetCategory_ShouldPersistProperties()
 	{
 		Custom custom = CreateCustom();
 		custom.SetCategory((ValidCategoryId, CustomCategorySetter.Customer));
-		Assert.Multiple(
-			() => Assert.Equal(ValidCategoryId, custom.Category?.Id),
-			() => Assert.Equal(ValidId, custom.Category?.CustomId),
-			() => Assert.Equal(CustomCategorySetter.Customer, custom.Category?.Setter)
-		);
+		using (Assert.Multiple())
+		{
+			await Assert.That(custom.Id).IsEqualTo(ValidId);
+			await Assert.That(custom.Category?.Id).IsEqualTo(ValidCategoryId);
+			await Assert.That(custom.Category?.Setter).IsEqualTo(CustomCategorySetter.Customer);
+		}
 	}
 
-	[Theory]
-	[InlineData(CustomCategorySetter.Customer, CustomCategorySetter.Customer)]
-	[InlineData(CustomCategorySetter.Customer, CustomCategorySetter.Designer)]
-	[InlineData(CustomCategorySetter.Customer, CustomCategorySetter.Admin)]
-	[InlineData(CustomCategorySetter.Designer, CustomCategorySetter.Designer)]
-	[InlineData(CustomCategorySetter.Designer, CustomCategorySetter.Admin)]
-	[InlineData(CustomCategorySetter.Admin, CustomCategorySetter.Admin)]
+	[Test]
+	[Arguments(CustomCategorySetter.Customer, CustomCategorySetter.Customer)]
+	[Arguments(CustomCategorySetter.Customer, CustomCategorySetter.Designer)]
+	[Arguments(CustomCategorySetter.Customer, CustomCategorySetter.Admin)]
+	[Arguments(CustomCategorySetter.Designer, CustomCategorySetter.Designer)]
+	[Arguments(CustomCategorySetter.Designer, CustomCategorySetter.Admin)]
+	[Arguments(CustomCategorySetter.Admin, CustomCategorySetter.Admin)]
 	public void SetCategory_ShouldNotThrowException_WhenValidNewSetter(CustomCategorySetter oldSetter, CustomCategorySetter newSetter)
 	{
 		Custom custom = CreateCustom(categoryId: ValidCategoryId, setter: oldSetter);
 		custom.SetCategory((ValidCategoryId, newSetter));
 	}
 
-	[Theory]
-	[InlineData(CustomCategorySetter.Designer, CustomCategorySetter.Customer)]
-	[InlineData(CustomCategorySetter.Admin, CustomCategorySetter.Customer)]
-	[InlineData(CustomCategorySetter.Admin, CustomCategorySetter.Designer)]
+	[Test]
+	[Arguments(CustomCategorySetter.Designer, CustomCategorySetter.Customer)]
+	[Arguments(CustomCategorySetter.Admin, CustomCategorySetter.Customer)]
+	[Arguments(CustomCategorySetter.Admin, CustomCategorySetter.Designer)]
 	public void SetCategory_ShouldThrowException_WhenInvalidNewSetter(CustomCategorySetter oldSetter, CustomCategorySetter newSetter)
 	{
 		Custom custom = CreateCustom(categoryId: ValidCategoryId, setter: oldSetter);
-		Assert.Throws<CustomValidationException<CustomCategory>>(
-			() => custom.SetCategory((ValidCategoryId, newSetter))
-		);
+		Assert.Throws<CustomValidationException<CustomCategory>>(() => custom.SetCategory((ValidCategoryId, newSetter)));
 	}
 
-	[Theory]
-	[InlineData(CustomStatus.Pending)]
-	[InlineData(CustomStatus.Accepted)]
-	[InlineData(CustomStatus.Begun)]
+	[Test]
+	[Arguments(CustomStatus.Pending)]
+	[Arguments(CustomStatus.Accepted)]
+	[Arguments(CustomStatus.Begun)]
 	public void SetCategory_ShouldNotThrowException_WhenValidCustomStatus(CustomStatus status)
 	{
 		Custom custom = CreateCustomWithStatus(status);
 		custom.SetCategory((ValidCategoryId, CustomCategorySetter.Customer));
 	}
 
-	[Theory]
-	[InlineData(CustomStatus.Reported)]
-	[InlineData(CustomStatus.Removed)]
-	[InlineData(CustomStatus.Finished)]
-	[InlineData(CustomStatus.Completed)]
+	[Test]
+	[Arguments(CustomStatus.Reported)]
+	[Arguments(CustomStatus.Removed)]
+	[Arguments(CustomStatus.Finished)]
+	[Arguments(CustomStatus.Completed)]
 	public void SetCategory_ShouldThrowException_WhenInvalidCustomStatus(CustomStatus status)
 	{
 		Custom custom = CreateCustomWithStatus(status);
 
-		Assert.Throws<CustomValidationException<Custom>>(
-			() => custom.SetCategory((ValidCategoryId, CustomCategorySetter.Customer))
-		);
+		Assert.Throws<CustomValidationException<Custom>>(() => custom.SetCategory((ValidCategoryId, CustomCategorySetter.Customer)));
 	}
 
 	private static Custom CreateCustomWithStatus(CustomStatus status)
