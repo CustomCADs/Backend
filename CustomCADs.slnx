@@ -179,40 +179,6 @@
 		<File Path=".platform/hooks/postdeploy/migrations.sh" />
 	</Folder>
 
-	<Folder Name="/.deploy/terraform/">
-		<File Path=".terraform/common/app.tf" />
-		<File Path=".terraform/common/groups.tf" />
-		<File Path=".terraform/common/main.tf" />
-		<File Path=".terraform/common/networking.tf" />
-		<File Path=".terraform/common/notifications.tf" />
-		<File Path=".terraform/common/roles.tf" />
-		<File Path=".terraform/common/security.tf" />
-		<File Path=".terraform/common/ssl.tf" />
-		<File Path=".terraform/common/storage.tf" />
-		<File Path=".terraform/common/subnets.tf" />
-		<File Path=".terraform/common/variables.tf" />
-	</Folder>
-	<Folder Name="/.deploy/terraform/production/">
-		<File Path=".terraform/production/cdn.tf" />
-		<File Path=".terraform/production/database.tf" />
-		<File Path=".terraform/production/environment.tf" />
-		<File Path=".terraform/production/locals.tf" />
-		<File Path=".terraform/production/main.tf" />
-		<File Path=".terraform/production/secrets.tf" />
-		<File Path=".terraform/production/storage.tf" />
-		<File Path=".terraform/production/variables.tf" />
-	</Folder>
-	<Folder Name="/.deploy/terraform/staging/">
-		<File Path=".terraform/staging/cdn.tf" />
-		<File Path=".terraform/staging/database.tf" />
-		<File Path=".terraform/staging/environment.tf" />
-		<File Path=".terraform/staging/locals.tf" />
-		<File Path=".terraform/staging/main.tf" />
-		<File Path=".terraform/staging/secrets.tf" />
-		<File Path=".terraform/staging/storage.tf" />
-		<File Path=".terraform/staging/variables.tf" />
-	</Folder>
-
     <!-- GitHub Actions -->
 	<Folder Name="/.github/" />
 
