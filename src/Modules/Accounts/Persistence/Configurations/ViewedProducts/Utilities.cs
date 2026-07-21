@@ -42,6 +42,13 @@ internal static class Utilities
 
 			return builder;
 		}
+
+		internal EntityTypeBuilder<ViewedProduct> SetFilters()
+		{
+			builder.HasQueryFilter(x => !x.Account.IsDeleted);
+
+			return builder;
+		}
 	}
 
 }
