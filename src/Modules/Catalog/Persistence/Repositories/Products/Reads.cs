@@ -65,6 +65,7 @@ public sealed class Reads(CatalogContext context) : IProductReads
 		=> await context.ProductTags
 			.Where(x => x.ProductId == id)
 			.Select(x => x.Tag.Name)
+			.OrderByDescending(x => x.Length)
 			.ToArrayAsync(ct)
 			.ConfigureAwait(false);
 
