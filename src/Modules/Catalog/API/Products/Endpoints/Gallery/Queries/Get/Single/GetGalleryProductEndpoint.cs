@@ -9,6 +9,7 @@ public sealed class GetGalleryProductEndpoint(IRequestSender sender)
 	{
 		Get("{id}");
 		Group<GalleryGroup>();
+		AllowAnonymous();
 		Description(x => x
 			.WithSummary("Single")
 			.WithDescription("See a Validated Product in detail")

@@ -10,6 +10,7 @@ public sealed class GetProductSortingsEndpoint(IRequestSender sender)
 	{
 		Get("sortings");
 		Group<GalleryGroup>();
+		AllowAnonymous();
 		Description(x => x
 			.WithSummary("Sortings")
 			.WithDescription("See all Product Sorting types")
