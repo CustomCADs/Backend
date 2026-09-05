@@ -3,8 +3,8 @@ using CustomCADs.Shared.Application.Abstractions.Payment;
 
 namespace CustomCADs.Modules.Carts.API.ActiveCarts.Endpoints.Mutations.Post.PurchaseWithDelivery;
 
-public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
-	: Endpoint<PurchaseActiveCartRequest, PaymentResponse>
+public sealed class PurchaseActiveCartWithDeliveryEndpoint(IRequestSender sender)
+	: Endpoint<PurchaseActiveCartWithDeliveryRequest, PaymentResponse>
 {
 	public override void Configure()
 	{
@@ -16,7 +16,7 @@ public sealed class PurchaseActiveCartEndpoint(IRequestSender sender)
 		);
 	}
 
-	public override async Task HandleAsync(PurchaseActiveCartRequest req, CancellationToken ct)
+	public override async Task HandleAsync(PurchaseActiveCartWithDeliveryRequest req, CancellationToken ct)
 	{
 		PaymentDto payment = await sender.SendCommandAsync(
 			command: new PurchaseActiveCartWithDeliveryCommand(
