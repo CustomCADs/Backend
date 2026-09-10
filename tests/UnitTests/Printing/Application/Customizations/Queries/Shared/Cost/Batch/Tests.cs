@@ -2,7 +2,6 @@ using CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Cost
 using CustomCADs.Modules.Printing.Domain.Customizations;
 using CustomCADs.Modules.Printing.Domain.Materials;
 using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
-using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.UnitTests.Printing.Application.Customizations.Queries.Shared.Cost.Batch;
@@ -16,7 +15,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
-	private readonly Mock<IPrintCalculator> calculator = new();
 
 	private const decimal Cost = 10.5m;
 	private static readonly CustomizationId[] Ids = [];
@@ -29,16 +27,13 @@ public class Tests : Data.Customizations.BaseUnitTests
 
 	public Tests()
 	{
-		handler = new(reads.Object, materialReads.Object, calculator.Object);
+		handler = new(reads.Object, materialReads.Object);
 
 		reads.Setup(x => x.AllAsync(Ids, false, ct))
 			.ReturnsAsync(Customizations);
 
 		materialReads.Setup(x => x.AllByIdsAsync(MaterialIds, false, ct))
 			.ReturnsAsync(Materials);
-
-		calculator.Setup(x => x.CalculateCost(It.IsAny<Customization>(), It.IsAny<Material>()))
-			.Returns(Cost);
 	}
 
 	[Test]
@@ -57,24 +52,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 		materialReads.Verify(
 			x => x.AllByIdsAsync(MaterialIds, false, ct),
 			Times.Once()
-		);
-	}
-
-	[Test]
-	public async Task Handle_ShouldCalculateCost()
-	{
-		// Arrange
-
-		// Act
-		await handler.Handle(request, ct);
-
-		// Assert
-		calculator.Verify(
-			x => x.CalculateCost(
-					It.Is<Customization>(x => Customizations.Contains(x)),
-					It.Is<Material>(x => Materials.Values.Contains(x))
-				),
-			Times.Exactly(Customizations.Length)
 		);
 	}
 

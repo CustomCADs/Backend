@@ -21,7 +21,6 @@ builder.Services.AddRealTimeNotifiers();
 // Modules
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddIdentity(builder.Configuration);
-builder.Services.AddDomainServices();
 
 var app = builder.Build();
 return await app.RunJasperFxCommands(args).ConfigureAwait(false);

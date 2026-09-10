@@ -160,13 +160,6 @@ public static class ProgramExtensions
 				.AddPrintingPersistence(config.ConnectionString);
 
 
-		public IServiceCollection AddDomainServices()
-		{
-			services.AddScoped<IPrintCalculator, PrintCalculator>();
-
-			return services;
-		}
-
 		public IServiceCollection AddBackgroundJobs()
 		{
 			services.AddQuartz(configurator =>

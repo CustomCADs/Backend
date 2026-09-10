@@ -7,9 +7,10 @@ internal static class Mapper
 		internal CustomizationDto ToDto(decimal weight, decimal cost)
 			=> new(
 				Id: customization.Id,
-				Scale: customization.Scale,
 				Infill: customization.Infill,
-				Volume: customization.Volume,
+				Volume: customization.Volume.Value,
+				Base: customization.Volume.Base,
+				Scale: customization.Volume.Scale,
 				Weight: weight,
 				Cost: cost,
 				Color: customization.Color,

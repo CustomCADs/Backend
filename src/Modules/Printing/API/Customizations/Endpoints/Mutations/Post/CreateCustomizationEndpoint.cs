@@ -21,9 +21,10 @@ public class CreateCustomizationEndpoint(IRequestSender sender)
 	{
 		CustomizationId customizationId = await sender.SendCommandAsync(
 			command: new CreateCustomizationCommand(
-				Scale: req.Scale,
 				Infill: req.Infill,
 				Volume: req.Volume,
+				Base: req.Base,
+				Scale: req.Scale,
 				Color: req.Color,
 				MaterialId: MaterialId.New(req.MaterialId)
 			),

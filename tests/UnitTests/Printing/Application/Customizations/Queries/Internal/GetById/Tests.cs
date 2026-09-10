@@ -2,7 +2,6 @@ using CustomCADs.Modules.Printing.Application.Customizations.Queries.Internal.Ge
 using CustomCADs.Modules.Printing.Domain.Customizations;
 using CustomCADs.Modules.Printing.Domain.Materials;
 using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
-using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.Exceptions;
 
 namespace CustomCADs.UnitTests.Printing.Application.Customizations.Queries.Internal.GetById;
@@ -16,14 +15,13 @@ public class Tests : Data.Customizations.BaseUnitTests
 
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
-	private readonly Mock<IPrintCalculator> calculator = new();
 
 	private readonly Customization customization = CreateCustomization(id: ValidId);
 	private readonly Material material = CreateMaterial();
 
 	public Tests()
 	{
-		handler = new(reads.Object, materialReads.Object, calculator.Object);
+		handler = new(reads.Object, materialReads.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(customization);
@@ -47,25 +45,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 		);
 		materialReads.Verify(
 			x => x.SingleByIdAsync(ValidMaterialId, false, ct),
-			Times.Once()
-		);
-	}
-
-	[Test]
-	public async Task Handle_ShouldCalculateWeightAndCost()
-	{
-		// Arrange
-
-		// Act
-		await handler.Handle(request, ct);
-
-		// Assert
-		calculator.Verify(
-			x => x.CalculateWeight(customization, material),
-			Times.Once()
-		);
-		calculator.Verify(
-			x => x.CalculateCost(customization, material),
 			Times.Once()
 		);
 	}

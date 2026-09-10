@@ -20,9 +20,10 @@ public class EditCustomizationEndpoint(IRequestSender sender)
 		await sender.SendCommandAsync(
 			command: new EditCustomizationCommand(
 				Id: CustomizationId.New(req.Id),
-				Scale: req.Scale,
 				Infill: req.Infill,
 				Volume: req.Volume,
+				Base: req.Base,
+				Scale: req.Scale,
 				Color: req.Color,
 				MaterialId: MaterialId.New(req.MaterialId)
 			),

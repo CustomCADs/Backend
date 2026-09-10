@@ -29,7 +29,6 @@ builder.Services.AddRealTimeNotifiers();
 // Modules
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddIdentity(builder.Configuration);
-builder.Services.AddDomainServices();
 
 // API
 builder.Services.AddGlobalExceptionHandler();

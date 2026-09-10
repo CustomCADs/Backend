@@ -14,9 +14,8 @@ public sealed class EditCustomizationHandler(
 			?? throw CustomNotFoundException<Customization>.ById(req.Id);
 
 		customization
-			.SetScale(req.Scale)
 			.SetInfill(req.Infill)
-			.SetVolume(req.Volume)
+			.SetVolume(req.Volume, req.Base, req.Scale)
 			.SetColor(req.Color)
 			.SetMaterialId(req.MaterialId);
 

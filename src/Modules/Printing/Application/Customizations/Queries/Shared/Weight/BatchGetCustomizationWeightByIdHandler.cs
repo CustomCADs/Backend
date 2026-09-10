@@ -1,13 +1,11 @@
 ﻿using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
-using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Weight;
 
 public sealed class BatchGetCustomizationWeightByIdHandler(
 	ICustomizationReads customizationReads,
-	IMaterialReads materialReads,
-	IPrintCalculator calculator
+	IMaterialReads materialReads
 ) : IQueryHandler<BatchGetCustomizationWeightByIdQuery, Dictionary<CustomizationId, double>>
 {
 	public async Task<Dictionary<CustomizationId, double>> Handle(BatchGetCustomizationWeightByIdQuery req, CancellationToken ct)
@@ -23,7 +21,7 @@ public sealed class BatchGetCustomizationWeightByIdHandler(
 				Customization customization = x;
 				Material material = materials[x.MaterialId];
 
-				decimal weight = calculator.CalculateWeight(customization, material);
+				decimal weight = customization.CalculateWeight(material.Density);
 				return Convert.ToDouble(weight);
 			}
 		);

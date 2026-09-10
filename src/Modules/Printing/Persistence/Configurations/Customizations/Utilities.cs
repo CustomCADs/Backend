@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Modules.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Customizations.ValueObjects;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -35,23 +36,32 @@ internal static class Utilities
 
 		internal EntityTypeBuilder<Customization> SetValidations()
 		{
-			builder.Property(x => x.Scale)
-				.IsRequired()
-				.HasPrecision(4, 2)
-				.HasColumnName(nameof(Customization.Scale))
-				.HasComment("Floating number representing a percentage");
-
 			builder.Property(x => x.Infill)
 				.IsRequired()
 				.HasPrecision(4, 2)
 				.HasColumnName(nameof(Customization.Infill))
 				.HasComment("Floating number representing a percentage");
 
-			builder.Property(x => x.Volume)
-				.IsRequired()
-				.HasPrecision(18, 2)
-				.HasColumnName(nameof(Customization.Volume))
-				.HasComment("Measured in m³");
+			builder.ComplexProperty(x => x.Volume, builder =>
+			{
+				builder.Property(x => x.Value)
+					.IsRequired()
+					.HasPrecision(28, 17)
+					.HasColumnName(nameof(Volume))
+					.HasComment("Arbitrary value without measuring unit");
+
+				builder.Property(x => x.Base)
+					.IsRequired()
+					.HasPrecision(28, 17)
+					.HasColumnName(nameof(Volume.Base))
+					.HasComment("Normalization factor to help convert the Volume into mm³");
+
+				builder.Property(x => x.Scale)
+					.IsRequired()
+					.HasPrecision(28, 17)
+					.HasColumnName(nameof(Volume.Scale))
+					.HasComment("Floating number representing a percentage");
+			});
 
 			builder.Property(x => x.Color)
 				.IsRequired()
