@@ -13,18 +13,34 @@ public class CartDeliveryPaymentSaga : Saga
 	[Wolverine.Persistence.Sagas.SagaIdentity]
 	public Guid Id { get; private set; }
 
+	public bool IsDeliveryHandled { get; set; }
+
 	public static CartDeliveryPaymentSaga Start(CartPaymentStartedApplicationEvent msg)
 		=> new() { Id = msg.Id };
 
 	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent msg, ActiveCartDeliveryRequestedHandler handler)
 	{
-		await handler.HandleAsync(msg).ConfigureAwait(false);
+		try
+		{
+			await handler.HandleAsync(msg).ConfigureAwait(false);
+		}
+		catch
+		{
+			MarkCompleted();
+			throw;
+		}
+
+		IsDeliveryHandled = true;
 	}
 
-	public async Task Handle(CartPaymentCompletedApplicationEvent msg, CartPaymentCompletedHandler handler)
+	public async Task<ScheduledMessage<CartPaymentCompletedApplicationEvent>?> Handle(CartPaymentCompletedApplicationEvent msg, CartPaymentCompletedHandler handler)
 	{
+		if (!IsDeliveryHandled) return msg.ScheduledAt(DateTimeOffset.UtcNow.AddSeconds(1));
+
 		await handler.HandleAsync(msg).ConfigureAwait(false);
 
 		MarkCompleted();
+
+		return null;
 	}
 }

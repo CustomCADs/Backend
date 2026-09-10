@@ -6,6 +6,6 @@ public record Theory(
 	string Country,
 	string City,
 	string Street,
-	string? Phone,
-	string? Email
+	string Phone,
+	string Email
 );

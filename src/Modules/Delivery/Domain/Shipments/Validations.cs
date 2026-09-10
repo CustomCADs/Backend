@@ -26,7 +26,7 @@ internal static class Validations
 			=> shipment
 				.ThrowIfPredicateIsFalse(
 					expression: x => x.Contact.Email,
-					predicate: x => x is null || DomainConstants.Regexes.Email.IsMatch(x),
+					predicate: DomainConstants.Regexes.Email.IsMatch,
 					message: "Invalid Email"
 				);
 
@@ -34,7 +34,7 @@ internal static class Validations
 			=> shipment
 				.ThrowIfPredicateIsFalse(
 					expression: x => x.Contact.Phone,
-					predicate: x => x is null || DomainConstants.Regexes.Phone.IsMatch(x),
+					predicate: DomainConstants.Regexes.Phone.IsMatch,
 					message: "Invalid Phone"
 				);
 

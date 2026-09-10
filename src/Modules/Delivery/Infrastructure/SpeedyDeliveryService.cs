@@ -11,15 +11,17 @@ using ISpeedyClient = SpeedyNET.Sdk.ISpeedyService;
 
 internal sealed class SpeedyDeliveryService(ISpeedyClient speedy) : IDeliveryService
 {
-	private const Payer DefaultPayer = Payer.RECIPIENT;
+	private const Payer DefaultPayer = Payer.SENDER;
 	private const PaperSize Paper = PaperSize.A4;
+	private const DestinationType Destination = DestinationType.ADDRESS;
 	private const int Count = 1;
 
 	public async Task<CalculationDto[]> CalculateAsync(CalculateRequest req, CancellationToken ct = default)
 	{
 		CalculateModel[] response = await speedy.CalculateAsync(
-			payer: DefaultPayer,
 			weights: req.Weights,
+			payer: DefaultPayer,
+			destination: Destination,
 			country: req.Country,
 			site: req.City,
 			street: req.Street,
@@ -54,18 +56,15 @@ internal sealed class SpeedyDeliveryService(ISpeedyClient speedy) : IDeliverySer
 	)
 	{
 		WrittenShipmentModel response = await speedy.CreateShipmentAsync(
-			payer: DefaultPayer,
+			address: new(req.Country, req.City, req.Street),
+			contact: new(req.Name, req.Email, req.Phone, null),
 			package: req.Package,
 			contents: req.Contents,
 			parcelCount: Count,
 			totalWeight: req.TotalWeight,
-			country: req.Country,
-			site: req.City,
-			street: req.Street,
-			name: req.Name,
+			payer: DefaultPayer,
+			destination: Destination,
 			service: req.Service,
-			email: req.Email,
-			phoneNumber: req.Phone,
 			ct: ct
 		).ConfigureAwait(false);
 

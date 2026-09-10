@@ -11,9 +11,11 @@ public class InvalidData : ITheoryData<Theory>
 
 		// Email
 		yield return new(ValidService, InvalidEmail, ValidPhone, ValidRecipient, MaxValidCount, MaxValidWeight, ValidCountry, ValidCity, ValidStreet);
+		yield return new(ValidService, InvalidEmailNull, ValidPhone, ValidRecipient, MaxValidCount, MaxValidWeight, ValidCountry, ValidCity, ValidStreet);
 
 		// Phone
 		yield return new(ValidService, ValidEmail, InvalidPhone, ValidRecipient, MaxValidCount, MaxValidWeight, ValidCountry, ValidCity, ValidStreet);
+		yield return new(ValidService, ValidEmail, InvalidPhoneNull, ValidRecipient, MaxValidCount, MaxValidWeight, ValidCountry, ValidCity, ValidStreet);
 
 		// Recipient
 		yield return new(ValidService, ValidEmail, ValidPhone, InvalidRecipient, MaxValidCount, MaxValidWeight, ValidCountry, ValidCity, ValidStreet);

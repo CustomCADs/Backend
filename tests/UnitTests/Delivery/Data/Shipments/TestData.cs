@@ -17,11 +17,13 @@ public static class TestData
 	public const string ValidStreet = "Flora";
 	public const string InvalidStreet = "";
 
-	public const string? ValidPhone = "+1234567890";
-	public const string? InvalidPhone = "abcdefghijklmnopqrstuvwxyz";
+	public const string ValidPhone = "+1234567890";
+	public const string InvalidPhone = "abcdefghijklmnopqrstuvwxyz";
+	public const string InvalidPhoneNull = null;
 
-	public const string? ValidEmail = "john.doe@example.com";
-	public const string? InvalidEmail = "";
+	public const string ValidEmail = "john.doe@example.com";
+	public const string InvalidEmail = "";
+	public const string InvalidEmailNull = null;
 
 	public const string ValidService = "Standard";
 	public const string InvalidService = "";

@@ -23,7 +23,7 @@ public static class DependencyInjection
 
 					return new(
 						Account: settings.Account,
-						Pickup: settings.Pickup,
+						Dropoff: settings.Address,
 						Contact: settings.Contact
 					);
 				})
