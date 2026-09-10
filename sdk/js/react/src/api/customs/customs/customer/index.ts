@@ -30,7 +30,7 @@ export const purchaseDelivery = async (
 	req: purchaseWithDeliveryResources.Request,
 ) =>
 	await axios.post<purchaseWithDeliveryResources.Response>(
-		purchaseWithDeliveryResources.url(),
+		purchaseWithDeliveryResources.url(req.destination),
 		req,
 		config({ idempotencyKey: req.idempotencyKey }),
 	);

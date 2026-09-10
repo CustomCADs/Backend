@@ -1,20 +1,17 @@
 import { objectToSearchParams } from '@/utils/params';
-import { Calculation } from '@/api/common/calculation';
+import * as calculation from '@/api/common/calculation';
 import { CUSTOMS_CUSTOMER_BASE_PATH } from '@/api/customs/common';
 
 export type Request = {
 	id: string;
 	count: number;
-	country: string;
-	city: string;
-	street: string;
 	customizationId: string;
-};
+} & (calculation.AddressDelivery | calculation.OfficeDelivery);
 
-export type Response = Calculation[];
+export type Response = calculation.Calculation[];
 
 export const url = (req: Request) =>
-	`${CUSTOMS_CUSTOMER_BASE_PATH}/calculate/${req.id}?${objectToSearchParams({
-		...req,
-		id: undefined,
-	})}`;
+	`${CUSTOMS_CUSTOMER_BASE_PATH}/calculate/${req.destination}/${req.id}?${objectToSearchParams(
+		req,
+		(key) => key !== 'id' && key !== 'destination',
+	)}`;

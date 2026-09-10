@@ -1,14 +1,9 @@
 import { objectToSearchParams } from '@/utils/params';
-import { Calculation } from '@/api/common/calculation';
+import * as calculation from '@/api/common/calculation';
 import { ACTIVE_CART_BASE_PATH } from '../common';
 
-export type Request = {
-	country: string;
-	city: string;
-	street: string;
-};
-
-export type Response = Calculation[];
+export type Request = calculation.AddressDelivery | calculation.OfficeDelivery;
+export type Response = calculation.Calculation[];
 
 export const url = (req: Request) =>
-	`${ACTIVE_CART_BASE_PATH}/calculate?${objectToSearchParams(req)}`;
+	`${ACTIVE_CART_BASE_PATH}/calculate/${req.destination}?${objectToSearchParams(req, (key) => key !== 'destination')}`;
