@@ -2,7 +2,7 @@
 
 public record CalculateRequest(
 	double[] Weights,
-	string Country,
-	string City,
-	string Street
+	Destination Destination,
+	int? OfficeId,
+	(int CountryId, long SiteId)? Address
 );

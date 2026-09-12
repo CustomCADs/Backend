@@ -4,12 +4,12 @@ using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
-namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment;
+namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment.ToOffice;
 
-public sealed class CalculateCustomShipmentHandler(ICustomReads reads, IRequestSender sender)
-	: IQueryHandler<CalculateCustomShipmentQuery, CalculateShipmentDto[]>
+public sealed class CalculateCustomShipmentToOfficeHandler(ICustomReads reads, IRequestSender sender)
+	: IQueryHandler<CalculateCustomShipmentToOfficeQuery, CalculateShipmentDto[]>
 {
-	public async Task<CalculateShipmentDto[]> Handle(CalculateCustomShipmentQuery req, CancellationToken ct)
+	public async Task<CalculateShipmentDto[]> Handle(CalculateCustomShipmentToOfficeQuery req, CancellationToken ct)
 	{
 		Custom custom = await reads.SingleByIdAsync(req.Id, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Custom>.ById(req.Id);
@@ -25,9 +25,9 @@ public sealed class CalculateCustomShipmentHandler(ICustomReads reads, IRequestS
 		).ConfigureAwait(false);
 
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
-			query: new CalculateShipmentQuery(
+			query: new CalculateShipmentToOfficeQuery(
 				Weights: [.. Enumerable.Range(0, req.Count).Select(x => weight)],
-				Address: req.Address
+				OfficeId: req.OfficeId
 			),
 			ct: ct
 		).ConfigureAwait(false);

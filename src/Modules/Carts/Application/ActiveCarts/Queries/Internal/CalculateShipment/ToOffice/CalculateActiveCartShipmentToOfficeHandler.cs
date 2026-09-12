@@ -5,12 +5,12 @@ using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment.ToOffice;
 
-public sealed class CalculateActiveCartShipmentHandler(IActiveCartReads reads, IRequestSender sender)
-	: IQueryHandler<CalculateActiveCartShipmentQuery, CalculateShipmentDto[]>
+public sealed class CalculateActiveCartShipmentToOfficeHandler(IActiveCartReads reads, IRequestSender sender)
+	: IQueryHandler<CalculateActiveCartShipmentToOfficeQuery, CalculateShipmentDto[]>
 {
-	public async Task<CalculateShipmentDto[]> Handle(CalculateActiveCartShipmentQuery req, CancellationToken ct)
+	public async Task<CalculateShipmentDto[]> Handle(CalculateActiveCartShipmentToOfficeQuery req, CancellationToken ct)
 	{
 		ActiveCartItem[] items = await reads.AllAsync(req.CallerId, track: false, ct: ct).ConfigureAwait(false);
 
@@ -30,15 +30,15 @@ public sealed class CalculateActiveCartShipmentHandler(IActiveCartReads reads, I
 		).ConfigureAwait(false);
 
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
-			query: new CalculateShipmentQuery(
-				Weights: [.. weights
+			query: new CalculateShipmentToOfficeQuery(
+				OfficeId: req.OfficeId,
+				Weights: weights
 					.Select(x =>
 					{
 						ActiveCartItem item = items.First(item => item.CustomizationId == x.Key);
 						return item.Quantity * x.Value / 1000;
 					})
-				],
-				Address: req.Address
+					.ToArray()
 			),
 			ct: ct
 		).ConfigureAwait(false);

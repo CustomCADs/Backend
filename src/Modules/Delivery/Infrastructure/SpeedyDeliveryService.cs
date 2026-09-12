@@ -26,12 +26,10 @@ internal sealed class SpeedyDeliveryService(ISpeedyClient speedy) : IDeliverySer
 	public async Task<CalculationDto[]> CalculateAsync(CalculateRequest req, CancellationToken ct = default)
 	{
 		CalculateModel[] response = await speedy.CalculateAsync(
+			pickup: new(req.OfficeId, req.Address?.CountryId, req.Address?.SiteId),
 			weights: req.Weights,
 			payer: DefaultPayer,
 			destination: Destination,
-			country: req.Country,
-			site: req.City,
-			street: req.Street,
 			ct: ct
 		).ConfigureAwait(false);
 
@@ -62,8 +60,9 @@ internal sealed class SpeedyDeliveryService(ISpeedyClient speedy) : IDeliverySer
 		CancellationToken ct = default
 	)
 	{
+		throw new("nigger");
 		WrittenShipmentModel response = await speedy.CreateShipmentAsync(
-			address: new(req.Country, req.City, req.Street),
+			pickup: null!,
 			contact: new(req.Name, req.Email, req.Phone, null),
 			package: req.Package,
 			contents: req.Contents,

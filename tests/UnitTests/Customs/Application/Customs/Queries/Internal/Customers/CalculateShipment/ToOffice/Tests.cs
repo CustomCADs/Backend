@@ -1,4 +1,4 @@
-﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment;
+﻿using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment.ToOffice;
 using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Dtos.Delivery;
@@ -6,22 +6,27 @@ using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
-namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment;
+namespace CustomCADs.UnitTests.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment.ToOffice;
 
 using static Data.Customs.TestData;
 
 public class Tests : Data.Customs.BaseUnitTests
 {
-	private readonly CalculateCustomShipmentHandler handler;
-	private readonly CalculateCustomShipmentQuery request = new(ValidId, Quantity, Address, ValidCustomizationId);
+	private readonly CalculateCustomShipmentToOfficeHandler handler;
+	private readonly CalculateCustomShipmentToOfficeQuery request = new(
+		Id: ValidId,
+		OfficeId: OfficeId,
+		Count: Quantity,
+		CustomizationId: ValidCustomizationId
+	);
 
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
+	private const int OfficeId = 413;
 	private const int Quantity = 4;
 	private const double Weight = 2.7;
 
-	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
 	private static readonly CalculateShipmentDto[] Calculations = [
 		new(default, string.Empty, string.Empty, default, default)
 	];
@@ -39,7 +44,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		)).ReturnsAsync(Weight);
 
 		sender.Setup(x => x.SendQueryAsync(
-			It.Is<CalculateShipmentQuery>(x => x.Address == Address && x.Weights.Sum() == Quantity * Weight),
+			It.Is<CalculateShipmentToOfficeQuery>(x =>
+				x.Weights.Sum() == Quantity * Weight
+				&& x.OfficeId == OfficeId
+			),
 			ct
 		)).ReturnsAsync(Calculations);
 	}
@@ -77,7 +85,10 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 		sender.Verify(
 			x => x.SendQueryAsync(
-				It.Is<CalculateShipmentQuery>(x => x.Address == Address && x.Weights.Sum() == Quantity * Weight),
+				It.Is<CalculateShipmentToOfficeQuery>(x =>
+					x.Weights.Sum() == Quantity * Weight
+					&& x.OfficeId == OfficeId
+				),
 				ct
 			),
 			Times.Once()
