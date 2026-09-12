@@ -16,6 +16,13 @@ internal sealed class SpeedyDeliveryService(ISpeedyClient speedy) : IDeliverySer
 	private const DestinationType Destination = DestinationType.ADDRESS;
 	private const int Count = 1;
 
+	public async Task<int?> GetCountryAsync(string name, CancellationToken ct = default)
+	{
+		var country = await speedy.FindCountryAsync(name, ct: ct).ConfigureAwait(false);
+
+		return country.FirstOrDefault()?.Id;
+	}
+
 	public async Task<CalculationDto[]> CalculateAsync(CalculateRequest req, CancellationToken ct = default)
 	{
 		CalculateModel[] response = await speedy.CalculateAsync(

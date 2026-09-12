@@ -11,6 +11,9 @@ public class ResilientDeliveryService(
 	public Task<bool> ValidateAsync(string country, string city, string street, string? phone, CancellationToken ct = default)
 		=> policy.ExecuteAsync(() => inner.ValidateAsync(country, city, street, phone, ct));
 
+	public Task<int?> GetCountryAsync(string name, CancellationToken ct = default)
+		=> policy.ExecuteAsync(() => inner.GetCountryAsync(name, ct));
+
 	public Task<CalculationDto[]> CalculateAsync(CalculateRequest req, CancellationToken ct = default)
 		=> policy.ExecuteAsync(() => inner.CalculateAsync(req, ct));
 
