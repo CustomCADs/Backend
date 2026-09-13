@@ -9,7 +9,6 @@ public class GetShipmentsMapper : ResponseMapper<GetShipmentsResponse, GetAllShi
 			Id: shipment.Id.Value,
 			RequestedAt: shipment.RequestedAt,
 			Status: shipment.Status,
-			Info: shipment.Info.ToResponse(),
-			Address: shipment.Address.ToResponse()
+			Info: shipment.Info.ToResponse()
 		);
 }

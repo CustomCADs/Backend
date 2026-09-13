@@ -42,10 +42,11 @@ public static class TestData
 	public const string InvalidRecipient = "";
 
 	public const string ValidReferenceId = "some-reference-id";
-	public const int ValidCountryId = 100;
-	public const long ValidCityId = 68134;
-	public const int ValidStreetId = 5338;
 	public const int ValidOfficeId = 413;
+	public const int ValidCountryId = 100;
+	public const string ValidAddressNote = "address note 123";
+	public static readonly double ValidLongitude = 0;
+	public static readonly double ValidLatitude = 0;
 
 	public static readonly ShipmentId ValidId = ShipmentId.New();
 	public static readonly AccountId ValidBuyerId = AccountId.New();

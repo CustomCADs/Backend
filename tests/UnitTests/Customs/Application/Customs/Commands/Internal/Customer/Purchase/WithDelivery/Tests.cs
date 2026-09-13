@@ -38,8 +38,8 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<IPaymentService> payment = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
-	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
-	private static readonly ContactDto Contact = new(null, null);
+	private static readonly AddressDto Address = new("Bulgaria", "Sofia", "address-note", new(0, 0));
+	private static readonly ContactDto Contact = new(string.Empty, string.Empty);
 	private readonly Custom custom = CreateCustom(forDelivery: true);
 
 	public Tests()

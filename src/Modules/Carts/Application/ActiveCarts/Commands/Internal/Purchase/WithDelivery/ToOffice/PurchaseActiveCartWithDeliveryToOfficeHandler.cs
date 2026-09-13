@@ -14,16 +14,16 @@ using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToOffice;
 
-public sealed class PurchaseActiveCartWithDeliveryHandler(
+public sealed class PurchaseActiveCartWithDeliveryToOfficeHandler(
 	IActiveCartReads reads,
 	IRequestSender sender,
 	IPaymentService payment,
 	IEventRaiser raiser
-) : ICommandHandler<PurchaseActiveCartWithDeliveryCommand, PaymentDto>
+) : ICommandHandler<PurchaseActiveCartWithDeliveryToOfficeCommand, PaymentDto>
 {
-	public async Task<PaymentDto> Handle(PurchaseActiveCartWithDeliveryCommand req, CancellationToken ct)
+	public async Task<PaymentDto> Handle(PurchaseActiveCartWithDeliveryToOfficeCommand req, CancellationToken ct)
 	{
 		var items = await GetCartItemsAsync(req, ct).ConfigureAwait(false);
 
@@ -80,12 +80,12 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 		).ConfigureAwait(false);
 
 		await raiser.RaiseApplicationEventAsync(
-			@event: new ActiveCartDeliveryRequestedApplicationEvent(
+			@event: new ActiveCartDeliveryToOfficeRequestedApplicationEvent(
 				PurchasedCartId: purchasedCartId,
 				Weight: weights.Sum(x => x.Value),
 				Count: items.Where(x => x.ForDelivery).Sum(x => x.Quantity),
 				ShipmentService: req.ShipmentService,
-				Address: req.Address,
+				OfficeId: req.OfficeId,
 				Contact: req.Contact
 			)
 		).ConfigureAwait(false);
@@ -93,7 +93,7 @@ public sealed class PurchaseActiveCartWithDeliveryHandler(
 		return response;
 	}
 
-	private async Task<ActiveCartItem[]> GetCartItemsAsync(PurchaseActiveCartWithDeliveryCommand req, CancellationToken ct)
+	private async Task<ActiveCartItem[]> GetCartItemsAsync(PurchaseActiveCartWithDeliveryToOfficeCommand req, CancellationToken ct)
 	{
 		if (!await reads.ExistsAsync(req.CallerId, ct).ConfigureAwait(false))
 		{

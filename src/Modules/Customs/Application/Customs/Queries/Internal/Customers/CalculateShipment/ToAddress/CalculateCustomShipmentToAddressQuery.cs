@@ -5,8 +5,8 @@ namespace CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Custom
 
 public sealed record CalculateCustomShipmentToAddressQuery(
 	CustomId Id,
-	int CountryId,
-	long SiteId,
+	string Country,
+	string Site,
 	int Count,
 	CustomizationId CustomizationId
 ) : IQuery<CalculateShipmentDto[]>;

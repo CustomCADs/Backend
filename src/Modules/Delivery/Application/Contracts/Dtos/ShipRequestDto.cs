@@ -1,9 +1,12 @@
-﻿namespace CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
+using CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
+
+namespace CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 
 public record ShipRequestDto(
-	string Country,
-	string City,
-	string Street,
+	DeliveryDestination Destination,
+	int? OfficeId,
+	ShipmentAddress? Address,
 	string Phone,
 	string Email,
 	string Name,

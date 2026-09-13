@@ -10,7 +10,7 @@ public class Shipment : BaseAggregateRoot
 	private Shipment() { }
 	private Shipment(
 		AccountId buyerId,
-		ShipmentAddress address,
+		ShipmentDelivery delivery,
 		ShipmentInfo info,
 		ShipmentReference reference,
 		ShipmentContact contact
@@ -19,7 +19,7 @@ public class Shipment : BaseAggregateRoot
 		Status = ShipmentStatus.Awaiting;
 		RequestedAt = DateTimeOffset.UtcNow;
 		BuyerId = buyerId;
-		Address = address;
+		Delivery = delivery;
 		Info = info;
 		Reference = reference;
 		Contact = contact;
@@ -29,57 +29,50 @@ public class Shipment : BaseAggregateRoot
 	public DateTimeOffset RequestedAt { get; private set; }
 	public ShipmentStatus Status { get; private set; }
 	public ShipmentReference Reference { get; private set; } = new();
-	public ShipmentAddress Address { get; private set; } = new();
+	public ShipmentDelivery Delivery { get; private set; } = new();
 	public ShipmentContact Contact { get; private set; } = new();
 	public ShipmentInfo Info { get; private set; } = new();
 	public AccountId BuyerId { get; private set; }
 
 	public static Shipment Create(
 		AccountId buyerId,
+		ShipmentDelivery delivery,
 		string service,
 		string email,
 		string phone,
 		string recipient,
 		int count,
-		double weight,
-		string country,
-		string city,
-		string street
+		double weight
 	) => new Shipment(
 		buyerId: buyerId,
-		address: new ShipmentAddress() with { Country = country, City = city, Street = street },
-		info: new ShipmentInfo() with { Count = count, Recipient = recipient, Weight = weight },
-		reference: new ShipmentReference() with { Service = service },
-		contact: new ShipmentContact() with { Email = email, Phone = phone }
+		delivery: delivery,
+		info: new ShipmentInfo(Count: count, Recipient: recipient, Weight: weight),
+		reference: new ShipmentReference(Id: null, Service: service),
+		contact: new ShipmentContact(Email: email, Phone: phone)
 	)
 	.ValidateService()
 	.ValidateEmail()
 	.ValidatePhone()
 	.ValidateRecipient()
 	.ValidateCount()
-	.ValidateWeight()
-	.ValidateCountry()
-	.ValidateCity()
-	.ValidateStreet();
+	.ValidateWeight();
 
 	internal static Shipment CreateWithId(
 		ShipmentId id,
 		AccountId buyerId,
+		ShipmentDelivery delivery,
 		string service,
 		string email,
 		string phone,
 		string recipient,
 		int count,
-		double weight,
-		string country,
-		string city,
-		string street
+		double weight
 	) => new Shipment(
 		buyerId: buyerId,
-		address: new ShipmentAddress() with { Country = country, City = city, Street = street },
-		info: new ShipmentInfo() with { Count = count, Recipient = recipient, Weight = weight },
-		reference: new ShipmentReference() with { Service = service },
-		contact: new ShipmentContact() with { Email = email, Phone = phone }
+		delivery: delivery,
+		info: new ShipmentInfo(Count: count, Recipient: recipient, Weight: weight),
+		reference: new ShipmentReference(Id: null, Service: service),
+		contact: new ShipmentContact(Email: email, Phone: phone)
 	)
 	{ Id = id }
 	.ValidateService()
@@ -87,10 +80,7 @@ public class Shipment : BaseAggregateRoot
 	.ValidatePhone()
 	.ValidateRecipient()
 	.ValidateCount()
-	.ValidateWeight()
-	.ValidateCountry()
-	.ValidateCity()
-	.ValidateStreet();
+	.ValidateWeight();
 
 	public Shipment Activate(string referenceId)
 	{

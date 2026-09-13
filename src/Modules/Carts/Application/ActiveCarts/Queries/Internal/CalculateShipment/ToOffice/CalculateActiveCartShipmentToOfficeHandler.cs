@@ -32,13 +32,11 @@ public sealed class CalculateActiveCartShipmentToOfficeHandler(IActiveCartReads 
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
 			query: new CalculateShipmentToOfficeQuery(
 				OfficeId: req.OfficeId,
-				Weights: weights
-					.Select(x =>
-					{
-						ActiveCartItem item = items.First(item => item.CustomizationId == x.Key);
-						return item.Quantity * x.Value / 1000;
-					})
-					.ToArray()
+				TotalWeight: weights.Sum(x =>
+				{
+					ActiveCartItem item = items.First(item => item.CustomizationId == x.Key);
+					return item.Quantity * x.Value / 1000;
+				})
 			),
 			ct: ct
 		).ConfigureAwait(false);

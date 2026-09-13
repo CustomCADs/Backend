@@ -1,7 +1,7 @@
 using CustomCADs.Modules.Delivery.Application.Contracts;
 using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Shared.Calculate.ToAddress;
-using CustomCADs.Shared.Application.Dtos.Delivery;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Shared.Calculate.ToAddress;
@@ -11,14 +11,14 @@ using static Data.Shipments.TestData;
 public class Tests : Data.Shipments.BaseUnitTests
 {
 	private readonly CalculateShipmentToAddressHandler handler;
-	private readonly CalculateShipmentToAddressQuery request = new(Weights, ValidCountryId, ValidCityId);
+	private readonly CalculateShipmentToAddressQuery request = new(TotalWeight, ValidCountry, ValidCity);
 
 	private readonly Mock<IDeliveryService> delivery = new();
 
 	private static readonly CalculationDto[] Calculations = [
 		new(string.Empty, new(default, default, default, string.Empty), default, default)
 	];
-	private static readonly double[] Weights = [0, 1, 2, 3, 4, 5, 6];
+	private const double TotalWeight = 17;
 
 	public Tests()
 	{
@@ -26,11 +26,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 
 		delivery.Setup(x => x.CalculateAsync(
 			It.Is<CalculateRequest>(x =>
-				x.Destination == Destination.Address
+				x.Destination == DeliveryDestination.Address
 				&& x.Address.HasValue
-				&& x.Address.Value.CountryId == ValidCountryId
-				&& x.Address.Value.SiteId == ValidCityId
-				&& x.Weights.Length == Weights.Length
+				&& x.Address.Value.Country == ValidCountry
+				&& x.Address.Value.Site == ValidCity
+				&& x.TotalWeight == TotalWeight
 			),
 			ct
 		)).ReturnsAsync(Calculations);
@@ -48,11 +48,11 @@ public class Tests : Data.Shipments.BaseUnitTests
 		delivery.Verify(
 			x => x.CalculateAsync(
 				It.Is<CalculateRequest>(x =>
-					x.Destination == Destination.Address
+					x.Destination == DeliveryDestination.Address
 					&& x.Address.HasValue
-					&& x.Address.Value.CountryId == ValidCountryId
-					&& x.Address.Value.SiteId == ValidCityId
-					&& x.Weights.Length == Weights.Length
+					&& x.Address.Value.Country == ValidCountry
+					&& x.Address.Value.Site == ValidCity
+					&& x.TotalWeight == TotalWeight
 				),
 				ct
 			),

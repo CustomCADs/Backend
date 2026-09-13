@@ -2,10 +2,18 @@
 
 namespace CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 
-public sealed record CreateShipmentCommand(
+public sealed record CreateShipmentToAddressCommand(
 	string Service,
-	ShipmentInfoDto Info,
 	AddressDto Address,
+	ShipmentInfoDto Info,
+	ContactDto Contact,
+	AccountId BuyerId
+) : ICommand<ShipmentId>;
+
+public sealed record CreateShipmentToOfficeCommand(
+	string Service,
+	int OfficeId,
+	ShipmentInfoDto Info,
 	ContactDto Contact,
 	AccountId BuyerId
 ) : ICommand<ShipmentId>;

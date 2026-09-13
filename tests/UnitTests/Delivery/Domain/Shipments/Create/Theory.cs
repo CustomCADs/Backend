@@ -6,8 +6,5 @@ public record Theory(
 	string Phone,
 	string Recipient,
 	int Count,
-	double Weight,
-	string Country,
-	string City,
-	string Street
+	double Weight
 );

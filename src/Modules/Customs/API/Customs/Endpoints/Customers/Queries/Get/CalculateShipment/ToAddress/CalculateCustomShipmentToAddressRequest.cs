@@ -3,7 +3,7 @@
 public record CalculateCustomShipmentToAddressRequest(
 	Guid Id,
 	int Count,
-	int CountryId,
-	long SiteId,
+	string Country,
+	string Site,
 	Guid CustomizationId
 );

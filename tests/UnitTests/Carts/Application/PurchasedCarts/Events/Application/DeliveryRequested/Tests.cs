@@ -1,5 +1,5 @@
 ﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
-using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested.ToAddress;
 using CustomCADs.Modules.Carts.Domain.Repositories;
 using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
@@ -13,7 +13,7 @@ using static Data.PurchasedCarts.TestData;
 
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
-	private readonly ActiveCartDeliveryRequestedHandler handler;
+	private readonly ActiveCartDeliveryToAddressRequestedHandler handler;
 	private readonly ActiveCartDeliveryRequestedApplicationEvent request = new(
 		PurchasedCartId: ValidId,
 		ShipmentService: string.Empty,

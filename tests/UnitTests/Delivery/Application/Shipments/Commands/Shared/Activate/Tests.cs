@@ -31,9 +31,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 
 		delivery.Setup(x => x.ShipAsync(
 			It.Is<ShipRequestDto>(
-				x => x.Country == shipment.Address.Country
-				&& x.City == shipment.Address.City
-				&& x.Street == shipment.Address.Street
+				x => x.Destination == shipment.Delivery.Destination
 				&& x.Phone == shipment.Contact.Phone
 				&& x.Email == shipment.Contact.Email
 				&& x.Name == shipment.Info.Recipient
@@ -87,9 +85,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 		delivery.Verify(
 			x => x.ShipAsync(
 				It.Is<ShipRequestDto>(
-					x => x.Country == shipment.Address.Country
-					&& x.City == shipment.Address.City
-					&& x.Street == shipment.Address.Street
+					x => x.Destination == shipment.Delivery.Destination
 					&& x.Phone == shipment.Contact.Phone
 					&& x.Email == shipment.Contact.Email
 					&& x.Name == shipment.Info.Recipient

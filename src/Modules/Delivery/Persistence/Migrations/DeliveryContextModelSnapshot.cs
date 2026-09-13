@@ -42,26 +42,6 @@ namespace CustomCADs.Modules.Delivery.Persistence.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.ComplexProperty(typeof(Dictionary<string, object>), "Address", "CustomCADs.Modules.Delivery.Domain.Shipments.Shipment.Address#ShipmentAddress", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("City");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("Country");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("Street");
-                        });
-
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Contact", "CustomCADs.Modules.Delivery.Domain.Shipments.Shipment.Contact#ShipmentContact", b1 =>
                         {
                             b1.IsRequired();
@@ -75,6 +55,47 @@ namespace CustomCADs.Modules.Delivery.Persistence.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("Phone");
+                        });
+
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Delivery", "CustomCADs.Modules.Delivery.Domain.Shipments.Shipment.Delivery#ShipmentDelivery", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Destination")
+                                .HasColumnType("integer")
+                                .HasColumnName("Destination");
+
+                            b1.Property<int?>("OfficeId")
+                                .HasColumnType("integer")
+                                .HasColumnName("OfficeId");
+
+                            b1.ComplexProperty(typeof(Dictionary<string, object>), "Address", "CustomCADs.Modules.Delivery.Domain.Shipments.Shipment.Delivery#ShipmentDelivery.Address#ShipmentAddress", b2 =>
+                                {
+                                    b2.Property<string>("AddressNote")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("AddressNote");
+
+                                    b2.Property<string>("Country")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("Country");
+
+                                    b2.Property<double>("Latitude")
+                                        .HasPrecision(10, 7)
+                                        .HasColumnType("double precision")
+                                        .HasColumnName("Latitude");
+
+                                    b2.Property<double>("Longitude")
+                                        .HasPrecision(10, 7)
+                                        .HasColumnType("double precision")
+                                        .HasColumnName("Longitude");
+
+                                    b2.Property<string>("Site")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("Site");
+                                });
                         });
 
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Info", "CustomCADs.Modules.Delivery.Domain.Shipments.Shipment.Info#ShipmentInfo", b1 =>

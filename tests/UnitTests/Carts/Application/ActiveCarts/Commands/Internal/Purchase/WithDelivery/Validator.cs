@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToOffice;
 using FluentValidation.TestHelper;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
@@ -8,7 +9,7 @@ using static Data.ActiveCarts.TestData;
 public class Validator : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly PurchaseActiveCartWithDeliveryValidator validator = new();
-	private static PurchaseActiveCartWithDeliveryCommand Request(Theory theory)
+	private static PurchaseActiveCartWithDeliveryToOfficeCommand Request(Theory theory)
 		=> new(
 			CallerId: ValidBuyerId,
 			PaymentMethodId: theory.PaymentMethodId,

@@ -1,4 +1,4 @@
-﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToAddress;
 using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
 using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
 using CustomCADs.Modules.Carts.Application.PurchasedCarts.Commands.Internal.Create;
@@ -24,8 +24,8 @@ using static Data.ActiveCarts.TestData;
 
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
-	private readonly PurchaseActiveCartWithDeliveryHandler handler;
-	private readonly PurchaseActiveCartWithDeliveryCommand request = new(
+	private readonly PurchaseActiveCartWithDeliveryToAddressHandler handler;
+	private readonly PurchaseActiveCartWithDeliveryToAddressCommand request = new(
 		PaymentMethodId: PaymentMethodId,
 		ShipmentService: ShipmentService,
 		CallerId: ValidBuyerId,
@@ -40,8 +40,8 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 
 	private static readonly string PaymentMethodId = string.Empty;
 	private static readonly string ShipmentService = string.Empty;
-	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
-	private static readonly ContactDto Contact = new(null, null);
+	private static readonly AddressDto Address = new("Bulgaria", "Sofia", "address-note", new(0, 0));
+	private static readonly ContactDto Contact = new(string.Empty, string.Empty);
 
 	public Tests()
 	{
@@ -186,7 +186,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		);
 		raiser.Verify(
 			x => x.RaiseApplicationEventAsync(
-				It.IsAny<ActiveCartDeliveryRequestedApplicationEvent>()
+				It.IsAny<ActiveCartDeliveryToAddressRequestedApplicationEvent>()
 			),
 			Times.Once()
 		);

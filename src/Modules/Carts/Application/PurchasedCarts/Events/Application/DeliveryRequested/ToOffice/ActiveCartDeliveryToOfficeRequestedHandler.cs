@@ -7,15 +7,15 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 
-namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
+namespace CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested.ToOffice;
 
-public class ActiveCartDeliveryRequestedHandler(
+public class ActiveCartDeliveryToOfficeRequestedHandler(
 	IPurchasedCartReads reads,
 	IUnitOfWork uow,
 	IRequestSender sender
-) : IEventHandler<ActiveCartDeliveryRequestedApplicationEvent>
+) : IEventHandler<ActiveCartDeliveryToOfficeRequestedApplicationEvent>
 {
-	public async Task HandleAsync(ActiveCartDeliveryRequestedApplicationEvent @event)
+	public async Task HandleAsync(ActiveCartDeliveryToOfficeRequestedApplicationEvent @event)
 	{
 		PurchasedCart cart = await reads.SingleByIdAsync(@event.PurchasedCartId).ConfigureAwait(false)
 			?? throw CustomNotFoundException<PurchasedCart>.ById(@event.PurchasedCartId);
@@ -27,10 +27,10 @@ public class ActiveCartDeliveryRequestedHandler(
 		int count = @event.Count;
 
 		ShipmentId shipmentId = await sender.SendCommandAsync(
-			command: new CreateShipmentCommand(
+			command: new CreateShipmentToOfficeCommand(
 				Info: new(count, weight, buyer),
 				Service: @event.ShipmentService,
-				Address: @event.Address,
+				OfficeId: @event.OfficeId,
 				Contact: @event.Contact,
 				BuyerId: cart.BuyerId
 			)

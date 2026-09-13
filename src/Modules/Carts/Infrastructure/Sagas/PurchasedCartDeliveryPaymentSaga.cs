@@ -1,6 +1,7 @@
 using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
 using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
-using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested.ToAddress;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested.ToOffice;
 using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 using CustomCADs.Shared.Application.Events.Carts;
 using Wolverine;
@@ -18,7 +19,22 @@ public class CartDeliveryPaymentSaga : Saga
 	public static CartDeliveryPaymentSaga Start(CartPaymentStartedApplicationEvent msg)
 		=> new() { Id = msg.Id };
 
-	public async Task Handle(ActiveCartDeliveryRequestedApplicationEvent msg, ActiveCartDeliveryRequestedHandler handler)
+	public async Task Handle(ActiveCartDeliveryToAddressRequestedApplicationEvent msg, ActiveCartDeliveryToAddressRequestedHandler handler)
+	{
+		try
+		{
+			await handler.HandleAsync(msg).ConfigureAwait(false);
+		}
+		catch
+		{
+			MarkCompleted();
+			throw;
+		}
+
+		IsDeliveryHandled = true;
+	}
+
+	public async Task Handle(ActiveCartDeliveryToOfficeRequestedApplicationEvent msg, ActiveCartDeliveryToOfficeRequestedHandler handler)
 	{
 		try
 		{

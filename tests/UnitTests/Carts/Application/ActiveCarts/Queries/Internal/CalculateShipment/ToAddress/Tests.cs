@@ -14,13 +14,13 @@ using static Data.ActiveCarts.TestData;
 public class Tests : Data.ActiveCarts.BaseUnitTests
 {
 	private readonly CalculateActiveCartShipmentToAddressHandler handler;
-	private readonly CalculateActiveCartShipmentToAddressQuery request = new(ValidBuyerId, CountryId, SiteId);
+	private readonly CalculateActiveCartShipmentToAddressQuery request = new(ValidBuyerId, Country, Site);
 
 	private readonly Mock<IActiveCartReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private const int CountryId = 100;
-	private const int SiteId = 68134;
+	private const string Country = "Bulgaria";
+	private const string Site = "Sofia";
 	private static readonly Dictionary<CustomizationId, double> Weights = new()
 	{
 		[CustomizationId.New()] = 4.3,
@@ -55,9 +55,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<CalculateShipmentToAddressQuery>(x =>
-				x.Weights.Sum() == TotalWeight
-				&& x.CountryId == CountryId
-				&& x.SiteId == SiteId
+				x.TotalWeight == TotalWeight
+				&& x.Country == Country
+				&& x.Site == Site
 			),
 			ct
 		)).ReturnsAsync(Calculations);
@@ -97,9 +97,9 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 		sender.Verify(
 			x => x.SendQueryAsync(
 				It.Is<CalculateShipmentToAddressQuery>(x =>
-					x.Weights.Sum() == TotalWeight
-					&& x.CountryId == CountryId
-					&& x.SiteId == SiteId
+					x.TotalWeight == TotalWeight
+					&& x.Country == Country
+					&& x.Site == Site
 				),
 				ct
 			),

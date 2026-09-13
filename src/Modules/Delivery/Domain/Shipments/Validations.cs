@@ -59,27 +59,6 @@ internal static class Validations
 					range: (MinWeight, MaxWeight),
 					inclusive: true
 				);
-
-		internal Shipment ValidateCountry()
-			=> shipment
-				.ThrowIfNull(
-					expression: x => x.Address.Country,
-					predicate: string.IsNullOrWhiteSpace
-				);
-
-		internal Shipment ValidateCity()
-			=> shipment
-				.ThrowIfNull(
-					expression: x => x.Address.City,
-					predicate: string.IsNullOrWhiteSpace
-				);
-
-		internal Shipment ValidateStreet()
-			=> shipment
-				.ThrowIfNull(
-					expression: x => x.Address.Street,
-					predicate: string.IsNullOrWhiteSpace
-				);
 	}
 
 }

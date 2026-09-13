@@ -26,9 +26,9 @@ public sealed class CalculateCustomShipmentToAddressHandler(ICustomReads reads, 
 
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
 			query: new CalculateShipmentToAddressQuery(
-				Weights: [.. Enumerable.Range(0, req.Count).Select(x => weight)],
-				CountryId: req.CountryId,
-				SiteId: req.SiteId
+				TotalWeight: weight * req.Count,
+				Country: req.Country,
+				Site: req.Site
 			),
 			ct: ct
 		).ConfigureAwait(false);

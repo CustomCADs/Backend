@@ -28,7 +28,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.SignalR" Version="1.2.10" />
     <PackageVersion Include="Polly" Version="8.6.6" />
     <PackageVersion Include="Stripe.net" Version="51.2.0" />
-    <PackageVersion Include="SpeedyNET.Sdk" Version="1.0.14" />
+    <PackageVersion Include="SpeedyNET.Sdk" Version="1.0.18" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
     <PackageVersion Include="WolverineFx" Version="4.0.0" />
     <PackageVersion Include="WolverineFx.FluentValidation" Version="4.0.0" />

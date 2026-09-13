@@ -3,12 +3,12 @@
 namespace CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
 public sealed record CalculateShipmentToAddressQuery(
-	double[] Weights,
-	int CountryId,
-	long SiteId
+	double TotalWeight,
+	string Country,
+	string Site
 ) : IQuery<CalculateShipmentDto[]>;
 
 public sealed record CalculateShipmentToOfficeQuery(
-	double[] Weights,
+	double TotalWeight,
 	int OfficeId
 ) : IQuery<CalculateShipmentDto[]>;

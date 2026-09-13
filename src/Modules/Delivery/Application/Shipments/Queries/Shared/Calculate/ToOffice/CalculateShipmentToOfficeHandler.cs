@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Modules.Delivery.Application.Contracts;
 using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
+using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 using CustomCADs.Shared.Application.UseCases.Shipments.Queries;
 
@@ -12,9 +13,9 @@ public sealed class CalculateShipmentToOfficeHandler(IDeliveryService delivery)
 	{
 		CalculationDto[] calculations = await delivery.CalculateAsync(
 			req: new(
-				Weights: req.Weights,
+				TotalWeight: req.TotalWeight,
 				OfficeId: req.OfficeId,
-				Destination: Destination.Office,
+				Destination: DeliveryDestination.Office,
 				Address: null
 			),
 			ct: ct

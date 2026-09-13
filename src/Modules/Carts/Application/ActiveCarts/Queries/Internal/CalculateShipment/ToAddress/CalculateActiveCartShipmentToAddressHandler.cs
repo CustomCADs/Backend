@@ -31,15 +31,13 @@ public sealed class CalculateActiveCartShipmentToAddressHandler(IActiveCartReads
 
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
 			query: new CalculateShipmentToAddressQuery(
-				CountryId: req.CountryId,
-				SiteId: req.SiteId,
-				Weights: weights
-					.Select(x =>
-					{
-						ActiveCartItem item = items.First(item => item.CustomizationId == x.Key);
-						return item.Quantity * x.Value / 1000;
-					})
-					.ToArray()
+				Country: req.Country,
+				Site: req.Site,
+				TotalWeight: weights.Sum(x =>
+				{
+					ActiveCartItem item = items.First(item => item.CustomizationId == x.Key);
+					return item.Quantity * x.Value / 1000;
+				})
 			),
 			ct: ct
 		).ConfigureAwait(false);

@@ -15,8 +15,8 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly CalculateCustomShipmentToAddressHandler handler;
 	private readonly CalculateCustomShipmentToAddressQuery request = new(
 		Id: ValidId,
-		CountryId: CountryId,
-		SiteId: SiteId,
+		Country: Country,
+		Site: Site,
 		Count: Quantity,
 		CustomizationId: ValidCustomizationId
 	);
@@ -24,8 +24,8 @@ public class Tests : Data.Customs.BaseUnitTests
 	private readonly Mock<ICustomReads> reads = new();
 	private readonly Mock<IRequestSender> sender = new();
 
-	private const int CountryId = 100;
-	private const long SiteId = 68134;
+	private const string Country = "Bulgaria";
+	private const string Site = "Sofia";
 	private const int Quantity = 4;
 	private const double Weight = 2.7;
 
@@ -47,9 +47,9 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<CalculateShipmentToAddressQuery>(x =>
-				x.Weights.Sum() == Quantity * Weight
-				&& x.CountryId == CountryId
-				&& x.SiteId == SiteId
+				x.TotalWeight == Quantity * Weight
+				&& x.Country == Country
+				&& x.Site == Site
 			),
 			ct
 		)).ReturnsAsync(Calculations);
@@ -89,9 +89,9 @@ public class Tests : Data.Customs.BaseUnitTests
 		sender.Verify(
 			x => x.SendQueryAsync(
 				It.Is<CalculateShipmentToAddressQuery>(x =>
-					x.Weights.Sum() == Quantity * Weight
-					&& x.CountryId == CountryId
-					&& x.SiteId == SiteId
+					x.TotalWeight == Quantity * Weight
+					&& x.Country == Country
+					&& x.Site == Site
 				),
 				ct
 			),

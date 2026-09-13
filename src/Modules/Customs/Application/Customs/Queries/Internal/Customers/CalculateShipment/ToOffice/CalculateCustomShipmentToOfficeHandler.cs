@@ -26,7 +26,7 @@ public sealed class CalculateCustomShipmentToOfficeHandler(ICustomReads reads, I
 
 		CalculateShipmentDto[] calculations = await sender.SendQueryAsync(
 			query: new CalculateShipmentToOfficeQuery(
-				Weights: [.. Enumerable.Range(0, req.Count).Select(x => weight)],
+				TotalWeight: weight * req.Count,
 				OfficeId: req.OfficeId
 			),
 			ct: ct

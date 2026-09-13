@@ -1,4 +1,5 @@
-using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested.ToAddress;
+using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested.ToOffice;
 using CustomCADs.Modules.Carts.Application.PurchasedCarts.Events.Application.PaymentCompleted;
 
 #pragma warning disable IDE0130
@@ -10,7 +11,8 @@ public static class DependencyInjection
 	{
 		public void AddCartDeliveryPaymentSagaDependencies()
 			=> services
-				.AddScoped<ActiveCartDeliveryRequestedHandler>()
+				.AddScoped<ActiveCartDeliveryToAddressRequestedHandler>()
+				.AddScoped<ActiveCartDeliveryToOfficeRequestedHandler>()
 				.AddScoped<CartPaymentCompletedHandler>();
 	}
 }

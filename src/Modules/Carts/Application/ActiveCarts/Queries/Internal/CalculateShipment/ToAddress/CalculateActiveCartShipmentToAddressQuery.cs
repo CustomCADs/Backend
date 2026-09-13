@@ -5,6 +5,6 @@ namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.Calc
 
 public sealed record CalculateActiveCartShipmentToAddressQuery(
 	AccountId CallerId,
-	int CountryId,
-	long SiteId
+	string Country,
+	string Site
 ) : IQuery<CalculateShipmentDto[]>;

@@ -1,22 +1,22 @@
 ﻿using CustomCADs.Modules.Delivery.Application.Contracts;
-using CustomCADs.Modules.Delivery.Application.Shipments.Commands.Shared.Create;
+using CustomCADs.Modules.Delivery.Application.Shipments.Commands.Shared.Create.ToAddress;
 using CustomCADs.Modules.Delivery.Domain.Repositories;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 
-namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Commands.Shared.Create;
+namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Commands.Shared.Create.ToAddress;
 
 using static Data.Shipments.TestData;
 
 public class Tests : Data.Shipments.BaseUnitTests
 {
-	private readonly CreateShipmentHandler handler;
-	private readonly CreateShipmentCommand request = new(
+	private readonly CreateShipmentToAddressHandler handler;
+	private readonly CreateShipmentToAddressCommand request = new(
 		Service: ValidService,
 		Info: new(MaxValidCount, MaxValidWeight, ValidRecipient),
-		Address: new(ValidCountry, ValidCity, ValidStreet),
+		Address: new(ValidCountry, ValidCity, ValidAddressNote, new(ValidLongitude, ValidLatitude)),
 		Contact: new(ValidPhone, ValidEmail),
 		BuyerId: ValidBuyerId
 	);
@@ -40,7 +40,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 			ct
 		)).ReturnsAsync(true);
 
-		delivery.Setup(x => x.ValidateAsync(ValidCountry, ValidCity, ValidStreet, ValidPhone, ct))
+		delivery.Setup(x => x.ValidateAsync(ValidPhone, ct))
 			.ReturnsAsync(true);
 	}
 
@@ -100,7 +100,7 @@ public class Tests : Data.Shipments.BaseUnitTests
 	public async Task Handle_ShouldThrowException_WhenDeliveryDetailsInvalid()
 	{
 		// Arrange
-		delivery.Setup(x => x.ValidateAsync(ValidCountry, ValidCity, ValidStreet, ValidPhone, ct))
+		delivery.Setup(x => x.ValidateAsync(ValidPhone, ct))
 			.ReturnsAsync(false);
 
 		// Assert

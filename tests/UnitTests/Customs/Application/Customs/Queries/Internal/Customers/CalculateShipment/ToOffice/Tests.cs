@@ -45,7 +45,7 @@ public class Tests : Data.Customs.BaseUnitTests
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<CalculateShipmentToOfficeQuery>(x =>
-				x.Weights.Sum() == Quantity * Weight
+				x.TotalWeight == Quantity * Weight
 				&& x.OfficeId == OfficeId
 			),
 			ct
@@ -86,7 +86,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		sender.Verify(
 			x => x.SendQueryAsync(
 				It.Is<CalculateShipmentToOfficeQuery>(x =>
-					x.Weights.Sum() == Quantity * Weight
+					x.TotalWeight == Quantity * Weight
 					&& x.OfficeId == OfficeId
 				),
 				ct
