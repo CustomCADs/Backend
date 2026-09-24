@@ -14,6 +14,7 @@ public class CartDeliveryPaymentSaga : Saga
 	[Wolverine.Persistence.Sagas.SagaIdentity]
 	public Guid Id { get; private set; }
 
+	public bool IsDeliveryStarted { get; set; }
 	public bool IsDeliveryHandled { get; set; }
 
 	public static CartDeliveryPaymentSaga Start(CartPaymentStartedApplicationEvent msg)
@@ -21,6 +22,7 @@ public class CartDeliveryPaymentSaga : Saga
 
 	public async Task Handle(ActiveCartDeliveryToAddressRequestedApplicationEvent msg, ActiveCartDeliveryToAddressRequestedHandler handler)
 	{
+		IsDeliveryStarted = true;
 		try
 		{
 			await handler.HandleAsync(msg).ConfigureAwait(false);
@@ -36,6 +38,7 @@ public class CartDeliveryPaymentSaga : Saga
 
 	public async Task Handle(ActiveCartDeliveryToOfficeRequestedApplicationEvent msg, ActiveCartDeliveryToOfficeRequestedHandler handler)
 	{
+		IsDeliveryStarted = true;
 		try
 		{
 			await handler.HandleAsync(msg).ConfigureAwait(false);
@@ -51,7 +54,7 @@ public class CartDeliveryPaymentSaga : Saga
 
 	public async Task<ScheduledMessage<CartPaymentCompletedApplicationEvent>?> Handle(CartPaymentCompletedApplicationEvent msg, CartPaymentCompletedHandler handler)
 	{
-		if (!IsDeliveryHandled) return msg.ScheduledAt(DateTimeOffset.UtcNow.AddSeconds(1));
+		if (IsDeliveryStarted && !IsDeliveryHandled) return msg.ScheduledAt(DateTimeOffset.UtcNow.AddSeconds(1));
 
 		await handler.HandleAsync(msg).ConfigureAwait(false);
 

@@ -16,7 +16,7 @@ public class Validator : Data.Customs.BaseUnitTests
 			PaymentMethodId: theory.PaymentMethodId,
 			ShipmentService: theory.ShipmentService,
 			CallerId: ValidBuyerId,
-			Address: new(theory.Country, theory.City, theory.Street),
+			Address: new(string.Empty, string.Empty, string.Empty, new(0, 0)),
 			Contact: new(theory.Phone, theory.Email)
 		);
 
@@ -86,7 +86,7 @@ public class Validator : Data.Customs.BaseUnitTests
 		var result = await validator.TestValidateAsync(Request(theory), cancellationToken: ct);
 
 		// Assert
-		result.ShouldHaveValidationErrorFor(x => x.Address.City);
+		result.ShouldHaveValidationErrorFor(x => x.Address.Site);
 	}
 
 	[Test]

@@ -7,20 +7,20 @@ using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Shipments.Commands;
 
-namespace CustomCADs.UnitTests.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested;
+namespace CustomCADs.UnitTests.Carts.Application.PurchasedCarts.Events.Application.DeliveryRequested.ToAddress;
 
 using static Data.PurchasedCarts.TestData;
 
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {
 	private readonly ActiveCartDeliveryToAddressRequestedHandler handler;
-	private readonly ActiveCartDeliveryRequestedApplicationEvent request = new(
+	private readonly ActiveCartDeliveryToAddressRequestedApplicationEvent request = new(
 		PurchasedCartId: ValidId,
 		ShipmentService: string.Empty,
 		Weight: default,
 		Count: default,
-		Address: new(string.Empty, string.Empty, string.Empty),
-		Contact: new(default, default)
+		Address: new(string.Empty, string.Empty, string.Empty, new(0, 0)),
+		Contact: new(string.Empty, string.Empty)
 	);
 
 
@@ -45,7 +45,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		)).ReturnsAsync("NinjataBG");
 
 		sender.Setup(x => x.SendCommandAsync(
-			It.Is<CreateShipmentCommand>(x => x.BuyerId == cart.BuyerId),
+			It.Is<CreateShipmentToAddressCommand>(x => x.BuyerId == cart.BuyerId),
 			ct
 		)).ReturnsAsync(ValidShipmentId);
 	}
@@ -94,7 +94,7 @@ public class Tests : Data.PurchasedCarts.BaseUnitTests
 		);
 		sender.Verify(
 			x => x.SendCommandAsync(
-				It.Is<CreateShipmentCommand>(x => x.BuyerId == cart.BuyerId),
+				It.Is<CreateShipmentToAddressCommand>(x => x.BuyerId == cart.BuyerId),
 				ct
 			),
 			Times.Once()
