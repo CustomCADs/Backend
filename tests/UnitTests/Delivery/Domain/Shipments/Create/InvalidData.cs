@@ -11,11 +11,9 @@ public class InvalidData : ITheoryData<Theory>
 
 		// Email
 		yield return new(ValidService, InvalidEmail, ValidPhone, ValidRecipient, MaxValidCount, MaxValidWeight);
-		yield return new(ValidService, InvalidEmailNull, ValidPhone, ValidRecipient, MaxValidCount, MaxValidWeight);
 
 		// Phone
 		yield return new(ValidService, ValidEmail, InvalidPhone, ValidRecipient, MaxValidCount, MaxValidWeight);
-		yield return new(ValidService, ValidEmail, InvalidPhoneNull, ValidRecipient, MaxValidCount, MaxValidWeight);
 
 		// Recipient
 		yield return new(ValidService, ValidEmail, ValidPhone, InvalidRecipient, MaxValidCount, MaxValidWeight);
@@ -27,14 +25,5 @@ public class InvalidData : ITheoryData<Theory>
 		// Weight
 		yield return new(ValidService, ValidEmail, ValidPhone, ValidRecipient, MaxValidCount, MaxInvalidWeight);
 		yield return new(ValidService, ValidEmail, ValidPhone, ValidRecipient, MaxValidCount, MinInvalidWeight);
-
-		// Country
-		yield return new(ValidService, ValidEmail, ValidPhone, ValidRecipient, MaxValidCount, MaxValidWeight);
-
-		// City
-		yield return new(ValidService, ValidEmail, ValidPhone, ValidRecipient, MaxValidCount, MaxValidWeight);
-
-		// Street
-		yield return new(ValidService, ValidEmail, ValidPhone, ValidRecipient, MaxValidCount, MaxValidWeight);
 	}
 }

@@ -53,7 +53,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		)).ReturnsAsync("NinjataBG");
 
 		sender.Setup(x => x.SendCommandAsync(
-			It.Is<CreateShipmentCommand>(x => x.BuyerId == custom.BuyerId),
+			It.Is<CreateShipmentToAddressCommand>(x => x.BuyerId == custom.BuyerId),
 			ct
 		)).ReturnsAsync(ValidShipmentId);
 	}
@@ -117,7 +117,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 		sender.Verify(
 			x => x.SendCommandAsync(
-				It.Is<CreateShipmentCommand>(x => x.BuyerId == custom.BuyerId),
+				It.Is<CreateShipmentToAddressCommand>(x => x.BuyerId == custom.BuyerId),
 				ct
 			),
 			Times.Once()

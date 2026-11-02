@@ -1,20 +1,20 @@
-﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
-using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToOffice;
+﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToOffice;
+using CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.Data;
 using FluentValidation.TestHelper;
 
-namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToOffice;
 
-using static Data.ActiveCarts.TestData;
+using static Carts.Data.ActiveCarts.TestData;
 
-public class Validator : Data.ActiveCarts.BaseUnitTests
+public class Validator : Carts.Data.ActiveCarts.BaseUnitTests
 {
-	private readonly PurchaseActiveCartWithDeliveryValidator validator = new();
+	private readonly PurchaseActiveCartWithDeliveryToOfficeValidator validator = new();
 	private static PurchaseActiveCartWithDeliveryToOfficeCommand Request(Theory theory)
 		=> new(
 			CallerId: ValidBuyerId,
 			PaymentMethodId: theory.PaymentMethodId,
 			ShipmentService: theory.ShipmentService,
-			Address: new(theory.Country, theory.City, theory.Street),
+			OfficeId: 0,
 			Contact: new(theory.Phone, theory.Email)
 		);
 
@@ -33,8 +33,6 @@ public class Validator : Data.ActiveCarts.BaseUnitTests
 
 	[Test]
 	[MethodDataSource(typeof(InvalidShipmentServiceData), nameof(ITheoryData<>.GetTestData))]
-	[MethodDataSource(typeof(InvalidCountryData), nameof(ITheoryData<>.GetTestData))]
-	[MethodDataSource(typeof(InvalidCityData), nameof(ITheoryData<>.GetTestData))]
 	[MethodDataSource(typeof(InvalidPhoneData), nameof(ITheoryData<>.GetTestData))]
 	[MethodDataSource(typeof(InvalidEmailData), nameof(ITheoryData<>.GetTestData))]
 	public async Task Validate_ShouldBeInvalid_WhenCartIsNotValid(Theory theory)
@@ -59,32 +57,6 @@ public class Validator : Data.ActiveCarts.BaseUnitTests
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.ShipmentService);
-	}
-
-	[Test]
-	[MethodDataSource(typeof(InvalidCountryData), nameof(ITheoryData<>.GetTestData))]
-	public async Task Validate_ShouldReturnProperErrors_WhenCountryIsNotValid(Theory theory)
-	{
-		// Arrange
-
-		// Act
-		var result = await validator.TestValidateAsync(Request(theory), cancellationToken: ct);
-
-		// Assert
-		result.ShouldHaveValidationErrorFor(x => x.Address.Country);
-	}
-
-	[Test]
-	[MethodDataSource(typeof(InvalidCityData), nameof(ITheoryData<>.GetTestData))]
-	public async Task Validate_ShouldReturnProperErrors_WhenCityIsNotValid(Theory theory)
-	{
-		// Arrange
-
-		// Act
-		var result = await validator.TestValidateAsync(Request(theory), cancellationToken: ct);
-
-		// Assert
-		result.ShouldHaveValidationErrorFor(x => x.Address.City);
 	}
 
 	[Test]

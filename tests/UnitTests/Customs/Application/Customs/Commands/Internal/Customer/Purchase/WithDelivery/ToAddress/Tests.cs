@@ -14,11 +14,11 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
-namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Purchase.WithDelivery;
+namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Purchase.WithDelivery.ToAddress;
 
-using static Data.Customs.TestData;
+using static UnitTests.Customs.Data.Customs.TestData;
 
-public class Tests : Data.Customs.BaseUnitTests
+public class Tests : UnitTests.Customs.Data.Customs.BaseUnitTests
 {
 	private readonly PurchaseCustomWithDeliveryHandler handler;
 	private readonly PurchaseCustomWithDeliveryCommand request = new(

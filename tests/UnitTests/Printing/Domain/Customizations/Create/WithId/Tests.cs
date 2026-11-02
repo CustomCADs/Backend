@@ -16,7 +16,15 @@ public class Tests : Data.Customizations.BaseUnitTests
 	[Test]
 	public async Task Create_ShouldPopulateProperties()
 	{
-		Customization customization = CreateCustomization(MaxValidScale, MaxValidInfill, MaxValidBase, MaxValidVolume, ValidColor, ValidMaterialId, ValidId);
+		Customization customization = CreateCustomization(
+			scale: MaxValidScale,
+			infill: MaxValidInfill,
+			volume: MaxValidVolume,
+			@base: MaxValidBase,
+			color: ValidColor,
+			materialId: ValidMaterialId,
+			id: ValidId
+		);
 
 		using (Assert.Multiple())
 		{

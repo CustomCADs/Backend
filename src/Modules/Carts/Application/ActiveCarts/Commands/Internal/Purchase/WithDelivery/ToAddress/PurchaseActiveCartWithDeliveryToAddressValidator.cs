@@ -4,14 +4,14 @@ using CustomCADs.Shared.Application.Abstractions.Payment;
 using CustomCADs.Shared.Application.Abstractions.Requests.Validator;
 using FluentValidation;
 
-namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToAddress;
 
 using static ApplicationConstants.FluentMessages;
 using static DomainConstants;
 
-public class PurchaseActiveCartWithDeliveryValidator : CommandValidator<PurchaseActiveCartWithDeliveryToOfficeCommand, PaymentDto>
+public class PurchaseActiveCartWithDeliveryToAddressValidator : CommandValidator<PurchaseActiveCartWithDeliveryToAddressCommand, PaymentDto>
 {
-	public PurchaseActiveCartWithDeliveryValidator()
+	public PurchaseActiveCartWithDeliveryToAddressValidator()
 	{
 		RuleFor(x => x.ShipmentService)
 			.NotEmpty().WithMessage(RequiredError);

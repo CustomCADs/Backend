@@ -1,11 +1,12 @@
 ﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
+using CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Purchase.WithDelivery.Data;
 using FluentValidation.TestHelper;
 
-namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Purchase.WithDelivery;
+namespace CustomCADs.UnitTests.Customs.Application.Customs.Commands.Internal.Customer.Purchase.WithDelivery.ToAddress;
 
-using static Data.Customs.TestData;
+using static UnitTests.Customs.Data.Customs.TestData;
 
-public class Validator : Data.Customs.BaseUnitTests
+public class Validator : UnitTests.Customs.Data.Customs.BaseUnitTests
 {
 	private readonly PurchaseCustomWithDeliveryValidator validator = new();
 	private static PurchaseCustomWithDeliveryCommand Request(Theory theory)
@@ -35,8 +36,6 @@ public class Validator : Data.Customs.BaseUnitTests
 
 	[Test]
 	[MethodDataSource(typeof(InvalidShipmentServiceData), nameof(ITheoryData<>.GetTestData))]
-	[MethodDataSource(typeof(InvalidCountryData), nameof(ITheoryData<>.GetTestData))]
-	[MethodDataSource(typeof(InvalidCityData), nameof(ITheoryData<>.GetTestData))]
 	[MethodDataSource(typeof(InvalidPhoneData), nameof(ITheoryData<>.GetTestData))]
 	[MethodDataSource(typeof(InvalidEmailData), nameof(ITheoryData<>.GetTestData))]
 	public async Task Validate_ShouldBeInvalid_WhenCartIsNotValid(Theory theory)
@@ -61,32 +60,6 @@ public class Validator : Data.Customs.BaseUnitTests
 
 		// Assert
 		result.ShouldHaveValidationErrorFor(x => x.ShipmentService);
-	}
-
-	[Test]
-	[MethodDataSource(typeof(InvalidCountryData), nameof(ITheoryData<>.GetTestData))]
-	public async Task Validate_ShouldReturnProperErrors_WhenCountryIsNotValid(Theory theory)
-	{
-		// Arrange
-
-		// Act
-		var result = await validator.TestValidateAsync(Request(theory), cancellationToken: ct);
-
-		// Assert
-		result.ShouldHaveValidationErrorFor(x => x.Address.Country);
-	}
-
-	[Test]
-	[MethodDataSource(typeof(InvalidCityData), nameof(ITheoryData<>.GetTestData))]
-	public async Task Validate_ShouldReturnProperErrors_WhenCityIsNotValid(Theory theory)
-	{
-		// Arrange
-
-		// Act
-		var result = await validator.TestValidateAsync(Request(theory), cancellationToken: ct);
-
-		// Assert
-		result.ShouldHaveValidationErrorFor(x => x.Address.Site);
 	}
 
 	[Test]

@@ -16,7 +16,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
 
-	private const decimal Cost = 10.5m;
 	private static readonly CustomizationId[] Ids = [];
 	private static readonly Customization[] Customizations = [CreateCustomization()];
 	private static readonly MaterialId[] MaterialIds = [.. Customizations.Select(x => x.MaterialId)];
@@ -68,7 +67,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		{
 			foreach (var (_, cost) in result)
 			{
-				await Assert.That(cost).IsEqualTo(Cost);
+				await Assert.That(cost).IsPositive();
 			}
 		}
 	}

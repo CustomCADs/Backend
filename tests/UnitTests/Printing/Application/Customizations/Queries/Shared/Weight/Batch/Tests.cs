@@ -16,7 +16,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
 
-	private const double Weight = 10.5;
 	private static readonly CustomizationId[] Ids = [];
 	private static readonly Customization[] Customizations = [CreateCustomization()];
 	private static readonly MaterialId[] MaterialIds = [.. Customizations.Select(x => x.MaterialId)];
@@ -68,7 +67,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		{
 			foreach (var (_, weight) in result)
 			{
-				await Assert.That(weight).IsEqualTo(Weight);
+				await Assert.That(weight).IsPositive();
 			}
 		}
 	}

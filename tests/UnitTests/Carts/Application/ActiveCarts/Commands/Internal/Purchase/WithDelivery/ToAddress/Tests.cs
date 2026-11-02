@@ -18,11 +18,11 @@ using CustomCADs.Shared.Domain.TypedIds.Carts;
 using CustomCADs.Shared.Domain.TypedIds.Catalog;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
-namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery;
+namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToAddress;
 
-using static Data.ActiveCarts.TestData;
+using static Carts.Data.ActiveCarts.TestData;
 
-public class Tests : Data.ActiveCarts.BaseUnitTests
+public class Tests : Carts.Data.ActiveCarts.BaseUnitTests
 {
 	private readonly PurchaseActiveCartWithDeliveryToAddressHandler handler;
 	private readonly PurchaseActiveCartWithDeliveryToAddressCommand request = new(

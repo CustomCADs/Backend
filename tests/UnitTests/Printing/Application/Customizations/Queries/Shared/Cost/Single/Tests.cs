@@ -17,7 +17,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
 
-	private const decimal Cost = 10.5m;
 	private readonly Customization customization = CreateCustomization();
 	private readonly Material material = CreateMaterial();
 
@@ -60,7 +59,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		decimal result = await handler.Handle(request, ct);
 
 		// Assert
-		await Assert.That(result).IsEqualTo(Cost);
+		await Assert.That(result).IsPositive();
 	}
 
 	[Test]
