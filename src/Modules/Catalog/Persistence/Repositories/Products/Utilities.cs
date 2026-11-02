@@ -86,10 +86,8 @@ internal static class Utilities
 			=> await set
 				.Where(x => tagIds.Contains(x.TagId))
 				.GroupBy(x => x.ProductId)
-				.Where(x => x.Count() == tagIds.Length)
 				.Select(x => x.Key)
 				.ToArrayAsync(ct)
 				.ConfigureAwait(false);
 	}
-
 }

@@ -13,9 +13,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 	private readonly EditCustomizationHandler handler;
 	private readonly EditCustomizationCommand request = new(
 		Id: ValidId,
-		Scale: MaxValidScale,
 		Infill: MaxValidInfill,
 		Volume: MaxValidVolume,
+		Base: MaxValidBase,
+		Scale: MaxValidScale,
 		Color: ValidColor,
 		MaterialId: ValidMaterialId
 	);

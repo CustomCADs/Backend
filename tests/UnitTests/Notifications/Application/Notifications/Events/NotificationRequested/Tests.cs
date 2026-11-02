@@ -16,7 +16,7 @@ public class Tests : Data.Notifications.BaseUnitTests
 {
 	private readonly NotificationRequestedHandler handler;
 	private readonly NotificationRequestedEvent request = new(
-		Type: NotificationType.Unkown,
+		Type: NotificationType.Unknown,
 		Description: MinValidDescription,
 		Link: ValidLink,
 		AuthorId: ValidAuthorId,

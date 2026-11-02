@@ -17,11 +17,11 @@ public static class TestData
 	public const string ValidStreet = "Flora";
 	public const string InvalidStreet = "";
 
-	public const string? ValidPhone = "+1234567890";
-	public const string? InvalidPhone = "abcdefghijklmnopqrstuvwxyz";
+	public const string ValidPhone = "+1234567890";
+	public const string InvalidPhone = "abcdefghijklmnopqrstuvwxyz";
 
-	public const string? ValidEmail = "john.doe@example.com";
-	public const string? InvalidEmail = "";
+	public const string ValidEmail = "john.doe@example.com";
+	public const string InvalidEmail = "";
 
 	public const string ValidService = "Standard";
 	public const string InvalidService = "";
@@ -40,6 +40,11 @@ public static class TestData
 	public const string InvalidRecipient = "";
 
 	public const string ValidReferenceId = "some-reference-id";
+	public const int ValidOfficeId = 413;
+	public const int ValidCountryId = 100;
+	public const string ValidAddressNote = "address note 123";
+	public static readonly double ValidLongitude = 0;
+	public static readonly double ValidLatitude = 0;
 
 	public static readonly ShipmentId ValidId = ShipmentId.New();
 	public static readonly AccountId ValidBuyerId = AccountId.New();

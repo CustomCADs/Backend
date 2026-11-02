@@ -52,6 +52,6 @@ public class Tests : Data.Shipments.BaseUnitTests
 		Result<GetAllShipmentsDto> result = await handler.Handle(request, ct);
 
 		// Assert
-		await Assert.That(Shipments.Select(r => r.Address)).IsEquivalentTo(result.Items.Select(r => r.Address));
+		await Assert.That(Shipments.Select(r => r.Id)).IsEquivalentTo(result.Items.Select(r => r.Id));
 	}
 }

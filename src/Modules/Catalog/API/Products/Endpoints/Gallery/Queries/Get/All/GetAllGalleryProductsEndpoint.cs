@@ -10,6 +10,7 @@ public sealed class GetAllGalleryProductsEndpoint(IRequestSender sender)
 	{
 		Get("");
 		Group<GalleryGroup>();
+		AllowAnonymous();
 		Description(x => x
 			.WithSummary("All")
 			.WithDescription("See all the Validated Products with Filter, Search, Sort and Pagination options")

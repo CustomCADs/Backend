@@ -15,14 +15,14 @@ public class BaseUnitTests
 		decimal? scale = null,
 		decimal? infill = null,
 		decimal? volume = null,
+		decimal? @base = null,
 		string? color = null,
 		MaterialId? materialId = null,
 		CustomizationId? id = null
 	) => Customization.Create(
 		id: id ?? ValidId,
-		scale: scale ?? MinValidScale,
 		infill: infill ?? MinValidInfill,
-		volume: volume ?? MinValidVolume,
+		volume: new(volume ?? MinValidVolume, @base ?? MinValidBase, scale ?? MinValidScale),
 		color: color ?? ValidColor,
 		materialId: materialId ?? ValidMaterialId
 	);

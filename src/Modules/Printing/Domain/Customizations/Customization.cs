@@ -1,19 +1,20 @@
-﻿using CustomCADs.Shared.Domain.Bases.Entities;
+﻿using CustomCADs.Modules.Printing.Domain.Customizations.ValueObjects;
+using CustomCADs.Shared.Domain.Bases.Entities;
 
 namespace CustomCADs.Modules.Printing.Domain.Customizations;
+
+using static Services.PrintConstants;
 
 public class Customization : BaseAggregateRoot
 {
 	private Customization() { }
 	private Customization(
-		decimal scale,
 		decimal infill,
-		decimal volume,
+		Volume volume,
 		string color,
 		MaterialId materialId
 	) : this()
 	{
-		Scale = scale;
 		Infill = infill;
 		Volume = volume;
 		Color = color;
@@ -21,39 +22,33 @@ public class Customization : BaseAggregateRoot
 	}
 
 	public CustomizationId Id { get; init; }
-	public decimal Scale { get; private set; }
+	public Volume Volume { get; set; } = new();
 	public decimal Infill { get; private set; }
-	public decimal Volume { get; private set; }
 	public string Color { get; private set; } = string.Empty;
 	public MaterialId MaterialId { get; private set; }
 
 	public static Customization Create(
-		decimal scale,
 		decimal infill,
-		decimal volume,
+		Volume volume,
 		string color,
 		MaterialId materialId
 	) => new Customization(
-		scale: scale,
 		infill: infill,
 		volume: volume,
 		color: color,
 		materialId: materialId
 	)
-	.ValidateScale()
 	.ValidateInfill()
 	.ValidateVolume()
 	.ValidateColor();
 
 	internal static Customization Create(
 		CustomizationId id,
-		decimal scale,
 		decimal infill,
-		decimal volume,
+		Volume volume,
 		string color,
 		MaterialId materialId
 	) => new Customization(
-		scale: scale,
 		infill: infill,
 		volume: volume,
 		color: color,
@@ -62,17 +57,9 @@ public class Customization : BaseAggregateRoot
 	{
 		Id = id
 	}
-	.ValidateScale()
 	.ValidateInfill()
 	.ValidateVolume()
 	.ValidateColor();
-
-	public Customization SetScale(decimal scale)
-	{
-		Scale = scale;
-		this.ValidateScale();
-		return this;
-	}
 
 	public Customization SetInfill(decimal infill)
 	{
@@ -81,9 +68,9 @@ public class Customization : BaseAggregateRoot
 		return this;
 	}
 
-	public Customization SetVolume(decimal volume)
+	public Customization SetVolume(decimal value, decimal @base, decimal scale)
 	{
-		Volume = volume;
+		Volume = Volume with { Value = value, Base = @base, Scale = scale };
 		this.ValidateVolume();
 		return this;
 	}
@@ -100,4 +87,10 @@ public class Customization : BaseAggregateRoot
 		MaterialId = materialId;
 		return this;
 	}
+
+	public decimal CalculateWeight(decimal density)
+		=> Volume.InCm3 * density * (WallFactor + (1 - WallFactor) * Infill);
+
+	public decimal CalculateCost((decimal Cost, decimal Density) material)
+		=> CalculateWeight(material.Density) / 1000 * material.Cost * ProfitMultiplier + ProfitBase;
 }

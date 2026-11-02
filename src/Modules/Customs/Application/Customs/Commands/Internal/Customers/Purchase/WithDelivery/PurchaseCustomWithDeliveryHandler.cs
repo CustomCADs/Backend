@@ -12,7 +12,6 @@ using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 
-
 public sealed class PurchaseCustomWithDeliveryHandler(
 	ICustomReads reads,
 	IUnitOfWork uow,

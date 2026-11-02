@@ -28,13 +28,6 @@ public static class ProgramExtensions
 				.AddNotificationsPersistence(config.ConnectionString)
 				.AddPrintingPersistence(config.ConnectionString);
 
-		public IServiceCollection AddDomainServices()
-		{
-			services.AddScoped<IPrintCalculator, PrintCalculator>();
-
-			return services;
-		}
-
 		public async Task ExecuteDbMigrationUpdaterAsync()
 		{
 			using IServiceScope scope = services.BuildServiceProvider().CreateScope();

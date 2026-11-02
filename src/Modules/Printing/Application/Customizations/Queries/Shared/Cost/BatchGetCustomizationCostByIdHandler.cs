@@ -1,13 +1,11 @@
 ﻿using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
-using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Cost;
 
 public sealed class BatchGetCustomizationCostByIdHandler(
 	ICustomizationReads customizationReads,
-	IMaterialReads materialReads,
-	IPrintCalculator calculator
+	IMaterialReads materialReads
 ) : IQueryHandler<BatchGetCustomizationCostByIdQuery, Dictionary<CustomizationId, decimal>>
 {
 	public async Task<Dictionary<CustomizationId, decimal>> Handle(BatchGetCustomizationCostByIdQuery req, CancellationToken ct)
@@ -22,7 +20,7 @@ public sealed class BatchGetCustomizationCostByIdHandler(
 			{
 				Customization customization = x;
 				Material material = materials[customization.MaterialId];
-				return calculator.CalculateCost(customization, material);
+				return customization.CalculateCost((material.Cost, material.Density));
 			}
 		);
 	}

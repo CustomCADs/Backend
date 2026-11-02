@@ -12,11 +12,6 @@ public static class TestData
 	public const string MinInvalidColor = "#";
 	public const string MaxInvalidColor = "#ffffffffffff";
 
-	public const decimal MaxValidScale = ScaleMax - 1;
-	public const decimal MinValidScale = ScaleMin + 1;
-	public const decimal MaxInvalidScale = ScaleMax + 1;
-	public const decimal MinInvalidScale = ScaleMin - 1;
-
 	public const decimal MaxValidInfill = InfillMax - 1m / 100;
 	public const decimal MinValidInfill = InfillMin + 1m / 100;
 	public const decimal MaxInvalidInfill = InfillMax + 1m / 100;
@@ -26,6 +21,16 @@ public static class TestData
 	public const decimal MaxValidVolume = VolumeMax - 1;
 	public const decimal MinInvalidVolume = VolumeMin - 1;
 	public const decimal MaxInvalidVolume = VolumeMax + 1;
+
+	public const decimal MaxValidBase = BaseMax - 1;
+	public const decimal MinValidBase = BaseMin + 1;
+	public const decimal MaxInvalidBase = BaseMax + 1;
+	public const decimal MinInvalidBase = BaseMin - 1;
+
+	public const decimal MaxValidScale = ScaleMax - 1;
+	public const decimal MinValidScale = ScaleMin + 1;
+	public const decimal MaxInvalidScale = ScaleMax + 1;
+	public const decimal MinInvalidScale = ScaleMin - 1;
 
 	public static readonly CustomizationId ValidId = CustomizationId.New();
 	public static readonly MaterialId ValidMaterialId = MaterialId.New();

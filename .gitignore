@@ -381,13 +381,10 @@ FodyWeavers.xsd
 *.pem
 *.pub
 
-# LoC counter
-.VSCodeCounter/*
-
-
 # SDK
 sdk/**/dist
 
 # VS Code
 .vscode
 *.lscache
+.VSCodeCounter

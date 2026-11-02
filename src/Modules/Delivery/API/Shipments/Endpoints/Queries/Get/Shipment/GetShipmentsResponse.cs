@@ -6,6 +6,5 @@ public record GetShipmentsResponse(
 	Guid Id,
 	DateTimeOffset RequestedAt,
 	ShipmentStatus Status,
-	InfoResponse Info,
-	AddressResponse Address
+	InfoResponse Info
 );

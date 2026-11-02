@@ -2,6 +2,7 @@
   <!--Presentation-->
   <ItemGroup>
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,7 +28,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.SignalR" Version="1.2.10" />
     <PackageVersion Include="Polly" Version="8.6.6" />
     <PackageVersion Include="Stripe.net" Version="51.2.0" />
-    <PackageVersion Include="SpeedyNET.Sdk" Version="1.0.9" />
+    <PackageVersion Include="SpeedyNET.Sdk" Version="1.0.18" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
     <PackageVersion Include="WolverineFx" Version="4.0.0" />
     <PackageVersion Include="WolverineFx.FluentValidation" Version="4.0.0" />

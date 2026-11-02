@@ -2,6 +2,7 @@
 
 public record AddressDto(
 	string Country,
-	string City,
-	string Street
+	string Site,
+	string AddressNote,
+	Geoposition Coordinates
 );

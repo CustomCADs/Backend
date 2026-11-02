@@ -31,8 +31,8 @@ public class Tests : Data.Customs.BaseUnitTests
 	private const string ShipmentService = "shipment-service";
 	private const double Weight = 5.2;
 	private const int Count = 3;
-	private static readonly AddressDto Address = new("Bulgaria", "Burgas", "Slivnitsa");
-	private static readonly ContactDto Contact = new("0123456789", null);
+	private static readonly AddressDto Address = new("Bulgaria", "Sofia", "", new(0, 0));
+	private static readonly ContactDto Contact = new("0123456789", string.Empty);
 	private readonly Custom custom = CreateCustom(forDelivery: true);
 
 	public Tests()
@@ -53,7 +53,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		)).ReturnsAsync("NinjataBG");
 
 		sender.Setup(x => x.SendCommandAsync(
-			It.Is<CreateShipmentCommand>(x => x.BuyerId == custom.BuyerId),
+			It.Is<CreateShipmentToAddressCommand>(x => x.BuyerId == custom.BuyerId),
 			ct
 		)).ReturnsAsync(ValidShipmentId);
 	}
@@ -117,7 +117,7 @@ public class Tests : Data.Customs.BaseUnitTests
 		);
 		sender.Verify(
 			x => x.SendCommandAsync(
-				It.Is<CreateShipmentCommand>(x => x.BuyerId == custom.BuyerId),
+				It.Is<CreateShipmentToAddressCommand>(x => x.BuyerId == custom.BuyerId),
 				ct
 			),
 			Times.Once()

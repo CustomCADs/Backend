@@ -1,4 +1,6 @@
-﻿using CustomCADs.Shared.Domain.Exceptions;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
+using CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
+using CustomCADs.Shared.Domain.Exceptions;
 
 namespace CustomCADs.UnitTests.Delivery.Domain.Shipments.Create.Normal;
 
@@ -6,20 +8,20 @@ using static Data.Shipments.TestData;
 
 public class Tests : Data.Shipments.BaseUnitTests
 {
+	private static readonly ShipmentDelivery delivery = new(DeliveryDestination.Office, null, 10);
+
 	[Test]
 	public void Create_ShouldNotThrowExcepion_WhenShipmentIsValid()
 	{
 		Shipment.Create(
 			buyerId: ValidBuyerId,
+			delivery: delivery,
 			service: ValidService,
 			email: ValidEmail,
 			phone: ValidPhone,
 			recipient: ValidRecipient,
 			count: MinValidCount,
-			weight: MinValidWeight,
-			country: ValidCountry,
-			city: ValidCity,
-			street: ValidStreet
+			weight: MinValidWeight
 		);
 	}
 
@@ -28,21 +30,19 @@ public class Tests : Data.Shipments.BaseUnitTests
 	{
 		Shipment shipment = Shipment.Create(
 			buyerId: ValidBuyerId,
+			delivery: delivery,
 			service: ValidService,
 			email: ValidEmail,
 			phone: ValidPhone,
 			recipient: ValidRecipient,
 			count: MinValidCount,
-			weight: MinValidWeight,
-			country: ValidCountry,
-			city: ValidCity,
-			street: ValidStreet
+			weight: MinValidWeight
 		);
 
 		using (Assert.Multiple())
 		{
 			await Assert.That(shipment.BuyerId).IsEqualTo(ValidBuyerId);
-			await Assert.That(shipment.Address).IsEqualTo(new(ValidCountry, ValidCity, ValidStreet));
+			await Assert.That(shipment.Delivery).IsEqualTo(delivery);
 			await Assert.That(shipment.Info).IsEqualTo(new(MinValidCount, MinValidWeight, ValidRecipient));
 			await Assert.That(shipment.Reference).IsEqualTo(new(null, ValidService));
 			await Assert.That(shipment.Contact).IsEqualTo(new(ValidPhone, ValidEmail));
@@ -56,15 +56,13 @@ public class Tests : Data.Shipments.BaseUnitTests
 	{
 		Assert.Throws<CustomValidationException<Shipment>>(() => Shipment.Create(
 				buyerId: ValidBuyerId,
+				delivery: delivery,
 				service: theory.Service,
 				email: theory.Email,
 				phone: theory.Phone,
 				recipient: theory.Recipient,
 				count: theory.Count,
-				weight: theory.Weight,
-				country: theory.Country,
-				city: theory.City,
-				street: theory.Street
+				weight: theory.Weight
 			));
 	}
 }

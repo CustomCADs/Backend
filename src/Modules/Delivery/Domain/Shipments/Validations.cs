@@ -26,7 +26,7 @@ internal static class Validations
 			=> shipment
 				.ThrowIfPredicateIsFalse(
 					expression: x => x.Contact.Email,
-					predicate: x => x is null || DomainConstants.Regexes.Email.IsMatch(x),
+					predicate: DomainConstants.Regexes.Email.IsMatch,
 					message: "Invalid Email"
 				);
 
@@ -34,7 +34,7 @@ internal static class Validations
 			=> shipment
 				.ThrowIfPredicateIsFalse(
 					expression: x => x.Contact.Phone,
-					predicate: x => x is null || DomainConstants.Regexes.Phone.IsMatch(x),
+					predicate: DomainConstants.Regexes.Phone.IsMatch,
 					message: "Invalid Phone"
 				);
 
@@ -58,27 +58,6 @@ internal static class Validations
 					expression: x => x.Info.Weight,
 					range: (MinWeight, MaxWeight),
 					inclusive: true
-				);
-
-		internal Shipment ValidateCountry()
-			=> shipment
-				.ThrowIfNull(
-					expression: x => x.Address.Country,
-					predicate: string.IsNullOrWhiteSpace
-				);
-
-		internal Shipment ValidateCity()
-			=> shipment
-				.ThrowIfNull(
-					expression: x => x.Address.City,
-					predicate: string.IsNullOrWhiteSpace
-				);
-
-		internal Shipment ValidateStreet()
-			=> shipment
-				.ThrowIfNull(
-					expression: x => x.Address.Street,
-					predicate: string.IsNullOrWhiteSpace
 				);
 	}
 

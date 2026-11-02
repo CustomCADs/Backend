@@ -26,7 +26,7 @@ public class CustomDeliveryRequestedHandler(
 		double weight = @event.Weight;
 
 		ShipmentId shipmentId = await sender.SendCommandAsync(
-			command: new CreateShipmentCommand(
+			command: new CreateShipmentToAddressCommand(
 				Info: new(count, weight, buyer),
 				Service: @event.ShipmentService,
 				Address: @event.Address,

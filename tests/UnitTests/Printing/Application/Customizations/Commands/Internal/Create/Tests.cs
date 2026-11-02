@@ -10,9 +10,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 {
 	private readonly CreateCustomizationHandler handler;
 	private readonly CreateCustomizationCommand request = new(
-		Scale: MaxValidScale,
 		Infill: MaxValidInfill,
 		Volume: MaxValidVolume,
+		Base: MaxValidBase,
+		Scale: MaxValidScale,
 		Color: ValidColor,
 		MaterialId: ValidMaterialId
 	);
@@ -26,9 +27,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 
 		writes.Setup(x => x.AddAsync(
 			It.Is<Customization>(x =>
-				x.Scale == MaxValidScale
-				&& x.Infill == MaxValidInfill
-				&& x.Volume == MaxValidVolume
+				x.Infill == MaxValidInfill
+				&& x.Volume.Value == MaxValidVolume
+				&& x.Volume.Base == MaxValidBase
+				&& x.Volume.Scale == MaxValidScale
 				&& x.Color == ValidColor
 				&& x.MaterialId == ValidMaterialId
 			),
@@ -48,9 +50,10 @@ public class Tests : Data.Customizations.BaseUnitTests
 		writes.Verify(
 			x => x.AddAsync(
 				It.Is<Customization>(x =>
-					x.Scale == MaxValidScale
-					&& x.Infill == MaxValidInfill
-					&& x.Volume == MaxValidVolume
+				x.Infill == MaxValidInfill
+					&& x.Volume.Value == MaxValidVolume
+					&& x.Volume.Base == MaxValidBase
+					&& x.Volume.Scale == MaxValidScale
 					&& x.Color == ValidColor
 					&& x.MaterialId == ValidMaterialId
 				),

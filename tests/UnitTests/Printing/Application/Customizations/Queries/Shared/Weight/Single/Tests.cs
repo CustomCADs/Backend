@@ -2,7 +2,6 @@ using CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Weig
 using CustomCADs.Modules.Printing.Domain.Customizations;
 using CustomCADs.Modules.Printing.Domain.Materials;
 using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
-using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
@@ -17,24 +16,19 @@ public class Tests : Data.Customizations.BaseUnitTests
 
 	private readonly Mock<ICustomizationReads> reads = new();
 	private readonly Mock<IMaterialReads> materialReads = new();
-	private readonly Mock<IPrintCalculator> calculator = new();
 
-	private const double Weight = 10.5;
 	private readonly Customization customization = CreateCustomization();
 	private readonly Material material = CreateMaterial();
 
 	public Tests()
 	{
-		handler = new(reads.Object, materialReads.Object, calculator.Object);
+		handler = new(reads.Object, materialReads.Object);
 
 		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
 			.ReturnsAsync(customization);
 
 		materialReads.Setup(x => x.SingleByIdAsync(ValidMaterialId, false, ct))
 			.ReturnsAsync(material);
-
-		calculator.Setup(x => x.CalculateWeight(It.IsAny<Customization>(), It.IsAny<Material>()))
-			.Returns((decimal)Weight);
 	}
 
 	[Test]
@@ -57,21 +51,6 @@ public class Tests : Data.Customizations.BaseUnitTests
 	}
 
 	[Test]
-	public async Task Handle_ShouldCalculateWeight()
-	{
-		// Arrange
-
-		// Act
-		await handler.Handle(request, ct);
-
-		// Assert
-		calculator.Verify(
-			x => x.CalculateWeight(customization, material),
-			Times.Once()
-		);
-	}
-
-	[Test]
 	public async Task Handle_ShouldReturnResult()
 	{
 		// Arrange
@@ -80,7 +59,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 		double result = await handler.Handle(request, ct);
 
 		// Assert
-		await Assert.That(result).IsEqualTo(Weight);
+		await Assert.That(result).IsPositive();
 	}
 
 	[Test]

@@ -10,7 +10,7 @@ public class Tests : Data.Customizations.BaseUnitTests
 	[Test]
 	public void SetVolume_ShouldNotThrowException()
 	{
-		CreateCustomization().SetVolume(MaxValidVolume);
+		CreateCustomization().SetVolume(MaxValidVolume, MaxValidBase, MaxValidScale);
 	}
 
 	[Test]
@@ -18,17 +18,22 @@ public class Tests : Data.Customizations.BaseUnitTests
 	{
 		Customization material = CreateCustomization();
 
-		material.SetVolume(MaxValidVolume);
+		material.SetVolume(MaxValidVolume, MaxValidBase, MaxValidScale);
 
-		await Assert.That(material.Volume).IsEqualTo(MaxValidVolume);
+		using (Assert.Multiple())
+		{
+			await Assert.That(material.Volume.Value).IsEqualTo(MaxValidVolume);
+			await Assert.That(material.Volume.Scale).IsEqualTo(MaxValidScale);
+			await Assert.That(material.Volume.Base).IsEqualTo(MaxValidBase);
+		}
 	}
 
 	[Test]
 	[MethodDataSource(typeof(TestData), nameof(ITheoryData<>.GetTestData))]
-	public void SetVolume_ShouldThrowException_WhenVolumeInvalid(decimal volume)
+	public void SetVolume_ShouldThrowException_WhenVolumeInvalid(decimal volume, decimal @base, decimal scale)
 	{
 		Customization material = CreateCustomization();
 
-		Assert.Throws<CustomValidationException<Customization>>(() => material.SetVolume(volume));
+		Assert.Throws<CustomValidationException<Customization>>(() => material.SetVolume(volume, @base, scale));
 	}
 }

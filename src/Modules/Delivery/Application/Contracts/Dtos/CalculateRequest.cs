@@ -1,8 +1,10 @@
-﻿namespace CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
+﻿using CustomCADs.Modules.Delivery.Domain.Shipments.Enums;
+
+namespace CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 
 public record CalculateRequest(
-	double[] Weights,
-	string Country,
-	string City,
-	string Street
+	double TotalWeight,
+	DeliveryDestination Destination,
+	int? OfficeId,
+	(string Country, string Site)? Address
 );

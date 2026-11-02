@@ -125,18 +125,15 @@ public static class DependencyInjection
 		}
 
 		public void ScheduleJob<TJob>(IScheduleBuilder schedule, string? name = null) where TJob : IJob
-		{
-			configurator.ScheduleJob<TJob>(
+			=> configurator.ScheduleJob<TJob>(
 				trigger => trigger.WithSchedule(schedule),
 				job => job.WithIdentity(name ?? typeof(TJob).Name)
 			);
-		}
 
-		public void ScheduleJob<TJob>(Action<SimpleScheduleBuilder> schedule, string? name = null) where TJob : IJob
-		{
-			var builder = SimpleScheduleBuilder.Create();
-			schedule(builder);
-			ScheduleJob<TJob>(configurator, builder, name);
-		}
+		public void ScheduleJob<TJob>(Func<SimpleScheduleBuilder, SimpleScheduleBuilder> schedule, string? name = null) where TJob : IJob
+			=> configurator.ScheduleJob<TJob>(
+				schedule: schedule(SimpleScheduleBuilder.Create()),
+				name: name
+			);
 	}
 }

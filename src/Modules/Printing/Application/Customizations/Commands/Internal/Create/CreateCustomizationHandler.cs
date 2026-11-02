@@ -11,9 +11,8 @@ public sealed class CreateCustomizationHandler(
 	{
 		Customization customization = await writes.AddAsync(
 			entity: Customization.Create(
-				scale: req.Scale,
 				infill: req.Infill,
-				volume: req.Volume,
+				volume: new(Value: req.Volume, Base: req.Base, Scale: req.Scale),
 				color: req.Color,
 				materialId: req.MaterialId
 			),

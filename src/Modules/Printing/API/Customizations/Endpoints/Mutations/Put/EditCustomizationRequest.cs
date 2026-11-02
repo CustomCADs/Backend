@@ -2,9 +2,10 @@
 
 public record EditCustomizationRequest(
 	Guid Id,
-	decimal Scale,
 	decimal Infill,
 	decimal Volume,
+	decimal Base,
+	decimal Scale,
 	string Color,
 	int MaterialId
 );

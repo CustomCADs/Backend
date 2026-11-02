@@ -3,6 +3,4 @@
 public enum ShipmentSortingType
 {
 	RequestedAt,
-	Country,
-	City,
 }
