@@ -21,36 +21,10 @@ public class CartDeliveryPaymentSaga : Saga
 		=> new() { Id = msg.Id };
 
 	public async Task Handle(ActiveCartDeliveryToAddressRequestedApplicationEvent msg, ActiveCartDeliveryToAddressRequestedHandler handler)
-	{
-		IsDeliveryStarted = true;
-		try
-		{
-			await handler.HandleAsync(msg).ConfigureAwait(false);
-		}
-		catch
-		{
-			MarkCompleted();
-			throw;
-		}
-
-		IsDeliveryHandled = true;
-	}
+		=> await HandleCartDeliveryAsync(() => handler.HandleAsync(msg)).ConfigureAwait(false);
 
 	public async Task Handle(ActiveCartDeliveryToOfficeRequestedApplicationEvent msg, ActiveCartDeliveryToOfficeRequestedHandler handler)
-	{
-		IsDeliveryStarted = true;
-		try
-		{
-			await handler.HandleAsync(msg).ConfigureAwait(false);
-		}
-		catch
-		{
-			MarkCompleted();
-			throw;
-		}
-
-		IsDeliveryHandled = true;
-	}
+		=> await HandleCartDeliveryAsync(() => handler.HandleAsync(msg)).ConfigureAwait(false);
 
 	public async Task<ScheduledMessage<CartPaymentCompletedApplicationEvent>?> Handle(CartPaymentCompletedApplicationEvent msg, CartPaymentCompletedHandler handler)
 	{
@@ -59,7 +33,22 @@ public class CartDeliveryPaymentSaga : Saga
 		await handler.HandleAsync(msg).ConfigureAwait(false);
 
 		MarkCompleted();
-
 		return null;
+	}
+
+	private async Task HandleCartDeliveryAsync(Func<Task> handler)
+	{
+		IsDeliveryStarted = true;
+		try
+		{
+			await handler.Invoke().ConfigureAwait(false);
+		}
+		catch
+		{
+			MarkCompleted();
+			throw;
+		}
+
+		IsDeliveryHandled = true;
 	}
 }

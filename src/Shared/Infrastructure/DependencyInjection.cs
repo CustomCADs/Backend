@@ -18,7 +18,9 @@ using Quartz;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Wolverine;
+using Wolverine.ErrorHandling;
 using Wolverine.FluentValidation;
+using Wolverine.Persistence.Sagas;
 
 
 #pragma warning disable IDE0130
@@ -66,6 +68,9 @@ public static class DependencyInjection
 
 				cfg.UseFluentValidation();
 				cfg.Services.AddSingleton(typeof(IFailureAction<>), typeof(CustomFailureAction<>));
+
+				TimeSpan[] delays = [TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5)];
+				cfg.Policies.OnException<UnknownSagaException>().ScheduleRetry(delays);
 			});
 
 			services.AddScoped<IRequestSender, WolverineRequestSender>();
