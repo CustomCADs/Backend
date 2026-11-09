@@ -35,6 +35,8 @@ internal static class Mapper
 		internal CalculateShipmentDto ToDto()
 			=> new(
 				Total: calculation.Price.Total,
+				Amount: calculation.Price.Amount,
+				Vat: calculation.Price.Vat,
 				Currency: calculation.Price.Currency,
 				PickupDate: calculation.PickupDate,
 				DeliveryDeadline: calculation.DeliveryDeadline,

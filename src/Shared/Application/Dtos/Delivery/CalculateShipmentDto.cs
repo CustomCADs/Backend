@@ -2,6 +2,8 @@
 
 public record CalculateShipmentDto(
 	double Total,
+	double Amount,
+	double Vat,
 	string Currency,
 	string Service,
 	DateOnly PickupDate,

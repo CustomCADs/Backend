@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
 using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment.ToAddress;
 using CustomCADs.Modules.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application;
@@ -33,9 +34,17 @@ public sealed class PurchaseActiveCartWithDeliveryToAddressHandler(
 				.Select(x => x.CustomizationId!.Value)
 		];
 		Dictionary<CustomizationId, decimal> costs = await SnapshotCostsAsync(items, customizationIds, ct).ConfigureAwait(false);
+		decimal printing = costs.Sum(x => x.Value);
 
 		Dictionary<ProductId, decimal> prices = await SnapshotPricesAsync(items, ct).ConfigureAwait(false);
-		decimal totalSum = prices.Sum(x => x.Value) + costs.Sum(x => x.Value);
+		decimal subtotal = prices.Sum(x => x.Value);
+
+		var calculations = await sender.SendQueryAsync(
+			query: new CalculateActiveCartShipmentToAddressQuery(req.CallerId, req.Address.Country, req.Address.Site),
+			ct: ct
+		).ConfigureAwait(false);
+		var calculation = calculations.First(x => x.Service == req.ShipmentService);
+		decimal shipping = Convert.ToDecimal(calculation.Amount);
 
 		string buyer = await sender.SendQueryAsync(
 			query: new GetUsernameByIdQuery(req.CallerId),
@@ -70,7 +79,7 @@ public sealed class PurchaseActiveCartWithDeliveryToAddressHandler(
 			paymentMethodId: req.PaymentMethodId,
 			buyerId: req.CallerId,
 			cartId: purchasedCartId,
-			total: totalSum,
+			total: subtotal + printing + shipping,
 			description: (buyer, items.Length),
 			ct: ct
 		).ConfigureAwait(false);
