@@ -1,10 +1,11 @@
-﻿using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
+﻿using CustomCADs.Modules.Catalog.API.Tags.Dtos;
+using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
 using CustomCADs.Modules.Catalog.Application.Tags.Queries.Internal.GetAll;
 
 namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Queries.Get.All;
 
 public class GetAllTagsEndpoint(IRequestSender sender)
-	: EndpointWithoutRequest<GetAllTagsResponse[]>
+	: EndpointWithoutRequest<TagResponse[]>
 {
 	public override void Configure()
 	{
@@ -24,7 +25,7 @@ public class GetAllTagsEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		GetAllTagsResponse[] response = [.. tags.Select(x => x.ToGetAllTagsResponse())];
+		TagResponse[] response = [.. tags.Select(x => x.ToTagResponse())];
 		await Send.OkAsync(response).ConfigureAwait(false);
 	}
 }

@@ -1,11 +1,12 @@
-﻿using CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Create;
+﻿using CustomCADs.Modules.Catalog.API.Tags.Dtos;
+using CustomCADs.Modules.Catalog.Application.Tags.Commands.Internal.Create;
 using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
 using CustomCADs.Modules.Catalog.Application.Tags.Queries.Internal.GetById;
 
 namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Mutations.Post;
 
 public class CreateTagEndpoint(IRequestSender sender)
-	: Endpoint<CreateTagRequest, CreateTagResponse>
+	: Endpoint<CreateTagRequest, TagResponse>
 {
 	public override void Configure()
 	{
@@ -31,7 +32,7 @@ public class CreateTagEndpoint(IRequestSender sender)
 			ct: ct
 		).ConfigureAwait(false);
 
-		CreateTagResponse response = tag.ToCreateTagResponse();
+		TagResponse response = tag.ToTagResponse();
 		await Send.OkAsync(response).ConfigureAwait(false);
 	}
 }

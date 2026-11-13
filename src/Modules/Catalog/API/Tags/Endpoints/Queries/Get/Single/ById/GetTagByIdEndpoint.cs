@@ -1,32 +1,31 @@
-﻿using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
+﻿using CustomCADs.Modules.Catalog.API.Tags.Dtos;
+using CustomCADs.Modules.Catalog.Application.Tags.Dtos;
 using CustomCADs.Modules.Catalog.Application.Tags.Queries.Internal.GetById;
 
-namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Queries.Get.Single;
+namespace CustomCADs.Modules.Catalog.API.Tags.Endpoints.Queries.Get.Single.ById;
 
 public class GetTagByIdEndpoint(IRequestSender sender)
-	: Endpoint<GetTagByIdRequest, GetTagByIdResponse>
+	: Endpoint<GetTagByIdRequest, TagResponse>
 {
 	public override void Configure()
 	{
-		Get("{id}");
+		Get("{id:guid}");
 		Group<TagGroup>();
 		AllowAnonymous();
 		Description(x => x
-			.WithSummary("Single")
-			.WithDescription("Get Tag")
+			.WithSummary("Single by Id")
+			.WithDescription("Get Tag by specifying its Id")
 		);
 	}
 
 	public override async Task HandleAsync(GetTagByIdRequest req, CancellationToken ct)
 	{
 		TagDto tag = await sender.SendQueryAsync(
-			query: new GetTagByIdQuery(
-				Id: TagId.New(req.Id)
-			),
+			query: new GetTagByIdQuery(TagId.New(req.Id)),
 			ct: ct
 		).ConfigureAwait(false);
 
-		GetTagByIdResponse response = tag.ToGetTagByIdResponse();
+		TagResponse response = tag.ToTagResponse();
 		await Send.OkAsync(response).ConfigureAwait(false);
 	}
 }
