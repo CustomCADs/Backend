@@ -22,6 +22,9 @@ public sealed class GetPurchasedCartsEndpoint(IRequestSender sender)
 			query: new GetAllPurchasedCartsQuery(
 				CallerId: User.AccountId,
 				PaymentStatus: req.PaymentStatus,
+				HasDelivery: req.HasDelivery,
+				Start: req.Start,
+				End: req.End,
 				Sorting: new(req.SortingType, req.SortingDirection),
 				Pagination: new(req.Page, req.Limit)
 			),
