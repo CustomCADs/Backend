@@ -2,10 +2,10 @@ import {
 	UseMutationOptions,
 	useMutation as useTanstackMutation,
 } from '@tanstack/react-query';
-import * as customcadsMutations from './';
+import { src } from '../mutations';
 
 export const useMutation = <TRequest, TResponse>(
 	optionsSelector: (
-		mutation: typeof customcadsMutations,
+		mutation: typeof src,
 	) => UseMutationOptions<TResponse, Error, TRequest, unknown>,
-) => useTanstackMutation(optionsSelector(customcadsMutations));
+) => useTanstackMutation(optionsSelector(src));

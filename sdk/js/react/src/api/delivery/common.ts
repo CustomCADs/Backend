@@ -1,7 +1,9 @@
+export type Geoposition = { longitude: number; latitude: number };
 export type Address = {
 	country: string;
-	city: string;
-	street: string;
+	site: string;
+	addressNote: string;
+	coordinates: Geoposition;
 };
 
 export type Info = {

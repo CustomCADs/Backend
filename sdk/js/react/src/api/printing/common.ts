@@ -8,8 +8,10 @@ export type MaterialResponse = {
 
 export type CustomizationResponse = {
 	id: string;
-	scale: number;
 	infill: number;
+	volume: number;
+	base: number;
+	scale: number;
 	weight: number;
 	cost: number;
 	color: string;

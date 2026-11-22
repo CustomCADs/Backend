@@ -3,11 +3,11 @@ import {
 	useInfiniteQuery as useTanstackInfiniteQuery,
 	InfiniteData,
 } from '@tanstack/react-query';
-import * as customcadsQueries from './';
+import { src } from '../queries';
 
 export const useInfiniteQuery = <TData, TKey extends readonly unknown[]>(
 	optionsSelector: (
-		queries: typeof customcadsQueries,
+		queries: typeof src,
 	) => UseInfiniteQueryOptions<
 		TData,
 		Error,
@@ -18,6 +18,6 @@ export const useInfiniteQuery = <TData, TKey extends readonly unknown[]>(
 	enabled?: boolean,
 ) =>
 	useTanstackInfiniteQuery({
-		...optionsSelector(customcadsQueries),
+		...optionsSelector(src),
 		enabled,
 	});
