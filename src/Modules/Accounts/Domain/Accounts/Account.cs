@@ -22,8 +22,8 @@ public class Account : BaseAggregateRoot, ISoftDeletable<Account>
 		RoleName = role;
 		Username = username;
 		Email = email;
-		FirstName = firstName;
-		LastName = lastName;
+		FirstName = firstName is "" ? null : firstName;
+		LastName = lastName is "" ? null : lastName;
 	}
 
 	public AccountId Id { get; init; }
