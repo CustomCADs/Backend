@@ -42,7 +42,7 @@ export const recent = async (req: recentResources.Request) =>
 	await axios.get<recentResources.Response[]>(recentResources.url(req));
 
 export const all = async (req: allResources.Request) =>
-	await axios.get(allResources.url(req));
+	await axios.get<allResources.Response>(allResources.url(req));
 
 export const single = async (req: singleResources.Request) =>
 	await axios.get<singleResources.Response>(singleResources.url(req));

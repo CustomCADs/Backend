@@ -5,6 +5,9 @@ export type Request = {
 	sortingType?: string;
 	sortingDirection?: string;
 	paymentStatus?: string;
+	start?: string;
+	end?: string;
+	hasDelivery?: boolean;
 	page: number;
 	limit: number;
 };
