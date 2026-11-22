@@ -2,9 +2,10 @@
 
 namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Queries.Get.Shipment;
 
-public record GetShipmentsResponse(
+public record GetShipmentResponse(
 	Guid Id,
 	DateTimeOffset RequestedAt,
 	ShipmentStatus Status,
-	InfoResponse Info
+	InfoResponse Info,
+	double Fee
 );

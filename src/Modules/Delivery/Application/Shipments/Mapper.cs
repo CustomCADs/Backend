@@ -18,6 +18,12 @@ internal static class Mapper
 			);
 	}
 
+	extension(ShipmentAddress address)
+	{
+		internal (string Country, string Site) ToTuple()
+			=> (Country: address.Country, Site: address.Site);
+	}
+
 	extension(AddressDto address)
 	{
 		internal ShipmentAddress ToAddress()
@@ -43,5 +49,4 @@ internal static class Mapper
 				Service: calculation.Service
 			);
 	}
-
 }

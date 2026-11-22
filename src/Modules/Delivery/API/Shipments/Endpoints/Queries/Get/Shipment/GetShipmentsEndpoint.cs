@@ -1,28 +1,27 @@
-﻿using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetAll;
+﻿using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetShipment;
 using CustomCADs.Shared.Domain.Querying;
 
 namespace CustomCADs.Modules.Delivery.API.Shipments.Endpoints.Queries.Get.Shipment;
 
-public class GetShipmentsEndpoint(IRequestSender sender)
-	: Endpoint<GetShipmentsRequest, Result<GetShipmentsResponse>, GetShipmentsMapper>
+public class GetShipmentEndpoint(IRequestSender sender)
+	: Endpoint<GetShipmentRequest, Result<GetShipmentResponse>, GetShipmentMapper>
 {
 	public override void Configure()
 	{
-		Get("");
+		Get("{id}");
 		Group<ShipmentsGroup>();
 		Description(x => x
-			.WithSummary("All")
-			.WithDescription("See all your Shipments with Filter, Search, Sorting and Pagination options")
+			.WithSummary("Single")
+			.WithDescription("See your Shipments details")
 		);
 	}
 
-	public override async Task HandleAsync(GetShipmentsRequest req, CancellationToken ct)
+	public override async Task HandleAsync(GetShipmentRequest req, CancellationToken ct)
 	{
-		Result<GetAllShipmentsDto> result = await sender.SendQueryAsync(
-			query: new GetAllShipmentsQuery(
-				CallerId: User.AccountId,
-				Sorting: new(req.SortingType, req.SortingDirection),
-				Pagination: new(req.Page, req.Limit)
+		GetShipmentDto result = await sender.SendQueryAsync(
+			query: new GetShipmentQuery(
+				Id: ShipmentId.New(req.Id),
+				CallerId: User.AccountId
 			),
 			ct: ct
 		).ConfigureAwait(false);
