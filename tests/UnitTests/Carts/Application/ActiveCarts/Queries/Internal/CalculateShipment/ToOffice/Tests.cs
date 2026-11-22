@@ -34,7 +34,7 @@ public class Tests : Data.ActiveCarts.BaseUnitTests
 	);
 
 	private static readonly CalculateShipmentDto[] Calculations = [
-		new(default, string.Empty, string.Empty, default, default)
+		new(default, default, default, string.Empty, string.Empty, default, default)
 	];
 
 	public Tests()

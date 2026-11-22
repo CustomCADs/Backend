@@ -28,7 +28,7 @@ public class Tests : Data.Customs.BaseUnitTests
 	private const double Weight = 2.7;
 
 	private static readonly CalculateShipmentDto[] Calculations = [
-		new(default, string.Empty, string.Empty, default, default)
+		new(default, default, default, string.Empty, string.Empty, default, default)
 	];
 
 	public Tests()

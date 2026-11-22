@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
 using CustomCADs.Modules.Customs.Application.Customs.Events.Application.DeliveryRequested;
 using CustomCADs.Modules.Customs.Application.Customs.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment.ToAddress;
 using CustomCADs.Modules.Customs.Domain.Repositories;
 using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
@@ -26,7 +27,7 @@ public class Tests : UnitTests.Customs.Data.Customs.BaseUnitTests
 		Count: 1,
 		CustomizationId: ValidCustomizationId,
 		PaymentMethodId: string.Empty,
-		ShipmentService: string.Empty,
+		ShipmentService: ShipmentService,
 		CallerId: ValidBuyerId,
 		Address: Address,
 		Contact: Contact
@@ -38,6 +39,8 @@ public class Tests : UnitTests.Customs.Data.Customs.BaseUnitTests
 	private readonly Mock<IPaymentService> payment = new();
 	private readonly Mock<IEventRaiser> raiser = new();
 
+
+	private const string ShipmentService = "";
 	private static readonly AddressDto Address = new("Bulgaria", "Sofia", "address-note", new(0, 0));
 	private static readonly ContactDto Contact = new(string.Empty, string.Empty);
 	private readonly Custom custom = CreateCustom(forDelivery: true);
@@ -57,6 +60,21 @@ public class Tests : UnitTests.Customs.Data.Customs.BaseUnitTests
 			It.Is<GetCustomizationCostByIdQuery>(x => x.Id == ValidCustomizationId),
 			ct
 		)).ReturnsAsync(0m);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.IsAny<CalculateCustomShipmentToAddressQuery>(),
+			ct
+		)).ReturnsAsync([
+			new(
+				Service: ShipmentService,
+				Total: default,
+				Amount: default,
+				Vat: default,
+				Currency: string.Empty,
+				PickupDate: default,
+				DeliveryDeadline: default
+			)
+		]);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.Is<GetCustomizationExistsByIdQuery>(x => x.Id == ValidCustomizationId),

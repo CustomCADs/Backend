@@ -1,6 +1,7 @@
 ﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Purchase.WithDelivery.ToOffice;
 using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
 using CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Carts.Application.ActiveCarts.Queries.Internal.CalculateShipment.ToOffice;
 using CustomCADs.Modules.Carts.Application.PurchasedCarts.Commands.Internal.Create;
 using CustomCADs.Modules.Carts.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
@@ -71,6 +72,21 @@ public class Tests : Carts.Data.ActiveCarts.BaseUnitTests
 				.Where(x => x.CustomizationId is not null)
 				.ToDictionary(x => x.CustomizationId!.Value, x => 0m)
 		);
+
+		sender.Setup(x => x.SendQueryAsync(
+			It.IsAny<CalculateActiveCartShipmentToOfficeQuery>(),
+			ct
+		)).ReturnsAsync([
+			new(
+				Service: ShipmentService,
+				Total: default,
+				Amount: default,
+				Vat: default,
+				Currency: string.Empty,
+				PickupDate: default,
+				DeliveryDeadline: default
+			)
+		]);
 
 		sender.Setup(x => x.SendQueryAsync(
 			It.IsAny<BatchGetCustomizationWeightByIdQuery>(),

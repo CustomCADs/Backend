@@ -3,10 +3,10 @@
 namespace CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 
 public record ShipmentDelivery(
-	DeliveryDestination Destination = DeliveryDestination.Office,
-	ShipmentAddress? Address = null,
-	int? OfficeId = null
+	DeliveryDestination Destination,
+	ShipmentAddress? Address,
+	int? OfficeId
 )
 {
-	private ShipmentDelivery() : this(DeliveryDestination.Office, null, null) { }
+	internal ShipmentDelivery() : this(DeliveryDestination.Office, null, null) { }
 };

@@ -33,7 +33,7 @@ public sealed class CreateShipmentToOfficeHandler(
 		Shipment shipment = await writes.AddAsync(
 			entity: Shipment.Create(
 				buyerId: req.BuyerId,
-				delivery: new(DeliveryDestination.Office, OfficeId: req.OfficeId),
+				delivery: new(DeliveryDestination.Office, null, req.OfficeId),
 				service: req.Service,
 				email: req.Contact.Email,
 				phone: req.Contact.Phone,
