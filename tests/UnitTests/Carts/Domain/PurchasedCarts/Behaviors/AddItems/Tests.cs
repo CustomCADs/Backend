@@ -3,8 +3,8 @@ using CustomCADs.Shared.Domain.TypedIds.Catalog;
 
 namespace CustomCADs.UnitTests.Carts.Domain.PurchasedCarts.Behaviors.AddItems;
 
-using static PurchasedCartConstants;
 using static Data.PurchasedCarts.TestData.CartItemsData;
+using static PurchasedCartConstants;
 
 public class Tests : Data.PurchasedCarts.BaseUnitTests
 {

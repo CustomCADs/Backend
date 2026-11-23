@@ -6,8 +6,8 @@ using CustomCADs.Shared.Domain;
 
 namespace CustomCADs.UnitTests.Delivery.Application.Shipments.Queries.Internal.GetWaybill;
 
-using static DomainConstants.Users;
 using static Data.Shipments.TestData;
+using static DomainConstants.Users;
 
 public class Tests : Data.Shipments.BaseUnitTests
 {

@@ -384,7 +384,8 @@ FodyWeavers.xsd
 # SDK
 sdk/**/dist
 
-# VS Code
+# IDEs
+.idea
 .vscode
 *.lscache
 .VSCodeCounter

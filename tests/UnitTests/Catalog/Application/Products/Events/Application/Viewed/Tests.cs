@@ -10,8 +10,8 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 
 namespace CustomCADs.UnitTests.Catalog.Application.Products.Events.Application.Viewed;
 
-using static DomainConstants;
 using static Data.Products.TestData;
+using static DomainConstants;
 
 public class Tests : Data.Products.BaseUnitTests
 {

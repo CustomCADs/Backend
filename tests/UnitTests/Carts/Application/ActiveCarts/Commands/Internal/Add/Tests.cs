@@ -1,9 +1,9 @@
 ﻿using CustomCADs.Modules.Carts.Application.ActiveCarts.Commands.Internal.Add;
 using CustomCADs.Modules.Carts.Domain.Repositories;
-using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Exceptions;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
+using CustomCADs.Shared.Application.UseCases.Products.Queries;
 using CustomCADs.Shared.Domain.TypedIds.Printing;
 
 namespace CustomCADs.UnitTests.Carts.Application.ActiveCarts.Commands.Internal.Add;
