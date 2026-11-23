@@ -6,13 +6,6 @@ internal static class Validations
 {
 	extension(Customization customization)
 	{
-		internal Customization ValidateScale()
-			=> customization
-				.ThrowIfInvalidRange(
-					expression: (x) => x.Scale,
-					range: (ScaleMin, ScaleMax)
-				);
-
 		internal Customization ValidateInfill()
 			=> customization
 				.ThrowIfInvalidRange(
@@ -21,11 +14,27 @@ internal static class Validations
 				);
 
 		internal Customization ValidateVolume()
-			=> customization
+		{
+			customization
 				.ThrowIfInvalidRange(
-					expression: (x) => x.Volume,
+					expression: (x) => x.Volume.Value,
 					range: (VolumeMin, VolumeMax)
 				);
+
+			customization
+				.ThrowIfInvalidRange(
+					expression: (x) => x.Volume.Base,
+					range: (BaseMin, BaseMax)
+				);
+
+			customization
+				.ThrowIfInvalidRange(
+					expression: (x) => x.Volume.Scale,
+					range: (ScaleMin, ScaleMax)
+				);
+
+			return customization;
+		}
 
 		internal Customization ValidateColor()
 			=> customization

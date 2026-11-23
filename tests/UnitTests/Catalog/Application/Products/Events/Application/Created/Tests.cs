@@ -1,0 +1,42 @@
+﻿using CustomCADs.Modules.Catalog.Application.Products.Events.Application.ProductCreated;
+using CustomCADs.Modules.Catalog.Domain.Repositories;
+using CustomCADs.Modules.Catalog.Domain.Repositories.Writes;
+
+namespace CustomCADs.UnitTests.Catalog.Application.Products.Events.Application.Created;
+
+using static Data.Products.TestData;
+
+public class Tests : Data.Products.BaseUnitTests
+{
+	private readonly ProductCreatedHandler handler;
+	private readonly ProductCreatedApplicationEvent request = new(ValidId, TagIds);
+
+	private readonly Mock<IProductWrites> writes = new();
+	private readonly Mock<IUnitOfWork> uow = new();
+
+	private static readonly TagId[] TagIds = [ValidTagId];
+
+	public Tests()
+	{
+		handler = new(writes.Object, uow.Object);
+	}
+
+	[Test]
+	public async Task Handle_ShouldPersistToDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.HandleAsync(request);
+
+		// Assert
+		writes.Verify(
+			x => x.AddTagAsync(ValidId, It.Is<TagId>(x => TagIds.Contains(x)), ct),
+			Times.Exactly(TagIds.Length)
+		);
+		uow.Verify(
+			x => x.SaveChangesAsync(ct),
+			Times.Once()
+		);
+	}
+}

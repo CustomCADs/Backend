@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Modules.Delivery.Application.Contracts.Dtos;
 using CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.GetAll;
+using CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 using CustomCADs.Shared.Application.Dtos.Delivery;
 
 namespace CustomCADs.Modules.Delivery.Application.Shipments;
@@ -13,8 +14,25 @@ internal static class Mapper
 				Id: shipment.Id,
 				RequestedAt: shipment.RequestedAt,
 				Status: shipment.Status,
-				Info: shipment.Info,
-				Address: shipment.Address
+				Info: shipment.Info
+			);
+	}
+
+	extension(ShipmentAddress address)
+	{
+		internal (string Country, string Site) ToTuple()
+			=> (Country: address.Country, Site: address.Site);
+	}
+
+	extension(AddressDto address)
+	{
+		internal ShipmentAddress ToAddress()
+			=> new(
+				Country: address.Country,
+				Site: address.Site,
+				AddressNote: address.AddressNote,
+				Longitude: address.Coordinates.Longitude,
+				Latitude: address.Coordinates.Latitude
 			);
 	}
 
@@ -23,11 +41,12 @@ internal static class Mapper
 		internal CalculateShipmentDto ToDto()
 			=> new(
 				Total: calculation.Price.Total,
+				Amount: calculation.Price.Amount,
+				Vat: calculation.Price.Vat,
 				Currency: calculation.Price.Currency,
 				PickupDate: calculation.PickupDate,
 				DeliveryDeadline: calculation.DeliveryDeadline,
 				Service: calculation.Service
 			);
 	}
-
 }

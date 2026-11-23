@@ -2,8 +2,10 @@
 
 public record CustomizationResponse(
 	Guid Id,
-	decimal Scale,
 	decimal Infill,
+	decimal Volume,
+	decimal Base,
+	decimal Scale,
 	decimal Weight,
 	decimal Cost,
 	string Color,

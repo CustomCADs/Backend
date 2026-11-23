@@ -24,8 +24,6 @@ internal static class Utilities
 			=> sorting?.Type switch
 			{
 				ShipmentSortingType.RequestedAt => query.ToSorted(sorting, x => x.RequestedAt),
-				ShipmentSortingType.Country => query.ToSorted(sorting, x => x.Address.Country),
-				ShipmentSortingType.City => query.ToSorted(sorting, x => x.Address.City),
 				_ => query,
 			};
 	}

@@ -36,6 +36,7 @@ public sealed class PurchaseCustomHandler(
 			sender.SendQueryAsync(new GetUsernameByIdQuery(custom.AcceptedCustom.DesignerId), ct)
 		).ConfigureAwait(false);
 
+		decimal subtotal = custom.FinishedCustom.Price;
 		string buyer = users[0], seller = users[1];
 		decimal total = custom.FinishedCustom.Price;
 

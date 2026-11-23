@@ -38,7 +38,7 @@ public sealed class JwtTokenService(IOptions<JwtSettings> jwtOptions) : ITokenSe
 			),
 			CsrfToken: new(
 				Value: Convert.ToBase64String(inArray: GenerateRandomValue()),
-				ExpiresAt: DateTime.UtcNow.AddMinutes(JwtDurationInMinutes)
+				ExpiresAt: DateTimeOffset.UtcNow.AddMinutes(JwtDurationInMinutes)
 			)
 		);
 

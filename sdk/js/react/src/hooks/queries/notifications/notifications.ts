@@ -10,10 +10,10 @@ export const notifications = {
 			queryFn: async ({ pageParam: page }) =>
 				(await api.all({ ...params, page })).data,
 			initialPageParam: 1,
-			getNextPageParam: (last, all) => {
-				const loaded = all.flatMap((p) => p.items).length;
-				return loaded < last.count ? all.length + 1 : undefined;
-			},
+			getNextPageParam: (last, all) =>
+				all.flatMap((p) => p.items).length < last.count
+					? all.length + 1
+					: undefined,
 		}),
 	sortings: queryOptions({
 		queryKey: [...BASE_KEY, 'sortings'] as const,

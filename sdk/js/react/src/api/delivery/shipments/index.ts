@@ -1,6 +1,9 @@
 import { axios } from '@/api/axios';
 import { Result } from '@/api/common/result';
 import * as allResources from './all';
+import * as singleResources from './single';
+import * as referenceResources from './reference';
+import * as countryResources from './country';
 import * as sortingsResources from './sortings';
 import * as cancelResources from './cancel';
 import * as trackResources from './track';
@@ -8,6 +11,15 @@ import * as waybillResources from './waybill';
 
 export const all = async (req: allResources.Request) =>
 	await axios.get<Result<allResources.Response>>(allResources.url(req));
+
+export const single = async (req: singleResources.Request) =>
+	await axios.get<singleResources.Response>(singleResources.url(req));
+
+export const reference = async (req: referenceResources.Request) =>
+	await axios.get<referenceResources.Response>(referenceResources.url(req));
+
+export const country = async (req: countryResources.Request) =>
+	await axios.get<countryResources.Response>(countryResources.url(req));
 
 export const sortings = async () =>
 	await axios.get<sortingsResources.Response>(sortingsResources.url());

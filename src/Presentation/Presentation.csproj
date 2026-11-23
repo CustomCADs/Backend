@@ -8,6 +8,8 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
 		<PackageReference Include="Scalar.AspNetCore" />
+		<!-- temporary nuget/cve fix until microsoft stops with the aislop -->
+		<PackageReference Include="Microsoft.OpenApi" />
 	</ItemGroup>
 
 	<ItemGroup>

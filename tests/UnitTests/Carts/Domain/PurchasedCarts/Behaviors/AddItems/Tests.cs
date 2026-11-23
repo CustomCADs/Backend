@@ -1,0 +1,34 @@
+﻿using CustomCADs.Shared.Domain.Exceptions;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
+
+namespace CustomCADs.UnitTests.Carts.Domain.PurchasedCarts.Behaviors.AddItems;
+
+using static Data.PurchasedCarts.TestData.CartItemsData;
+using static PurchasedCartConstants;
+
+public class Tests : Data.PurchasedCarts.BaseUnitTests
+{
+	[Test]
+	public void AddItems_ShouldNotThrowException_WhenItemsCountIsValid()
+	{
+		CreateCart().AddItems([
+			new(MaxValidPrice, ValidCadId, ValidProductId, false, null, 1, DateTimeOffset.UtcNow)
+		]);
+	}
+
+	[Test]
+	public void AddItems_ShouldThrowException_WhenItemsCountIsNotValid()
+	{
+		var purchasedCart = CreateCart();
+		for (int i = 0; i < ItemsCountMax; i++)
+		{
+			purchasedCart.AddItems([
+				new(MaxValidPrice, ValidCadId, ProductId.New(), false, null, 1, DateTimeOffset.UtcNow)
+			]);
+		}
+
+		Assert.Throws<CustomValidationException<PurchasedCart>>(() => purchasedCart.AddItems([
+				new(MaxValidPrice, ValidCadId, ProductId.New(), false, null, 1, DateTimeOffset.UtcNow)
+			]));
+	}
+}

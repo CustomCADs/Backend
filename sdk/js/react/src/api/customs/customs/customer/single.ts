@@ -17,10 +17,10 @@ export type Response = {
 	orderedAt: string;
 	status: string;
 	forDelivery: boolean;
-	category?: CustomCategory;
-	accepted?: AcceptedCustomDto;
-	finished?: FinishedCustomDto;
-	completed?: CompletedCustomDto;
+	category: CustomCategory | null;
+	accepted: AcceptedCustomDto | null;
+	finished: FinishedCustomDto | null;
+	completed: CompletedCustomDto | null;
 };
 
 export const url = (req: Request) => `${CUSTOMS_CUSTOMER_BASE_PATH}/${req.id}`;

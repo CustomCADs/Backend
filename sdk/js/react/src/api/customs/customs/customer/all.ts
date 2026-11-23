@@ -18,8 +18,8 @@ export type Response = {
 	orderedAt: string;
 	status: CustomStatus;
 	forDelivery: boolean;
-	designerName?: string;
-	categoryName?: string;
+	designerName: string | null;
+	categoryName: string | null;
 };
 
 export const url = (req: Request) =>

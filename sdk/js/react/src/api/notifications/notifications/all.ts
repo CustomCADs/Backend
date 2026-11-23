@@ -16,7 +16,7 @@ export type Response = {
 	createdAt: string;
 	author: string;
 	description: string;
-	link?: string;
+	link: string | null;
 };
 
 export const url = (req: Request) =>

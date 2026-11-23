@@ -13,6 +13,9 @@ public sealed class GetAllPurchasedCartsHandler(IPurchasedCartReads reads)
 			query: new(
 				BuyerId: req.CallerId,
 				PaymentStatus: req.PaymentStatus,
+				HasDelivery: req.HasDelivery,
+				Start: req.Start,
+				End: req.End,
 				Sorting: req.Sorting,
 				Pagination: req.Pagination
 			),

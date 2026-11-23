@@ -2,9 +2,10 @@
 
 public record CustomizationDto(
 	CustomizationId Id,
-	decimal Scale,
 	decimal Infill,
 	decimal Volume,
+	decimal Base,
+	decimal Scale,
 	decimal Weight,
 	decimal Cost,
 	string Color,

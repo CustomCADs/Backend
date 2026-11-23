@@ -18,7 +18,7 @@ public sealed class RefreshUserHandler(
 		}
 
 		(User User, RefreshToken RefreshToken) = await service.GetByRefreshTokenAsync(req.Token).ConfigureAwait(false);
-		if (RefreshToken.ExpiresAt < DateTime.UtcNow)
+		if (RefreshToken.ExpiresAt < DateTimeOffset.UtcNow)
 		{
 			throw CustomAuthorizationException<User>.RefreshTokenExpired();
 		}

@@ -1,7 +1,3 @@
-using CustomCADs.Shared.Domain.TypedIds.Catalog;
-using CustomCADs.Shared.Domain.TypedIds.Files;
-using System.Text.RegularExpressions;
-
 namespace CustomCADs.Modules.Identity.Domain;
 
 public static partial class Constants

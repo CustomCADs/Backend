@@ -1,0 +1,86 @@
+using CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Weight;
+using CustomCADs.Modules.Printing.Domain.Customizations;
+using CustomCADs.Modules.Printing.Domain.Materials;
+using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
+using CustomCADs.Shared.Application.Exceptions;
+using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
+
+namespace CustomCADs.UnitTests.Printing.Application.Customizations.Queries.Shared.Weight.Single;
+
+using static Data.Customizations.TestData;
+
+public class Tests : Data.Customizations.BaseUnitTests
+{
+	private readonly GetCustomizationWeightByIdHandler handler;
+	private readonly GetCustomizationWeightByIdQuery request = new(ValidId);
+
+	private readonly Mock<ICustomizationReads> reads = new();
+	private readonly Mock<IMaterialReads> materialReads = new();
+
+	private readonly Customization customization = CreateCustomization();
+	private readonly Material material = CreateMaterial();
+
+	public Tests()
+	{
+		handler = new(reads.Object, materialReads.Object);
+
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(customization);
+
+		materialReads.Setup(x => x.SingleByIdAsync(ValidMaterialId, false, ct))
+			.ReturnsAsync(material);
+	}
+
+	[Test]
+	public async Task Handle_ShouldQueryDatabase()
+	{
+		// Arrange
+
+		// Act
+		await handler.Handle(request, ct);
+
+		// Assert
+		reads.Verify(
+			x => x.SingleByIdAsync(ValidId, false, ct),
+			Times.Once()
+		);
+		materialReads.Verify(
+			x => x.SingleByIdAsync(ValidMaterialId, false, ct),
+			Times.Once()
+		);
+	}
+
+	[Test]
+	public async Task Handle_ShouldReturnResult()
+	{
+		// Arrange
+
+		// Act
+		double result = await handler.Handle(request, ct);
+
+		// Assert
+		await Assert.That(result).IsPositive();
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenCustomizationNotFound()
+	{
+		// Arrange
+		reads.Setup(x => x.SingleByIdAsync(ValidId, false, ct))
+			.ReturnsAsync(null as Customization);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Customization>>(() => handler.Handle(request, ct));
+	}
+
+	[Test]
+	public async Task Handle_ShouldThrowException_WhenMaterialNotFound()
+	{
+		// Arrange
+		materialReads.Setup(x => x.SingleByIdAsync(ValidMaterialId, false, ct))
+			.ReturnsAsync(null as Material);
+
+		// Assert
+		await Assert.ThrowsAsync<CustomNotFoundException<Material>>(() => handler.Handle(request, ct));
+	}
+}

@@ -26,8 +26,8 @@ export type FinishedCustomDto = {
 
 export type CompletedCustomDto = {
 	paymentStatus: string;
-	customizationId?: string;
-	shipmentId?: string;
+	customizationId: string | null;
+	shipmentId: string | null;
 };
 
 export const CUSTOMS_CUSTOMER_BASE_PATH = 'customs/customer';

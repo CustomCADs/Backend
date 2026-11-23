@@ -9,5 +9,8 @@ public sealed record GetAllPurchasedCartsQuery(
 	Pagination Pagination,
 	AccountId? CallerId = null,
 	PaymentStatus? PaymentStatus = null,
+	DateTimeOffset? Start = null,
+	DateTimeOffset? End = null,
+	bool? HasDelivery = null,
 	Sorting<PurchasedCartSortingType>? Sorting = null
 ) : IQuery<Result<GetAllPurchasedCartsDto>>;

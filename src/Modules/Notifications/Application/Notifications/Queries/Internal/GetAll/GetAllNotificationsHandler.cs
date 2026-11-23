@@ -24,7 +24,7 @@ public sealed class GetAllNotificationsHandler(INotificationReads reads, IReques
 		).ConfigureAwait(false);
 
 		Dictionary<AccountId, string> usernames = await sender.SendQueryAsync(
-			query: new GetUsernamesByIdsQuery([.. result.Items.Select(x => x.AuthorId)]),
+			query: new BatchGetUsernamesByIdQuery([.. result.Items.Select(x => x.AuthorId)]),
 			ct: ct
 		).ConfigureAwait(false);
 

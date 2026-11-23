@@ -4,5 +4,5 @@ public interface ICurrencyService
 {
 	public const string ExchangeRatesCacheKey = "exchange-rates";
 
-	public Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync();
+	public Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync(CancellationToken ct = default);
 }

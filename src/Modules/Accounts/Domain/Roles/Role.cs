@@ -20,7 +20,7 @@ public class Role : BaseAggregateRoot
 			.ValidateName()
 			.ValidateDescription();
 
-	public static Role CreateWithId(RoleId id, string name, string description)
+	internal static Role CreateWithId(RoleId id, string name, string description)
 		=> new Role(name, description)
 		{
 			Id = id

@@ -1,4 +1,5 @@
 ﻿using CustomCADs.Modules.Delivery.Domain.Shipments;
+using CustomCADs.Modules.Delivery.Domain.Shipments.ValueObjects;
 using CustomCADs.Shared.Domain.TypedIds.Accounts;
 using CustomCADs.Shared.Domain.TypedIds.Delivery;
 using Microsoft.EntityFrameworkCore;
@@ -38,19 +39,40 @@ internal static class Utilities
 
 		internal EntityTypeBuilder<Shipment> SetValueObjects()
 		{
-			builder.ComplexProperty(x => x.Address, a =>
+			builder.ComplexProperty(x => x.Delivery, d =>
 			{
-				a.Property(x => x.Country)
-					.IsRequired()
-					.HasColumnName(nameof(Shipment.Address.Country));
+				d.Property(x => x.OfficeId)
+					.IsRequired(required: false)
+					.HasColumnName(nameof(ShipmentDelivery.OfficeId));
 
-				a.Property(x => x.City)
+				d.Property(x => x.Destination)
 					.IsRequired()
-					.HasColumnName(nameof(Shipment.Address.City));
+					.HasColumnName(nameof(ShipmentDelivery.Destination));
 
-				a.Property(x => x.Street)
-					.IsRequired()
-					.HasColumnName(nameof(Shipment.Address.Street));
+				d.ComplexProperty(x => x.Address, a =>
+				{
+					a.Property(x => x.Country)
+						.IsRequired()
+						.HasColumnName(nameof(ShipmentAddress.Country));
+
+					a.Property(x => x.Site)
+						.IsRequired()
+						.HasColumnName(nameof(ShipmentAddress.Site));
+
+					a.Property(x => x.AddressNote)
+						.IsRequired()
+						.HasColumnName(nameof(ShipmentAddress.AddressNote));
+
+					a.Property(x => x.Longitude)
+						.IsRequired()
+						.HasPrecision(10, 7)
+						.HasColumnName(nameof(ShipmentAddress.Longitude));
+
+					a.Property(x => x.Latitude)
+						.IsRequired()
+						.HasPrecision(10, 7)
+						.HasColumnName(nameof(ShipmentAddress.Latitude));
+				});
 			});
 
 			builder.ComplexProperty(x => x.Info, a =>

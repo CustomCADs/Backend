@@ -1,3 +1,2 @@
 global using CustomCADs.Modules.Idempotency.Domain.IdempotencyKeys;
-global using CustomCADs.UnitTests.Idempotency.Data;
-global using Xunit;
+global using CustomCADs.Tests.Shared;

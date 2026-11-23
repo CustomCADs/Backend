@@ -6,3 +6,4 @@ export type {
 	Response as PaymentResponse,
 } from './payment';
 export type { Result as ApiResult } from './result';
+export type { ROLES, Role } from './roles';

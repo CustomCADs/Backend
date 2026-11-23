@@ -1,56 +1,72 @@
 using CustomCADs.Modules.Notifications.Application.Contracts;
 using CustomCADs.Modules.Notifications.Domain.Repositories;
+using CustomCADs.Shared.Application.Abstractions.Events;
 using CustomCADs.Shared.Application.Abstractions.Requests.Sender;
 using CustomCADs.Shared.Application.Events.Notifications;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
-using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Modules.Notifications.Application.Notifications.Events;
 
-public class NotificationRequestedHandler(IWrites<Notification> writes, IUnitOfWork uow, IRequestSender sender, INotificationsRealTimeNotifier notifier)
+public class NotificationRequestedHandler(
+	IWrites<Notification> writes,
+	IUnitOfWork uow, IRequestSender sender,
+	INotificationsRealTimeNotifier notifier
+) : IEventHandler<NotificationRequestedEvent>
 {
-	public async Task HandleAsync(NotificationRequestedEvent ae)
+	public async Task HandleAsync(NotificationRequestedEvent @event)
 	{
-		List<Notification> notifications = [];
-		if (ae.ReceiverIds is [AccountId receiverId])
+		if (@event.ReceiverIds.Length == 0) return;
+		string author = await sender.SendQueryAsync(new GetUsernameByIdQuery(@event.AuthorId)).ConfigureAwait(false);
+
+		List<Notification> notifications = @event.ReceiverIds.Length == 1
+			? [await CreateNotificationAsync(@event).ConfigureAwait(false)]
+			: await BulkCreateNotificationsAsync(@event).ConfigureAwait(false);
+
+		foreach (Notification notification in notifications)
 		{
-			Notification notification = await writes.AddAsync(
-				entity: Notification.Create(
-					type: ae.Type.ToString(),
-					content: new(ae.Description, ae.Link),
-					authorId: ae.AuthorId,
-					receiverId: receiverId
-				)
+			await notifier.NotifyUserAsync(
+				id: notification.ReceiverId,
+				message: "ReceiveNew",
+				payload: new
+				{
+					id = notification.Id.Value,
+					status = notification.Status,
+					createdAt = notification.CreatedAt,
+					type = @event.Type,
+					description = @event.Description,
+					link = @event.Link,
+					author = author,
+				}
 			).ConfigureAwait(false);
-			await uow.SaveChangesAsync().ConfigureAwait(false);
-
-			notifications.Add(notification);
 		}
-		else notifications = [..
-			await uow.InsertNotificationsAsync(
-				notifications: Notification.CreateBulk(
-					type: ae.Type.ToString(),
-					content: new(ae.Description, ae.Link),
-					authorId: ae.AuthorId,
-					receiverIds: [.. ae.ReceiverIds.Distinct()]
-				)
-			).ConfigureAwait(false)
-		];
+	}
 
-		string author = await sender.SendQueryAsync(new GetUsernameByIdQuery(ae.AuthorId)).ConfigureAwait(false);
-		await notifier.NotifyUsersAsync(
-			ids: ae.ReceiverIds,
-			message: "ReceiveNew",
-			payload: notifications.Select(x => new
-			{
-				id = x.Id.Value,
-				type = x.Type,
-				description = x.Content.Description,
-				link = x.Content.Link,
-				status = x.Status,
-				createdAt = x.CreatedAt,
-				author = author,
-			}).FirstOrDefault()
+	private async Task<Notification> CreateNotificationAsync(NotificationRequestedEvent @event)
+	{
+		Notification notification = await writes.AddAsync(
+			entity: Notification.Create(
+				type: @event.Type.ToString(),
+				content: new(@event.Description, @event.Link),
+				authorId: @event.AuthorId,
+				receiverId: @event.ReceiverIds.First()
+			)
 		).ConfigureAwait(false);
+		await uow.SaveChangesAsync().ConfigureAwait(false);
+
+		return notification;
+	}
+
+	private async Task<List<Notification>> BulkCreateNotificationsAsync(NotificationRequestedEvent @event)
+	{
+		ICollection<Notification> notifications = await uow.InsertNotificationsAsync(
+			notifications: Notification.CreateBulk(
+				type: @event.Type.ToString(),
+				content: new(@event.Description, @event.Link),
+				authorId: @event.AuthorId,
+				receiverIds: [.. @event.ReceiverIds.Distinct()]
+			)
+		).ConfigureAwait(false);
+
+		return [.. notifications];
 	}
 }

@@ -11,6 +11,31 @@ using static Messages;
 
 public sealed class StripeService(PaymentIntentService service) : IPaymentService
 {
+	private static PaymentIntentCreateOptions CreateOptions(
+		decimal total,
+		(string MethodId, string BuyerId) payment,
+		(string Type, string Id) reward,
+		string description
+	)
+		=> new()
+		{
+			Amount = Convert.ToInt64(total * 100),
+			Currency = "EUR",
+			PaymentMethod = payment.MethodId,
+			Description = description,
+			Confirm = true,
+			AutomaticPaymentMethods = new()
+			{
+				Enabled = true,
+				AllowRedirects = "never"
+			},
+			Metadata = new()
+			{
+				["buyerId"] = payment.BuyerId,
+				["rewardType"] = reward.Type,
+				["rewardId"] = reward.Id,
+			},
+		};
 
 	public async Task<PaymentDto> InitializeCartPayment(
 		string paymentMethodId,
@@ -19,58 +44,18 @@ public sealed class StripeService(PaymentIntentService service) : IPaymentServic
 		decimal total,
 		(string Buyer, int ItemsCount) description,
 		CancellationToken ct = default
-	)
-	{
-		PaymentIntent intent = await service.CreateAsync(
-			options: new()
-			{
-				Amount = Convert.ToInt64(total * 100),
-				Currency = "EUR",
-				PaymentMethod = paymentMethodId,
-				Confirm = true,
-				Description = $"{description.Buyer} bought {description.ItemsCount} items for a total of {total}€.",
-				AutomaticPaymentMethods = new()
-				{
-					Enabled = true,
-					AllowRedirects = "never"
-				},
-				Metadata = new()
-				{
-					["buyerId"] = buyerId.ToString(),
-					["rewardType"] = "cart",
-					["rewardId"] = cartId.ToString(),
-				},
-			},
+	) => await HandleResponseAsync(
+		intent: await service.CreateAsync(
+			options: CreateOptions(
+				total: total,
+				payment: (MethodId: paymentMethodId, BuyerId: buyerId.ToString()),
+				reward: (Type: "cart", Id: cartId.ToString()),
+				description: $"{description.Buyer} bought {description.ItemsCount} items for a total of {total}€."
+			),
 			cancellationToken: ct
-		).ConfigureAwait(false);
-
-		PaymentDto response = new(
-			ClientSecret: intent.ClientSecret,
-			Message: GetMessageFromStatus(intent.Status)
-		);
-
-		switch (response.Message)
-		{
-			case FailedPaymentCapture:
-				intent = await service.CaptureAsync(intent.Id, cancellationToken: ct).ConfigureAwait(false);
-				string message = GetMessageFromStatus(intent.Status);
-
-				if (message == SuccessfulPayment)
-				{
-					return response with { Message = SuccessfulPayment };
-				}
-				throw PaymentFailedException.WithClientSecret(intent.ClientSecret, message);
-
-			case ProcessingPayment:
-				return response;
-
-			case SuccessfulPayment:
-				return response;
-
-			default:
-				throw PaymentFailedException.General(response.Message);
-		}
-	}
+		).ConfigureAwait(false),
+		ct
+	).ConfigureAwait(false);
 
 	public async Task<PaymentDto> InitializeCustomPayment(
 		string paymentMethodId,
@@ -79,31 +64,21 @@ public sealed class StripeService(PaymentIntentService service) : IPaymentServic
 		decimal total,
 		(string Buyer, string Name, string Seller) description,
 		CancellationToken ct = default
-	)
-	{
-		PaymentIntent intent = await service.CreateAsync(
-			options: new()
-			{
-				Amount = Convert.ToInt64(total * 100),
-				Currency = "EUR",
-				PaymentMethod = paymentMethodId,
-				Confirm = true,
-				Description = $"{description.Buyer} bought {description.Name} from {description.Seller} for a total of {total}€.",
-				AutomaticPaymentMethods = new()
-				{
-					Enabled = true,
-					AllowRedirects = "never"
-				},
-				Metadata = new()
-				{
-					["buyerId"] = buyerId.ToString(),
-					["rewardType"] = "custom",
-					["rewardId"] = customId.ToString(),
-				},
-			},
+	) => await HandleResponseAsync(
+		intent: await service.CreateAsync(
+			options: CreateOptions(
+				total: total,
+				payment: (MethodId: paymentMethodId, BuyerId: buyerId.ToString()),
+				reward: (Type: "custom", Id: customId.ToString()),
+				description: $"{description.Buyer} bought {description.Name} from {description.Seller} for a total of {total}€."
+			),
 			cancellationToken: ct
-		).ConfigureAwait(false);
+		).ConfigureAwait(false),
+		ct
+	).ConfigureAwait(false);
 
+	private async Task<PaymentDto> HandleResponseAsync(PaymentIntent intent, CancellationToken ct)
+	{
 		PaymentDto response = new(
 			ClientSecret: intent.ClientSecret,
 			Message: GetMessageFromStatus(intent.Status)
@@ -113,13 +88,13 @@ public sealed class StripeService(PaymentIntentService service) : IPaymentServic
 		{
 			case FailedPaymentCapture:
 				intent = await service.CaptureAsync(intent.Id, cancellationToken: ct).ConfigureAwait(false);
-				string message = GetMessageFromStatus(intent.Status);
+				response = response with { Message = GetMessageFromStatus(intent.Status) };
 
-				if (message == SuccessfulPayment)
+				if (response.Message == SuccessfulPayment)
 				{
-					return response with { Message = SuccessfulPayment };
+					return response;
 				}
-				throw PaymentFailedException.WithClientSecret(intent.ClientSecret, message);
+				throw PaymentFailedException.WithClientSecret(intent.ClientSecret, response.Message);
 
 			case ProcessingPayment:
 			case SuccessfulPayment:
@@ -128,17 +103,17 @@ public sealed class StripeService(PaymentIntentService service) : IPaymentServic
 			default:
 				throw PaymentFailedException.General(response.Message);
 		}
-	}
 
-	private static string GetMessageFromStatus(string status)
-		=> status switch
-		{
-			"succeeded" => SuccessfulPayment,
-			"processing" => ProcessingPayment,
-			"canceled" => CanceledPayment,
-			"requires_payment_method" => FailedPaymentMethod,
-			"requires_action" => FailedPayment,
-			"requires_capture" => FailedPaymentCapture,
-			_ => string.Format(UnhandledPayment, status)
-		};
+		static string GetMessageFromStatus(string status)
+			=> status switch
+			{
+				"succeeded" => SuccessfulPayment,
+				"processing" => ProcessingPayment,
+				"canceled" => CanceledPayment,
+				"requires_payment_method" => FailedPaymentMethod,
+				"requires_action" => FailedPayment,
+				"requires_capture" => FailedPaymentCapture,
+				_ => string.Format(UnhandledPayment, status)
+			};
+	}
 }

@@ -6,7 +6,6 @@ namespace CustomCADs.Modules.Delivery.Application.Shipments.Queries.Internal.Get
 public sealed record GetAllShipmentsDto(
 	ShipmentId Id,
 	ShipmentInfo Info,
-	ShipmentAddress Address,
 	ShipmentStatus Status,
 	DateTimeOffset RequestedAt
 );

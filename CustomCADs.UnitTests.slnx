@@ -1,0 +1,115 @@
+<Solution>
+    <Configurations>
+        <Platform Name="Any CPU" />
+        <Platform Name="x64" />
+        <Platform Name="x86" />
+    </Configurations>
+
+
+    <!-- Source Code -->
+    <Folder Name="/src/" />
+
+    <!-- Shared -->
+    <Folder Name="/src/Shared/">
+        <Project DisplayName="Domain" Path="src/Shared/Domain/Shared.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Shared/Application/Shared.Application.csproj" />
+    </Folder>
+
+    <!-- Modules -->
+    <Folder Name="/src/Modules/Accounts/">
+        <Project DisplayName="Domain" Path="src/Modules/Accounts/Domain/Modules.Accounts.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Accounts/Application/Modules.Accounts.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Carts/">
+        <Project DisplayName="Domain" Path="src/Modules/Carts/Domain/Modules.Carts.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Carts/Application/Modules.Carts.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Catalog/">
+        <Project DisplayName="Domain" Path="src/Modules/Catalog/Domain/Modules.Catalog.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Catalog/Application/Modules.Catalog.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Customs/">
+        <Project DisplayName="Domain" Path="src/Modules/Customs/Domain/Modules.Customs.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Customs/Application/Modules.Customs.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Delivery/">
+        <Project DisplayName="Domain" Path="src/Modules/Delivery/Domain/Modules.Delivery.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Delivery/Application/Modules.Delivery.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Files/">
+        <Project DisplayName="Domain" Path="src/Modules/Files/Domain/Modules.Files.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Files/Application/Modules.Files.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Idempotency/">
+        <Project DisplayName="Domain" Path="src/Modules/Idempotency/Domain/Modules.Idempotency.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Idempotency/Application/Modules.Idempotency.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Identity/">
+        <Project DisplayName="Domain" Path="src/Modules/Identity/Domain/Modules.Identity.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Identity/Application/Modules.Identity.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Notifications/">
+        <Project DisplayName="Domain" Path="src/Modules/Notifications/Domain/Modules.Notifications.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Notifications/Application/Modules.Notifications.Application.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Printing/">
+        <Project DisplayName="Domain" Path="src/Modules/Printing/Domain/Modules.Printing.Domain.csproj" />
+        <Project DisplayName="Application" Path="src/Modules/Printing/Application/Modules.Printing.Application.csproj" />
+    </Folder>
+
+	<!-- Test Code -->
+	<Folder Name="/tests/" />
+
+	<!-- Unit Tests -->
+	<Folder Name="/tests/UnitTests/Accounts/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Accounts/Data/UnitTests.Accounts.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Accounts/Domain/UnitTests.Accounts.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Accounts/Application/UnitTests.Accounts.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Carts/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Carts/Data/UnitTests.Carts.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Carts/Domain/UnitTests.Carts.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Carts/Application/UnitTests.Carts.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Catalog/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Catalog/Data/UnitTests.Catalog.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Catalog/Domain/UnitTests.Catalog.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Catalog/Application/UnitTests.Catalog.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Customs/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Customs/Data/UnitTests.Customs.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Customs/Domain/UnitTests.Customs.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Customs/Application/UnitTests.Customs.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Delivery/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Delivery/Data/UnitTests.Delivery.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Delivery/Domain/UnitTests.Delivery.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Delivery/Application/UnitTests.Delivery.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Files/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Files/Data/UnitTests.Files.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Files/Domain/UnitTests.Files.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Files/Application/UnitTests.Files.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Idempotency/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Idempotency/Data/UnitTests.Idempotency.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Idempotency/Domain/UnitTests.Idempotency.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Idempotency/Application/UnitTests.Idempotency.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Identity/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Identity/Data/UnitTests.Identity.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Identity/Domain/UnitTests.Identity.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Identity/Application/UnitTests.Identity.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Notifications/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Notifications/Data/UnitTests.Notifications.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Notifications/Domain/UnitTests.Notifications.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Notifications/Application/UnitTests.Notifications.Application.csproj" />
+	</Folder>
+	<Folder Name="/tests/UnitTests/Printing/">
+		<Project DisplayName="Data" Path="tests/UnitTests/Printing/Data/UnitTests.Printing.Data.csproj" />
+		<Project DisplayName="Domain" Path="tests/UnitTests/Printing/Domain/UnitTests.Printing.Domain.csproj" />
+		<Project DisplayName="Application" Path="tests/UnitTests/Printing/Application/UnitTests.Printing.Application.csproj" />
+	</Folder>
+
+</Solution>

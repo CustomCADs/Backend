@@ -18,7 +18,8 @@
 		<IsSharedProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Shared'))">true</IsSharedProject>
 		<IsToolsProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Tools'))">true</IsToolsProject>
 		<IsPresentationProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('Presentation'))">true</IsPresentationProject>
-		<IsUnitTestsProject Condition="$([System.String]::new('$(MSBuildProjectName)').StartsWith('UnitTests'))">true</IsUnitTestsProject>
+		<IsTestDataProject Condition="$([System.String]::new('$(MSBuildProjectName)').EndsWith('Data'))">true</IsTestDataProject>
+		<IsUnitTestsProject Condition="$(IsTestDataProject) != 'true' AND $([System.String]::new('$(MSBuildProjectName)').StartsWith('UnitTests'))">true</IsUnitTestsProject>
 
 		<!-- Modules -->
 		<IsIdentityProject Condition="$(IsModulesProject) == 'true' AND $([System.String]::new('$(MSBuildProjectName)').Contains('Identity'))">true</IsIdentityProject>
@@ -34,17 +35,13 @@
 	<PropertyGroup Condition="$(IsUnitTestsProject) == 'true'">
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
+		<TestingPlatformCommandLineArguments>$(TestingPlatformCommandLineArguments) --ignore-exit-code 8</TestingPlatformCommandLineArguments>
 	</PropertyGroup>
 
 	<ItemGroup Condition="$(IsUnitTestsProject) == 'true'">
-		<PackageReference Include="coverlet.collector" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="Moq" />
-		<PackageReference Include="xunit" />
-		<PackageReference Include="xunit.runner.visualstudio">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="Tunit" />
+		<ProjectReference Include="$(SolutionDir)/tests/Shared/Tests.Shared.csproj" />
 	</ItemGroup>
 
 	<!-- Domain Items -->

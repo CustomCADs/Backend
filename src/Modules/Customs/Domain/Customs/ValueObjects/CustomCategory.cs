@@ -8,13 +8,4 @@ public record CustomCategory(
 	CustomId CustomId,
 	DateTimeOffset SetAt,
 	CustomCategorySetter Setter
-)
-{
-	internal CustomCategory() : this(
-		Id: CategoryId.New(),
-		CustomId: CustomId.New(),
-		SetAt: DateTimeOffset.UtcNow,
-		Setter: CustomCategorySetter.Customer
-	)
-	{ }
-}
+);

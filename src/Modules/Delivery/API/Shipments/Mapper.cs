@@ -13,15 +13,4 @@ internal static class Mapper
 				Recipient: info.Recipient
 			);
 	}
-
-	extension(ShipmentAddress address)
-	{
-		internal AddressResponse ToResponse()
-			=> new(
-				Country: address.Country,
-				City: address.City,
-				Street: address.Street
-			);
-	}
-
 }

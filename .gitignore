@@ -146,6 +146,8 @@ _TeamCity*
 coverage*.json
 coverage*.xml
 coverage*.info
+.coveragefilters
+coverage-report/
 
 # Visual Studio code coverage results
 *.coverage
@@ -378,11 +380,12 @@ FodyWeavers.xsd
 *.tfplan
 *.pem
 *.pub
-.vscode
-
-# LoC counter
-.VSCodeCounter/*
-
 
 # SDK
 sdk/**/dist
+
+# IDEs
+.idea
+.vscode
+*.lscache
+.VSCodeCounter

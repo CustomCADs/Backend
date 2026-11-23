@@ -1,13 +1,11 @@
 ﻿using CustomCADs.Modules.Printing.Domain.Repositories.Reads;
-using CustomCADs.Modules.Printing.Domain.Services;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Modules.Printing.Application.Customizations.Queries.Shared.Cost;
 
 public sealed class GetCustomizationCostByIdHandler(
 	ICustomizationReads customizationReads,
-	IMaterialReads materialReads,
-	IPrintCalculator calculator
+	IMaterialReads materialReads
 ) : IQueryHandler<GetCustomizationCostByIdQuery, decimal>
 {
 	public async Task<decimal> Handle(GetCustomizationCostByIdQuery req, CancellationToken ct)
@@ -18,6 +16,6 @@ public sealed class GetCustomizationCostByIdHandler(
 		Material material = await materialReads.SingleByIdAsync(customization.MaterialId, track: false, ct: ct).ConfigureAwait(false)
 			?? throw CustomNotFoundException<Material>.ById(customization.MaterialId);
 
-		return calculator.CalculateCost(customization, material);
+		return customization.CalculateCost((material.Cost, material.Density));
 	}
 }

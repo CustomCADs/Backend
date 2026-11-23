@@ -7,8 +7,10 @@ internal static class Mapper
 		internal CustomizationResponse ToResponse()
 			=> new(
 				Id: customization.Id.Value,
-				Scale: customization.Scale,
 				Infill: customization.Infill,
+				Volume: customization.Volume,
+				Base: customization.Base,
+				Scale: customization.Scale,
 				Weight: customization.Weight,
 				Cost: customization.Cost,
 				Color: customization.Color,

@@ -40,7 +40,7 @@ public class Material : BaseAggregateRoot
 		.ValidateDensity()
 		.ValidateCost();
 
-	public static Material CreateWithId(
+	internal static Material Create(
 		MaterialId id,
 		string name,
 		decimal density,

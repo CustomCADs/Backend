@@ -24,7 +24,7 @@ public sealed class GetUserByUsernameHandler(IUserService service, IRequestSende
 		).ConfigureAwait(false);
 
 		return new(
-			Id: user.Id,
+			Id: info.Id,
 			Role: user.Role,
 			Username: user.Username,
 			Email: user.Email,

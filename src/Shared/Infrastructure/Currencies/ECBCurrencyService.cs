@@ -5,12 +5,10 @@ namespace CustomCADs.Shared.Infrastructure.Currencies;
 
 public class ECBCurrencyService(HttpClient client) : ICurrencyService
 {
-	public async Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync()
+	public async Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync(CancellationToken ct)
 	{
 		HttpResponseMessage response = await SendRequestAsync().ConfigureAwait(false);
-
-		using Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-		Gesmes.Envelope envelope = stream.DeserializeFromXml<Gesmes.Envelope>();
+		Gesmes.Envelope envelope = await response.Content.ReadAsXmlAsync<Gesmes.Envelope>(ct).ConfigureAwait(false);
 
 		return [.. envelope.Cube.TimeCube.ToExchangeRates()];
 	}

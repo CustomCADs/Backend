@@ -1,5 +1,6 @@
 ﻿using CustomCADs.Modules.Customs.Application.Customs.Events.Application.DeliveryRequested;
 using CustomCADs.Modules.Customs.Application.Customs.Events.Application.PaymentStarted;
+using CustomCADs.Modules.Customs.Application.Customs.Queries.Internal.Customers.CalculateShipment.ToAddress;
 using CustomCADs.Modules.Customs.Domain.Repositories;
 using CustomCADs.Modules.Customs.Domain.Repositories.Reads;
 using CustomCADs.Shared.Application.Abstractions.Events;
@@ -11,7 +12,6 @@ using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
 using CustomCADs.Shared.Application.UseCases.Customizations.Queries;
 
 namespace CustomCADs.Modules.Customs.Application.Customs.Commands.Internal.Customers.Purchase.WithDelivery;
-
 
 public sealed class PurchaseCustomWithDeliveryHandler(
 	ICustomReads reads,
@@ -40,19 +40,25 @@ public sealed class PurchaseCustomWithDeliveryHandler(
 		).ConfigureAwait(false);
 		string buyer = users[0], seller = users[1];
 
+		if (!await sender.SendQueryAsync(new GetCustomizationExistsByIdQuery(req.CustomizationId), ct).ConfigureAwait(false))
+		{
+			throw CustomNotFoundException<Custom>.ById(req.CustomizationId.Value, "Customization");
+		}
+
 		GetCustomizationCostByIdQuery costQuery = new(req.CustomizationId);
 		decimal cost = await sender.SendQueryAsync(costQuery, ct).ConfigureAwait(false);
-		decimal total = req.Count * (custom.FinishedCustom.Price + cost);
 
 		double weight = await sender.SendQueryAsync(
 			query: new GetCustomizationWeightByIdQuery(req.CustomizationId),
 			ct: ct
 		).ConfigureAwait(false);
 
-		if (!await sender.SendQueryAsync(new GetCustomizationExistsByIdQuery(req.CustomizationId), ct).ConfigureAwait(false))
-		{
-			throw CustomNotFoundException<Custom>.ById(req.CustomizationId.Value, "Customization");
-		}
+		var calculations = await sender.SendQueryAsync(
+			query: new CalculateCustomShipmentToAddressQuery(custom.Id, req.Address.Country, req.Address.Site, req.Count, req.CustomizationId),
+			ct: ct
+		).ConfigureAwait(false);
+		var calculation = calculations.First(x => x.Service == req.ShipmentService);
+		decimal shipping = Convert.ToDecimal(calculation.Amount);
 
 		custom.Complete(customizationId: req.CustomizationId);
 		await uow.SaveChangesAsync(ct).ConfigureAwait(false);
@@ -67,11 +73,14 @@ public sealed class PurchaseCustomWithDeliveryHandler(
 			)
 		).ConfigureAwait(false);
 
+		decimal subtotal = req.Count * custom.FinishedCustom.Price;
+		decimal printing = req.Count * cost;
+
 		PaymentDto response = await payment.InitializeCustomPayment(
 			paymentMethodId: req.PaymentMethodId,
 			buyerId: req.CallerId,
 			customId: custom.Id,
-			total: total,
+			total: subtotal + printing + shipping,
 			description: (buyer, custom.Name, seller),
 			ct: ct
 		).ConfigureAwait(false);

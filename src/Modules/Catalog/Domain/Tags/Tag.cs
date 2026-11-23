@@ -5,7 +5,7 @@ namespace CustomCADs.Modules.Catalog.Domain.Tags;
 public class Tag : BaseAggregateRoot
 {
 	private Tag() { }
-	private Tag(string name)
+	private Tag(string name) : this()
 	{
 		Name = name;
 	}
@@ -17,7 +17,7 @@ public class Tag : BaseAggregateRoot
 		=> new Tag(name)
 		.ValidateName();
 
-	public static Tag CreateWithId(TagId? id, string name)
+	internal static Tag CreateWithId(TagId? id, string name)
 		=> new Tag(name)
 		{
 			Id = id ?? TagId.New()

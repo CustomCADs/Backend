@@ -7,17 +7,19 @@ public static class XmlUtilities
 {
 	private static XmlSerializer GetSerializer<TDto>() => new(type: typeof(TDto));
 
-	extension(Stream stream)
+	extension<TDto>(HttpContent content) where TDto : class
 	{
-		public TDto DeserializeFromXml<TDto>() where TDto : class
-			=> GetSerializer<TDto>().Deserialize(stream) as TDto
-				?? throw new XmlException($"Failed to parse XML to {typeof(TDto).Name}");
+		public async Task<TDto> ReadAsXmlAsync(CancellationToken ct)
+		{
+			using Stream stream = await content.ReadAsStreamAsync(ct).ConfigureAwait(false);
+
+			return GetSerializer<TDto>().Deserialize(stream) as TDto
+				?? throw new XmlException($"Failed to parse XML to {typeof(TDto).GetType()}");
+		}
 	}
 
 	extension<TDto>(TDto dto) where TDto : class
 	{
-		public void SerializeToXml(Stream stream) => GetSerializer<TDto>().Serialize(stream, dto);
-
 		public string AsSerializedXml
 		{
 			get

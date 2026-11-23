@@ -1,0 +1,35 @@
+using CustomCADs.Modules.Carts.Domain.PurchasedCarts;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
+using CustomCADs.Shared.Domain.TypedIds.Carts;
+using CustomCADs.Shared.Domain.TypedIds.Catalog;
+using CustomCADs.Shared.Domain.TypedIds.Delivery;
+using CustomCADs.Shared.Domain.TypedIds.Files;
+using CustomCADs.Shared.Domain.TypedIds.Printing;
+
+namespace CustomCADs.UnitTests.Carts.Data.PurchasedCarts;
+
+using static PurchasedCartConstants.PurchasedCartItems;
+
+public static class TestData
+{
+	public static class CartItemsData
+	{
+		public const int MinValidQuantity = QuantityMin + 1;
+		public const int MaxValidQuantity = QuantityMax - 1;
+		public const int MinInvalidQuantity = QuantityMin - 1;
+		public const int MaxInvalidQuantity = QuantityMax + 1;
+
+		public const decimal MinValidPrice = PriceMin + 1;
+		public const decimal MaxValidPrice = PriceMax - 1;
+		public const decimal MinInvalidPrice = PriceMin - 1;
+		public const decimal MaxInvalidPrice = PriceMax + 1;
+
+		public static readonly ProductId ValidProductId = ProductId.New();
+		public static readonly CadId ValidCadId = CadId.New();
+		public static readonly CustomizationId ValidCustomizationId = CustomizationId.New();
+	}
+
+	public static readonly PurchasedCartId ValidId = PurchasedCartId.New();
+	public static readonly AccountId ValidBuyerId = AccountId.New();
+	public static readonly ShipmentId ValidShipmentId = ShipmentId.New();
+}

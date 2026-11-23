@@ -10,7 +10,7 @@ internal static class Utilities
 {
 	extension(IQueryable<PurchasedCart> query)
 	{
-		internal IQueryable<PurchasedCart> WithFilter(AccountId? buyerId = null, PaymentStatus? paymentStatus = null)
+		internal IQueryable<PurchasedCart> WithFilter(AccountId? buyerId = null, PaymentStatus? paymentStatus = null, bool? hasDelivery = null, DateTimeOffset? start = null, DateTimeOffset? end = null)
 		{
 			if (buyerId is not null)
 			{
@@ -19,6 +19,18 @@ internal static class Utilities
 			if (paymentStatus is not null)
 			{
 				query = query.Where(x => x.PaymentStatus == paymentStatus);
+			}
+			if (hasDelivery is not null)
+			{
+				query = query.Where(x => x.Items.Any(x => x.ForDelivery) == hasDelivery);
+			}
+			if (start is not null)
+			{
+				query = query.Where(x => x.PurchasedAt >= start.Value.UtcDateTime);
+			}
+			if (end is not null)
+			{
+				query = query.Where(x => x.PurchasedAt <= end.Value.UtcDateTime);
 			}
 
 			return query;

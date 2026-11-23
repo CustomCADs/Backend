@@ -23,5 +23,5 @@ public enum NotificationType
 	ProductTagRemoved,
 	PaymentCompleted,
 	PaymentFailed,
-	Unkown,
+	Unknown,
 }

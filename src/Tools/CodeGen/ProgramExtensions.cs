@@ -160,21 +160,8 @@ public static class ProgramExtensions
 				.AddPrintingPersistence(config.ConnectionString);
 
 
-		public IServiceCollection AddDomainServices()
-		{
-			services.AddScoped<IPrintCalculator, PrintCalculator>();
-
-			return services;
-		}
-
 		public IServiceCollection AddBackgroundJobs()
 		{
-			services.AddQuartzHostedService(opts => opts = new()
-			{
-				WaitForJobsToComplete = true,
-				AwaitApplicationStarted = true,
-				StartDelay = TimeSpan.FromMinutes(30),
-			});
 			services.AddQuartz(configurator =>
 			{
 				configurator.AddSharedBackgroundJobs();
@@ -182,6 +169,12 @@ public static class ProgramExtensions
 				configurator.AddDeliveryBackgroundJobs();
 				configurator.AddIdempotencyBackgroundJobs();
 				configurator.AddIdentityBackgroundJobs();
+			});
+			services.AddQuartzHostedService(opts =>
+			{
+				opts.WaitForJobsToComplete = true;
+				opts.AwaitApplicationStarted = true;
+				opts.StartDelay = TimeSpan.FromMinutes(30);
 			});
 
 			return services;

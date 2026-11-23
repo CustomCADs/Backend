@@ -3,12 +3,24 @@ using CustomCADs.Shared.Domain.Bases.Events;
 
 namespace CustomCADs.Modules.Carts.Application.ActiveCarts.Events.Application.DeliveryRequested;
 
-public record ActiveCartDeliveryRequestedApplicationEvent(
+public record ActiveCartDeliveryToAddressRequestedApplicationEvent(
 	PurchasedCartId PurchasedCartId,
 	string ShipmentService,
 	double Weight,
 	int Count,
 	AddressDto Address,
+	ContactDto Contact
+) : BaseApplicationEvent
+{
+	public Guid Id => PurchasedCartId.Value; // raw Guid for Saga Identity to work
+};
+
+public record ActiveCartDeliveryToOfficeRequestedApplicationEvent(
+	PurchasedCartId PurchasedCartId,
+	string ShipmentService,
+	double Weight,
+	int Count,
+	int OfficeId,
 	ContactDto Contact
 ) : BaseApplicationEvent
 {

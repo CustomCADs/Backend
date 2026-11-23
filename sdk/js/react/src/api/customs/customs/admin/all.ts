@@ -21,8 +21,8 @@ export type Response = {
 	status: CustomStatus;
 	forDelivery: boolean;
 	buyerName: string;
-	designerName?: string;
-	categoryName?: string;
+	designerName: string | null;
+	categoryName: string | null;
 };
 
 export const url = (req: Request) =>

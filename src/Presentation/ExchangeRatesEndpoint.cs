@@ -17,7 +17,7 @@ public static class ExchangeRatesEndpoint
 				{
 					IReadOnlyCollection<ExchangeRate> rates = await cache.GetOrCreateAsync(
 						key: ICurrencyService.ExchangeRatesCacheKey,
-						factory: service.GetRatesAsync
+						factory: () => service.GetRatesAsync(ct)
 					).ConfigureAwait(false) ?? [];
 
 					ExchangeRate[] response = [.. rates];

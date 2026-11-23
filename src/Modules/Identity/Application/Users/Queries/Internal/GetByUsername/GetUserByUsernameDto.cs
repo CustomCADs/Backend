@@ -1,11 +1,12 @@
 using CustomCADs.Modules.Identity.Application.Users.Dtos;
 using CustomCADs.Modules.Identity.Domain.Users.ValueObjects;
 using CustomCADs.Shared.Application.UseCases.Accounts.Queries;
+using CustomCADs.Shared.Domain.TypedIds.Accounts;
 
 namespace CustomCADs.Modules.Identity.Application.Users.Queries.Internal.GetByUsername;
 
 public sealed record GetUserByUsernameDto(
-	UserId Id,
+	AccountId Id,
 	string Role,
 	string Username,
 	string? FirstName,

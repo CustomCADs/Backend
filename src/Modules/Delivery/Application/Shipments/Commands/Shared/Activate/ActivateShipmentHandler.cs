@@ -19,14 +19,14 @@ public class ActivateShipmentHandler(
 
 		ShipmentDto reference = await delivery.ShipAsync(
 			req: new(
+				Destination: shipment.Delivery.Destination,
+				OfficeId: shipment.Delivery.OfficeId,
+				Address: shipment.Delivery.Address,
 				Package: "BOX",
 				Contents: $"{shipment.Info.Count} 3D Model/s, wrapped together in a box",
 				Name: shipment.Info.Recipient,
 				TotalWeight: shipment.Info.Weight,
 				Service: shipment.Reference.Service,
-				Country: shipment.Address.Country,
-				City: shipment.Address.City,
-				Street: shipment.Address.Street,
 				Phone: shipment.Contact.Phone,
 				Email: shipment.Contact.Email
 			),

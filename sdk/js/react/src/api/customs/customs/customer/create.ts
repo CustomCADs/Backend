@@ -18,7 +18,7 @@ export type Response = {
 	orderedAt: string;
 	forDelivery: boolean;
 	status: string;
-	category?: CustomCategory;
+	category: CustomCategory | null;
 };
 
 export const url = () => `${CUSTOMS_CUSTOMER_BASE_PATH}`;

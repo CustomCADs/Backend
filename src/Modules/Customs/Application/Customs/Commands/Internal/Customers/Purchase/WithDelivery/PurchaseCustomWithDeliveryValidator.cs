@@ -14,16 +14,6 @@ public class PurchaseCustomWithDeliveryValidator : CommandValidator<PurchaseCust
 		RuleFor(x => x.ShipmentService)
 			.NotEmpty().WithMessage(RequiredError);
 
-		RuleFor(x => x.Address)
-			.ChildRules(x =>
-			{
-				x.RuleFor(x => x.Country)
-					.NotEmpty().WithMessage(RequiredError);
-
-				x.RuleFor(x => x.City)
-					.NotEmpty().WithMessage(RequiredError);
-			});
-
 		RuleFor(x => x.Contact)
 			.ChildRules(x =>
 			{

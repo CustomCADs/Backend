@@ -13,7 +13,7 @@ export type Response = {
 	purchasedAt: string;
 	paymentStatus: string;
 	buyerName: string;
-	shipmentId?: string;
+	shipmentId: string | null;
 	items: PurchasedCartItem[];
 };
 

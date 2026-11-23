@@ -26,7 +26,7 @@ public sealed class CreatorGetAllProductsHandler(IProductReads reads, IRequestSe
 
 		CategoryId[] categoryIds = [.. result.Items.Select(x => x.CategoryId).Distinct()];
 		Dictionary<CategoryId, string> categories = await sender.SendQueryAsync(
-			query: new GetCategoryNamesByIdsQuery(categoryIds),
+			query: new BatchGetCategorByIdQuery(categoryIds),
 			ct: ct
 		).ConfigureAwait(false);
 

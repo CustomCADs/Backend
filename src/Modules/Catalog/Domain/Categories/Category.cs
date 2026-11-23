@@ -20,7 +20,7 @@ public class Category : BaseAggregateRoot
 			.ValidateName()
 			.ValidateDescription();
 
-	public static Category CreateWithId(CategoryId id, string name, string description)
+	internal static Category CreateWithId(CategoryId id, string name, string description)
 		=> new Category(name, description)
 		{
 			Id = id

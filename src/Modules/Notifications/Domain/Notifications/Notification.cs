@@ -58,7 +58,7 @@ public class Notification : BaseAggregateRoot
 		return notifications;
 	}
 
-	public static Notification Create(
+	internal static Notification Create(
 		NotificationId id,
 		string type,
 		NotificationContent content,

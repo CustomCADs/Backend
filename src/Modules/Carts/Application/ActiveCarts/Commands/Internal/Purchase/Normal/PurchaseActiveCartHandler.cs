@@ -34,12 +34,12 @@ public sealed class PurchaseActiveCartHandler(
 		}
 
 		Dictionary<ProductId, decimal> prices = await sender.SendQueryAsync(
-			query: new GetProductPricesByIdsQuery(
+			query: new BatchGetProductPriceByIdQuery(
 				Ids: [.. items.Select(x => x.ProductId)]
 			),
 			ct: ct
 		).ConfigureAwait(false);
-		decimal totalSum = prices.Sum(x => x.Value);
+		decimal subtotal = prices.Sum(x => x.Value);
 
 		string buyer = await sender.SendQueryAsync(
 			query: new GetUsernameByIdQuery(req.CallerId),
@@ -71,7 +71,7 @@ public sealed class PurchaseActiveCartHandler(
 			paymentMethodId: req.PaymentMethodId,
 			buyerId: req.CallerId,
 			cartId: purchasedCartId,
-			total: totalSum,
+			total: subtotal,
 			description: (buyer, items.Length),
 			ct: ct
 		).ConfigureAwait(false);

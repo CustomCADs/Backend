@@ -7,6 +7,6 @@ public class ResilientCurrencyService(
 	Polly.IAsyncPolicy policy
 ) : ICurrencyService
 {
-	public Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync()
-		=> policy.ExecuteAsync(() => inner.GetRatesAsync());
+	public Task<IReadOnlyCollection<ExchangeRate>> GetRatesAsync(CancellationToken ct)
+		=> policy.ExecuteAsync(() => inner.GetRatesAsync(ct));
 }

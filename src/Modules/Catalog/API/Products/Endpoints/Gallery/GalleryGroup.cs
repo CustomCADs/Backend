@@ -8,7 +8,6 @@ public class GalleryGroup : SubGroup<ProductsGroup>
 	{
 		Configure(Paths.Gallery, x =>
 		{
-			x.AllowAnonymous();
 			x.Description(x => x.WithTags(Tags[Paths.Gallery]));
 		});
 	}

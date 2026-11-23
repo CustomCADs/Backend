@@ -5,7 +5,7 @@ namespace CustomCADs.Modules.Accounts.Domain.Accounts.Entities;
 public class ViewedProduct
 {
 	private ViewedProduct() { }
-	private ViewedProduct(AccountId id, ProductId productId, DateTimeOffset viewedAt) : base()
+	private ViewedProduct(AccountId id, ProductId productId, DateTimeOffset viewedAt) : this()
 	{
 		AccountId = id;
 		ProductId = productId;

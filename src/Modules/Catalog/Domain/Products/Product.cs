@@ -56,7 +56,7 @@ public class Product : BaseAggregateRoot
 		.ValidateDescription()
 		.ValidatePrice();
 
-	public static Product CreateWithId(
+	internal static Product CreateWithId(
 		string name,
 		string description,
 		decimal price,
